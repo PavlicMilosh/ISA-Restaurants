@@ -38,9 +38,14 @@ public class UserIntegrationTest
     {
         this.mvc.perform(post("/users/register/sysManager")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{'username':'pera', 'password':'pera', 'firstName':'Pera', 'lastName':'peric'}"))
+                        .content("{\"username\":\"pera\", \"password\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(content().json("{'username':'pera', 'password':'pera', 'firstName':'Pera', 'lastName':'peric'}"));
+                .andExpect(content().json("{\"username\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"));
+
+        this.mvc.perform(post("/users/register/sysManager")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"pera\", \"password\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"))
+                .andExpect(status().isUnprocessableEntity());
 
     }
 
