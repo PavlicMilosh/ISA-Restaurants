@@ -4,7 +4,8 @@ import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.SystemManager;
 import com.isa.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +21,9 @@ public class UserController
     private UserService userService;
 
     @RequestMapping(value = "/register/sysManager")
-    public UserDTO registerSysManager(@RequestBody SystemManager systemManager)
+    public ResponseEntity<UserDTO> registerSysManager(@RequestBody SystemManager systemManager)
     {
-        return userService.addSystemManager(systemManager);
+        UserDTO saved = userService.addSystemManager(systemManager);
+        return new ResponseEntity(saved, HttpStatus.CREATED);
     }
 }
