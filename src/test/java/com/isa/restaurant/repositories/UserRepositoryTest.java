@@ -51,7 +51,10 @@ public class UserRepositoryTest
     {
         User pera = userRepository.findByUsername("pera");
         User zika = userRepository.findByUsername("zika");
+        User steva = userRepository.findByUsername("steva");
         userRepository.delete(pera.getId());
         userRepository.delete(zika.getId());
+        if(steva != null)
+            userRepository.delete(steva.getId());
     }
 }

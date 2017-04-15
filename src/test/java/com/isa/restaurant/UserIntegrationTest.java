@@ -45,7 +45,7 @@ public class UserIntegrationTest
         this.mvc.perform(post("/users/register/sysManager")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"pera\", \"password\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"))
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isConflict());
 
     }
 

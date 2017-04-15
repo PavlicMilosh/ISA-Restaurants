@@ -19,9 +19,10 @@ public abstract class User
 {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column(name = "id", unique = true, nullable = false)
     protected Long id;
 
-    @Column(name = "username", unique = true)
+    @Column(name = "username", unique = true, nullable = false)
     protected String username;
 
     @Column(name = "password")
@@ -41,7 +42,7 @@ public abstract class User
 
         User user = (User) o;
 
-        if (id != null ? !id.equals(user.id) : false) return false;
+        if (id != null && !id.equals(user.id)) return false;
         if (username != null ? !username.equals(user.username) : user.username != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;

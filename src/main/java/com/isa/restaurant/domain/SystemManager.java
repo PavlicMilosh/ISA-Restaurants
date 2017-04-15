@@ -34,7 +34,7 @@ public class SystemManager extends User
 
         User user = (SystemManager) o;
 
-        if (id != null ? !id.equals(user.id) : false) return false;
+        if (id != null && !id.equals(user.id)) return false;
         if (username != null ? !username.equals(user.username) : user.username != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
