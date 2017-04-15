@@ -1,5 +1,6 @@
 package com.isa.restaurant.controllers;
 
+import com.isa.restaurant.domain.Barman;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.SystemManager;
 import com.isa.restaurant.services.implementation.UserServiceImpl;
@@ -29,5 +30,22 @@ public class UserController
         if(saved == null)
             return new ResponseEntity(HttpStatus.CONFLICT); //da li moze unprocessable_entity da se vrati u ovom slucaju?
         return new ResponseEntity(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/register/barman", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> registerBarman(@RequestBody Barman barman)
+    {
+        UserDTO saved = userService.addBarman(barman);
+        if(saved == null)
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/update/barman", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> changeBarman(@RequestBody Barman barman){
+        UserDTO saved = userService.changeBarman(barman);
+        if(saved == null)
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity(saved, HttpStatus.OK);
     }
 }

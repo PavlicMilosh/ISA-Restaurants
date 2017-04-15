@@ -47,6 +47,18 @@ public class UserIntegrationTest
                         .content("{\"username\":\"pera\", \"password\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"))
                 .andExpect(status().isConflict());
 
+        this.mvc.perform(post("/users/register/barman")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"pera\", \"password\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(content().json("{\"username\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"));
+
+
+        this.mvc.perform(post("/users/update/barman")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":\"1\", \"username\":\"zika\", \"password\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"))
+                .andExpect(content().json("{\"username\":\"zika\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"));
+
     }
 
 }
