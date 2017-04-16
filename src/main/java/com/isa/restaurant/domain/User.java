@@ -19,19 +19,19 @@ public abstract class User
 {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "user_id", unique = true, nullable = false)
     protected Long id;
 
-    @Column(name = "username", unique = true, nullable = false)
+    @Column(name = "user_username", unique = true, nullable = false)
     protected String username;
 
-    @Column(name = "password")
+    @Column(name = "user_password")
     protected String password;
 
-    @Column(name = "firstName")
+    @Column(name = "user_first_name")
     protected String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "user_last_name")
     protected String lastName;
 
     @Override
