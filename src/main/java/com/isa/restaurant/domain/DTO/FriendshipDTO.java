@@ -24,7 +24,7 @@ public class FriendshipDTO
     private String secondUserUsername;
     private String actionUserUsername;
 
-    private FriendshipStatus status;
+    private String status;
 
 
     public FriendshipDTO(Friendship friendship)

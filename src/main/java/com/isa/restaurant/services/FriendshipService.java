@@ -13,12 +13,12 @@ public interface FriendshipService
 {
     FriendshipDTO sendRequest(Long from, Long to);
 
-    FriendshipDTO acceptRequest(Long requestId);
+    FriendshipDTO acceptRequest(Long requestId, Long guestId);
 
-    FriendshipDTO declineRequest(Long requestId);
+    FriendshipDTO declineRequest(Long requestId, Long guestId);
 
     Set<UserDTO> getFriends(Long guestId);
 
-    Set<UserDTO> getFriendRequests(Long guestId);
+    Set<FriendshipDTO> getFriendRequests(Long guestId);
 
 }

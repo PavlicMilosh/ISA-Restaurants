@@ -36,13 +36,38 @@ public class Friendship
     private Guest actionUser;
 
     @Column(name = "friendship_status")
-    private FriendshipStatus status;
+    private String status;
 
 
     public Friendship(Guest firstUser, Guest secondUser)
     {
         this.firstUser = firstUser;
         this.secondUser = secondUser;
+    }
+
+
+    public Guest getFriend(Long guestId)
+    {
+        if (firstUser.getId().longValue() != guestId.longValue())
+            return firstUser;
+        else if (secondUser.getId().longValue() != guestId.longValue())
+            return secondUser;
+        return null;
+    }
+
+
+    public Boolean containsGuest(Long guestId)
+    {
+        if (firstUser.getId().longValue() == guestId.longValue() ||
+            secondUser.getId().longValue() == guestId.longValue())
+            return true;
+        return false;
+    }
+
+
+    public Boolean isActionUser(Long guestId)
+    {
+        return actionUser.getId().longValue() == guestId.longValue();
     }
 
 }
