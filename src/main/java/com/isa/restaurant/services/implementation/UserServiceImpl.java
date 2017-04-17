@@ -1,10 +1,7 @@
 package com.isa.restaurant.services.implementation;
 
-import com.isa.restaurant.domain.Barman;
+import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.domain.Guest;
-import com.isa.restaurant.domain.SystemManager;
-import com.isa.restaurant.domain.User;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +69,43 @@ public class UserServiceImpl implements UserService
         User saved = userRepository.save(guest);
         return new UserDTO(saved);
     }
+
+    public UserDTO addCook(Cook cook)
+    {
+        Cook ck = (Cook) userRepository.findByUsername(cook.getUsername());
+        if(ck != null)
+            return null;
+        User saved = userRepository.save(cook);
+        return new UserDTO(saved);
+    }
+
+    public UserDTO addBartender(Bartender bartender)
+    {
+        Bartender br = (Bartender) userRepository.findByUsername(bartender.getUsername());
+        if(br != null)
+            return null;
+        User saved = userRepository.save(bartender);
+        return new UserDTO(saved);
+    }
+
+    public UserDTO changeCook(Cook cook)
+    {
+        Cook ck = (Cook) userRepository.findById(cook.getId());
+        if(ck == null)
+            return null;
+        User saved = userRepository.save(cook);
+        return new UserDTO(saved);
+    }
+
+    public UserDTO changeBartender(Bartender bartender)
+    {
+        Bartender br = (Bartender) userRepository.findById(bartender.getId());
+        if(br == null)
+            return null;
+        User saved = userRepository.save(bartender);
+        return new UserDTO(saved);
+    }
+
 
 
 

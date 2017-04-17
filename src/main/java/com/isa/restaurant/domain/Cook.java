@@ -1,49 +1,41 @@
 package com.isa.restaurant.domain;
 
-
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * Created by Milos on 10-Apr-17.
+ * Created by djuro on 4/14/2017.
  */
+
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class User
+@Table(name = "cook")
+public class Cook extends User
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "user_id", unique = true, nullable = false)
-    protected Long id;
 
-    @Column(name = "user_username", unique = true, nullable = false)
-    protected String username;
-
-    @Column(name = "user_password")
-    protected String password;
-
-    @Column(name = "email")
-    protected String email;
-
-    @Column(name = "user_first_name")
-    protected String firstName;
-
-    @Column(name = "user_last_name")
-    protected String lastName;
+    public Cook(String username, String password, String firstName, String lastName)
+    {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     @Override
     public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (!(o instanceof SystemManager)) return false;
 
-        User user = (User) o;
+        User user = (SystemManager) o;
 
-        if (id != null && !id.equals(user.id)) return false;
+        if (id != null ? !id.equals(user.id) : false) return false;
         if (username != null ? !username.equals(user.username) : user.username != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
