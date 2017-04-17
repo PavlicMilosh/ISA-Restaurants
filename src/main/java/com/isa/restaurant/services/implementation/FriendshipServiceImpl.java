@@ -11,89 +11,127 @@ import com.isa.restaurant.services.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Q on 16-Apr-17.
- */
+
 @Service
 public class FriendshipServiceImpl implements FriendshipService
 {
-    @Autowired
-    private FriendshipRepository friendshipRepository;
+    private final FriendshipRepository friendshipRepository;
+    private final UserRepository userRepository;
+
 
     @Autowired
-    private UserRepository userRepository;
+    public FriendshipServiceImpl(FriendshipRepository friendshipRepository, UserRepository userRepository)
+    {
+        this.friendshipRepository = friendshipRepository;
+        this.userRepository = userRepository;
+    }
 
 
     @Override
     public FriendshipDTO sendRequest(Long from, Long to)
     {
-        // treba ubaciti proveru da ne postoji vec takav request, ako postoji da se izmeni status
-        Guest gFrom = (Guest) userRepository.findById(from);
-        Guest gTo = (Guest) userRepository.findById(to);
-        FriendshipDTO friendshipDTO = null;
+        // send to self
+        if (from.longValue() == to.longValue())
+            return null;
 
-        if (gFrom != null && gTo != null)
-        {
-            Friendship friendship = new Friendship(gFrom, gTo);
-            friendship.setStatus(FriendshipStatus.PENDING);
-            friendship.setActionUser(gFrom);
-            friendshipRepository.save(friendship);
-            friendshipDTO = new FriendshipDTO(friendship);
-        }
-
-        return friendshipDTO;
-    }
-
-
-    @Override
-    public FriendshipDTO acceptRequest(Long requestId)
-    {
-        return updateRequest(requestId, FriendshipStatus.ACCEPTED);
-    }
-
-
-    @Override
-    public FriendshipDTO declineRequest(Long requestId)
-    {
-        return updateRequest(requestId, FriendshipStatus.DECLINED);
-    }
-
-
-    private FriendshipDTO updateRequest(Long requestId, FriendshipStatus status)
-    {
-        Friendship friendship = friendshipRepository.findById(requestId);
-        FriendshipDTO friendshipDTO = null;
+        Friendship friendship = friendshipRepository.findByBothUsers(from, to);
 
         if (friendship != null)
         {
-            friendship.setStatus(status);
-            friendshipRepository.save(friendship);
-            friendshipDTO = new FriendshipDTO(friendship);
+            // send to accepted
+            if (friendship.getStatus().equalsIgnoreCase(FriendshipStatus.ACCEPTED))
+                return null;
+
+            // send to declined or pending (resend)
+            else if (friendship.getStatus().equalsIgnoreCase(FriendshipStatus.PENDING )||
+                     friendship.getStatus().equalsIgnoreCase(FriendshipStatus.DECLINED))
+            {
+                friendship.setStatus(FriendshipStatus.PENDING);
+                friendshipRepository.save(friendship);
+                return new FriendshipDTO(friendship);
+            }
         }
 
-        return friendshipDTO;
+        Guest gFrom = (Guest) userRepository.findById(from);
+        Guest gTo = (Guest) userRepository.findById(to);
+
+        if (gFrom != null && gTo != null)
+        {
+            friendship = new Friendship(gFrom, gTo);
+            friendship.setStatus(FriendshipStatus.PENDING);
+            friendship.setActionUser(gFrom);
+            friendshipRepository.save(friendship);
+            return new FriendshipDTO(friendship);
+        }
+
+        return null;
+    }
+
+
+    @Override
+    public FriendshipDTO acceptRequest(Long requestId, Long guestId)
+    {
+        return updateRequest(requestId, guestId, FriendshipStatus.ACCEPTED);
+    }
+
+
+    @Override
+    public FriendshipDTO declineRequest(Long requestId, Long guestId)
+    {
+        return updateRequest(requestId, guestId, FriendshipStatus.DECLINED);
+    }
+
+
+    private FriendshipDTO updateRequest(Long requestId, Long guestId, String status)
+    {
+        // odraditi proveru da li uopste moze da se guest updatetuje zadati friendship
+
+
+        Friendship friendship = friendshipRepository.findById(requestId);
+
+        if (friendship != null &&
+            friendship.containsGuest(guestId) &&
+            !friendship.isActionUser(guestId))
+        {
+            Guest guest = (Guest) userRepository.findById(guestId);
+            friendship.setStatus(status);
+            friendship.setActionUser(guest);
+            friendshipRepository.save(friendship);
+            return new FriendshipDTO(friendship);
+        }
+
+        return null;
     }
 
 
     @Override
     public Set<UserDTO> getFriends(Long guestId)
     {
-        // dobaviti sve friendships gde je status ACCEPTED
-        // na osnovu userId-a naci sve ostale id-ove koji odgovaraju
-        // dobaviti takve user-e
-        // vratiti
-        return null;
+        Set<UserDTO> retSet = new HashSet<>();
+        Set<Friendship> friendships = friendshipRepository.findAllAcceptedFriendshipsByUserId(guestId);
+
+        for (Friendship f : friendships)
+        {
+            Guest friend = f.getFriend(guestId);
+            retSet.add(new UserDTO(friend));
+        }
+
+        return retSet;
     }
 
+
     @Override
-    public Set<UserDTO> getFriendRequests(Long guestId)
+    public Set<FriendshipDTO> getFriendRequests(Long guestId)
     {
-        // dobaviti sve friendships gde je status PENDING i gde je actionUser != requestId
-        // na osnovu userId-a naci sve ostale id-ove koji odgovaraju
-        // dobaviti takve user-e
-        // vratiti
-        return null;
+        Set<FriendshipDTO> retSet = new HashSet<>();
+        Set<Friendship> friendships = friendshipRepository.findAllIncomingFriendRequestsByUserId(guestId);
+
+        for (Friendship f : friendships)
+            retSet.add(new FriendshipDTO(f));
+
+        return retSet;
     }
 }

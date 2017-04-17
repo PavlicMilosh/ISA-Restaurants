@@ -3,10 +3,9 @@ package com.isa.restaurant.domain;
 /**
  * Created by Q on 16-Apr-17.
  */
-public enum FriendshipStatus
+public class FriendshipStatus
 {
-    PENDING,
-    ACCEPTED,
-    DECLINED,
-    BLOCKED
+    public static final String PENDING = "PENDING";
+    public static final String ACCEPTED = "ACCEPTED";
+    public static final String DECLINED = "DECLINED";
 }

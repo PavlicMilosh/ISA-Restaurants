@@ -47,26 +47,30 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/sendFriendshipRequest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{guestId}/sendFriendRequest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FriendshipDTO> sendFriendshipRequest(@RequestBody Long toWhom, @PathVariable Long guestId)
     {
         FriendshipDTO saved = friendshipService.sendRequest(guestId, toWhom);
         if (saved == null)
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
 
-    @RequestMapping(value = "/{guestId}/acceptFriendshipRequest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> acceptFriendshipRequest(@RequestBody Long toWhom, @PathVariable Long guestId)
+    @RequestMapping(value = "/{guestId}/acceptFriendRequest", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FriendshipDTO> acceptFriendshipRequest(@RequestBody Long requestId, @PathVariable Long guestId)
     {
-        return null;
+        FriendshipDTO friendshipDTO = friendshipService.acceptRequest(requestId, guestId);
+        if (friendshipDTO == null)
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(friendshipDTO, HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/{guestId}/declineFriendshipRequest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> declineFriendshipRequest(@RequestBody Long toWhom, @PathVariable Long guestId)
+    @RequestMapping(value = "/{guestId}/declineFriendRequest", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FriendshipDTO> declineFriendshipRequest(@RequestBody Long requestId, @PathVariable Long guestId)
     {
-        return null;
+        FriendshipDTO friendshipDTO = friendshipService.declineRequest(requestId, guestId);
+        return new ResponseEntity<>(friendshipDTO, HttpStatus.OK);
     }
 }
