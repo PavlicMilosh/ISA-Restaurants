@@ -22,6 +22,8 @@ public class UserDTO
 
     String lastName;
 
+    String email;
+
     String userType;
 
     public UserDTO(User user)
@@ -29,6 +31,7 @@ public class UserDTO
         this.username = user.getUsername();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.email = user.getEmail();
         //add userType
     }
 }
