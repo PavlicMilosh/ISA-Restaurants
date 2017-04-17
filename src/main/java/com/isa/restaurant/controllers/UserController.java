@@ -1,6 +1,8 @@
 package com.isa.restaurant.controllers;
 
 import com.isa.restaurant.domain.Barman;
+import com.isa.restaurant.domain.Bartender;
+import com.isa.restaurant.domain.Cook;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.SystemManager;
 import com.isa.restaurant.services.implementation.UserServiceImpl;
@@ -41,9 +43,43 @@ public class UserController
         return new ResponseEntity(saved, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/register/cook", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> registerCook(@RequestBody Cook cook)
+    {
+        UserDTO saved = userService.addCook(cook);
+        if(saved == null)
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/register/bartender", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> registerBartender(@RequestBody Bartender bartender)
+    {
+        UserDTO saved = userService.addBartender(bartender);
+        if(saved == null)
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity(saved, HttpStatus.CREATED);
+    }
+
     @RequestMapping(value = "/update/barman", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> changeBarman(@RequestBody Barman barman){
         UserDTO saved = userService.changeBarman(barman);
+        if(saved == null)
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/update/cook", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> changeCook(@RequestBody Cook cook){
+        UserDTO saved = userService.changeCook(cook);
+        if(saved == null)
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/update/bartender", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> changeCook(@RequestBody Bartender bartender){
+        UserDTO saved = userService.changeBartender(bartender);
         if(saved == null)
             return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
         return new ResponseEntity(saved, HttpStatus.OK);

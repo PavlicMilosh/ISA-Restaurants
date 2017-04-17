@@ -12,6 +12,6 @@ export class RestaurantService
 
   postRestaurant()
   {
-    
+
   }
 }
