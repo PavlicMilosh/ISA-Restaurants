@@ -28,7 +28,7 @@ public class UserController
     {
         UserDTO saved = userService.addSystemManager(systemManager);
         if(saved == null)
-            return new ResponseEntity(HttpStatus.CONFLICT); //da li moze unprocessable_entity da se vrati u ovom slucaju?
+            return new ResponseEntity(HttpStatus.CONFLICT);
         return new ResponseEntity(saved, HttpStatus.CREATED);
     }
 

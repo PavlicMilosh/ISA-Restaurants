@@ -28,6 +28,9 @@ public abstract class User
     @Column(name = "password")
     protected String password;
 
+    @Column(name = "email")
+    protected String email;
+
     @Column(name = "firstName")
     protected String firstName;
 
