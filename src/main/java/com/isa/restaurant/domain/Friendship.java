@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "friendship",
-       uniqueConstraints = @UniqueConstraint(columnNames={"friendship_first_user", "friendship_second_user"}))
+        uniqueConstraints = @UniqueConstraint(columnNames={"friendship_first_user", "friendship_second_user"}))
 public class Friendship
 {
     @Id
@@ -59,7 +59,7 @@ public class Friendship
     public Boolean containsGuest(Long guestId)
     {
         if (firstUser.getId().longValue() == guestId.longValue() ||
-            secondUser.getId().longValue() == guestId.longValue())
+                secondUser.getId().longValue() == guestId.longValue())
             return true;
         return false;
     }

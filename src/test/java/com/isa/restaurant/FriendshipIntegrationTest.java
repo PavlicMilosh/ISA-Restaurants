@@ -119,14 +119,14 @@ public class FriendshipIntegrationTest
         // send to self
         String urlTemplate = "/guest/" + g1_id + "/sendFriendRequest";
         this.mvc.perform(
-                    post(urlTemplate)
+                post(urlTemplate)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(g1_id.toString()))
                 .andExpect(status().isConflict());
 
         // send to accepted
         this.mvc.perform(
-                    post(urlTemplate)
+                post(urlTemplate)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(g2_id.toString()))
                 .andExpect(status().isConflict());
@@ -141,8 +141,8 @@ public class FriendshipIntegrationTest
         // send to new
         this.mvc.perform(
                 post(urlTemplate)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(g4_id.toString()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(g4_id.toString()))
                 .andExpect(status().isCreated());
     }
 
@@ -167,6 +167,16 @@ public class FriendshipIntegrationTest
                 put(urlTemplate)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(f_g5_g7_id.toString()))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    public void testUnfriendUser() throws Exception
+    {
+        String urlTemplate = "/guest/" + g2_id + "/unfriendUser/" + g1_id;
+        this.mvc.perform(
+                put(urlTemplate))
                 .andExpect(status().isOk());
     }
 

@@ -2,8 +2,8 @@ package com.isa.restaurant.services;
 
 import com.isa.restaurant.domain.DTO.FriendshipDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.domain.Friendship;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,4 +21,7 @@ public interface FriendshipService
 
     Set<FriendshipDTO> getFriendRequests(Long guestId);
 
+    FriendshipDTO unfriendUser(Long guestId, Long friendId);
+
+    List<UserDTO> searchForUsers(String stringParam);
 }

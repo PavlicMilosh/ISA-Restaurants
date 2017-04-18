@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -45,9 +46,9 @@ public class FriendshipServiceImpl implements FriendshipService
             if (friendship.getStatus().equalsIgnoreCase(FriendshipStatus.ACCEPTED))
                 return null;
 
-            // send to declined or pending (resend)
+                // send to declined or pending (resend)
             else if (friendship.getStatus().equalsIgnoreCase(FriendshipStatus.PENDING )||
-                     friendship.getStatus().equalsIgnoreCase(FriendshipStatus.DECLINED))
+                    friendship.getStatus().equalsIgnoreCase(FriendshipStatus.DECLINED))
             {
                 friendship.setStatus(FriendshipStatus.PENDING);
                 friendshipRepository.save(friendship);
@@ -87,14 +88,11 @@ public class FriendshipServiceImpl implements FriendshipService
 
     private FriendshipDTO updateRequest(Long requestId, Long guestId, String status)
     {
-        // odraditi proveru da li uopste moze da se guest updatetuje zadati friendship
-
-
         Friendship friendship = friendshipRepository.findById(requestId);
 
         if (friendship != null &&
-            friendship.containsGuest(guestId) &&
-            !friendship.isActionUser(guestId))
+                friendship.containsGuest(guestId) &&
+                !friendship.isActionUser(guestId))
         {
             Guest guest = (Guest) userRepository.findById(guestId);
             friendship.setStatus(status);
@@ -133,5 +131,26 @@ public class FriendshipServiceImpl implements FriendshipService
             retSet.add(new FriendshipDTO(f));
 
         return retSet;
+    }
+
+
+    @Override
+    public FriendshipDTO unfriendUser(Long guestId, Long friendId)
+    {
+        Friendship friendship = friendshipRepository.findByBothUsers(guestId, friendId);
+        if (friendship != null)
+        {
+            friendship.setStatus(FriendshipStatus.UNFRIENDED);
+            friendshipRepository.save(friendship);
+            return new FriendshipDTO(friendship);
+        }
+        return null;
+    }
+
+
+    @Override
+    public List<UserDTO> searchForUsers(String stringParam)
+    {
+        return null;
     }
 }
