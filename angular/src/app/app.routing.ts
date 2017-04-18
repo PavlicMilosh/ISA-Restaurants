@@ -7,7 +7,11 @@ import { AddRestaurantComponent } from './components/addRestaurant/addRestaurant
 const appRoutes : Routes =
   [
     {
-      path : '/registerSM',
+      path : '',
+      component : RegisterSMComponent
+    },
+    {
+      path : 'registerSM',
       component : RegisterSMComponent
     },
     {

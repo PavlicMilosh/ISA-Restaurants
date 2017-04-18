@@ -4,8 +4,9 @@ import { UserService } from "../../services/users.service";
 
 @Component({
   moduleId: module.id,
-  selector: 'addRestaurant',
-  templateUrl: 'registerSM.component.html',
+  selector: 'registerSM',
+  templateUrl: './registerSM.component.html',
+  styleUrls: ['./registerSM.component.css'],
   providers: [UserService]
 })
 export class RegisterSMComponent
@@ -21,7 +22,7 @@ export class RegisterSMComponent
   constructor(private userService: UserService)
   {}
 
-  addRestaurant()
+  addSM()
   {
     this.userService.addSM(this.username, this.password, this.firstName, this.lastName, this.email).subscribe(
       data => this.userDTO = data,

@@ -5,7 +5,8 @@ import { RestaurantService } from "../../services/restaurants.service";
 @Component({
   moduleId: module.id,
   selector: 'addRestaurant',
-  templateUrl: 'addRestaurant.component.html',
+  templateUrl: './addRestaurant.component.html',
+  styleUrls: ['./addRestaurant.component.css'],
   providers: [RestaurantService]
 })
 export class AddRestaurantComponent
