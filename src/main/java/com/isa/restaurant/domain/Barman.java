@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by djuro on 4/13/2017.
@@ -19,12 +21,20 @@ import javax.persistence.Table;
 @Table(name = "barman")
 public class Barman extends User {
 
+    private Set<RestaurantTable> tables;
+
     public Barman(String email, String password, String firstName, String lastName)
     {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.tables=new HashSet<RestaurantTable>();
+    }
+
+    public void addRestaurantTable(RestaurantTable table)
+    {
+        tables.add(table);
     }
 
     @Override
