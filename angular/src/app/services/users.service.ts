@@ -10,11 +10,10 @@ export class UserService
 
   }
 
-  addSM(username: string, pass: string, firstName: string, lastName: string, email: string)
+  addSM(email: string, pass: string, firstName: string, lastName: string)
   {
     var systemManager =
     {
-      username: username,
       password: pass,
       firstName: firstName,
       lastName: lastName,

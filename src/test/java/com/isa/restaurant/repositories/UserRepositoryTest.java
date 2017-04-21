@@ -32,8 +32,8 @@ public class UserRepositoryTest
     @Test
     public void testFindByUsername()
     {
-        User pera = userRepository.findByUsername("pera");
-        User zika = userRepository.findByUsername("zika");
+        User pera = userRepository.findByEmail("pera");
+        User zika = userRepository.findByEmail("zika");
         Assert.assertEquals(new SystemManager("pera", "pera", "Pera", "Peric"), pera);
         Assert.assertEquals(new SystemManager("zika", "zika", "Zika", "Zikic"), zika);
     }
@@ -49,9 +49,9 @@ public class UserRepositoryTest
     @After
     public void tearDown()
     {
-        User pera = userRepository.findByUsername("pera");
-        User zika = userRepository.findByUsername("zika");
-        User steva = userRepository.findByUsername("steva");
+        User pera = userRepository.findByEmail("pera");
+        User zika = userRepository.findByEmail("zika");
+        User steva = userRepository.findByEmail("steva");
         userRepository.delete(pera.getId());
         userRepository.delete(zika.getId());
         if(steva != null)

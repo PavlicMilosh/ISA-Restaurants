@@ -20,9 +20,9 @@ public class FriendshipDTO
     private Long secondUserId;
     private Long actionUserId;
 
-    private String firstUserUsername;
-    private String secondUserUsername;
-    private String actionUserUsername;
+    private String firstUserEmail;
+    private String secondUserEmail;
+    private String actionUserEmail;
 
     private String status;
 
@@ -31,11 +31,11 @@ public class FriendshipDTO
     {
         this.id = friendship.getId();
         this.firstUserId = friendship.getFirstUser().getId();
-        this.firstUserUsername = friendship.getFirstUser().getUsername();
+        this.firstUserEmail = friendship.getFirstUser().getEmail();
         this.secondUserId = friendship.getSecondUser().getId();
-        this.secondUserUsername = friendship.getSecondUser().getUsername();
+        this.secondUserEmail = friendship.getSecondUser().getEmail();
         this.actionUserId = friendship.getActionUser().getId();
-        this.actionUserUsername = friendship.getActionUser().getUsername();
+        this.actionUserEmail = friendship.getActionUser().getEmail();
         this.status = friendship.getStatus();
     }
 

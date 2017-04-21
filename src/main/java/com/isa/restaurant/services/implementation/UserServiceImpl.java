@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService
     @Override
     public UserDTO addSystemManager(SystemManager systemManager)
     {
-        SystemManager sm = (SystemManager) userRepository.findByUsername(systemManager.getUsername());
+        SystemManager sm = (SystemManager) userRepository.findByEmail(systemManager.getEmail());
         if(sm != null)
             return null;
         User saved = userRepository.save(systemManager);
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService
 
     public UserDTO addBarman(Barman barman)
     {
-        Barman br = (Barman) userRepository.findByUsername(barman.getUsername());
+        Barman br = (Barman) userRepository.findByEmail(barman.getEmail());
         if(br != null)
             return null;
         User saved = userRepository.save(barman);
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService
 
     public UserDTO addGuest(Guest guest)
     {
-        Guest g = (Guest) userRepository.findByUsername(guest.getUsername());
+        Guest g = (Guest) userRepository.findByEmail(guest.getEmail());
         if(g != null)
             return null;
         User saved = userRepository.save(guest);
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService
 
     public UserDTO addCook(Cook cook)
     {
-        Cook ck = (Cook) userRepository.findByUsername(cook.getUsername());
+        Cook ck = (Cook) userRepository.findByEmail(cook.getEmail());
         if(ck != null)
             return null;
         User saved = userRepository.save(cook);
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService
 
     public UserDTO addBartender(Bartender bartender)
     {
-        Bartender br = (Bartender) userRepository.findByUsername(bartender.getUsername());
+        Bartender br = (Bartender) userRepository.findByEmail(bartender.getEmail());
         if(br != null)
             return null;
         User saved = userRepository.save(bartender);

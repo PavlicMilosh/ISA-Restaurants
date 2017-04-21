@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,12 +21,17 @@ import java.util.Set;
 public class Guest extends User
 {
 
-    public Guest(String username, String password, String firstName, String lastName)
+    @Column(name = "guest_enabled")
+    private Boolean enabled;
+
+
+    public Guest(String email, String password, String firstName, String lastName)
     {
-        this.username = username;
+        this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.enabled = false;
     }
 
 
@@ -41,7 +47,7 @@ public class Guest extends User
 
         if (id != null ? !id.equals(user.id) : false)
             return false;
-        if (username != null ? !username.equals(user.username) : user.username != null)
+        if (email != null ? !email.equals(user.email) : user.email != null)
             return false;
         if (password != null ? !password.equals(user.password) : user.password != null)
             return false;
@@ -56,7 +62,7 @@ public class Guest extends User
     public int hashCode()
     {
         int result = 0;
-        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);

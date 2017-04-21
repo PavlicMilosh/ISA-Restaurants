@@ -16,19 +16,14 @@ import lombok.Setter;
 @Setter
 public class UserDTO
 {
-    String username;
-
     String firstName;
-
     String lastName;
-
     String email;
-
     String userType;
 
     public UserDTO(User user)
     {
-        this.username = user.getUsername();
+        this.email = user.getEmail();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();

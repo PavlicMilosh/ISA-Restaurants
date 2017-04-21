@@ -12,7 +12,6 @@ import { UserService } from "../../services/users.service";
 export class RegisterSMComponent
 {
   userDTO: UserDTO;
-  username: string;
   password: string;
   firstName: string;
   lastName: string;
@@ -24,7 +23,7 @@ export class RegisterSMComponent
 
   addSM()
   {
-    this.userService.addSM(this.username, this.password, this.firstName, this.lastName, this.email).subscribe(
+    this.userService.addSM(this.email, this.password, this.firstName, this.lastName).subscribe(
       data => this.userDTO = data,
       error => alert(error)
     );

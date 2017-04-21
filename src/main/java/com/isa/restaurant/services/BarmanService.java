@@ -17,9 +17,9 @@ public class BarmanService
     @Autowired
     UserRepository userRepository;
 
-    public UserDTO changeFirstName(String firstName, String username)
+    public UserDTO changeFirstName(String firstName, String email)
     {
-        Barman barman = (Barman) userRepository.findByUsername(username);
+        Barman barman = (Barman) userRepository.findByEmail(email);
         if(barman == null)
             return null;
 
@@ -28,9 +28,9 @@ public class BarmanService
         return new UserDTO(saved);
     }
 
-    public UserDTO changeLastName(String lastName, String username)
+    public UserDTO changeLastName(String lastName, String email)
     {
-        Barman barman = (Barman) userRepository.findByUsername(username);
+        Barman barman = (Barman) userRepository.findByEmail(email);
         if(barman == null)
             return null;
 
@@ -39,21 +39,21 @@ public class BarmanService
         return new UserDTO(saved);
     }
 
-    public UserDTO changeUsername(String newUsername, String username)
+    public UserDTO changeUsername(String newEmail, String email)
     {
-        Barman barman = (Barman) userRepository.findByUsername(username);
+        Barman barman = (Barman) userRepository.findByEmail(email);
         if(barman == null)
             return null;
 
-        barman.setUsername(newUsername);
+        barman.setEmail(newEmail);
         User saved = userRepository.save(barman);
         return new UserDTO(saved);
 
     }
 
-    public UserDTO changePassword(String newPassword, String oldPassword, String username)
+    public UserDTO changePassword(String newPassword, String oldPassword, String email)
     {
-        Barman barman = (Barman) userRepository.findByUsername(username);
+        Barman barman = (Barman) userRepository.findByEmail(email);
         if(barman == null)
             return null;
 
