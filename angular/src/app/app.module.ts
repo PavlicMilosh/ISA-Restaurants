@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { RegisterSMComponent } from "./components/registerSM/registerSM.component";
-import { AddRestaurantComponent } from "./components/addRestaurant/addRestaurant.component";
-import { routing } from "./app.routing";
+import {AddRestaurantComponent} from "./components/addRestaurant/addRestaurant.component";
+import {RegisterSMComponent} from "./components/registerSM/registerSM.component";
+import {routing} from "./app.routing";
 
 @NgModule({
   declarations: [

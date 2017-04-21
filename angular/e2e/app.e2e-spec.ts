@@ -1,10 +1,10 @@
-import { AngularPage } from './app.po';
+import { IsaAppPage } from './app.po';
 
-describe('angular App', function() {
-  let page: AngularPage;
+describe('isa-app App', () => {
+  let page: IsaAppPage;
 
   beforeEach(() => {
-    page = new AngularPage();
+    page = new IsaAppPage();
   });
 
   it('should display message saying app works', () => {
