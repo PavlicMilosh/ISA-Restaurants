@@ -31,16 +31,16 @@ public class Restaurant
     @Column(name = "restaurant_desc")
     private String description;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Dish> dishes;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Drink> drinks;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<RestaurantManager> managers;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<RestaurantTable> tables;
 
     public Restaurant(String name, String description)
@@ -76,5 +76,25 @@ public class Restaurant
         result = 31 * result + (managers != null ? managers.hashCode() : 0);
         result = 31 * result + (tables != null ? tables.hashCode() : 0);
         return result;
+    }
+
+    public void addManager(RestaurantManager restaurantManager)
+    {
+        this.managers.add(restaurantManager);
+    }
+
+    public void addTable(RestaurantTable table)
+    {
+        this.tables.add(table);
+    }
+
+    public void addDish(Dish dish)
+    {
+        this.dishes.add(dish);
+    }
+
+    public void addDring(Drink drink)
+    {
+        this.drinks.add(drink);
     }
 }

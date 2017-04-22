@@ -22,4 +22,13 @@ public class RestaurantManager extends User
 {
     @ManyToOne
     private Restaurant restaurant;
+
+    public RestaurantManager(String email, String pass, String firstName, String lastName, Restaurant restaurant)
+    {
+        this.email = email;
+        this.password = pass;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.restaurant = restaurant;
+    }
 }
