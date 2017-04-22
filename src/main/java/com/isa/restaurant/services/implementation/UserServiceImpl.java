@@ -7,7 +7,6 @@ import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.repositories.VerificationTokenRepository;
 import com.isa.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserServiceImpl implements UserService
 {
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final Integer verificationTokenExpiryTime = 1440;
@@ -26,20 +24,10 @@ public class UserServiceImpl implements UserService
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           VerificationTokenRepository verificationTokenRepository,
-                           BCryptPasswordEncoder bCryptPasswordEncoder)
+                           VerificationTokenRepository verificationTokenRepository)
     {
         this.userRepository = userRepository;
         this.verificationTokenRepository = verificationTokenRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
-
-    @Override
-    public void save(User user)
-    {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
     }
 
 

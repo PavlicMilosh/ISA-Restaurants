@@ -17,5 +17,4 @@ public interface UserService
     GuestDTO updateGuest(Guest guest);
     UserDTO findById(Long id);
     UserDTO findByEmail(String email);
-    void save(User user);
 }
