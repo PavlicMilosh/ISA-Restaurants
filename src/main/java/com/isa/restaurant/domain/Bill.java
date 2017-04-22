@@ -17,14 +17,15 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "bill")
+@Table(name = "bill",
+        uniqueConstraints = @UniqueConstraint(columnNames={"bill_user"}))
 public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "bill_id", unique = true, nullable = false)
     private Long id;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "order_id", name = "bill_orders_id")
     private Set<Order> orders;
 

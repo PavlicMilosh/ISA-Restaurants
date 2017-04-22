@@ -18,7 +18,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "order")
+@Table(name = "order",
+        uniqueConstraints = @UniqueConstraint(columnNames={"order_user"}))
 public class Order
 {
     @Id
@@ -26,12 +27,12 @@ public class Order
     @Column(name = "order_id", unique = true, nullable = false)
     private Long id;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "dish_id", name = "order_dishes_id")
     private Set<Dish> dishes;
 
-    @OneToMany
-    @JoinColumn(referencedColumnName = "drink_id", name = "order_drinks_id")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(referencedColumnName = "drink_id", name = "order_drink_id")
     private Set<Drink> drinks;
 
     @ManyToOne
