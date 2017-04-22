@@ -57,7 +57,7 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/activation/{verificationTokenValue}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{guestId}/activation/{verificationTokenValue}", method = RequestMethod.GET)
     public ResponseEntity activateUser(@PathVariable("guestId") Long guestId,
                                        @PathVariable("verificationTokenValue") String verificationTokenValue)
     {
