@@ -32,6 +32,6 @@ public class RestaurantTable
     @ManyToOne
     private Restaurant restaurant;
 
-    @OneToOne(mappedBy = "RestaurantTable", fetch = FetchType.LAZY)
-    private Bill bill;
+    //@OneToOne(mappedBy = "RestaurantTable", fetch = FetchType.LAZY)
+    //private Bill bill;
 }

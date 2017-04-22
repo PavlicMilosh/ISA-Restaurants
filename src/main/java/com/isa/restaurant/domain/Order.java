@@ -26,14 +26,14 @@ public class Order
     @Column(name = "order_id", unique = true, nullable = false)
     private Long id;
 
-    @OneToMany(mappedBy = "Order", fetch = FetchType.LAZY)
-    private Set<Dish> dishes;
+    //@OneToMany(mappedBy = "Order", fetch = FetchType.LAZY)
+    //private Set<Dish> dishes;
 
-    @OneToMany(mappedBy = "Order", fetch = FetchType.LAZY)
-    private Set<Drink> drinks;
+    //@OneToMany(mappedBy = "Order", fetch = FetchType.LAZY)
+    //private Set<Drink> drinks;
 
-    @OneToOne(mappedBy = "Order", fetch = FetchType.LAZY)
-    private User user;
+    //@OneToOne(mappedBy = "Order", fetch = FetchType.LAZY)
+    //private User user;
 
     @Column(name = "order_finished")
     private Boolean finished;
@@ -44,17 +44,17 @@ public class Order
     public Order(User user)
     {
         this.price=0.0;
-        this.user=user;
+        //this.user=user;
         this.finished=false;
-        this.drinks=new HashSet<Drink>();
-        this.dishes=new HashSet<Dish>();
+        //this.drinks=new HashSet<Drink>();
+        //this.dishes=new HashSet<Dish>();
     }
 
 
     public void calculateOrderPrice()
     {
-        for (Dish dish: dishes) this.price += dish.getPrice();
-        for (Drink drink: drinks) this.price += drink.getPrice();
+        //for (Dish dish: dishes) this.price += dish.getPrice();
+        //for (Drink drink: drinks) this.price += drink.getPrice();
     }
 
 }
