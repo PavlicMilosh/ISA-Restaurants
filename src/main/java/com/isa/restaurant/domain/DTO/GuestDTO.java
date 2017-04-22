@@ -18,7 +18,7 @@ public class GuestDTO
     String firstName;
     String lastName;
     String email;
-    String enabled;
+    Boolean enabled;
 
     public GuestDTO(Guest guest)
     {
@@ -26,5 +26,6 @@ public class GuestDTO
         this.firstName = guest.getFirstName();
         this.lastName = guest.getLastName();
         this.email = guest.getEmail();
+        this.enabled = guest.getEnabled();
     }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Milos on 13-Apr-17.
@@ -32,6 +33,6 @@ public class RestaurantTable
     @ManyToOne
     private Restaurant restaurant;
 
-    @OneToOne(mappedBy = "RestaurantTable", fetch = FetchType.LAZY)
-    private Bill bill;
+    @OneToMany(mappedBy = "restaurantTable", fetch = FetchType.LAZY)
+    private Set<Bill> Bills;
 }

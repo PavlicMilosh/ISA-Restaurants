@@ -21,7 +21,7 @@ import java.util.Set;
 @Table(name = "barman")
 public class Barman extends User {
 
-    private Set<RestaurantTable> tables;
+    //private Set<RestaurantTable> tables;
 
     public Barman(String email, String password, String firstName, String lastName)
     {
@@ -29,12 +29,12 @@ public class Barman extends User {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.tables=new HashSet<RestaurantTable>();
+        //this.tables=new HashSet<RestaurantTable>();
     }
 
     public void addRestaurantTable(RestaurantTable table)
     {
-        tables.add(table);
+        //tables.add(table);
     }
 
     @Override
