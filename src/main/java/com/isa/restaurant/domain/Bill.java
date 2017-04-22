@@ -17,29 +17,34 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "Bill")
+@Table(name = "bill")
 public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "bill_id", unique = true, nullable = false)
     private Long id;
 
-    //@OneToMany(mappedBy = "Bill", fetch = FetchType.LAZY)
-    //private Set<Order> orders;
+    @OneToMany
+    @JoinColumn(referencedColumnName = "order_id", name = "bill_orders_id")
+    private Set<Order> orders;
 
-    //@OneToOne(mappedBy = "Bill", fetch = FetchType.LAZY)
-    //private User user;
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "user_id", name = "bill_user")
+    private User user;
 
     @Column(name = "bill_price")
     private Double price;
 
+    @ManyToOne
+    private RestaurantTable restaurantTable;
+
     public Bill(User user){
-        //this.user=user;
-        //this.orders=new HashSet<>();
+        this.user=user;
+        this.orders=new HashSet<>();
     }
 
     public void calculateBillPrice()
     {
-        // for (Order order: orders) this.price += order.getPrice();
+        for (Order order: orders) this.price += order.getPrice();
     }
 }
