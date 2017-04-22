@@ -23,5 +23,7 @@ public interface FriendshipService
 
     FriendshipDTO unfriendUser(Long guestId, Long friendId);
 
-    List<UserDTO> searchForUsers(String stringParam);
+    List<UserDTO> searchAllGuests(String stringParam);
+
+    List<UserDTO> searchUserFriends(String stringParam);
 }

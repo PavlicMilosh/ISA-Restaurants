@@ -20,7 +20,6 @@ import java.util.Set;
 @Table(name = "guest")
 public class Guest extends User
 {
-
     @Column(name = "guest_enabled")
     private Boolean enabled;
 

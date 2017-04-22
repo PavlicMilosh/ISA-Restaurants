@@ -149,7 +149,15 @@ public class FriendshipServiceImpl implements FriendshipService
 
 
     @Override
-    public List<UserDTO> searchForUsers(String stringParam)
+    public List<UserDTO> searchAllGuests(String stringParam)
+    {
+        return null;
+    }
+
+
+
+    @Override
+    public List<UserDTO> searchUserFriends(String stringParam)
     {
         return null;
     }
