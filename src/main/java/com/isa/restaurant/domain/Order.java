@@ -18,8 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "order",
-        uniqueConstraints = @UniqueConstraint(columnNames={"order_user"}))
+@Table(name = "restaurant_order")
 public class Order
 {
     @Id

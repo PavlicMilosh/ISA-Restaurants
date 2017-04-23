@@ -17,8 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "bill",
-        uniqueConstraints = @UniqueConstraint(columnNames={"bill_user"}))
+@Table(name = "restaurant_bill")
 public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +29,7 @@ public class Bill {
     private Set<Order> orders;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "user_id", name = "bill_user")
+    @JoinColumn(referencedColumnName = "user_id", name = "bill_user1")
     private User user;
 
     @Column(name = "bill_price")
