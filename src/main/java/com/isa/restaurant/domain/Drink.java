@@ -34,4 +34,12 @@ public class Drink
 
     @ManyToOne
     private Restaurant restaurant;
+
+    public Drink(String name, String description, Long price, Restaurant restaurant)
+    {
+        this.name=name;
+        this.description=description;
+        this.price=price;
+        this.restaurant=restaurant;
+    }
 }

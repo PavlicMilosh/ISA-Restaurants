@@ -47,4 +47,9 @@ public class Bill {
     {
         for (Order order: orders) this.price += order.getPrice();
     }
+
+    public void addOrder(Order order)
+    {
+        this.orders.add(order);
+    }
 }

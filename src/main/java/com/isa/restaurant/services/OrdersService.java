@@ -6,9 +6,13 @@ import com.isa.restaurant.domain.User;
 /**
  * Created by djuro on 4/22/2017.
  */
-public interface OrderService
+public interface OrdersService
 {
-    public Order getById(long id);
+    public Order getById(Long id);
 
     public Order getByUser(User user);
+
+    public Order addOrder(Order order);
+
+    public Order finishOrder(Long id);
 }
