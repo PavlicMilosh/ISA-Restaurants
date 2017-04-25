@@ -8,10 +8,6 @@ import com.isa.restaurant.services.FriendshipService;
 import com.isa.restaurant.services.MailService;
 import com.isa.restaurant.services.UserService;
 import com.isa.restaurant.services.VerificationTokenService;
-import com.isa.restaurant.services.implementation.FriendshipServiceImpl;
-import com.isa.restaurant.services.implementation.MailServiceImpl;
-import com.isa.restaurant.services.implementation.UserServiceImpl;
-import com.isa.restaurant.services.implementation.VerificationTokenServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,7 +57,7 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/activation/{verificationTokenValue}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{guestId}/activation/{verificationTokenValue}", method = RequestMethod.GET)
     public ResponseEntity activateUser(@PathVariable("guestId") Long guestId,
                                        @PathVariable("verificationTokenValue") String verificationTokenValue)
     {

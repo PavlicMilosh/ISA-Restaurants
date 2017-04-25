@@ -18,8 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "order",
-        uniqueConstraints = @UniqueConstraint(columnNames={"order_user"}))
+@Table(name = "restaurant_order")
 public class Order
 {
     @Id
@@ -45,9 +44,6 @@ public class Order
     @Column(name = "order_price")
     private Double price;
 
-    @ManyToOne
-    private Bill bill;
-
     public Order(User user)
     {
         this.price=0.0;
@@ -55,6 +51,15 @@ public class Order
         this.finished=false;
         this.drinks=new HashSet<Drink>();
         this.dishes=new HashSet<Dish>();
+    }
+
+    public Order(User user, HashSet<Drink> drinks, HashSet<Dish> dishes)
+    {
+        this.price=0.0;
+        this.user=user;
+        this.finished=false;
+        this.drinks=drinks;
+        this.dishes=dishes;
     }
 
 
