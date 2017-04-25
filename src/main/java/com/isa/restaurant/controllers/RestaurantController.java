@@ -1,6 +1,7 @@
 package com.isa.restaurant.controllers;
 
 import com.isa.restaurant.domain.Restaurant;
+import com.isa.restaurant.domain.RestaurantManager;
 import com.isa.restaurant.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by Milos on 14-Apr-17.
  */
 @RestController
-@RequestMapping(value = "/restaurants")
+@RequestMapping(value = "/api/restaurants")
 public class RestaurantController
 {
     @Autowired

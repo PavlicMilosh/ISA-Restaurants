@@ -24,11 +24,14 @@ public class RestaurantTable
     @Column(name = "table_id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "x_coord")
-    private Double xCoord;
+    @Column(name = "top_coord")
+    private Double top;
 
-    @Column(name = "y_coord")
-    private Double yCoord;
+    @Column(name = "left_coord")
+    private Double left;
+
+    @Column(name = "angle")
+    private double angle;
 
     @ManyToOne
     private Restaurant restaurant;

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,7 +43,7 @@ public class RestaurantIntegrationTest
     }
 
     @Test
-    public void testAddingUser() throws Exception
+    public void testAddingRestaurant() throws Exception
     {
         this.mvc.perform(post("/restaurants/add")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -54,6 +55,11 @@ public class RestaurantIntegrationTest
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"R1\", \"description\":\"dfsfdf\"}"))
                 .andExpect(status().isConflict());
+    }
+
+    public void testUpdate() throws Exception
+    {
+
     }
 
     @After

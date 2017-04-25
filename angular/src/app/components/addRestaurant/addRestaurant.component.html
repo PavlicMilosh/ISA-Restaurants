@@ -1,0 +1,45 @@
+<div style="width: 100%;overflow:auto;">
+  <div id="leftpart">
+
+    <div class="container">
+      <div class="row main">
+        <div class="main-login main-center">
+          <form class="" method="post" action="#">
+
+            <div class="form-group">
+              <label for="restaurantName" class="cols-sm-2 control-label">Restaurant Name</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="restaurantName" id="restaurantName" [(ngModel)]="restaurantName"  placeholder="Restaurant Name"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="restaurantDescription" class="cols-sm-2 control-label">Restaurant Description</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" name="restaurantDescription" id="restaurantDescription" [(ngModel)]="restaurantDescription"  placeholder="Restaurant Description"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group ">
+              <a (click)="addRestaurant()" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Register</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div style="float:right; width: 50%">
+    <button (click)="addTable()">AddTable</button>
+    <canvas id="canvas" class="canvas">
+
+    </canvas>
+  </div>
+</div>
