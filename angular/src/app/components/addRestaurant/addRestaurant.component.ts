@@ -45,12 +45,12 @@ export class AddRestaurantComponent implements OnInit
     for(let rectangle of this.canvas.getObjects())
     {
       console.log(rectangle);
-      /*this.restaurant.tables.push(
+      this.restaurant.tables.push(
         {
         topC: rectangle.getTop(),
         leftC: rectangle.getLeft(),
         angle: rectangle.getAngle()
-        });*/
+        });
     }
     this.restaurantService.postRestaurant(this.restaurantName, this.restaurantDescription).subscribe(
       data => this.restaurant = data,

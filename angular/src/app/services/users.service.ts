@@ -22,7 +22,7 @@ export class UserService
     var param = JSON.stringify(systemManager);
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post("/api/register/sysManager", param, { headers : headers })
+    return this.http.post("http://localhost:8080/users/register/sysManager", param, { headers : headers })
       .map(res => res.json());
   }
 }

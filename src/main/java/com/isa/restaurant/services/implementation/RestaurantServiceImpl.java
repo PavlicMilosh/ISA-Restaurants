@@ -58,29 +58,29 @@ public class RestaurantServiceImpl implements RestaurantService
 
     public Restaurant updateRestaurant(Restaurant restaurant)
     {
-        Restaurant old = getRestaurant(restaurant.getId());
+//        Restaurant old = getRestaurant(restaurant.getId());
         restaurantRepository.save(restaurant);
-        for(Dish d : restaurant.getDishes())
-            dishRepository.save(d);
-        for(Drink d : restaurant.getDrinks())
-            drinkRepository.save(d);
-        for(RestaurantManager rm : restaurant.getManagers())
-            userRepository.save(rm);
-        for(RestaurantTable t : restaurant.getTables())
-            tableRepository.save(t);
-
-        for(Dish d : old.getDishes())
-            if(!restaurant.getDishes().contains(d))
-                dishRepository.delete(d);
-        for(Drink d : old.getDrinks())
-            if(!restaurant.getDrinks().contains(d))
-                drinkRepository.delete(d);
-        for(RestaurantManager rm : old.getManagers())
-            if(!restaurant.getManagers().contains(rm))
-                userRepository.delete(rm);
-        for(RestaurantTable t : old.getTables())
-            if(!restaurant.getTables().contains(t))
-                tableRepository.delete(t);
+//        for(Dish d : restaurant.getDishes())
+//            dishRepository.save(d);
+//        for(Drink d : restaurant.getDrinks())
+//            drinkRepository.save(d);
+//        for(RestaurantManager rm : restaurant.getManagers())
+//            userRepository.save(rm);
+//        for(RestaurantTable t : restaurant.getTables())
+//            tableRepository.save(t);
+//
+//        for(Dish d : old.getDishes())
+//            if(!restaurant.getDishes().contains(d))
+//                dishRepository.delete(d);
+//        for(Drink d : old.getDrinks())
+//            if(!restaurant.getDrinks().contains(d))
+//                drinkRepository.delete(d);
+//        for(RestaurantManager rm : old.getManagers())
+//            if(!restaurant.getManagers().contains(rm))
+//                userRepository.delete(rm);
+//        for(RestaurantTable t : old.getTables())
+//            if(!restaurant.getTables().contains(t))
+//                tableRepository.delete(t);
 
         return restaurant;
     }
@@ -89,6 +89,17 @@ public class RestaurantServiceImpl implements RestaurantService
     public Restaurant getRestaurant(Long id)
     {
         Restaurant r = restaurantRepository.findOne(id);
+        r.getManagers();
+        r.getDrinks();
+        r.getDishes();
+        r.getTables();
+        return r;
+    }
+
+    @Transactional
+    public Restaurant getRestaurant(String name)
+    {
+        Restaurant r = restaurantRepository.findByName(name);
         r.getManagers();
         r.getDrinks();
         r.getDishes();

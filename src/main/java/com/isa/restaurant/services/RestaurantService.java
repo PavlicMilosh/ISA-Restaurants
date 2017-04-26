@@ -13,4 +13,6 @@ public interface RestaurantService
     Restaurant addRestaurant(Restaurant restaurant);
     List<Restaurant> getRestaurants();
     Restaurant updateRestaurant(Restaurant restaurant);
+    Restaurant getRestaurant(Long id);
+    Restaurant getRestaurant(String name);
 }

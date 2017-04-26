@@ -2,18 +2,16 @@ package com.isa.restaurant.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by Milos on 11-Apr-17.
  */
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -43,8 +41,19 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<RestaurantTable> tables;
 
+    public Restaurant()
+    {
+        this.dishes = new HashSet<>();
+        this.drinks = new HashSet<>();
+        this.managers = new HashSet<>();
+        this.tables = new HashSet<>();
+    }
+
+
+
     public Restaurant(String name, String description)
     {
+        this();
         this.name = name;
         this.description = description;
     }
@@ -93,7 +102,7 @@ public class Restaurant
         this.dishes.add(dish);
     }
 
-    public void addDring(Drink drink)
+    public void addDrink(Drink drink)
     {
         this.drinks.add(drink);
     }

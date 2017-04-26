@@ -20,7 +20,7 @@ export class RestaurantService
     var param = JSON.stringify(restaurant);
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post("/restaurants/add", param, { headers : headers })
+    return this.http.post("/restaurants/", param, { headers : headers })
       .map(res => res.json());
   }
 

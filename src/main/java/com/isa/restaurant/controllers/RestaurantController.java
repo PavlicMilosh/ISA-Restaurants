@@ -15,13 +15,14 @@ import java.util.List;
  * Created by Milos on 14-Apr-17.
  */
 @RestController
-@RequestMapping(value = "/api/restaurants")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping(value = "/restaurants")
 public class RestaurantController
 {
     @Autowired
     private RestaurantService restaurantService;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> addRestaurant(@RequestBody Restaurant restaurant)
     {
         Restaurant saved = restaurantService.addRestaurant(restaurant);
