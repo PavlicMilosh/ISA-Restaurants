@@ -1,5 +1,8 @@
 package com.isa.restaurant;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isa.restaurant.domain.DTO.FriendshipDTO;
+import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.Friendship;
 import com.isa.restaurant.domain.FriendshipStatus;
 import com.isa.restaurant.domain.Guest;
@@ -17,6 +20,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -116,33 +123,36 @@ public class FriendshipIntegrationTest
     @Test
     public void testSendingFriendRequest() throws Exception
     {
+        ObjectMapper om = new ObjectMapper();
+
         // send to self
-        String urlTemplate = "/guest/" + g1_id + "/sendFriendRequest";
+        String urlTemplate = "/guest/" + g1_id + "/sendFriendRequest/";
         this.mvc.perform(
-                post(urlTemplate)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(g1_id.toString()))
+                post(urlTemplate + g1_id)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
 
         // send to accepted
         this.mvc.perform(
-                post(urlTemplate)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(g2_id.toString()))
+                post(urlTemplate + g2_id)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
 
         // send to declined or pending (resend)
+        Friendship friendship = friendshipRepository.findById(f_g1_g3_id);
+        FriendshipDTO friendshipDTO = new FriendshipDTO(friendship);
+        friendshipDTO.setStatus(FriendshipStatus.PENDING);
+
         this.mvc.perform(
-                post(urlTemplate)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(g3_id.toString()))
-                .andExpect(status().isCreated());
+                post(urlTemplate + g3_id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(om.writeValueAsString(friendshipDTO)));
 
         // send to new
         this.mvc.perform(
-                post(urlTemplate)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(g4_id.toString()))
+                post(urlTemplate + g4_id)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }
 
@@ -150,23 +160,34 @@ public class FriendshipIntegrationTest
     @Test
     public void testAcceptingFriendRequest() throws Exception
     {
-        String urlTemplate = "/guest/" + g6_id + "/acceptFriendRequest";
+        ObjectMapper om = new ObjectMapper();
+        FriendshipDTO friendshipDTO = new FriendshipDTO(friendshipRepository.findById(f_g5_g6_id));
+        friendshipDTO.setStatus(FriendshipStatus.ACCEPTED);
+        friendshipDTO.setActionUserEmail("g6");
+        friendshipDTO.setActionUserId(6L);
+
+        String urlTemplate = "/guest/" + g6_id + "/acceptFriendRequest/";
         this.mvc.perform(
-                put(urlTemplate)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(f_g5_g6_id.toString()))
-                .andExpect(status().isOk());
+                put(urlTemplate + f_g5_g6_id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(friendshipDTO)));
     }
 
 
     @Test
     public void testDecliningFriendRequest() throws Exception
     {
-        String urlTemplate = "/guest/" + g7_id + "/declineFriendRequest";
+        ObjectMapper om = new ObjectMapper();
+        FriendshipDTO friendshipDTO = new FriendshipDTO(friendshipRepository.findById(f_g5_g7_id));
+        friendshipDTO.setStatus(FriendshipStatus.DECLINED);
+        friendshipDTO.setActionUserEmail("g7");
+        friendshipDTO.setActionUserId(7L);
+
+        String urlTemplate = "/guest/" + g7_id + "/declineFriendRequest/";
         this.mvc.perform(
-                put(urlTemplate)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(f_g5_g7_id.toString()))
+                put(urlTemplate + f_g5_g7_id)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -174,10 +195,64 @@ public class FriendshipIntegrationTest
     @Test
     public void testUnfriendUser() throws Exception
     {
-        String urlTemplate = "/guest/" + g2_id + "/unfriendUser/" + g1_id;
+        ObjectMapper om = new ObjectMapper();
+
+        FriendshipDTO friendshipDTO = new FriendshipDTO(friendshipRepository.findById(f_g1_g2_id));
+        friendshipDTO.setStatus(FriendshipStatus.UNFRIENDED);
+        friendshipDTO.setActionUserEmail("g2");
+        friendshipDTO.setActionUserId(2L);
+
+        String urlTemplate = "/guest/" + g2_id + "/unfriendUser/";
         this.mvc.perform(
-                put(urlTemplate))
-                .andExpect(status().isOk());
+                put(urlTemplate + g1_id))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(friendshipDTO)));
+
+        this.mvc.perform(
+                put(urlTemplate + g7_id))
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void testGetFriendRequests() throws Exception
+    {
+        ObjectMapper om = new ObjectMapper();
+        Friendship request = friendshipRepository.findById(f_g5_g6_id);
+        Set<FriendshipDTO> requests = new HashSet<>();
+        requests.add(new FriendshipDTO(request));
+
+        String urlTemplate = "/guest/" + g6_id + "/getFriendRequests";
+        this.mvc.perform(
+                get(urlTemplate))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(requests)));
+
+        urlTemplate = "/guest/10001010/getFriendRequests";
+        this.mvc.perform(
+                get(urlTemplate))
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void testGetFriends() throws Exception
+    {
+        ObjectMapper om = new ObjectMapper();
+        Set<UserDTO> friends = new HashSet<>();
+        Guest g1 = (Guest)userRepository.findById(g1_id);
+        friends.add(new UserDTO(g1));
+
+        String urlTemplate = "/guest/" + g2_id + "/getFriends";
+        this.mvc.perform(
+                get(urlTemplate))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(friends)));
+
+        urlTemplate = "/guest/1010110/getFriends";
+        this.mvc.perform(
+                get(urlTemplate))
+                .andExpect(status().isNotFound());
     }
 
 

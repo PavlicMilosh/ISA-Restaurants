@@ -3,6 +3,7 @@ package com.isa.restaurant.controllers;
 import com.isa.restaurant.domain.DTO.FriendshipDTO;
 import com.isa.restaurant.domain.DTO.GuestDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
+import com.isa.restaurant.domain.Friendship;
 import com.isa.restaurant.domain.Guest;
 import com.isa.restaurant.services.FriendshipService;
 import com.isa.restaurant.services.MailService;
@@ -82,18 +83,19 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/sendFriendRequest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FriendshipDTO> sendFriendshipRequest(@RequestBody Long toWhom, @PathVariable Long guestId)
+
+    @RequestMapping(value = "/{guestId}/sendFriendRequest/{toWhomId}", method = RequestMethod.POST)
+    public ResponseEntity<FriendshipDTO> sendFriendshipRequest(@PathVariable Long guestId, @PathVariable Long toWhomId)
     {
-        FriendshipDTO saved = friendshipService.sendRequest(guestId, toWhom);
+        FriendshipDTO saved = friendshipService.sendRequest(guestId, toWhomId);
         if (saved == null)
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
 
-    @RequestMapping(value = "/{guestId}/acceptFriendRequest", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FriendshipDTO> acceptFriendshipRequest(@RequestBody Long requestId, @PathVariable Long guestId)
+    @RequestMapping(value = "/{guestId}/acceptFriendRequest/{requestId}", method = RequestMethod.PUT)
+    public ResponseEntity<FriendshipDTO> acceptFriendshipRequest(@PathVariable Long guestId, @PathVariable Long requestId)
     {
         FriendshipDTO friendshipDTO = friendshipService.acceptRequest(requestId, guestId);
         if (friendshipDTO == null)
@@ -102,19 +104,33 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/declineFriendRequest", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FriendshipDTO> declineFriendshipRequest(@RequestBody Long requestId, @PathVariable Long guestId)
+    @RequestMapping(value = "/{guestId}/declineFriendRequest/{requestId}", method = RequestMethod.PUT)
+    public ResponseEntity<FriendshipDTO> declineFriendshipRequest(@PathVariable Long guestId, @PathVariable Long requestId)
     {
         FriendshipDTO friendshipDTO = friendshipService.declineRequest(requestId, guestId);
+        if (friendshipDTO == null)
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(friendshipDTO, HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/{guestId}/allFriends", method = RequestMethod.GET)
-    public ResponseEntity<Set<UserDTO>> allFriends(@PathVariable Long guestId)
+    @RequestMapping(value = "/{guestId}/getFriendRequests", method = RequestMethod.GET)
+    public ResponseEntity<Set<FriendshipDTO>> getFriendRequests(@PathVariable Long guestId)
     {
-        Set<UserDTO> retSet = friendshipService.getFriends(guestId);
-        return new ResponseEntity<>(retSet, HttpStatus.OK);
+        Set<FriendshipDTO> requests = friendshipService.getFriendRequests(guestId);
+        if (requests == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(requests, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/{guestId}/getFriends", method = RequestMethod.GET)
+    public ResponseEntity<Set<UserDTO>> getFriends(@PathVariable Long guestId)
+    {
+        Set<UserDTO> requests = friendshipService.getFriends(guestId);
+        if (requests == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
 
@@ -123,7 +139,7 @@ public class GuestController
     {
         FriendshipDTO friendshipDTO = friendshipService.unfriendUser(guestId, friendId);
         if (friendshipDTO == null)
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(friendshipDTO, HttpStatus.OK);
     }
 
