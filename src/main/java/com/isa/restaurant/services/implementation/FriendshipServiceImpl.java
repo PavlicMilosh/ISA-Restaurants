@@ -46,7 +46,7 @@ public class FriendshipServiceImpl implements FriendshipService
             if (friendship.getStatus().equalsIgnoreCase(FriendshipStatus.ACCEPTED))
                 return null;
 
-                // send to declined or pending (resend)
+            // send to declined or pending (resend)
             else if (friendship.getStatus().equalsIgnoreCase(FriendshipStatus.PENDING )||
                     friendship.getStatus().equalsIgnoreCase(FriendshipStatus.DECLINED))
             {
@@ -91,8 +91,8 @@ public class FriendshipServiceImpl implements FriendshipService
         Friendship friendship = friendshipRepository.findById(requestId);
 
         if (friendship != null &&
-                friendship.containsGuest(guestId) &&
-                !friendship.isActionUser(guestId))
+            friendship.containsGuest(guestId) &&
+            !friendship.isActionUser(guestId))
         {
             Guest guest = (Guest) userRepository.findById(guestId);
             friendship.setStatus(status);
@@ -106,8 +106,25 @@ public class FriendshipServiceImpl implements FriendshipService
 
 
     @Override
+    public Set<FriendshipDTO> getFriendRequests(Long guestId)
+    {
+        if (userRepository.findById(guestId) == null) return  null;
+
+        Set<FriendshipDTO> retSet = new HashSet<>();
+        Set<Friendship> friendships = friendshipRepository.findAllIncomingFriendRequestsByUserId(guestId);
+
+        for (Friendship f : friendships)
+            retSet.add(new FriendshipDTO(f));
+
+        return retSet;
+    }
+
+
+    @Override
     public Set<UserDTO> getFriends(Long guestId)
     {
+        if (userRepository.findById(guestId) == null) return  null;
+
         Set<UserDTO> retSet = new HashSet<>();
         Set<Friendship> friendships = friendshipRepository.findAllAcceptedFriendshipsByUserId(guestId);
 
@@ -122,25 +139,14 @@ public class FriendshipServiceImpl implements FriendshipService
 
 
     @Override
-    public Set<FriendshipDTO> getFriendRequests(Long guestId)
-    {
-        Set<FriendshipDTO> retSet = new HashSet<>();
-        Set<Friendship> friendships = friendshipRepository.findAllIncomingFriendRequestsByUserId(guestId);
-
-        for (Friendship f : friendships)
-            retSet.add(new FriendshipDTO(f));
-
-        return retSet;
-    }
-
-
-    @Override
     public FriendshipDTO unfriendUser(Long guestId, Long friendId)
     {
         Friendship friendship = friendshipRepository.findByBothUsers(guestId, friendId);
-        if (friendship != null)
+        Guest actionUser = (Guest)userRepository.findById(guestId);
+        if (friendship != null && actionUser != null)
         {
             friendship.setStatus(FriendshipStatus.UNFRIENDED);
+            friendship.setActionUser(actionUser);
             friendshipRepository.save(friendship);
             return new FriendshipDTO(friendship);
         }
