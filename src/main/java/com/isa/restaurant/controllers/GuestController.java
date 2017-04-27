@@ -22,6 +22,7 @@ import java.util.Set;
  * Created by Q on 15-Apr-17.
  */
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/guest")
 
 public class GuestController
@@ -41,6 +42,15 @@ public class GuestController
         this.friendshipService = friendshipService;
         this.userService = userService;
         this.mailService = mailService;
+    }
+
+
+    @RequestMapping(value = "/{guestId}/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GuestDTO> updateGuest(@RequestBody Guest guest, @PathVariable Long guestId)
+    {
+        guest.setId(guestId);
+        GuestDTO saved = userService.updateGuest(guest);
+        return new ResponseEntity<>(saved, HttpStatus.OK);
     }
 
 
@@ -74,13 +84,7 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GuestDTO> updateGuest(@RequestBody Guest guest, @PathVariable Long guestId)
-    {
-        guest.setId(guestId);
-        GuestDTO saved = userService.updateGuest(guest);
-        return new ResponseEntity<>(saved, HttpStatus.OK);
-    }
+
 
 
 

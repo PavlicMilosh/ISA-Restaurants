@@ -1,11 +1,14 @@
 package com.isa.restaurant.repositories;
 
+import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.Friendship;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Set;
+import java.util.StringJoiner;
 
 
 public interface FriendshipRepository extends JpaRepository<Friendship, Long>
@@ -30,4 +33,12 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long>
             "(f.firstUser.id = :user1_id AND f.secondUser.id = :user2_id) OR " +
             "(f.firstUser.id = :user2_id AND f.secondUser.id = :user1_id)")
     Friendship findByBothUsers (@Param("user1_id") Long firstUserId, @Param("user2_id") Long secondUserId);
+
+
+    @Query("SELECT g FROM Guest g WHERE " +
+           "LOWER(g.firstName) LIKE LOWER(:s0) OR LOWER(g.firstName) LIKE LOWER(:s0) OR " +
+           "LOWER(g.lastName) LIKE LOWER(:s1) OR LOWER(g.lastName) LIKE LOWER(:s1)")
+    List<UserDTO> searchAllGuests(@Param("s0") String s0, @Param("s1") String s1);
+
+    List<UserDTO> searchAllFriends(String s, String s1, Long id);
 }

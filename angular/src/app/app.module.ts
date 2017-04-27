@@ -6,8 +6,12 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AddRestaurantComponent } from "./components/addRestaurant/addRestaurant.component";
 import { RegisterSMComponent } from "./components/registerSM/registerSM.component";
+
+import { RegisterGuestComponent } from "./components/registerGuest/registerGuest.component";
+
 import { routing } from "./app.routing";
 import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateRestaurant.component";
+import {UpdateGuestComponent} from "./components/updateGuest/updateGuest.component";
 
 
 @NgModule({
@@ -15,6 +19,8 @@ import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateR
     AppComponent,
     AddRestaurantComponent,
     RegisterSMComponent,
+    RegisterGuestComponent,
+    UpdateGuestComponent,
     UpdateRestaurantComponent
   ],
   imports: [

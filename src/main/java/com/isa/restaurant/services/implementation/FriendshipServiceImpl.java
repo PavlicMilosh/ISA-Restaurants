@@ -157,14 +157,18 @@ public class FriendshipServiceImpl implements FriendshipService
     @Override
     public List<UserDTO> searchAllGuests(String stringParam)
     {
-        return null;
+        String[] s = stringParam.split(" ");
+        List<UserDTO> ret = friendshipRepository.searchAllGuests(s[0], s[1]);
+        return ret;
     }
 
 
 
     @Override
-    public List<UserDTO> searchUserFriends(String stringParam)
+    public List<UserDTO> searchUserFriends(String stringParam, Long id)
     {
-        return null;
+        String[] s = stringParam.split(" ");
+        List<UserDTO> ret = friendshipRepository.searchAllFriends(s[0], s[1], id);
+        return ret;;
     }
 }
