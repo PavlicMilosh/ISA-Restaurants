@@ -8,6 +8,7 @@ import { AddRestaurantComponent } from "./components/addRestaurant/addRestaurant
 import { RegisterSMComponent } from "./components/registerSM/registerSM.component";
 import { routing } from "./app.routing";
 import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateRestaurant.component";
+import { UpdateUser } from "./components/updateUser/updateUser.component";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateR
     AppComponent,
     AddRestaurantComponent,
     RegisterSMComponent,
-    UpdateRestaurantComponent
+    UpdateRestaurantComponent,
+    UpdateUser
   ],
   imports: [
     BrowserModule,
