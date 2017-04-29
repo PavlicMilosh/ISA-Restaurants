@@ -5,6 +5,7 @@ import { RegisterSMComponent } from './components/registerSM/registerSM.componen
 import { AddRestaurantComponent } from './components/addRestaurant/addRestaurant.component';
 import { RegisterGuestComponent} from './components/registerGuest/registerGuest.component';
 import {UpdateGuestComponent} from "./components/updateGuest/updateGuest.component";
+import { UpdateUser } from './components/updateUser/updateUser.component';
 
 const appRoutes : Routes =
   [
@@ -29,6 +30,10 @@ const appRoutes : Routes =
     {
       path : 'updateGuest',
       component : UpdateGuestComponent
+    },
+    {
+      path : 'updateUser',
+      component : UpdateUser
     },
   ];
 

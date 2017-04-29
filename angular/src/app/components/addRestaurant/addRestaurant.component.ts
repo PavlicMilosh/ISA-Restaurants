@@ -24,7 +24,30 @@ export class AddRestaurantComponent implements OnInit
   ngOnInit()
   {
     this.canvas = new fabric.Canvas('canvas');
+
+    var rp = document.getElementById('rightpart');
+    console.log(rp);
+    this.canvas.setHeight(600);
+    this.canvas.setWidth(600);
+
+//    window.addEventListener('resize', resizeCanvas, false);
+
+ //   function resizeCanvas()
+   // {
+     // var rp = document.getElementById('rightpart');
+     // var w = rp.getAttribute('width');
+     // var h = rp.getAttribute('height');
+      //console.log(w);
+      //console.log(h);
+      //this.canvas.setHeight(h);
+      //this.canvas.setWidth(w);
+      //this.canvas.renderAll();
+    //}
+
+
   }
+
+
 
   addTable()
   {
@@ -47,9 +70,9 @@ export class AddRestaurantComponent implements OnInit
       console.log(rectangle);
       this.restaurant.tables.push(
         {
-        topC: rectangle.getTop(),
-        leftC: rectangle.getLeft(),
-        angle: rectangle.getAngle()
+          topC: rectangle.getTop(),
+          leftC: rectangle.getLeft(),
+          angle: rectangle.getAngle()
         });
     }
     this.restaurantService.postRestaurant(this.restaurantName, this.restaurantDescription).subscribe(

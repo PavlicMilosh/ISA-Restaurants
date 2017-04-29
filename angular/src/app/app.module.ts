@@ -12,6 +12,7 @@ import { RegisterGuestComponent } from "./components/registerGuest/registerGuest
 import { routing } from "./app.routing";
 import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateRestaurant.component";
 import {UpdateGuestComponent} from "./components/updateGuest/updateGuest.component";
+import { UpdateUser } from "./components/updateUser/updateUser.component";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {UpdateGuestComponent} from "./components/updateGuest/updateGuest.compone
     RegisterSMComponent,
     RegisterGuestComponent,
     UpdateGuestComponent,
-    UpdateRestaurantComponent
+    UpdateRestaurantComponent,
+    UpdateUser
   ],
   imports: [
     BrowserModule,
