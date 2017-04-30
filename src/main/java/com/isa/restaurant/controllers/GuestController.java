@@ -23,7 +23,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping(value = "/guest")
-
+@CrossOrigin
 public class GuestController
 {
     private final UserService userService;

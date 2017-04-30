@@ -49,8 +49,6 @@ public class Restaurant
         this.tables = new HashSet<>();
     }
 
-
-
     public Restaurant(String name, String description)
     {
         this();

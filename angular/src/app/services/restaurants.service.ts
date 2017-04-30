@@ -20,7 +20,7 @@ export class RestaurantService
     var param = JSON.stringify(restaurant);
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post("/restaurants/", param, { headers : headers })
+    return this.http.post("http://localhost:8080/restaurants/", param, { headers : headers })
       .map(res => res.json());
   }
 
@@ -29,13 +29,13 @@ export class RestaurantService
     var param = JSON.stringify(restaurant);
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.put("/restaurants/${restaurant.id}", param, { headers : headers })
+    return this.http.put("http://localhost:8080/restaurants/${restaurant.id}", param, { headers : headers })
       .map(res => res.json());
   }
 
   getRestaurants()
   {
-    return this.http.get("/restaurants")
+    return this.http.get("http://localhost:8080/restaurants")
       .map(res => res.json());
   }
 }

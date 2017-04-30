@@ -49,40 +49,20 @@ public class RestaurantServiceImpl implements RestaurantService
         return restaurants;
     }
 
-    public Restaurant addManager(Restaurant restaurant, RestaurantManager restaurantManager)
-    {
-        Restaurant saved = restaurantRepository.save(restaurant);
-        userRepository.save(restaurantManager);
-        return saved;
-    }
+
 
     public Restaurant updateRestaurant(Restaurant restaurant)
     {
-//        Restaurant old = getRestaurant(restaurant.getId());
-        restaurantRepository.save(restaurant);
-//        for(Dish d : restaurant.getDishes())
-//            dishRepository.save(d);
-//        for(Drink d : restaurant.getDrinks())
-//            drinkRepository.save(d);
-//        for(RestaurantManager rm : restaurant.getManagers())
-//            userRepository.save(rm);
-//        for(RestaurantTable t : restaurant.getTables())
-//            tableRepository.save(t);
-//
-//        for(Dish d : old.getDishes())
-//            if(!restaurant.getDishes().contains(d))
-//                dishRepository.delete(d);
-//        for(Drink d : old.getDrinks())
-//            if(!restaurant.getDrinks().contains(d))
-//                drinkRepository.delete(d);
-//        for(RestaurantManager rm : old.getManagers())
-//            if(!restaurant.getManagers().contains(rm))
-//                userRepository.delete(rm);
-//        for(RestaurantTable t : old.getTables())
-//            if(!restaurant.getTables().contains(t))
-//                tableRepository.delete(t);
-
-        return restaurant;
+        for(Dish d : restaurant.getDishes())
+            d.setRestaurant(restaurant);
+        for(Drink d : restaurant.getDrinks())
+            d.setRestaurant(restaurant);
+        for(RestaurantManager rm : restaurant.getManagers())
+            rm.setRestaurant(restaurant);
+        for(RestaurantTable t : restaurant.getTables())
+            t.setRestaurant(restaurant);
+        Restaurant retval = restaurantRepository.save(restaurant);
+        return retval;
     }
 
     @Transactional

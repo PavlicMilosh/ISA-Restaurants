@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Set;
  * Created by Milos on 13-Apr-17.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @NoArgsConstructor
 @Getter
 @Setter
@@ -34,6 +35,7 @@ public class RestaurantTable
     private double angle;
 
     @ManyToOne
+    @JsonIgnore
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "restaurantTable", fetch = FetchType.LAZY)

@@ -14,6 +14,7 @@ import com.isa.restaurant.services.OrdersService;
  */
 @RestController
 @RequestMapping(value = "/order")
+@CrossOrigin
 public class OrderController
 {
     @Autowired

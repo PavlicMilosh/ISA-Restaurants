@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.persistence.*;
  * Created by Milos on 12-Apr-17.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @NoArgsConstructor
 @Getter
 @Setter
@@ -33,6 +34,7 @@ public class Dish
     private Long price;
 
     @ManyToOne
+    @JsonIgnore
     private Restaurant restaurant;
 
     public Dish(String name, String description, Long price, Restaurant restaurant)

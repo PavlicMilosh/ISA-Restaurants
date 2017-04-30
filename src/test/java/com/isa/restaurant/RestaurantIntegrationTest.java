@@ -21,6 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.HashSet;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +53,8 @@ public class RestaurantIntegrationTest
     @Test
     public void testAddingRestaurant() throws Exception
     {
+        ObjectMapper om = new ObjectMapper();
+
         this.mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\" : \"My restaurant2\", \"description\" : \"Some text for description\"}"))
@@ -60,7 +63,14 @@ public class RestaurantIntegrationTest
 
         this.mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"R1\", \"description\":\"dfsfdf\"}"))
+                .content("{\n" +
+                        "\"name\": \"My restaurant1\",\n" +
+                        "\"description\": \"Some text for description\",\n" +
+                        "\"dishes\": [],\n" +
+                        "\"drinks\": [],\n" +
+                        "\"managers\": [],\n" +
+                        "\"tables\": []\n" +
+                        "}"))
                 .andExpect(status().isConflict());
     }
 
@@ -72,20 +82,23 @@ public class RestaurantIntegrationTest
         Restaurant r1 = new Restaurant(r.getId(), r.getName(), r.getDescription(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
         r1.addDish(new Dish("dish1", "desc1", 1l, r1));
         r1.addDrink(new Drink("drink1", "descd", 1l, r1));
-        this.mvc.perform(post("/restaurants/" + r.getId())
+        String s = om.writeValueAsString(r1);
+        this.mvc.perform(put("/restaurants/" + r.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(r1)))
+                .content(s))
                 .andExpect(status().isOk())
-                .andExpect(content().json(om.writeValueAsString(r1)));
+                .andExpect(content().json(s));
     }
 
     @After
     public void tearDown()
     {
         Restaurant r1 = restaurantRepository.findByName("My Restaurant2");
-        restaurantRepository.delete(r1.getId());
+        if(r1 != null)
+            restaurantRepository.delete(r1.getId());
 
         Restaurant r2 = restaurantRepository.findByName("R1");
-        restaurantRepository.delete(r2.getId());
+        if(r2 != null)
+            restaurantRepository.delete(r2.getId());
     }
 }

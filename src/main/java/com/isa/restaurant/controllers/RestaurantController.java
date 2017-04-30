@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Milos on 14-Apr-17.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping(value = "/restaurants")
 public class RestaurantController
 {
@@ -28,9 +28,9 @@ public class RestaurantController
         Restaurant saved = restaurantService.addRestaurant(restaurant);
         if(saved == null)
         {
-            return new ResponseEntity<Restaurant>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<Restaurant>(saved, HttpStatus.CREATED);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

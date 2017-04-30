@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
  * Created by Milos on 12-Apr-17.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @NoArgsConstructor
 @Getter
 @Setter
@@ -21,6 +22,7 @@ import javax.persistence.Table;
 public class RestaurantManager extends User
 {
     @ManyToOne
+    @JsonIgnore
     private Restaurant restaurant;
 
     public RestaurantManager(String email, String pass, String firstName, String lastName, Restaurant restaurant)

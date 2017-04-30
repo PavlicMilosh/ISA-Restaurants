@@ -47,9 +47,10 @@ export class AddRestaurantComponent implements OnInit
       console.log(rectangle);
       this.restaurant.tables.push(
         {
-        topC: rectangle.getTop(),
-        leftC: rectangle.getLeft(),
-        angle: rectangle.getAngle()
+          id: null,
+          topC: rectangle.getTop(),
+          leftC: rectangle.getLeft(),
+          angle: rectangle.getAngle()
         });
     }
     this.restaurantService.postRestaurant(this.restaurantName, this.restaurantDescription).subscribe(
@@ -70,6 +71,7 @@ interface Restaurant
 
 interface Table
 {
+  id: number;
   topC : number;
   leftC : number;
   angle : number;
