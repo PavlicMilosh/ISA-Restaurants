@@ -36,7 +36,7 @@ export class GuestService
       };
     var param = JSON.stringify(guest);
     var headers = new Headers();
-    var s = 1;
+    var s = "1L";
 
     headers.append('Content-Type', 'application/json');
     return this.http.put("http://localhost:8080/guest/${s}/update", param, { headers : headers })
