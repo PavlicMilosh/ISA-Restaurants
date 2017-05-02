@@ -24,6 +24,12 @@ export class RestaurantService
       .map(res => res.json());
   }
 
+  getByManager(managerId: number)
+  {
+    return this.http.get("http://localhost:8080/restaurants/findByManagerId/" + managerId)
+      .map(res => res.json());
+  }
+
   updateRestaurant(restaurant: Restaurant)
   {
     var param = JSON.stringify(restaurant);

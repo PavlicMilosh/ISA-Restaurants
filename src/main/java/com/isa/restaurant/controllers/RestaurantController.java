@@ -3,6 +3,7 @@ package com.isa.restaurant.controllers;
 import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.domain.RestaurantManager;
 import com.isa.restaurant.services.RestaurantService;
+import com.sun.media.jfxmedia.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +32,17 @@ public class RestaurantController
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/findByManagerId/{managerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Restaurant> getByManager(@PathVariable("managerId") Long managerId)
+    {
+        Restaurant rest = this.restaurantService.getByManagerId(managerId);
+
+        if(rest == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(rest, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

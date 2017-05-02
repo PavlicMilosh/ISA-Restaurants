@@ -86,4 +86,10 @@ public class RestaurantServiceImpl implements RestaurantService
         r.getTables();
         return r;
     }
+
+    public Restaurant getByManagerId(Long managerId)
+    {
+        RestaurantManager rm = (RestaurantManager) userRepository.findById(managerId);
+        return rm.getRestaurant();
+    }
 }

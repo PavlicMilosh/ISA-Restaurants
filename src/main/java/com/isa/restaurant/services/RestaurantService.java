@@ -15,4 +15,5 @@ public interface RestaurantService
     Restaurant updateRestaurant(Restaurant restaurant);
     Restaurant getRestaurant(Long id);
     Restaurant getRestaurant(String name);
+    Restaurant getByManagerId(Long managerId);
 }

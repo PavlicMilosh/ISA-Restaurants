@@ -25,5 +25,5 @@ public interface FriendshipService
 
     List<UserDTO> searchAllGuests(String stringParam);
 
-    List<UserDTO> searchUserFriends(String stringParam);
+    List<UserDTO> searchUserFriends(String stringParam, Long userId);
 }

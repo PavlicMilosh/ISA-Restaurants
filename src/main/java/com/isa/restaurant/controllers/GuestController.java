@@ -22,8 +22,8 @@ import java.util.Set;
  * Created by Q on 15-Apr-17.
  */
 @RestController
-@RequestMapping(value = "/guest")
 @CrossOrigin
+@RequestMapping(value = "/guest")
 public class GuestController
 {
     private final UserService userService;
@@ -43,6 +43,13 @@ public class GuestController
         this.mailService = mailService;
     }
 
+    @RequestMapping(value = "/{guestId}/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GuestDTO> updateGuest(@RequestBody Guest guest, @PathVariable Long guestId)
+    {
+        guest.setId(guestId);
+        GuestDTO saved = userService.updateGuest(guest);
+        return new ResponseEntity<>(saved, HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> registerGuest(@RequestBody Guest guest)
@@ -56,7 +63,6 @@ public class GuestController
         mailService.sendUserActivationEmail(guest, token);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
-
 
     @RequestMapping(value = "/{guestId}/activation/{verificationTokenValue}", method = RequestMethod.GET)
     public ResponseEntity activateUser(@PathVariable("guestId") Long guestId,
@@ -73,17 +79,6 @@ public class GuestController
             return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-
-    @RequestMapping(value = "/{guestId}/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GuestDTO> updateGuest(@RequestBody Guest guest, @PathVariable Long guestId)
-    {
-        guest.setId(guestId);
-        GuestDTO saved = userService.updateGuest(guest);
-        return new ResponseEntity<>(saved, HttpStatus.OK);
-    }
-
-
-
     @RequestMapping(value = "/{guestId}/sendFriendRequest/{toWhomId}", method = RequestMethod.POST)
     public ResponseEntity<FriendshipDTO> sendFriendshipRequest(@PathVariable Long guestId, @PathVariable Long toWhomId)
     {
@@ -92,7 +87,6 @@ public class GuestController
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
-
 
     @RequestMapping(value = "/{guestId}/acceptFriendRequest/{requestId}", method = RequestMethod.PUT)
     public ResponseEntity<FriendshipDTO> acceptFriendshipRequest(@PathVariable Long guestId, @PathVariable Long requestId)
@@ -103,7 +97,6 @@ public class GuestController
         return new ResponseEntity<>(friendshipDTO, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/{guestId}/declineFriendRequest/{requestId}", method = RequestMethod.PUT)
     public ResponseEntity<FriendshipDTO> declineFriendshipRequest(@PathVariable Long guestId, @PathVariable Long requestId)
     {
@@ -112,7 +105,6 @@ public class GuestController
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(friendshipDTO, HttpStatus.OK);
     }
-
 
     @RequestMapping(value = "/{guestId}/getFriendRequests", method = RequestMethod.GET)
     public ResponseEntity<Set<FriendshipDTO>> getFriendRequests(@PathVariable Long guestId)
@@ -123,7 +115,6 @@ public class GuestController
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/{guestId}/getFriends", method = RequestMethod.GET)
     public ResponseEntity<Set<UserDTO>> getFriends(@PathVariable Long guestId)
     {
@@ -132,7 +123,6 @@ public class GuestController
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
-
 
     @RequestMapping(value = "/{guestId}/unfriendUser/{friendId}", method = RequestMethod.PUT)
     public ResponseEntity<FriendshipDTO> unfriendUser(@PathVariable Long guestId, @PathVariable Long friendId)
@@ -143,7 +133,6 @@ public class GuestController
         return new ResponseEntity<>(friendshipDTO, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/{guestId}/searchForFriends/{stringParam}", method = RequestMethod.GET)
     public ResponseEntity<List<UserDTO>> searchForFriends(@PathVariable Long guestId, @PathVariable String stringParam)
     {
@@ -151,11 +140,10 @@ public class GuestController
         return new ResponseEntity<>(retSet, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/{guestId}/searchMyFriends/{stringParam}", method = RequestMethod.GET)
     public ResponseEntity<List<UserDTO>> searchMyFriends(@PathVariable Long guestId, @PathVariable String stringParam)
     {
-        List<UserDTO> retSet = friendshipService.searchUserFriends(stringParam);
+        List<UserDTO> retSet = friendshipService.searchUserFriends(stringParam, guestId);
         return new ResponseEntity<>(retSet, HttpStatus.OK);
     }
 }

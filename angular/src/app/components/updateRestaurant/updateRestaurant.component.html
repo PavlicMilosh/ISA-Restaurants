@@ -1,68 +1,186 @@
-<div class="container">
-  <div class="row main">
-    <div class="main-login main-center">
-      <form class="" method="post" action="#">
+<div class="wrapper">
+
+  <div id="leftpart">
+
+    <div class="container"><div class=""><div>
+
+      <!-- RESTAURANT -->
+      <form class="main-center sidebyside" method="post" action="#">
+
+        <h2>Restaurant</h2>
+        <hr/>
 
         <div class="form-group">
-          <label for="firstName" class="cols-sm-2 control-label">First Name</label>
+          <label for="restaurantName" class="cols-sm-2 control-label">Restaurant Name</label>
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="firstName" id="firstName" [(ngModel)]="firstName"  placeholder="First Name"/>
+              <input type="text" class="form-control" name="restaurantName" id="restaurantName" [(ngModel)]="rnameEditing"  placeholder="Restaurant Name"/>
             </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="lastName" class="cols-sm-2 control-label">Last Name</label>
+          <label for="restaurantDescription" class="cols-sm-2 control-label">Restaurant Description</label>
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="lastName" id="lastName" [(ngModel)]="lastName"  placeholder="Last Name"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="email" class="cols-sm-2 control-label">Email</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="email" id="email" [(ngModel)]="email" placeholder="Email"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="username" class="cols-sm-2 control-label">Username</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="username" id="username" [(ngModel)]="username" placeholder="Username"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="password" class="cols-sm-2 control-label">Password</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-              <input type="password" class="form-control" name="password" id="password" [(ngModel)]="password" placeholder="Enter your Password"/>
+              <input type="text" class="form-control" name="restaurantDescription" id="restaurantDescription" [(ngModel)]="rdescEditing"  placeholder="Restaurant Description"/>
             </div>
           </div>
         </div>
 
         <div class="form-group ">
-          <a href="" (click)="addSM()" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Register</a>
+          <a (click)="manageRestaurant()" target="_blank" type="button" id="restaurantButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
         </div>
 
       </form>
-    </div>
-  </div>
-</div>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
+
+      <!-- DRINKS -->
+      <form class="main-center sidebyside" method="post" action="#">
+        <h2>Drinks</h2>
+        <hr/>
+
+        <div class="form-group">
+          <label class="cols-sm-2 control-label">Select Drink...</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"></span>
+              <input type="button"
+                     class="form-control dropdown-toggle"
+                     data-toggle="dropdown"
+                     name="drink"
+                     id="drink"
+                     value="Select drink.."/>
+
+              <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
+                <li><a (click)="newDrink()">Add new</a></li>
+                <ng-container *ngIf="restaurant.drinks.length > 0">
+                  <li *ngFor="let drink of restaurant.drinks"><a (click)="selectDrink(drink)">{{drink.name}}</a></li>
+                </ng-container>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="restaurantName" class="cols-sm-2 control-label">Drink Name</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="drinkName" id="drinkName" [(ngModel)]="editingDrink.name"  placeholder="Drink Name"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <label for="restaurantDescription" class="cols-sm-2 control-label">Drink Description</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="drinkDescription" id="drinkDescription" [(ngModel)]="editingDrink.description"  placeholder="Drink Description"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="restaurantDescription" class="cols-sm-2 control-label">Drink Price</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="drinkPrice" id="drinkPrice" [(ngModel)]="editingDrink.price"  placeholder="Drink Price"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <a (click)="manageDrink()" target="_blank" type="button" id="drinksButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+        </div>
+
+      </form>
+
+
+      <!-- DISHES -->
+      <form class="main-center sidebyside" method="post" action="#">
+        <h2>Dishes</h2>
+        <hr/>
+
+        <div class="form-group">
+          <label class="cols-sm-2 control-label">Select Dish...</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"></span>
+              <input type="button"
+                     class="form-control dropdown-toggle"
+                     data-toggle="dropdown"
+                     name="dish"
+                     id="dish"
+                     value="Select dish.."/>
+              <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
+                <li><a (click)="newDish()">Add new</a></li>
+                <ng-container *ngIf="restaurant.dishes.length > 0">
+                  <li *ngFor="let dish of restaurant.dishes"><a (click)="selectDish(dish)">{{dish.name}}</a></li>
+                </ng-container>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="restaurantName" class="cols-sm-2 control-label">Dish Name</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="dishName" id="dishName" [(ngModel)]="editingDish.name"  placeholder="Dish Name"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="restaurantDescription" class="cols-sm-2 control-label">Dish Description</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="dishDescription" id="dishDescription" [(ngModel)]="editingDish.description"  placeholder="Dish Description"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="restaurantDescription" class="cols-sm-2 control-label">Dish Price</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="dishPrice" id="dishPrice" [(ngModel)]="editingDish.price"  placeholder="Dish Price"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <a (click)="manageDish()" target="_blank" type="button" id="dishButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+        </div>
+
+      </form>
+
+    </div></div></div>
+
+  </div>
+  <div id = "rightpart">
+
+    <div id = "canvasOptions">
+      <ul class="list-group">
+        <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="addTable()">Add Table</a></li>
+        <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="updateTable()">Update Table</a></li>
+        <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="removeTable()">Remove Table</a></li>
+      </ul>
+    </div>
+
+    <div id = "canvasDiv">
+      <canvas id="canvas" class="canvas"></canvas>
+    </div>
+
+  </div>
+
+
+</div>

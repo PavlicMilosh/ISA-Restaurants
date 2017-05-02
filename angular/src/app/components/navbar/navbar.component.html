@@ -1,0 +1,18 @@
+
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
+  <div class="container-fluid">
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li *ngFor="let link of links"><a routerLink="{{link.routerLink}}">{{link.text}}</a></li>
+        <li *ngFor="let dropdown of dropdowns" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">{{dropdown.text}} <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li *ngFor="let dlink of dropdown.links"><a routerLink="{{dlink.routerLink}}">{{dlink.text}}</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
