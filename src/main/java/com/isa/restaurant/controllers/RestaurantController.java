@@ -1,9 +1,9 @@
 package com.isa.restaurant.controllers;
 
+import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.domain.RestaurantManager;
 import com.isa.restaurant.services.RestaurantService;
-import com.sun.media.jfxmedia.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,4 +58,14 @@ public class RestaurantController
         Restaurant updated = restaurantService.updateRestaurant(restaurant);
         return new ResponseEntity(updated, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{restaurantId}/addRM", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> registerRestaurantManager(@PathVariable Long restaurantId, @RequestBody RestaurantManager restaurantManager)
+    {
+        UserDTO saved = restaurantService.addRestaurantManager(restaurantManager, restaurantId);
+        if(saved == null)
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        return new ResponseEntity(saved, HttpStatus.CREATED);
+    }
+
 }

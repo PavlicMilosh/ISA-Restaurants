@@ -61,7 +61,3 @@ export class UserService
   }
 }
 
-interface Restaurant
-{
-
-}

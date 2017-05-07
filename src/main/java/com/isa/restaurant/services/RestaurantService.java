@@ -1,5 +1,6 @@
 package com.isa.restaurant.services;
 
+import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.domain.RestaurantManager;
 
@@ -16,4 +17,5 @@ public interface RestaurantService
     Restaurant getRestaurant(Long id);
     Restaurant getRestaurant(String name);
     Restaurant getByManagerId(Long managerId);
+    UserDTO addRestaurantManager(RestaurantManager restaurantManager, Long restaurantId);
 }

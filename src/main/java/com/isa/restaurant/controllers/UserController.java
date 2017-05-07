@@ -1,10 +1,7 @@
 package com.isa.restaurant.controllers;
 
-import com.isa.restaurant.domain.Barman;
-import com.isa.restaurant.domain.Bartender;
-import com.isa.restaurant.domain.Cook;
+import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.domain.SystemManager;
 import com.isa.restaurant.services.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

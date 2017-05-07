@@ -147,9 +147,4 @@ public class UserServiceImpl implements UserService
         User saved = userRepository.save(bartender);
         return new UserDTO(saved);
     }
-
-
-
-
-
 }

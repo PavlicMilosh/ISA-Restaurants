@@ -17,7 +17,7 @@ public abstract class User
 {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "user_id", unique = true, nullable = false)
+    @Column(name = "user_id")
     protected Long id;
 
     @Column(name = "user_email", unique = true, nullable = false)
