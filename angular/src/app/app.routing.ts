@@ -12,6 +12,7 @@ import { RegisterGuestComponent} from './components/registerGuest/registerGuest.
 import { UpdateGuestComponent } from "./components/updateGuest/updateGuest.component";
 
 import { UpdateUser } from './components/updateUser/updateUser.component';
+import {ChangePassword} from "./components/changePassword/changePassword.component";
 
 const appRoutes : Routes =
   [
@@ -44,9 +45,6 @@ const appRoutes : Routes =
       path : 'registerGuest',
       component : RegisterGuestComponent
     },
-
-
-
     {
       path : 'updateGuest',
       component : UpdateGuestComponent
@@ -55,6 +53,10 @@ const appRoutes : Routes =
       path : 'updateUser',
       component : UpdateUser
     },
+    {
+      path: 'changePassword',
+      component : ChangePassword
+    }
   ];
 
 export const routing : ModuleWithProviders = RouterModule.forRoot(appRoutes);

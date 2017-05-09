@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { UserService } from "../../services/users.service";
 
@@ -8,6 +9,7 @@ import { UserService } from "../../services/users.service";
   styleUrls: ['./changePassword.component.css'],
   providers: [UserService]
 })
+
 export class ChangePassword
 {
   userDTO: UserDTO;
@@ -22,27 +24,45 @@ export class ChangePassword
   newPassword2 : string;
 
 
-
   constructor(private userService: UserService)
   {
-
-  }
-
-  change()
-  {
-    this.userService.changePassword(this.id,this.email, this.password, this.firstName, this.lastName).subscribe(
-      data => this.userDTO = data,
+    this.userService.getUser("test123@live.com", "12345", "TestName", "TestLastName").subscribe
+    (
+      (data:UserDTO) => this.userDTO = data,
       error => alert(error)
     );
   }
 
+  change()
+  {
+    if(this.oldPassword==this.userDTO.password)
+    {
+      console.log(this.oldPassword);
+      if(this.newPassword1==this.newPassword2){
+        this.userService.changePassword(this.userDTO.id,this.userDTO.email,
+          this.newPassword1, this.userDTO.firstName, this.userDTO.lastName).subscribe(
+          data => this.userDTO = data,
+          error => alert(error),
+          ()=>alert("Successfully!")
+        );
+      }else
+      {
+        alert("Different passwords!");
+      }
+    }else
+    {
+      alert("Incorrect password!");
+    }
+  }
+
 }
+
 
 interface UserDTO
 {
   id: number;
-  username: string;
+  email: string;
+  password:string;
   firstName: string;
   lastName: string;
-  email: string;
 }

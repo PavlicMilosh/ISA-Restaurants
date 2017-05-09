@@ -10,7 +10,7 @@
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="firstName" id="firstName" [(ngModel)]="firstName"  placeholder="First Name" />
+              <input type="text" class="form-control" name="firstName" id="firstName" [(ngModel)]="firstName"  placeholder="{{firstName}}" />
             </div>
           </div>
         </div>
@@ -20,7 +20,7 @@
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="lastName" id="lastName" [(ngModel)]="lastName"  placeholder="Last Name"/>
+              <input type="text" class="form-control" name="lastName" id="lastName" [(ngModel)]="lastName"  placeholder="{{ lastName }}"/>
             </div>
           </div>
         </div>
@@ -30,17 +30,7 @@
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="email" id="email" [(ngModel)]="email" placeholder="Email"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="username" class="cols-sm-2 control-label">Username</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="username" id="username" [(ngModel)]="username" placeholder="Username" />
+              <input type="text" class="form-control" name="email" id="email" [(ngModel)]="email" placeholder="{{ email }}"/>
             </div>
           </div>
         </div>

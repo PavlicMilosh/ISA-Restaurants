@@ -18,6 +18,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegisterRMComponent } from './components/registerRM/registerRM.component';
 import { RegisterEmployeeComponent } from './components/registerEmployee/registerEmployee.component';
+import { ChangePassword } from './components/changePassword/changePassword.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { RegisterEmployeeComponent } from './components/registerEmployee/registe
     UpdateUser,
     NavbarComponent,
     RegisterRMComponent,
-    RegisterEmployeeComponent
+    RegisterEmployeeComponent,
+    ChangePassword
   ],
   imports: [
     BrowserModule,
