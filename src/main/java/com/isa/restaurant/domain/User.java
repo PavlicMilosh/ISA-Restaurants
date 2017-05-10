@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@Indexed
 public abstract class User
 {
     @Id
@@ -20,15 +21,19 @@ public abstract class User
     @Column(name = "user_id", unique = true, nullable = false)
     protected Long id;
 
+    //@Field
+    //@Email
     @Column(name = "user_email", unique = true, nullable = false)
     protected String email;
 
     @Column(name = "user_password")
     protected String password;
 
+    //@Field
     @Column(name = "user_first_name")
     protected String firstName;
 
+    //@Field
     @Column(name = "user_last_name")
     protected String lastName;
 

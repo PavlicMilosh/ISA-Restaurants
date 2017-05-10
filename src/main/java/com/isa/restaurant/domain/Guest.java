@@ -6,9 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
 
 /**
  * Created by Q on 15-Apr-17.
@@ -18,6 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "guest")
+//@Indexed
 public class Guest extends User
 {
     @Column(name = "guest_enabled")

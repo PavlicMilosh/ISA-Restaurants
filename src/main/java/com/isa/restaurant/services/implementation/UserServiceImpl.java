@@ -22,6 +22,8 @@ public class UserServiceImpl implements UserService
     private final Integer verificationTokenExpiryTime = 1440;
 
 
+    // USER RELATED (for all user subclasses)
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            VerificationTokenRepository verificationTokenRepository)
@@ -47,6 +49,8 @@ public class UserServiceImpl implements UserService
     }
 
 
+    // GUEST RELATED
+
     @Override
     public UserDTO addGuest(Guest guest)
     {
@@ -61,16 +65,17 @@ public class UserServiceImpl implements UserService
     }
 
 
-
-
-
     @Override
     public GuestDTO updateGuest(Guest guest)
     {
         Guest g = (Guest) userRepository.findById(guest.getId());
         if(g == null)
             return null;
-        Guest saved = (Guest)userRepository.save(guest);
+        g.setFirstName(guest.getFirstName());
+        g.setLastName(guest.getLastName());
+        g.setEmail(guest.getEmail());
+        g.setPassword(guest.getPassword());
+        Guest saved = (Guest)userRepository.save(g);
         return new GuestDTO(saved);
     }
 
@@ -86,8 +91,7 @@ public class UserServiceImpl implements UserService
     }
 
 
-
-
+    // EMPLOYEE RELATED
 
     public UserDTO addBarman(Barman barman)
     {

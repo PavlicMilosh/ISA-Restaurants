@@ -1,5 +1,6 @@
 package com.isa.restaurant.repositories;
 
+import com.isa.restaurant.domain.DTO.GuestDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.Friendship;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,8 +39,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long>
     @Query("SELECT g FROM Guest g WHERE " +
            "LOWER(g.firstName) LIKE LOWER(:s0) OR LOWER(g.firstName) LIKE LOWER(:s0) OR " +
            "LOWER(g.lastName) LIKE LOWER(:s1) OR LOWER(g.lastName) LIKE LOWER(:s1)")
-    List<UserDTO> searchAllGuests(@Param("s0") String s0, @Param("s1") String s1);
+    List<GuestDTO> searchAllGuests(@Param("s0") String s0, @Param("s1") String s1);
 
     @Query("SELECT f FROM Friendship f")
-    List<UserDTO> searchAllFriends(String s, String s1, Long id);
+    List<GuestDTO> searchAllFriends(String s, String s1, Long id);
 }

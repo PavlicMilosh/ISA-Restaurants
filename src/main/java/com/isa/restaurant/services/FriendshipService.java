@@ -1,6 +1,8 @@
 package com.isa.restaurant.services;
 
 import com.isa.restaurant.domain.DTO.FriendshipDTO;
+import com.isa.restaurant.domain.DTO.GuestAndRelationDTO;
+import com.isa.restaurant.domain.DTO.GuestDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
 
 import java.util.List;
@@ -12,18 +14,15 @@ import java.util.Set;
 public interface FriendshipService
 {
     FriendshipDTO sendRequest(Long from, Long to);
-
-    FriendshipDTO acceptRequest(Long requestId, Long guestId);
-
+    FriendshipDTO acceptRequest(Long guestId, Long fromWhomId);
     FriendshipDTO declineRequest(Long requestId, Long guestId);
-
-    Set<UserDTO> getFriends(Long guestId);
-
-    Set<FriendshipDTO> getFriendRequests(Long guestId);
-
     FriendshipDTO unfriendUser(Long guestId, Long friendId);
 
-    List<UserDTO> searchAllGuests(String stringParam);
+    Set<GuestDTO> getFriends(Long guestId);
+    Set<GuestDTO> getFriendRequests(Long guestId);
 
-    List<UserDTO> searchUserFriends(String stringParam, Long userId);
+    Set<GuestAndRelationDTO> getAllGuests(Long guestId);
+
+    List<GuestDTO> searchAllGuests(String stringParam);
+    List<GuestDTO> searchUserFriends(String stringParam, Long userId);
 }
