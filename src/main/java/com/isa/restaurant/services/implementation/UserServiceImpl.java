@@ -89,22 +89,22 @@ public class UserServiceImpl implements UserService
 
 
 
-    public UserDTO addBarman(Barman barman)
+    public UserDTO addBarman(Waiter waiter)
     {
-        Barman br = (Barman) userRepository.findByEmail(barman.getEmail());
+        Waiter br = (Waiter) userRepository.findByEmail(waiter.getEmail());
         if(br != null)
             return null;
-        User saved = userRepository.save(barman);
+        User saved = userRepository.save(waiter);
         return new UserDTO(saved);
     }
 
 
-    public UserDTO changeBarman(Barman barman)
+    public UserDTO changeBarman(Waiter waiter)
     {
-        Barman br = (Barman) userRepository.findById(barman.getId());
+        Waiter br = (Waiter) userRepository.findById(waiter.getId());
         if(br == null)
             return null;
-        User saved = userRepository.save(barman);
+        User saved = userRepository.save(waiter);
         return new UserDTO(saved);
     }
 

@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="row main">
+    <div class="main-login main-center">
+      <form class="" method="post" action="#">
+        <h2>Add Worker</h2>
+        <hr/>
+        <div class="form-group">
+          <label for="firstName" class="cols-sm-2 control-label">First Name</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="firstName" id="firstName" [(ngModel)]="firstName"  placeholder="First Name"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName" class="cols-sm-2 control-label">Last Name</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="lastName" id="lastName" [(ngModel)]="lastName"  placeholder="Last Name"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="cols-sm-2 control-label">Email</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="email" id="email" [(ngModel)]="email" placeholder="Email"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="cols-sm-2 control-label">Password</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+              <input type="password" class="form-control" name="password" id="password" [(ngModel)]="password" placeholder="Password"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="birthDate" class="cols-sm-2 control-label">Birth Date</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+              <input type="date" class="form-control" name="birthDate" id="birthDate" [(ngModel)]="birthDate" placeholder="Birth Date"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="clothesNumber" class="cols-sm-2 control-label">Clothes Number</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+              <input type="number" class="form-control" name="clothesNumber" id="clothesNumber" [(ngModel)]="clothesNumber" placeholder="Clothes Number"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="footwearNumber" class="cols-sm-2 control-label">Footwear Number</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+              <input type="number" class="form-control" name="footwearNumber" id="footwearNumber" [(ngModel)]="footwearNumber" placeholder="Footwear Number"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="cols-sm-2 control-label">Select Worker Type</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"></span>
+              <input type="button"
+                     class="form-control dropdown-toggle"
+                     data-toggle="dropdown"
+                     name="drink"
+                     id="drink"
+                     value="{{role}}"/>
+
+              <ul class="dropdown-menu" role="menu">
+                <li><a (click)="setRole('Bartender');">Bartender</a></li>
+                <li><a (click)="setRole('Xook');">Cook</a></li>
+                <li><a (click)="setRole('Waiter');">Waiter</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <a href="" (click)="addWorker()" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Register</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

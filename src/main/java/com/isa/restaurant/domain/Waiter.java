@@ -1,11 +1,13 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,11 +21,14 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "barman")
-public class Barman extends User {
-
+public class Waiter extends User
+{
+    @ManyToOne
+    @JsonIgnore
+    private Restaurant restaurant;
     //private Set<RestaurantTable> tables;
 
-    public Barman(String email, String password, String firstName, String lastName)
+    public Waiter(String email, String password, String firstName, String lastName)
     {
         this.email = email;
         this.password = password;

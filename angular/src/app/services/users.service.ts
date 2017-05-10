@@ -47,7 +47,7 @@ export class UserService
   {
     var user =
       {
-        id:id,
+        id: id,
         email: email,
         password: pass,
         firstName: firstName,
@@ -57,6 +57,31 @@ export class UserService
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/users/update/barman", param, { headers : headers })
+      .map(res => res.json());
+  }
+
+  addWorker(firstName: string, lastName: string, email: string, password: string, clothesNumber: number, footwearNumber: number, role: string)
+  {
+    var worker =
+    {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      clothesNumber: clothesNumber,
+      footwearNumber: footwearNumber
+    }
+    var path = '';
+    if(role == 'Waiter')
+      path = "/addWaiter";
+    else if(role == 'Cook')
+      path = "/addCook";
+    else
+      path = "/addBartender";
+    var param = JSON.stringify(worker);
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post("http://localhost:8080/restaurants/" + 1 + path, param, { headers : headers })
       .map(res => res.json());
   }
 }

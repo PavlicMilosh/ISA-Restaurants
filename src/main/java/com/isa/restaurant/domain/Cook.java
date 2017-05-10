@@ -1,10 +1,12 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -18,6 +20,9 @@ import javax.persistence.Table;
 @Table(name = "cook")
 public class Cook extends User
 {
+    @ManyToOne
+    @JsonIgnore
+    private Restaurant restaurant;
 
     public Cook(String email, String password, String firstName, String lastName)
     {

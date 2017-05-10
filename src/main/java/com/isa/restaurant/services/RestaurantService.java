@@ -1,8 +1,7 @@
 package com.isa.restaurant.services;
 
+import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.domain.Restaurant;
-import com.isa.restaurant.domain.RestaurantManager;
 
 import java.util.List;
 
@@ -12,10 +11,22 @@ import java.util.List;
 public interface RestaurantService
 {
     Restaurant addRestaurant(Restaurant restaurant);
+
     List<Restaurant> getRestaurants();
+
     Restaurant updateRestaurant(Restaurant restaurant);
+
     Restaurant getRestaurant(Long id);
+
     Restaurant getRestaurant(String name);
+
     Restaurant getByManagerId(Long managerId);
+
     UserDTO addRestaurantManager(RestaurantManager restaurantManager, Long restaurantId);
+
+    UserDTO addWaiter(Waiter waiter, Long restaurantId);
+
+    UserDTO addBartender(Bartender bartender, Long restaurantId);
+
+    UserDTO addCook(Cook cook, Long restaurantId);
 }

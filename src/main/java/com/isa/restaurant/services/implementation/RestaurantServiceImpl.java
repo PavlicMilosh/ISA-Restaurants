@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Null;
 import java.util.List;
 
 /**
@@ -112,5 +111,32 @@ public class RestaurantServiceImpl implements RestaurantService
         restaurantManager.setRestaurant(r);
         userRepository.save(restaurantManager);
         return new UserDTO(restaurantManager);
+    }
+
+    @Override
+    public UserDTO addWaiter(Waiter waiter, Long restaurantId)
+    {
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+        waiter.setRestaurant(r);
+        userRepository.save(waiter);
+        return new UserDTO(waiter);
+    }
+
+    @Override
+    public UserDTO addBartender(Bartender bartender, Long restaurantId)
+    {
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+        bartender.setRestaurant(r);
+        userRepository.save(bartender);
+        return new UserDTO(bartender);
+    }
+
+    @Override
+    public UserDTO addCook(Cook cook, Long restaurantId)
+    {
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+        cook.setRestaurant(r);
+        userRepository.save(cook);
+        return new UserDTO(cook);
     }
 }

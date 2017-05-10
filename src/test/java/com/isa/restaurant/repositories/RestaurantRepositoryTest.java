@@ -38,7 +38,7 @@ public class RestaurantRepositoryTest
         Restaurant saved = restaurantRepository.save(restaurant);
         Assert.assertEquals(restaurant, saved);
 
-        Restaurant r1 = new Restaurant(saved.getId(), saved.getName(), saved.getDescription(), new HashSet<Dish>(), new HashSet<Drink>(), new HashSet<RestaurantManager>(), new HashSet<RestaurantTable>());
+        Restaurant r1 = new Restaurant(saved.getId(), saved.getName(), saved.getDescription(), new HashSet<Dish>(), new HashSet<Drink>(), new HashSet<RestaurantManager>(), new HashSet<RestaurantTable>(), new HashSet<Bartender>(), new HashSet<Cook>(), new HashSet<Waiter>());
         r1.addManager(new RestaurantManager("email", "pass", "name", "lastName", r1));
         Restaurant r2 = restaurantRepository.save(r1);
         Assert.assertEquals(r1, r2);

@@ -30,9 +30,9 @@ public class UserController
     }
 
     @RequestMapping(value = "/register/barman", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> registerBarman(@RequestBody Barman barman)
+    public ResponseEntity<UserDTO> registerBarman(@RequestBody Waiter waiter)
     {
-        UserDTO saved = userService.addBarman(barman);
+        UserDTO saved = userService.addBarman(waiter);
         if(saved == null)
             return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
         return new ResponseEntity(saved, HttpStatus.CREATED);
@@ -57,8 +57,8 @@ public class UserController
     }
 
     @RequestMapping(value = "/update/barman", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> changeBarman(@RequestBody Barman barman){
-        UserDTO saved = userService.changeBarman(barman);
+    public ResponseEntity<UserDTO> changeBarman(@RequestBody Waiter waiter){
+        UserDTO saved = userService.changeBarman(waiter);
         if(saved == null)
             return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
         return new ResponseEntity(saved, HttpStatus.OK);
