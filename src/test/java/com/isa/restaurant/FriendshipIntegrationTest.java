@@ -7,7 +7,12 @@ import com.isa.restaurant.domain.FriendshipStatus;
 import com.isa.restaurant.domain.Guest;
 import com.isa.restaurant.repositories.FriendshipRepository;
 import com.isa.restaurant.repositories.UserRepository;
+import com.isa.restaurant.search.GuestSearch;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +23,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,6 +51,12 @@ public class FriendshipIntegrationTest
 
     @Autowired
     private UserRepository userRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Autowired
+    private GuestSearch guestSearch;
 
 
     private MockMvc mvc;
@@ -253,18 +268,16 @@ public class FriendshipIntegrationTest
     @Test
     public void testSearchAllGuests()
     {
-        /*FullTextEntityManager ftem = Search.getFullTextEntityManager(entityManager);
+        FullTextEntityManager ftem = Search.getFullTextEntityManager(entityManager);
         QueryBuilder queryBuilder = ftem.getSearchFactory().buildQueryBuilder().forEntity(Guest.class).get();
 
         @SuppressWarnings("unchecked")
-        List<Guest> results = ftem.createFullTextQuery(
-                queryBuilder.keyword().onFields("firstName", "lastName", "email").matching("guest1").createQuery(), Guest.class)
-                .getResultList();
+        List<Guest> results = guestSearch.searchAll("guest1");
 
         Guest expected = (Guest)userRepository.findById(g1_id);
         Guest got = results.get(0);
 
-        Assert.assertEquals(expected, got);*/
+        Assert.assertEquals(expected, got);
     }
 
     @After

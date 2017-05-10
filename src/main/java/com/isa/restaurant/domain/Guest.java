@@ -3,6 +3,7 @@ package com.isa.restaurant.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "guest")
-//@Indexed
+@Indexed
 public class Guest extends User
 {
     @Column(name = "guest_enabled")
