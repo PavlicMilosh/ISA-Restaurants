@@ -18,6 +18,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { RegisterRMComponent } from './components/registerRM/registerRM.component';
 import { RegisterEmployeeComponent } from './components/registerEmployee/registerEmployee.component';
+import { ChangePassword } from './components/changePassword/changePassword.component';
 
 import { RegisterGuestComponent } from "./components/registerGuest/registerGuest.component";
 import { UpdateGuestComponent } from "./components/updateGuest/updateGuest.component";
@@ -31,20 +32,27 @@ import { GuestPeoplePageComponent } from "./components/guestPeoplePage/guestPeop
 @NgModule({
   declarations: [
     AppComponent,
-    AddRestaurantComponent,
-    RegisterSMComponent,
-    RegisterGuestComponent,
-    UpdateGuestComponent,
-    UpdateRestaurantComponent,
-    UpdateUser,
     NavbarComponent,
+
+    // Losmi
+    RegisterSMComponent,
     RegisterRMComponent,
     RegisterEmployeeComponent,
+    AddRestaurantComponent,
+    UpdateRestaurantComponent,
+
+    // Djura
+    UpdateUser,
+    ChangePassword,
+
+    //Ogi
+    RegisterGuestComponent,
+    UpdateGuestComponent,
     GuestPageComponent,
     GuestFriendsPageComponent,
     GuestRequestPageComponent,
     GuestRestaurantsPageComponent,
-    GuestPeoplePageComponent
+    GuestPeoplePageComponent,
   ],
   imports: [
     BrowserModule,

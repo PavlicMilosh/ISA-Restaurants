@@ -1,12 +1,14 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
+import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.Null;
 import java.util.List;
 
 /**
@@ -30,6 +32,7 @@ public class RestaurantServiceImpl implements RestaurantService
     @Autowired
     private TableRepository tableRepository;
 
+    @Override
     public Restaurant addRestaurant(Restaurant restaurant)
     {
         Restaurant saved = null;
@@ -43,6 +46,7 @@ public class RestaurantServiceImpl implements RestaurantService
         return saved;
     }
 
+    @Override
     public List<Restaurant> getRestaurants()
     {
         List<Restaurant> restaurants = restaurantRepository.findAll();
@@ -50,7 +54,7 @@ public class RestaurantServiceImpl implements RestaurantService
     }
 
 
-
+    @Override
     public Restaurant updateRestaurant(Restaurant restaurant)
     {
         for(Dish d : restaurant.getDishes())
@@ -87,9 +91,26 @@ public class RestaurantServiceImpl implements RestaurantService
         return r;
     }
 
+    @Transactional
     public Restaurant getByManagerId(Long managerId)
     {
         RestaurantManager rm = (RestaurantManager) userRepository.findById(managerId);
-        return rm.getRestaurant();
+        try
+        {
+            return rm.getRestaurant();
+        }catch(NullPointerException e)
+        {
+            return null;
+        }
+    }
+
+    public UserDTO addRestaurantManager(RestaurantManager restaurantManager, Long restaurantId)
+    {
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+        if(r == null)
+            return null;
+        restaurantManager.setRestaurant(r);
+        userRepository.save(restaurantManager);
+        return new UserDTO(restaurantManager);
     }
 }

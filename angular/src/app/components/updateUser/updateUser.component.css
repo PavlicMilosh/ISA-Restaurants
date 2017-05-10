@@ -3,13 +3,6 @@
   overflow: hidden !important;
   -webkit-overflow-scrolling: touch;
 }
-body, html{
-  height: 100%;
-  background-repeat: no-repeat;
-  background:url(https://i.ytimg.com/vi/4kfXjatgeEU/maxresdefault.jpg);
-  font-family: 'Oxygen', sans-serif;
-  background-size: cover;
-}
 
 .main{
   margin:50px 15px;
@@ -22,7 +15,7 @@ h1.title {
 }
 
 hr{
-  width: 10%;
+  width: 100%;
   color: #fff;
 }
 
@@ -34,8 +27,7 @@ label{
   margin-bottom: 15px;
 }
 
-input,
-input::-webkit-input-placeholder {
+input, input::-webkit-input-placeholder {
   font-size: 11px;
   padding-top: 3px;
 }
@@ -51,52 +43,44 @@ input::-webkit-input-placeholder {
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 
 }
+
 .form-control {
   height: auto!important;
   padding: 8px 12px !important;
 }
+
 .input-group {
   -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
   -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
   box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
 }
-#button {
-  border: 1px solid #ccc;
+
+#button{
+  border: 1px solid #4461f5;
   margin-top: 28px;
   padding: 6px 12px;
-  color: #666;
-  text-shadow: 0 1px #fff;
+  color: #ffffff;
   cursor: pointer;
-  -moz-border-radius: 3px 3px;
-  -webkit-border-radius: 3px 3px;
   border-radius: 3px 3px;
-  -moz-box-shadow: 0 1px #fff inset, 0 1px #ddd;
-  -webkit-box-shadow: 0 1px #fff inset, 0 1px #ddd;
-  box-shadow: 0 1px #fff inset, 0 1px #ddd;
-  background: #f5f5f5;
-  background: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #eeeeee));
-  background: -webkit-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
-  background: -o-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
-  background: -ms-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
-  background: linear-gradient(top, #f5f5f5 0%, #eeeeee 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#eeeeee', GradientType=0);
+  background: #4461f5;
 }
+#button:hover {
+  color: #4461f5;
+  background: #ffffff;
+}
+
 .main-center{
-  margin-top: 30px;
-  margin: 0 auto;
+  margin: auto;
   max-width: 400px;
   padding: 10px 40px;
-  background:#009edf;
+  background: rgba(0,0,0,.7);
   color: #FFF;
   text-shadow: none;
-  -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
-  -moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
   box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
 
 }
 span.input-group-addon i {
-  color: #009edf;
+  color: rgba(0,0,0,0.7);
   font-size: 17px;
 }
 
@@ -107,4 +91,22 @@ span.input-group-addon i {
 .login-register{
   font-size: 11px;
   text-align: center;
+}
+
+#restaurantDescription
+{
+  column-span: 2;
+}
+
+.list-group
+{
+  background: rgba(0,0,0,0);
+  stroke-opacity: 0;
+  border-style: hidden;
+}
+
+.list-group-item
+{
+  background: rgba(0,0,0,0);
+  border-style: none;
 }

@@ -33,8 +33,10 @@ export class UpdateRestaurantComponent implements OnInit
       tables: [],
       managers: []
     };
+    this.newDish();
+    this.newDrink();
     this.restaurantService.getByManager(1).subscribe(
-      data =>  this.restaurant = data
+      data =>  {this.restaurant = data; console.log(this.restaurant);}
     );
   }
 
