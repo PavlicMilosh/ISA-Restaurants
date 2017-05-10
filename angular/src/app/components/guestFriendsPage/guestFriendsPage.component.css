@@ -1,0 +1,134 @@
+/*    --------------------------------------------------
+	:: General
+	-------------------------------------------------- */
+
+.content .content-footer p {
+  color: #6d6d6d;
+  font-size: 12px;
+  text-align: center;
+}
+.content .content-footer p a {
+  color: inherit;
+  font-weight: bold;
+}
+
+/*	--------------------------------------------------
+	:: Table Filter
+	-------------------------------------------------- */
+.panel {
+  border: none;
+  background-color: rgba(0,0,0,0.7);
+  width: 80%;
+  margin: auto;
+}
+.panel .btn-group {
+  margin: 15px 0 30px;
+}
+.panel .btn-group .btn {
+  transition: background-color .3s ease;
+}
+.table-filter {
+  background-color: #fff;
+  border-bottom: 2px solid #eee;
+  border-top: 2px solid #eee;
+}
+.table-filter tbody tr:hover {
+  cursor: pointer;
+  background-color: #eee;
+}
+.table-filter tbody tr td {
+  padding: 10px;
+  vertical-align: middle;
+  display: table-cell;
+  text-align: center;
+}
+
+.table-filter tbody tr.selected td {
+  background-color: #eee;
+}
+
+.table-filter .media-photo {
+  width: 80px;
+}
+.table-filter .media-body {
+  display: block;
+  /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
+}
+.table-filter .media-meta {
+  font-size: 11px;
+  color: #999;
+}
+.table-filter .media .title {
+  color: #2BBCDE;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: normal;
+  margin: 0;
+}
+.table-filter .media .title span {
+  font-size: .8em;
+  margin-right: 20px;
+}
+.table-filter .media .summary {
+  font-size: 14px;
+}
+
+.left {
+  float: left;
+  margin-left: 10px;
+}
+
+td.buttons
+{
+  width: 30%;
+  display: block;
+  margin: auto;
+}
+
+div.table-name
+{
+  font-size: 20px;
+}
+
+div.table-email
+{
+  font-size: 15px;
+}
+
+div.table-number
+{
+  font-size: 30px;
+}
+
+div.table-row-name
+{
+  font-size: 15px;
+}
+
+div.no-content-message
+{
+  background: rgba(0,0,0,0.7);
+  padding: 5%;
+  display: block;
+  font-size: 50px;
+  color: whitesmoke;
+  text-align: center;
+  margin: auto;
+}
+
+#imaginary_container{
+  margin: 5%;
+}
+.stylish-input-group .input-group-addon{
+  background: white !important;
+}
+.stylish-input-group .form-control{
+  border-right:0;
+  box-shadow:0 0 0;
+  border-color:#ccc;
+}
+.stylish-input-group button{
+  border:0;
+  background:transparent;
+}
+

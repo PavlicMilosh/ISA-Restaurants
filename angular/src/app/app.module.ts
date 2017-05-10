@@ -3,21 +3,30 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
+
 import { AddRestaurantComponent } from "./components/addRestaurant/addRestaurant.component";
 import { RegisterSMComponent } from "./components/registerSM/registerSM.component";
 
-import { RegisterGuestComponent } from "./components/registerGuest/registerGuest.component";
 
 import { routing } from "./app.routing";
 import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateRestaurant.component";
-import { UpdateGuestComponent } from "./components/updateGuest/updateGuest.component";
+
 import { UpdateUser } from "./components/updateUser/updateUser.component";
 import { NavbarComponent } from './components/navbar/navbar.component';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegisterRMComponent } from './components/registerRM/registerRM.component';
 import { RegisterEmployeeComponent } from './components/registerEmployee/registerEmployee.component';
+
+import { RegisterGuestComponent } from "./components/registerGuest/registerGuest.component";
+import { UpdateGuestComponent } from "./components/updateGuest/updateGuest.component";
+import { GuestPageComponent } from './components/guestMainPage/guest-page.component';
+import { GuestFriendsPageComponent } from './components/guestFriendsPage/guestFriendsPage.component';
+import { GuestRestaurantsPageComponent } from './components/guestRestaurantsPage/guest-restaurants-page.component';
+import { GuestRequestPageComponent } from "./components/guestRequestPage/guestRequestPage.component";
+import { GuestPeoplePageComponent } from "./components/guestPeoplePage/guestPeoplePage.component";
+
 
 @NgModule({
   declarations: [
@@ -30,7 +39,12 @@ import { RegisterEmployeeComponent } from './components/registerEmployee/registe
     UpdateUser,
     NavbarComponent,
     RegisterRMComponent,
-    RegisterEmployeeComponent
+    RegisterEmployeeComponent,
+    GuestPageComponent,
+    GuestFriendsPageComponent,
+    GuestRequestPageComponent,
+    GuestRestaurantsPageComponent,
+    GuestPeoplePageComponent
   ],
   imports: [
     BrowserModule,

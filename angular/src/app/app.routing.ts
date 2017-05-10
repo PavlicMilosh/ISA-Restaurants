@@ -10,8 +10,12 @@ import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateR
 
 import { RegisterGuestComponent} from './components/registerGuest/registerGuest.component';
 import { UpdateGuestComponent } from "./components/updateGuest/updateGuest.component";
+import { GuestFriendsPageComponent } from "./components/guestFriendsPage/guestFriendsPage.component";
+import { GuestRequestPageComponent } from "./components/guestRequestPage/guestRequestPage.component";
+import { GuestPeoplePageComponent } from "./components/guestPeoplePage/guestPeoplePage.component";
 
 import { UpdateUser } from './components/updateUser/updateUser.component';
+
 
 const appRoutes : Routes =
   [
@@ -44,13 +48,26 @@ const appRoutes : Routes =
       path : 'registerGuest',
       component : RegisterGuestComponent
     },
-
-
-
     {
       path : 'updateGuest',
       component : UpdateGuestComponent
     },
+    {
+      path : 'guestFriendsPage',
+      component : GuestFriendsPageComponent
+    },
+    {
+      path : 'guestRequestsPage',
+      component : GuestRequestPageComponent
+    },
+    {
+      path : 'guestPeoplePage',
+      component : GuestPeoplePageComponent
+    },
+
+
+
+
     {
       path : 'updateUser',
       component : UpdateUser
