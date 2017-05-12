@@ -3,6 +3,9 @@ package com.isa.restaurant.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,7 +18,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "friendship",
-        uniqueConstraints = @UniqueConstraint(columnNames={"friendship_first_user", "friendship_second_user"}))
+       uniqueConstraints = @UniqueConstraint(columnNames={"friendship_first_user", "friendship_second_user"}))
+@Indexed
 public class Friendship
 {
     @Id
@@ -25,14 +29,17 @@ public class Friendship
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "user_id", name = "friendship_first_user")
+    @IndexedEmbedded
     private Guest firstUser;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "user_id", name = "friendship_second_user")
+    @IndexedEmbedded
     private Guest secondUser;
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "user_id", name = "friendship_last_action_user")
+    @IndexedEmbedded
     private Guest actionUser;
 
     @Column(name = "friendship_status")

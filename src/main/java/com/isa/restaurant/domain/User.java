@@ -3,8 +3,10 @@ package com.isa.restaurant.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 
@@ -21,6 +23,7 @@ public abstract class User
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "user_id")
+    @Field(name = "user_id")
     protected Long id;
 
     //@Email

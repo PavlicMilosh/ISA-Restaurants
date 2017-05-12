@@ -23,6 +23,6 @@ public interface FriendshipService
 
     Set<GuestAndRelationDTO> getAllGuests(Long guestId);
 
-    List<GuestDTO> searchAllGuests(String stringParam);
-    List<GuestDTO> searchUserFriends(String stringParam, Long userId);
+    List<GuestAndRelationDTO> searchAllGuests(String stringParam, Long guestId);
+    List<GuestAndRelationDTO> searchUserFriends(String stringParam, Long userId);
 }

@@ -142,6 +142,24 @@ public class FriendshipServiceImpl implements FriendshipService
         }
 
         return retSet;
+//        Guest guest = (Guest) userRepository.findById(guestId);
+//        if (guest == null) return null;
+//
+//        Set<GuestDTO> retSet = new HashSet<>();
+//
+//        for (Friendship f : guest.getFriendships())
+//        {
+//            if (f.getStatus().equalsIgnoreCase(FriendshipStatus.ACCEPTED))
+//            {
+//                if (f.getFirstUser().getId().longValue() == guestId.longValue())
+//                    retSet.add(new GuestDTO(f.getSecondUser()));
+//
+//                if (f.getSecondUser().getId().longValue() == guestId.longValue())
+//                    retSet.add(new GuestDTO(f.getFirstUser()));
+//            }
+//        }
+
+
     }
 
 
@@ -167,8 +185,32 @@ public class FriendshipServiceImpl implements FriendshipService
     public Set<GuestAndRelationDTO> getAllGuests(Long guestId)
     {
         Set<Guest> guests = userRepository.getAllGuests();
-        Set<GuestAndRelationDTO> ret = new HashSet<>();
+        List<GuestAndRelationDTO> ret = createGuestAndRelationDTOs(guests, guestId);
+        return new HashSet<>(ret);
+    }
 
+
+    @Override
+    public List<GuestAndRelationDTO> searchAllGuests(String stringParam, Long guestId)
+    {
+        List<Guest> guests = guestSearch.searchAll(stringParam);
+        List<GuestAndRelationDTO> ret = createGuestAndRelationDTOs(new HashSet<>(guests), guestId);
+        return ret;
+    }
+
+
+    @Override
+    public List<GuestAndRelationDTO> searchUserFriends(String stringParam, Long guestId)
+    {
+        List<Guest> guests = guestSearch.searchFriends(guestId, stringParam);
+        List<GuestAndRelationDTO> ret = createGuestAndRelationDTOs(new HashSet<>(guests), guestId);
+        return ret;
+    }
+
+
+    private List<GuestAndRelationDTO> createGuestAndRelationDTOs(Set<Guest> guests, Long guestId)
+    {
+        List<GuestAndRelationDTO> ret = new ArrayList<GuestAndRelationDTO>();
         for (Guest g : guests)
         {
             Friendship friendship = friendshipRepository.findByBothUsers(guestId, g.getId());
@@ -177,29 +219,12 @@ public class FriendshipServiceImpl implements FriendshipService
                 ret.add(new GuestAndRelationDTO(g, FriendshipStatus.NONE, null));
             else
                 ret.add(new GuestAndRelationDTO(g, friendship.getStatus(), friendship.getActionUser().getId()));
+
         }
-
+        System.gc();
         return ret;
     }
 
 
-    @Override
-    public List<GuestDTO> searchAllGuests(String stringParam)
-    {
-        List<GuestDTO> ret = new ArrayList<GuestDTO>();
-        List<Guest> guests = guestSearch.searchAll(stringParam);
-        for (Guest g : guests)
-            ret.add(new GuestDTO(g));
-        return ret;
-    }
 
-
-    @Override
-    public List<GuestDTO> searchUserFriends(String stringParam, Long id)
-    {
-        String[] s = stringParam.split(" ");
-        String s1 = "%" + s[0] + "%";
-        String s2 = "%" + s[1] + "%";
-        return friendshipRepository.searchAllFriends(s1, s2, id);
-    }
 }

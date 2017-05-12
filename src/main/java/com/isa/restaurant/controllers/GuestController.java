@@ -46,7 +46,9 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{guestId}/update",
+                    method = RequestMethod.PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GuestDTO> updateGuest(@RequestBody Guest guest, @PathVariable Long guestId)
     {
         guest.setId(guestId);
@@ -55,7 +57,9 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/register",
+                    method = RequestMethod.POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> registerGuest(@RequestBody Guest guest)
     {
         UserDTO saved = userService.addGuest(guest);
@@ -69,7 +73,8 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/activation/{verificationTokenValue}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{guestId}/activation/{verificationTokenValue}",
+                    method = RequestMethod.GET)
     public ResponseEntity activateUser(@PathVariable("guestId") Long guestId,
                                        @PathVariable("verificationTokenValue") String verificationTokenValue)
     {
@@ -85,7 +90,8 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/sendFriendRequest/{toWhomId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{guestId}/sendFriendRequest/{toWhomId}",
+                    method = RequestMethod.POST)
     public ResponseEntity<FriendshipDTO> sendFriendshipRequest(@PathVariable Long guestId, @PathVariable Long toWhomId)
     {
         FriendshipDTO saved = friendshipService.sendRequest(guestId, toWhomId);
@@ -95,7 +101,8 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/acceptFriendRequest/{fromWhomId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{guestId}/acceptFriendRequest/{fromWhomId}",
+                    method = RequestMethod.PUT)
     public ResponseEntity<FriendshipDTO> acceptFriendshipRequest(@PathVariable Long guestId, @PathVariable Long fromWhomId)
     {
         FriendshipDTO friendshipDTO = friendshipService.acceptRequest(guestId, fromWhomId);
@@ -105,7 +112,8 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/declineFriendRequest/{fromWhomId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{guestId}/declineFriendRequest/{fromWhomId}",
+                    method = RequestMethod.PUT)
     public ResponseEntity<FriendshipDTO> declineFriendshipRequest(@PathVariable Long guestId, @PathVariable Long fromWhomId)
     {
         FriendshipDTO friendshipDTO = friendshipService.declineRequest(guestId, fromWhomId);
@@ -115,7 +123,8 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/unfriendUser/{friendId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{guestId}/unfriendUser/{friendId}",
+                    method = RequestMethod.PUT)
     public ResponseEntity<FriendshipDTO> unfriendUser(@PathVariable Long guestId, @PathVariable Long friendId)
     {
         FriendshipDTO friendshipDTO = friendshipService.unfriendUser(guestId, friendId);
@@ -125,7 +134,8 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/getFriendRequests", method = RequestMethod.GET)
+    @RequestMapping(value = "/{guestId}/getFriendRequests",
+                    method = RequestMethod.GET)
     public ResponseEntity<Set<GuestDTO>> getFriendRequests(@PathVariable Long guestId)
     {
         Set<GuestDTO> requests = friendshipService.getFriendRequests(guestId);
@@ -135,7 +145,9 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/getFriends", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{guestId}/getFriends",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<GuestDTO>> getFriends(@PathVariable Long guestId)
     {
         Set<GuestDTO> requests = friendshipService.getFriends(guestId);
@@ -145,7 +157,9 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/getAllGuests", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{guestId}/getAllGuests",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<GuestAndRelationDTO>> getAllGuests(@PathVariable Long guestId)
     {
         Set<GuestAndRelationDTO> ret = friendshipService.getAllGuests(guestId);
@@ -155,18 +169,24 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/searchForFriends", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GuestDTO>> searchForFriends(@PathVariable Long guestId, @RequestBody String stringParam)
+    @RequestMapping(value = "/{guestId}/searchForFriends",
+                    method = RequestMethod.PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GuestAndRelationDTO>> searchForFriends(@PathVariable Long guestId, @RequestBody String stringParam)
     {
-        List<GuestDTO> retSet = friendshipService.searchAllGuests(stringParam);
+        List<GuestAndRelationDTO> retSet = friendshipService.searchAllGuests(stringParam, guestId);
         return new ResponseEntity<>(retSet, HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/{guestId}/searchMyFriends/{stringParam}", method = RequestMethod.GET)
-    public ResponseEntity<List<GuestDTO>> searchMyFriends(@PathVariable Long guestId, @PathVariable String stringParam)
+    @RequestMapping(value = "/{guestId}/searchMyFriends/",
+                    method = RequestMethod.PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GuestAndRelationDTO>> searchMyFriends(@PathVariable Long guestId, @PathVariable String stringParam)
     {
-        List<GuestDTO> retSet = friendshipService.searchUserFriends(stringParam, guestId);
+        List<GuestAndRelationDTO> retSet = friendshipService.searchUserFriends(stringParam, guestId);
         return new ResponseEntity<>(retSet, HttpStatus.OK);
     }
 }
