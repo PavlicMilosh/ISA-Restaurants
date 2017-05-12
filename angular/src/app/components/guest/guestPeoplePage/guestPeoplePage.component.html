@@ -1,0 +1,97 @@
+
+
+  <div class="panel panel-default"><div class="panel-body"><div class="table-container">
+
+      <div class="row"><div class="col-sm-6 col-sm-offset-3"><div id="imaginary_container"><div class="input-group stylish-input-group">
+        <input type="text" class="form-control" [(ngModel)]="searchParams" placeholder="Search">
+        <span class="input-group-addon">
+          <button type="submit" (click)="searchAllGuests()">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </span>
+      </div></div></div></div>
+
+      <ng-container *ngIf="people.length > 0">
+        <table class="table table-filter"><tbody>
+
+          <tr *ngFor="let person of people">
+            <td class="image">
+              <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+            </td>
+
+            <td>
+              <div class = "table-name">{{person.firstName}} {{person.lastName}}</div>
+              <div class="table-email">{{person.email}}</div>
+            </td>
+
+            <td>
+              <div class = "table-number">289</div>
+              <div class="table-row-name">friends</div>
+            </td>
+
+            <td>
+              <div class="table-number">289
+              </div>
+              <div class="table-row-name">restaurants visited</div>
+            </td>
+
+            <td>
+              <div class="table-number">5.8</div>
+              <div class="table-row-name">mean mark</div>
+            </td>
+
+
+            <td class="buttons">
+
+              <!-- USER ITSELF-->
+              <ng-container *ngIf='person.id != 1'>
+
+                <ng-container *ngIf='person.friendshipStatus == "NONE" ||
+                                     person.friendshipStatus == "UNFRIENDED" ||
+                                     person.friendshipStatus == "DECLINED"'>
+                  <div class="left">
+                    <a href="" (click)="sendFriendRequest(person.id)" target="_blank" type="button" class="btn btn-primary btn-lg">Send friend request</a>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf='person.friendshipStatus == "ACCEPTED"'>
+                  <div class="left">
+                    <a href="" (click)="sendInvitation(person.id)" target="_blank" type="button" class="btn btn-primary btn-lg">Send invitation</a>
+                  </div>
+                  <div class="left">
+                    <a href="" (click)="unfriend(person.id)" target="_blank" type="button" class="btn btn-default btn-lg">Unfriend</a>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf='person.friendshipStatus == "PENDING" && person.id == person.lastActionUserId'>
+                  <div class="left">
+                    <a href="" (click)="acceptRequest(person.id)" target="_blank" type="button" class="btn btn-success btn-lg">Accept</a>
+                  </div>
+                  <div class="left">
+                    <a href="" (click)="declineRequest(person.id)" target="_blank" type="button" class="btn btn-danger btn-lg">Decline</a>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf='person.friendshipStatus == "PENDING" && person.id != person.lastActionUserId'>
+                  <div class="left">
+                    <a type="button" class="btn btn-primary btn-lg disabled">Waiting for response</a>
+                  </div>
+                </ng-container>
+
+              </ng-container>
+            </td>
+
+          </tr>
+
+        </tbody></table>
+      </ng-container>
+
+      <ng-container *ngIf="people.length == 0">
+        <div class="no-content-message">No accounts :(</div>
+      </ng-container>
+
+  </div></div></div>
+
+
+
+

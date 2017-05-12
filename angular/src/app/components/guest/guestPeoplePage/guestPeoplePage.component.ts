@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {GuestService} from "../../services/guest.service";
+import {GuestService} from "../../../services/guest.service";
 
 @Component
 ({
   moduleId: module.id,
   selector: 'guestFriendsPage',
   templateUrl: 'guestPeoplePage.component.html',
-  styleUrls: ['guestPeoplePage.component.css'],
+  styleUrls: ['guestPeoplePage.component.css', '../../style/tableStyle.css'],
   providers: [GuestService]
 })
 
@@ -14,15 +14,13 @@ import {GuestService} from "../../services/guest.service";
 export class GuestPeoplePageComponent implements OnInit {
 
   private people: GuestAndRelation[];
+  private searchParams: string;
 
-
-  constructor(private guestService: GuestService)
-  {
+  constructor(private guestService: GuestService) {
     this.people = [];
     this.guestService.getAllGuests(1).subscribe
     (
-      data =>
-      {
+      data => {
         this.people = data;
 
       },
@@ -32,20 +30,16 @@ export class GuestPeoplePageComponent implements OnInit {
   }
 
 
-  ngOnInit()
-  {
+  ngOnInit() {
   }
 
 
-  sendFriendRequest(toWhomId: number)
-  {
+  sendFriendRequest(toWhomId: number) {
     this.guestService.sendFriendRequest(1, toWhomId).subscribe
     (
-      data =>
-      {
+      data => {
         for (let i = 0; i < this.people.length; i++)
-          if (this.people[i].id == toWhomId)
-          {
+          if (this.people[i].id == toWhomId) {
             this.people[i].friendshipStatus = 'PENDING';
             this.people[i].lastActionUserId = 1; // generalizovati id
           }
@@ -55,15 +49,12 @@ export class GuestPeoplePageComponent implements OnInit {
   }
 
 
-  declineRequest(fromWhomId: number)
-  {
+  declineRequest(fromWhomId: number) {
     this.guestService.declineFriendRequest(1, fromWhomId).subscribe
     (
-      data =>
-      {
+      data => {
         for (let i = 0; i < this.people.length; i++)
-          if (this.people[i].id == fromWhomId)
-          {
+          if (this.people[i].id == fromWhomId) {
             this.people[i].friendshipStatus = 'DECLINED';
             this.people[i].lastActionUserId = 1; // generalizovati id
           }
@@ -75,15 +66,12 @@ export class GuestPeoplePageComponent implements OnInit {
   }
 
 
-  acceptRequest(fromWhomId: number)
-  {
+  acceptRequest(fromWhomId: number) {
     this.guestService.acceptFriendRequest(1, fromWhomId).subscribe
     (
-      data =>
-      {
+      data => {
         for (let i = 0; i < this.people.length; i++)
-          if (this.people[i].id == fromWhomId)
-          {
+          if (this.people[i].id == fromWhomId) {
             this.people[i].friendshipStatus = 'ACCEPTED';
             this.people[i].lastActionUserId = 1; // ovde treba isto generalizovati id
           }
@@ -94,25 +82,39 @@ export class GuestPeoplePageComponent implements OnInit {
   }
 
 
-  sendInvitation(toWhomId: number)
-  {
+  sendInvitation(toWhomId: number) {
     this.guestService.sendInvitation(toWhomId);
   }
 
 
-  unfriend(whoId: number)
-  {
+  unfriend(whoId: number) {
     this.guestService.unfriend(1, whoId).subscribe(
-      data =>
-      {
+      data => {
         for (let i = 0; i < this.people.length; i++)
-          if (this.people[i].id == whoId)
-          {
+          if (this.people[i].id == whoId) {
             this.people[i].friendshipStatus = 'UNFRIENDED';
             this.people[i].lastActionUserId = 1; // ovde treba isto generalizovati id
           }
         console.log(data)
       },
+      error => alert(error)
+    );
+  }
+
+
+  searchAllGuests()
+  {
+    if (this.searchParams == null || !this.searchParams.replace(/\s/g, '').length)
+    {
+      this.guestService.getAllGuests(1).subscribe
+      (
+        data => this.people = data,
+        error => alert(error)
+      );
+    }
+
+    this.guestService.searchAllGuests(1, this.searchParams).subscribe(
+      data => this.people = data,
       error => alert(error)
     );
   }

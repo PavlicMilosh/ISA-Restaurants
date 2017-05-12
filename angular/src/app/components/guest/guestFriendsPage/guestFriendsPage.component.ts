@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {GuestService} from "../../services/guest.service";
+import {GuestService} from "../../../services/guest.service";
 
 @Component
 ({
   moduleId: module.id,
   selector: 'guestFriendsPage',
   templateUrl: 'guestFriendsPage.component.html',
-  styleUrls: ['guestFriendsPage.component.css'],
+  styleUrls: ['guestFriendsPage.component.css', '../../style/tableStyle.css'],
   providers: [GuestService]
 })
 
@@ -14,6 +14,8 @@ import {GuestService} from "../../services/guest.service";
 export class GuestFriendsPageComponent implements OnInit
 {
   private friends: Guest[];
+  private searchParams: string;
+
 
   constructor(private guestService: GuestService)
   {
@@ -44,6 +46,23 @@ export class GuestFriendsPageComponent implements OnInit
             this.friends.splice(i, 1);
         console.log(data)
       },
+      error => alert(error)
+    );
+  }
+
+  searchFriends()
+  {
+    if (this.searchParams == null || !this.searchParams.replace(/\s/g, '').length)
+    {
+      this.guestService.getFriends(1).subscribe
+      (
+        data => this.friends = data,
+        error => alert(error)
+      );
+    }
+
+    this.guestService.searchFriends(1, this.searchParams).subscribe(
+      data => this.friends = data,
       error => alert(error)
     );
   }

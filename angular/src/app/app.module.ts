@@ -21,12 +21,12 @@ import { RegisterEmployeeComponent } from './components/registerEmployee/registe
 import { ChangePassword } from './components/changePassword/changePassword.component';
 
 import { RegisterGuestComponent } from "./components/registerGuest/registerGuest.component";
-import { UpdateGuestComponent } from "./components/updateGuest/updateGuest.component";
-import { GuestPageComponent } from './components/guestMainPage/guest-page.component';
-import { GuestFriendsPageComponent } from './components/guestFriendsPage/guestFriendsPage.component';
-import { GuestRestaurantsPageComponent } from './components/guestRestaurantsPage/guest-restaurants-page.component';
-import { GuestRequestPageComponent } from "./components/guestRequestPage/guestRequestPage.component";
-import { GuestPeoplePageComponent } from "./components/guestPeoplePage/guestPeoplePage.component";
+import { UpdateGuestComponent } from "./components/guest/updateGuest/updateGuest.component";
+import { GuestPageComponent } from './components/guest/guestMainPage/guest-page.component';
+import { GuestFriendsPageComponent } from './components/guest/guestFriendsPage/guestFriendsPage.component';
+import { GuestRestaurantsPageComponent } from './components/guest/guestRestaurantsPage/guest-restaurants-page.component';
+import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
+import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
 
 
 @NgModule({

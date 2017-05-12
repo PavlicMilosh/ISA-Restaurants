@@ -104,4 +104,22 @@ export class GuestService
   {
     console.log("INVITATION NOT YET IMPLEMENTED!");
   }
+
+
+  searchAllGuests(guestId: number, searchParams: string)
+  {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.put("http://localhost:8080/guest/" + guestId + "/searchForFriends", searchParams, {headers: headers})
+      .map(res => res.json());
+  }
+
+  searchFriends(guestId: number, searchParams: string)
+  {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.put("http://localhost:8080/guest/" + guestId + "/searchMyFriends", searchParams, {headers: headers})
+      .map(res => res.json());
+  }
+
 }
