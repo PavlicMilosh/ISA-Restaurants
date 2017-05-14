@@ -9,4 +9,5 @@ public class FriendshipStatus
     public static final String ACCEPTED = "ACCEPTED";
     public static final String DECLINED = "DECLINED";
     public static final String UNFRIENDED = "UNFRIENDED";
+    public static final String NONE = "NONE";
 }

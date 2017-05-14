@@ -9,11 +9,15 @@ import { AddRestaurantComponent } from './components/addRestaurant/addRestaurant
 import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateRestaurant.component";
 
 import { RegisterGuestComponent} from './components/registerGuest/registerGuest.component';
-import { UpdateGuestComponent } from "./components/updateGuest/updateGuest.component";
+import { UpdateGuestComponent } from "./components/guest/updateGuest/updateGuest.component";
+import { GuestFriendsPageComponent } from "./components/guest/guestFriendsPage/guestFriendsPage.component";
+import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
+import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
 
 import { UpdateUser } from './components/updateUser/updateUser.component';
 import { AddWorkerComponent } from "./components/addWorker/addWorker.component";
 import { ChangePassword } from "./components/changePassword/changePassword.component";
+
 
 const appRoutes : Routes =
   [
@@ -54,6 +58,22 @@ const appRoutes : Routes =
       path : 'updateGuest',
       component : UpdateGuestComponent
     },
+    {
+      path : 'guestFriendsPage',
+      component : GuestFriendsPageComponent
+    },
+    {
+      path : 'guestRequestsPage',
+      component : GuestRequestPageComponent
+    },
+    {
+      path : 'guestPeoplePage',
+      component : GuestPeoplePageComponent
+    },
+
+
+
+
     {
       path : 'updateUser',
       component : UpdateUser

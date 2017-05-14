@@ -19,8 +19,8 @@ export class NavbarComponent implements OnInit {
     this.links = [];
     this.dropdowns = [];
     console.log(this.dropdowns);
-    this.presetSM();
-
+    //this.presetSM();
+    this.presetG();
     if (this.links.length == 0)
     {
       this.nempty = false;
@@ -78,6 +78,36 @@ export class NavbarComponent implements OnInit {
 
   presetG()
   {
+    var dropdownMyProfile =
+      {
+        text: "Profile",
+        links:
+          [
+            {text: "Register", routerLink: "/registerGuest"},
+            {text: "Update", routerLink: "/updateGuest"},
+          ]
+      };
+
+    var dropdownFriendships =
+      {
+        text: "Friendships",
+        links:
+          [
+            {text: "Friends", routerLink: "/guestFriendsPage"},
+            {text: "Requests", routerLink: "/guestRequestsPage"},
+            {text: "People", routerLink: "/guestPeoplePage"},
+          ]
+      };
+
+    var dropdownRestaurants =
+      {
+        text: "Restaurants",
+        links: []
+      };
+
+    this.addDropdown(dropdownMyProfile);
+    this.addDropdown(dropdownFriendships);
+    this.addDropdown(dropdownRestaurants);
 
   }
 

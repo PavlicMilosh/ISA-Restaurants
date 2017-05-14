@@ -9,15 +9,15 @@ export class GuestService
 
   registerGuest(email: string, pass: string, firstName: string, lastName: string)
   {
-    var guest =
+    let guest =
       {
         email: email,
         password: pass,
         firstName: firstName,
         lastName: lastName,
       };
-    var param = JSON.stringify(guest);
-    var headers = new Headers();
+    let param = JSON.stringify(guest);
+    let headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/guest/register/", param, { headers : headers })
@@ -25,45 +25,101 @@ export class GuestService
   }
 
 
-  updateGuest(email: string, pass: string, firstName: string, lastName: string)
+  updateGuest(guestId: number, email: string, pass: string, firstName: string, lastName: string)
   {
-    var guest =
+    let guest =
       {
         email: email,
         password: pass,
         firstName: firstName,
         lastName: lastName,
       };
-    var param = JSON.stringify(guest);
-    var headers = new Headers();
-    var s = "1L";
 
+    let param = JSON.stringify(guest);
+    let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.put("http://localhost:8080/guest/${s}/update", param, { headers : headers })
+    return this.http.put("http://localhost:8080/guest/" + guestId + "/update", param, { headers : headers })
       .map(res => res.json());
   }
 
 
-  sendFriendRequest()
+  getAllGuests(guestId: number)
   {
-    var headers = new Headers();
-    return this.http.post("http://localhost:8080/guest/1/sendFriendRequest/2", { headers : headers })
+    let headers = new Headers();
+    return this.http.get("http://localhost:8080/guest/" + guestId + "/getAllGuests", { headers: headers })
       .map(res => res.json());
   }
 
 
-  acceptFriendRequest()
+  getFriends(guestId: number)
   {
-    var headers = new Headers();
-    return this.http.put("http://localhost:8080/guest/2/sendFriendRequest/1", { headers : headers })
+    let headers = new Headers();
+    return this.http.get("http://localhost:8080/guest/" + guestId + "/getFriends", { headers: headers })
       .map(res => res.json());
   }
 
 
-  declineFriendRequest()
+  getFriendRequests(guestId: number)
   {
-    var headers = new Headers();
-    return this.http.put("http://localhost:8080/guest/2/sendFriendRequest/2", { headers : headers })
+    let headers = new Headers();
+    return this.http.get("http://localhost:8080/guest/" + guestId + "/getFriendRequests", { headers: headers })
       .map(res => res.json());
   }
+
+
+  sendFriendRequest(guestId: number, toWhomId: number)
+  {
+    let headers = new Headers();
+    return this.http.post("http://localhost:8080/guest/" + guestId + "/sendFriendRequest/" + toWhomId, { headers : headers })
+      .map(res => res.json());
+  }
+
+
+  acceptFriendRequest(guestId: number, fromWhomId: number)
+  {
+    let headers = new Headers();
+    return this.http.put("http://localhost:8080//guest/" + guestId + "/acceptFriendRequest/" + fromWhomId, { headers : headers })
+      .map(res => res.json());
+  }
+
+
+  declineFriendRequest(guestId: number, fromWhomId: number)
+  {
+    let headers = new Headers();
+    return this.http.put("http://localhost:8080//guest/" + guestId + "/declineFriendRequest/" + fromWhomId, { headers : headers })
+      .map(res => res.json());
+  }
+
+
+  unfriend(guestId: number, friendId: number)
+  {
+    console.log(guestId + " UNFRIENDED " +friendId);
+    let headers = new Headers();
+    return this.http.put("http://localhost:8080/guest/" + guestId + "/unfriendUser/" + friendId, {headers: headers})
+      .map(res => res.json());
+  }
+
+
+  sendInvitation(toWhom: number)
+  {
+    console.log("INVITATION NOT YET IMPLEMENTED!");
+  }
+
+
+  searchAllGuests(guestId: number, searchParams: string)
+  {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.put("http://localhost:8080/guest/" + guestId + "/searchForFriends", searchParams, {headers: headers})
+      .map(res => res.json());
+  }
+
+  searchFriends(guestId: number, searchParams: string)
+  {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.put("http://localhost:8080/guest/" + guestId + "/searchMyFriends", searchParams, {headers: headers})
+      .map(res => res.json());
+  }
+
 }

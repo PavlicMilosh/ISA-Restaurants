@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GuestService} from "../../services/guest.service";
+import {GuestService} from "../../../services/guest.service";
 
 
 @Component({
@@ -25,7 +25,7 @@ export class UpdateGuestComponent
 
   updateGuest()
   {
-    this.guestService.updateGuest(this.email, this.password, this.firstName, this.lastName).subscribe
+    this.guestService.updateGuest(1, this.email, this.password, this.firstName, this.lastName).subscribe
     (
       data => this.userDTO = data,
       error => alert(error)

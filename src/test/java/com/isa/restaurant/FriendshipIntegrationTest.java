@@ -1,14 +1,17 @@
 package com.isa.restaurant;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isa.restaurant.domain.DTO.FriendshipDTO;
-import com.isa.restaurant.domain.DTO.UserDTO;
+import com.isa.restaurant.domain.DTO.GuestAndRelationDTO;
+import com.isa.restaurant.domain.DTO.GuestDTO;
 import com.isa.restaurant.domain.Friendship;
 import com.isa.restaurant.domain.FriendshipStatus;
 import com.isa.restaurant.domain.Guest;
 import com.isa.restaurant.repositories.FriendshipRepository;
 import com.isa.restaurant.repositories.UserRepository;
+import com.isa.restaurant.search.GuestSearch;
+import com.isa.restaurant.services.FriendshipService;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,6 +48,10 @@ public class FriendshipIntegrationTest
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FriendshipService friendshipService;
+
 
     private MockMvc mvc;
 
@@ -73,23 +81,6 @@ public class FriendshipIntegrationTest
         Guest g6 = new Guest("g6", "g6", "Guest6", "Guestovic6");
         Guest g7 = new Guest("g7", "g7", "Guest7", "Guestovic7");
 
-        userRepository.save(g1);
-        userRepository.save(g2);
-        userRepository.save(g3);
-        userRepository.save(g4);
-        userRepository.save(g5);
-        userRepository.save(g6);
-        userRepository.save(g7);
-
-        g1_id = g1.getId();
-        g2_id = g2.getId();
-        g3_id = g3.getId();
-        g4_id = g4.getId();
-        g5_id = g5.getId();
-        g6_id = g6.getId();
-        g7_id = g7.getId();
-
-
         Friendship f_g1_g2 = new Friendship(g1, g2);
         f_g1_g2.setActionUser(g1);
         f_g1_g2.setStatus(FriendshipStatus.ACCEPTED);
@@ -107,11 +98,26 @@ public class FriendshipIntegrationTest
         f_g5_g7.setActionUser(g5);
         f_g5_g7.setStatus(FriendshipStatus.DECLINED);
 
+        userRepository.save(g1);
+        userRepository.save(g2);
+        userRepository.save(g3);
+        userRepository.save(g4);
+        userRepository.save(g5);
+        userRepository.save(g6);
+        userRepository.save(g7);
 
         friendshipRepository.save(f_g1_g2);
         friendshipRepository.save(f_g1_g3);
         friendshipRepository.save(f_g5_g6);
         friendshipRepository.save(f_g5_g7);
+
+        g1_id = g1.getId();
+        g2_id = g2.getId();
+        g3_id = g3.getId();
+        g4_id = g4.getId();
+        g5_id = g5.getId();
+        g6_id = g6.getId();
+        g7_id = g7.getId();
 
         f_g1_g2_id = f_g1_g2.getId();
         f_g1_g3_id = f_g1_g3.getId();
@@ -164,12 +170,10 @@ public class FriendshipIntegrationTest
         FriendshipDTO friendshipDTO = new FriendshipDTO(friendshipRepository.findById(f_g5_g6_id));
         friendshipDTO.setStatus(FriendshipStatus.ACCEPTED);
         friendshipDTO.setActionUserEmail("g6");
-        friendshipDTO.setActionUserId(6L);
+        friendshipDTO.setActionUserId(g6_id);
 
-        String urlTemplate = "/guest/" + g6_id + "/acceptFriendRequest/";
-        this.mvc.perform(
-                put(urlTemplate + f_g5_g6_id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        String urlTemplate = "/guest/" + g6_id + "/acceptFriendRequest/" + g5_id;
+        this.mvc.perform(put(urlTemplate))
                 .andExpect(status().isOk())
                 .andExpect(content().json(om.writeValueAsString(friendshipDTO)));
     }
@@ -179,16 +183,15 @@ public class FriendshipIntegrationTest
     public void testDecliningFriendRequest() throws Exception
     {
         ObjectMapper om = new ObjectMapper();
-        FriendshipDTO friendshipDTO = new FriendshipDTO(friendshipRepository.findById(f_g5_g7_id));
+        FriendshipDTO friendshipDTO = new FriendshipDTO(friendshipRepository.findById(f_g5_g6_id));
         friendshipDTO.setStatus(FriendshipStatus.DECLINED);
-        friendshipDTO.setActionUserEmail("g7");
-        friendshipDTO.setActionUserId(7L);
+        friendshipDTO.setActionUserEmail("g6");
+        friendshipDTO.setActionUserId(g6_id);
 
-        String urlTemplate = "/guest/" + g7_id + "/declineFriendRequest/";
-        this.mvc.perform(
-                put(urlTemplate + f_g5_g7_id)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        String urlTemplate = "/guest/" + g6_id + "/declineFriendRequest/" + g5_id;
+        this.mvc.perform(put(urlTemplate))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(friendshipDTO)));
     }
 
 
@@ -200,16 +203,14 @@ public class FriendshipIntegrationTest
         FriendshipDTO friendshipDTO = new FriendshipDTO(friendshipRepository.findById(f_g1_g2_id));
         friendshipDTO.setStatus(FriendshipStatus.UNFRIENDED);
         friendshipDTO.setActionUserEmail("g2");
-        friendshipDTO.setActionUserId(2L);
+        friendshipDTO.setActionUserId(g2_id);
 
         String urlTemplate = "/guest/" + g2_id + "/unfriendUser/";
-        this.mvc.perform(
-                put(urlTemplate + g1_id))
+        this.mvc.perform(put(urlTemplate + g1_id))
                 .andExpect(status().isOk())
                 .andExpect(content().json(om.writeValueAsString(friendshipDTO)));
 
-        this.mvc.perform(
-                put(urlTemplate + g7_id))
+        this.mvc.perform(put(urlTemplate + g7_id))
                 .andExpect(status().isNotFound());
     }
 
@@ -218,9 +219,9 @@ public class FriendshipIntegrationTest
     public void testGetFriendRequests() throws Exception
     {
         ObjectMapper om = new ObjectMapper();
-        Friendship request = friendshipRepository.findById(f_g5_g6_id);
-        Set<FriendshipDTO> requests = new HashSet<>();
-        requests.add(new FriendshipDTO(request));
+        Guest request = (Guest) userRepository.findById(g5_id);
+        Set<GuestDTO> requests = new HashSet<>();
+        requests.add(new GuestDTO(request));
 
         String urlTemplate = "/guest/" + g6_id + "/getFriendRequests";
         this.mvc.perform(
@@ -239,9 +240,9 @@ public class FriendshipIntegrationTest
     public void testGetFriends() throws Exception
     {
         ObjectMapper om = new ObjectMapper();
-        Set<UserDTO> friends = new HashSet<>();
+        Set<GuestDTO> friends = new HashSet<>();
         Guest g1 = (Guest)userRepository.findById(g1_id);
-        friends.add(new UserDTO(g1));
+        friends.add(new GuestDTO(g1));
 
         String urlTemplate = "/guest/" + g2_id + "/getFriends";
         this.mvc.perform(
@@ -253,6 +254,56 @@ public class FriendshipIntegrationTest
         this.mvc.perform(
                 get(urlTemplate))
                 .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void testSearchAllGuests()
+    {
+        // ACCEPTED
+        List<GuestAndRelationDTO> results = friendshipService.searchAllGuests("guest2", g1_id);
+        Guest g = (Guest) userRepository.findById(g2_id);
+        Friendship f = friendshipRepository.findByBothUsers(g1_id, g2_id);
+        GuestAndRelationDTO expected = new GuestAndRelationDTO(g, f.getStatus(), f.getActionUser().getId());
+        GuestAndRelationDTO got = results.get(0);
+        Assert.assertEquals(expected, got);
+
+
+        // DECLINED
+        results = friendshipService.searchAllGuests("guest3", g1_id);
+        g = (Guest) userRepository.findById(g3_id);
+        f = friendshipRepository.findByBothUsers(g1_id, g3_id);
+        expected = new GuestAndRelationDTO(g, f.getStatus(), f.getActionUser().getId());
+        got = results.get(0);
+        Assert.assertEquals(expected, got);
+
+
+        // NONE
+        results = friendshipService.searchAllGuests("guest7", g1_id);
+        g = (Guest) userRepository.findById(g7_id);
+        expected = new GuestAndRelationDTO(g, FriendshipStatus.NONE, null);
+        got = results.get(0);
+        Assert.assertEquals(expected, got);
+    }
+
+
+    @Test
+    public void testSearchUserFriends()
+    {
+        // POSITIVE
+        List<GuestAndRelationDTO> results = friendshipService.searchUserFriends("guest2", g1_id);
+        Guest g = (Guest) userRepository.findById(g2_id);
+        Friendship f = friendshipRepository.findByBothUsers(g1_id, g2_id);
+        GuestAndRelationDTO expected = new GuestAndRelationDTO(g, f.getStatus(), f.getActionUser().getId());
+        GuestAndRelationDTO got = results.get(0);
+        Assert.assertEquals(expected, got);
+
+
+        //NEGATIVE
+        results = friendshipService.searchUserFriends("NO_GUEST_WITH_THIS_NAME", g1_id);
+        int expectedSize = 0;
+        int gotSize = results.size();
+        Assert.assertEquals(expectedSize, gotSize);
     }
 
 

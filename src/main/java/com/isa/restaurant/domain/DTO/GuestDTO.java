@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 public class GuestDTO
 {
+    Long id;
     String firstName;
     String lastName;
     String email;
@@ -22,6 +23,7 @@ public class GuestDTO
 
     public GuestDTO(Guest guest)
     {
+        this.id = guest.getId();
         this.email = guest.getEmail();
         this.firstName = guest.getFirstName();
         this.lastName = guest.getLastName();

@@ -3,6 +3,10 @@ package com.isa.restaurant.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 
@@ -13,23 +17,29 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Indexed
 public abstract class User
 {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "user_id")
+    @Field(name = "user_id")
     protected Long id;
 
+    //@Email
     @Column(name = "user_email", unique = true, nullable = false)
+    @Field
     protected String email;
 
     @Column(name = "user_password")
     protected String password;
 
     @Column(name = "user_first_name")
+    @Field
     protected String firstName;
 
     @Column(name = "user_last_name")
+    @Field
     protected String lastName;
 
     @Override

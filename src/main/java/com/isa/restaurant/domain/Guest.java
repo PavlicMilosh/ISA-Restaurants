@@ -1,28 +1,41 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by Q on 15-Apr-17.
  */
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "guest")
+@Indexed
 public class Guest extends User
 {
     @Column(name = "guest_enabled")
     private Boolean enabled;
 
+//    @OneToMany(mappedBy = "firstUser")
+//    private Set<Friendship> friendships1;
+//
+//    @OneToMany(mappedBy = "secondUser")
+//    private  Set<Friendship> friendships2;
 
     public Guest(String email, String password, String firstName, String lastName)
     {
@@ -67,6 +80,15 @@ public class Guest extends User
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
     }
+
+
+//    public Set<Friendship> getFriendships()
+//    {
+//        Set<Friendship> ret = new HashSet<>();
+//        ret = this.friendships1;
+//        ret.addAll(this.friendships2);
+//        return ret;
+//    }
 
 }
 
