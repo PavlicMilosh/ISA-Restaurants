@@ -13,6 +13,7 @@ import { UpdateGuestComponent } from "./components/updateGuest/updateGuest.compo
 
 import { UpdateUser } from './components/updateUser/updateUser.component';
 import { AddWorkerComponent } from "./components/addWorker/addWorker.component";
+import { ChangePassword } from "./components/changePassword/changePassword.component";
 
 const appRoutes : Routes =
   [
@@ -49,9 +50,6 @@ const appRoutes : Routes =
       path : 'addWorker',
       component : AddWorkerComponent
     },
-
-
-
     {
       path : 'updateGuest',
       component : UpdateGuestComponent
@@ -60,6 +58,10 @@ const appRoutes : Routes =
       path : 'updateUser',
       component : UpdateUser
     },
+    {
+      path: 'changePassword',
+      component : ChangePassword
+    }
   ];
 
 export const routing : ModuleWithProviders = RouterModule.forRoot(appRoutes);

@@ -60,10 +60,6 @@ public class UserServiceImpl implements UserService
         return new UserDTO(saved);
     }
 
-
-
-
-
     @Override
     public GuestDTO updateGuest(Guest guest)
     {
@@ -73,7 +69,6 @@ public class UserServiceImpl implements UserService
         Guest saved = (Guest)userRepository.save(guest);
         return new GuestDTO(saved);
     }
-
 
     @Override
     public UserDTO addSystemManager(SystemManager systemManager)
@@ -85,21 +80,8 @@ public class UserServiceImpl implements UserService
         return new UserDTO(saved);
     }
 
-
-
-
-
-    public UserDTO addBarman(Waiter waiter)
-    {
-        Waiter br = (Waiter) userRepository.findByEmail(waiter.getEmail());
-        if(br != null)
-            return null;
-        User saved = userRepository.save(waiter);
-        return new UserDTO(saved);
-    }
-
-
-    public UserDTO changeBarman(Waiter waiter)
+    @Override
+    public UserDTO changeWaiter(Waiter waiter)
     {
         Waiter br = (Waiter) userRepository.findById(waiter.getId());
         if(br == null)
@@ -108,27 +90,7 @@ public class UserServiceImpl implements UserService
         return new UserDTO(saved);
     }
 
-
-    public UserDTO addCook(Cook cook)
-    {
-        Cook ck = (Cook) userRepository.findByEmail(cook.getEmail());
-        if(ck != null)
-            return null;
-        User saved = userRepository.save(cook);
-        return new UserDTO(saved);
-    }
-
-
-    public UserDTO addBartender(Bartender bartender)
-    {
-        Bartender br = (Bartender) userRepository.findByEmail(bartender.getEmail());
-        if(br != null)
-            return null;
-        User saved = userRepository.save(bartender);
-        return new UserDTO(saved);
-    }
-
-
+    @Override
     public UserDTO changeCook(Cook cook)
     {
         Cook ck = (Cook) userRepository.findById(cook.getId());
@@ -138,7 +100,7 @@ public class UserServiceImpl implements UserService
         return new UserDTO(saved);
     }
 
-
+    @Override
     public UserDTO changeBartender(Bartender bartender)
     {
         Bartender br = (Bartender) userRepository.findById(bartender.getId());

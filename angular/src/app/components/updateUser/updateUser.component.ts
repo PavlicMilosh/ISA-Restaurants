@@ -24,23 +24,41 @@ export class UpdateUser
 
   constructor(private userService: UserService)
   {
-
+    this.userService.getUser("test123@live.com", "12345", "TestName", "TestLastName").subscribe
+    (
+      (data:UserDTO) => this.userDTO = data,
+      error => alert(error),
+      () => this.init()
+    );
   }
 
   changeBarman()
   {
-    this.userService.updateBarman(1,this.email, this.password, this.firstName, this.lastName).subscribe(
-    data => this.userDTO = data,
-    error => alert(error)
-  );
+    this.userService.updateBarman(this.id,this.email, this.password, this.firstName, this.lastName).subscribe
+    (
+      data => this.userDTO = data,
+      error => alert(error)
+    );
   }
+
+  init()
+  {
+    this.firstName=this.userDTO.firstName;
+    this.lastName=this.userDTO.lastName;
+    this.email=this.userDTO.email;
+    this.id=this.userDTO.id;
+    this.password=this.userDTO.password;
+    console.log(this.userDTO.id);
+    console.log(this.userDTO.password);
+  }
+
 }
 
 interface UserDTO
 {
   id: number;
-  username: string;
+  email: string;
+  password:string;
   firstName: string;
   lastName: string;
-  email: string;
 }

@@ -14,8 +14,8 @@ export class RestaurantService
   {
     var restaurant =
     {
-      restaurantName: restaurantName,
-      restaurantDescription: restaurantDescription
+      name: restaurantName,
+      description: restaurantDescription
     }
     var param = JSON.stringify(restaurant);
     var headers = new Headers();

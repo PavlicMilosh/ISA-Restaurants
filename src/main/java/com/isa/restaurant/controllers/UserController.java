@@ -2,12 +2,16 @@ package com.isa.restaurant.controllers;
 
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.services.implementation.UserServiceImpl;
+import com.isa.restaurant.domain.DTO.WorkScheduleDTO;
+import com.isa.restaurant.services.UserService;
+import com.isa.restaurant.services.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by Milos on 10-Apr-17.
@@ -18,7 +22,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController
 {
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
+
+    @Autowired
+    private WorkScheduleService workScheduleService;
 
     @RequestMapping(value = "/register/sysManager", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> registerSysManager(@RequestBody SystemManager systemManager)
@@ -29,36 +36,18 @@ public class UserController
         return new ResponseEntity(saved, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/register/barman", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> registerBarman(@RequestBody Waiter waiter)
+    @RequestMapping(value = "/{userId}/addSchedule", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addSchedule(@PathVariable Long userId, @RequestBody List<WorkScheduleDTO> workSchedule)
     {
-        UserDTO saved = userService.addBarman(waiter);
-        if(saved == null)
+        boolean done = this.workScheduleService.addWorkSchedule(userId, workSchedule);
+        if(done == false)
             return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
-        return new ResponseEntity(saved, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/register/cook", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> registerCook(@RequestBody Cook cook)
-    {
-        UserDTO saved = userService.addCook(cook);
-        if(saved == null)
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
-        return new ResponseEntity(saved, HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/register/bartender", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> registerBartender(@RequestBody Bartender bartender)
-    {
-        UserDTO saved = userService.addBartender(bartender);
-        if(saved == null)
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
-        return new ResponseEntity(saved, HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/update/barman", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> changeBarman(@RequestBody Waiter waiter){
-        UserDTO saved = userService.changeBarman(waiter);
+    @RequestMapping(value = "/update/waiter", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> changeWaiter(@RequestBody Waiter waiter){
+        UserDTO saved = userService.changeWaiter(waiter);
         if(saved == null)
             return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
         return new ResponseEntity(saved, HttpStatus.OK);

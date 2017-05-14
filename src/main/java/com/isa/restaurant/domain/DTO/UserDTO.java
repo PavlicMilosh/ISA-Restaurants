@@ -20,6 +20,8 @@ public class UserDTO
     String lastName;
     String email;
     String userType;
+    String password;
+    Long id;
 
     public UserDTO(User user)
     {
@@ -27,6 +29,8 @@ public class UserDTO
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
+        this.id = user.getId();
+        this.password=user.getPassword();
         //add userType
     }
 }

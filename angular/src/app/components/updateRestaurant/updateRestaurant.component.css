@@ -133,6 +133,7 @@ span.input-group-addon i {
 #canvasDiv
 {
   width: 80%;
+  height: 100%;
   float:right;
 }
 

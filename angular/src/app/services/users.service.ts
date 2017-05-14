@@ -60,8 +60,7 @@ export class UserService
       .map(res => res.json());
   }
 
-  addWorker(firstName: string, lastName: string, email: string, password: string, clothesNumber: number, footwearNumber: number, role: string)
-  {
+  addWorker(firstName: string, lastName: string, email: string, password: string, clothesNumber: number, footwearNumber: number, role: string) {
     var worker =
     {
       firstName: firstName,
@@ -72,16 +71,31 @@ export class UserService
       footwearNumber: footwearNumber
     }
     var path = '';
-    if(role == 'Waiter')
+    if (role == 'Waiter')
       path = "/addWaiter";
-    else if(role == 'Cook')
+    else if (role == 'Cook')
       path = "/addCook";
     else
       path = "/addBartender";
     var param = JSON.stringify(worker);
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/restaurants/" + 1 + path, param, { headers : headers })
+    return this.http.post("http://localhost:8080/restaurants/" + 1 + path, param, {headers: headers})
+      .map(res => res.json());
+  }
+
+  getUser(email: string, pass: string, firstName: string, lastName: string){
+    var user =
+      {
+        email: email,
+        password: pass,
+        firstName: firstName,
+        lastName: lastName,
+      };
+    var param = JSON.stringify(user);
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post("http://localhost:8080/users/register/barman", param, { headers : headers })
       .map(res => res.json());
   }
 }

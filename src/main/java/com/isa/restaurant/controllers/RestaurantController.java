@@ -3,6 +3,7 @@ package com.isa.restaurant.controllers;
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.services.RestaurantService;
+import com.isa.restaurant.services.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -93,5 +94,4 @@ public class RestaurantController
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
-
 }

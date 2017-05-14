@@ -78,8 +78,7 @@ public class RestaurantIntegrationTest
     {
         ObjectMapper om = new ObjectMapper();
         Restaurant r = restaurantService.getRestaurant("R1");
-        Restaurant r1 = new Restaurant(r.getId(), r.getName(), r.getDescription(), new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
+        Restaurant r1 = new Restaurant(r);
         r1.addDish(new Dish("dish1", "desc1", 1l, r1));
         r1.addDrink(new Drink("drink1", "descd", 1l, r1));
         String s = om.writeValueAsString(r1);
@@ -97,10 +96,13 @@ public class RestaurantIntegrationTest
         Restaurant r = restaurantService.getRestaurant("R1");
         Bartender b = new Bartender("b", "b", "b", "b");
         UserDTO bb = new UserDTO(b);
+        bb.setId(1l);
         Cook c = new Cook("c", "c", "c", "c");
         UserDTO cc = new UserDTO(c);
+        cc.setId(2l);
         Waiter w = new Waiter("w", "w", "w", "w");
         UserDTO ww = new UserDTO(w);
+        ww.setId(3l);
         this.mvc.perform(post("/restaurants/" + r.getId() + "/addBartender")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(b)))

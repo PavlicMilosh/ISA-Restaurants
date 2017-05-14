@@ -43,6 +43,7 @@ export class UpdateRestaurantComponent implements OnInit
   ngOnInit()
   {
     this.canvas = new fabric.Canvas('canvas');
+    this.canvas.setDimensions({width:500, height:600});
   }
 
   addTable()
@@ -160,13 +161,14 @@ export class UpdateRestaurantComponent implements OnInit
     else
     {
       this.restaurant.dishes.push(this.editingDish);
-      this.editingDish =
-      {
-        id: null,
-        name: "",
-        description: "",
-        price: 0
-      }
+
+    }
+    this.editingDish =
+    {
+      id: null,
+      name: "",
+      description: "",
+      price: 0
     }
   }
 }

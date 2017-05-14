@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,12 +18,15 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "barman")
+@Table(name = "waiter")
 public class Waiter extends User
 {
     @ManyToOne
     @JsonIgnore
     private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<WorkSchedule> schedule;
     //private Set<RestaurantTable> tables;
 
     public Waiter(String email, String password, String firstName, String lastName)

@@ -7,9 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by djuro on 4/14/2017.
@@ -24,6 +23,9 @@ public class Bartender extends User
     @ManyToOne
     @JsonIgnore
     private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<WorkSchedule> schedule;
 
     public Bartender(String email, String password, String firstName, String lastName)
     {
