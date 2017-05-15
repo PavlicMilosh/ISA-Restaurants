@@ -61,6 +61,13 @@ export class RestaurantService
     return this.http.post("http://localhost:8080/restaurants/" + restaurantId + "/addRM", param, { headers : headers })
       .map(res => res.json());
   }
+
+  getWorkersByRMId(managerId: number)
+  {
+    return this.http.get("http://localhost:8080/restaurants/getWorkersByRMId/" + managerId)
+      .map(res => res.json());
+  }
+
 }
 
 interface Restaurant

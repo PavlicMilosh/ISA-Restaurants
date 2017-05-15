@@ -28,6 +28,7 @@ import { GuestFriendsPageComponent } from './components/guest/guestFriendsPage/g
 import { GuestRestaurantsPageComponent } from './components/guest/guestRestaurantsPage/guest-restaurants-page.component';
 import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
 import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
+import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/gue
     GuestFriendsPageComponent,
     GuestRequestPageComponent,
     GuestRestaurantsPageComponent,
-    GuestPeoplePageComponent
+    GuestPeoplePageComponent,
+    AddWorkScheduleComponent
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,6 @@ package com.isa.restaurant.controllers;
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.services.RestaurantService;
-import com.isa.restaurant.services.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -94,4 +93,14 @@ public class RestaurantController
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
+
+    @RequestMapping(value = "getWorkersByRMId/{managerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getWorkersByRMId(@PathVariable Long managerId)
+    {
+        List<UserDTO> workers = restaurantService.getWorkersByRMId(managerId);
+        if(workers == null)
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity(workers, HttpStatus.CREATED);
+    }
+
 }

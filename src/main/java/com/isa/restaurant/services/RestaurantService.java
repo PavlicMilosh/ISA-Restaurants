@@ -29,4 +29,6 @@ public interface RestaurantService
     UserDTO addBartender(Bartender bartender, Long restaurantId);
 
     UserDTO addCook(Cook cook, Long restaurantId);
+
+    List<UserDTO> getWorkersByRMId(Long managerId);
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,7 +94,7 @@ public class RestaurantServiceImpl implements RestaurantService
     @Transactional
     public Restaurant getByManagerId(Long managerId)
     {
-        RestaurantManager rm = (RestaurantManager) userRepository.findById(managerId);
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
         try
         {
             return rm.getRestaurant();
@@ -138,5 +139,33 @@ public class RestaurantServiceImpl implements RestaurantService
         cook.setRestaurant(r);
         userRepository.save(cook);
         return new UserDTO(cook);
+    }
+
+    @Override
+    public List<UserDTO> getWorkersByRMId(Long managerId)
+    {
+        try
+        {
+            RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
+            Restaurant r = rm.getRestaurant();
+            List<UserDTO> retval = new ArrayList<>();
+            for (Bartender b : r.getBartenders())
+            {
+                retval.add(new UserDTO(b));
+            }
+            for (Waiter w : r.getWaiters())
+            {
+                retval.add(new UserDTO(w));
+            }
+            for (Cook c : r.getCooks())
+            {
+                retval.add(new UserDTO(c));
+            }
+            return retval;
+        }
+        catch(NullPointerException e)
+        {
+            return null;
+        }
     }
 }
