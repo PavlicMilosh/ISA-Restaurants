@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashSet;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Transactional
 public class RestaurantIntegrationTest
 {
     @Autowired
@@ -46,7 +48,8 @@ public class RestaurantIntegrationTest
     public void setUp()
     {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
-        restaurantRepository.save(new Restaurant("R1", "desc"));
+        Restaurant r = new Restaurant("R1", "desc");
+        restaurantRepository.save(r);
     }
 
     @Test
@@ -81,6 +84,9 @@ public class RestaurantIntegrationTest
         Restaurant r1 = new Restaurant(r);
         r1.addDish(new Dish("dish1", "desc1", 1l, r1));
         r1.addDrink(new Drink("drink1", "descd", 1l, r1));
+        Region region = new Region("bascu", r1, new HashSet<>());
+        r1.addRegion(region);
+        r1.addTable(new RestaurantTable(new Double(1), new Double(1), new Double(1), region, new HashSet<>()));
         String s = om.writeValueAsString(r1);
         this.mvc.perform(put("/restaurants/" + r.getId())
                 .contentType(MediaType.APPLICATION_JSON)

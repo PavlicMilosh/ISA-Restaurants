@@ -64,7 +64,12 @@ public class RestaurantServiceImpl implements RestaurantService
         for(RestaurantManager rm : restaurant.getManagers())
             rm.setRestaurant(restaurant);
         for(RestaurantTable t : restaurant.getTables())
+        {
             t.setRestaurant(restaurant);
+            t.getRegion().addTable(t);
+        }
+        for(Region r : restaurant.getRegions())
+            r.setRestaurant(restaurant);
         Restaurant retval = restaurantRepository.save(restaurant);
         return retval;
     }

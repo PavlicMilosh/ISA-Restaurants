@@ -53,6 +53,9 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkSchedule> schedule;
 
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Region> regions;
+
     public Restaurant()
     {
         this.dishes = new HashSet<>();
@@ -63,6 +66,7 @@ public class Restaurant
         this.cooks = new HashSet<>();
         this.waiters = new HashSet<>();
         this.schedule = new HashSet<>();
+        this.regions = new HashSet<>();
     }
 
     public Restaurant(String name, String description)
@@ -84,6 +88,7 @@ public class Restaurant
         this.cooks = other.getCooks();
         this.waiters = other.getWaiters();
         this.schedule = other.getSchedule();
+        this.regions = other.getRegions();
     }
 
     @Override
@@ -133,5 +138,10 @@ public class Restaurant
     public void addDrink(Drink drink)
     {
         this.drinks.add(drink);
+    }
+
+    public void addRegion(Region region)
+    {
+        this.regions.add(region);
     }
 }
