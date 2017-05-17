@@ -87,6 +87,16 @@ public class UserServiceImpl implements UserService
         User saved = userRepository.save(systemManager);
         return new UserDTO(saved);
     }
+
+    @Override
+    public UserDTO addProvider(Provider provider)
+    {
+        Provider p = (Provider) userRepository.findByEmail(provider.getEmail());
+        if(p != null)
+            return null;
+        User saved = userRepository.save(provider);
+        return new UserDTO(saved);
+    }
     @Override
     public UserDTO changeWaiter(Waiter waiter)
     {

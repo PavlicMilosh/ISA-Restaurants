@@ -18,6 +18,7 @@ import { UpdateUser } from './components/updateUser/updateUser.component';
 import { AddWorkerComponent } from "./components/addWorker/addWorker.component";
 import { ChangePassword } from "./components/changePassword/changePassword.component";
 import { AddWorkScheduleComponent } from "./components/addWorkSchedule/addWorkSchedule.component";
+import {AddProviderComponent} from "./components/addProvider/addProvider.component";
 
 
 const appRoutes : Routes =
@@ -45,6 +46,10 @@ const appRoutes : Routes =
     {
       path : 'updateRestaurant',
       component : UpdateRestaurantComponent
+    },
+    {
+      path : 'addProvider',
+      component : AddProviderComponent
     },
 
     {

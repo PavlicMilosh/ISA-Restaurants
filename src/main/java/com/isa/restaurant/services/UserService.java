@@ -14,6 +14,8 @@ public interface UserService
     GuestDTO updateGuest(Guest guest);
     UserDTO findById(Long id);
     UserDTO findByEmail(String email);
+    UserDTO addProvider(Provider provider);
+
     UserDTO changeWaiter(Waiter waiter);
     UserDTO changeCook(Cook cook);
     UserDTO changeBartender(Bartender bartender);

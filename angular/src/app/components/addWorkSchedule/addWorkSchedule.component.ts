@@ -40,6 +40,7 @@ export class AddWorkScheduleComponent implements OnInit
 
   addSchedule()
   {
+    console.log(this.schedule);
     this.userService.addSchedule(this.schedule, this.selectedWorker.id)
       .subscribe(
         data => console.log(data)

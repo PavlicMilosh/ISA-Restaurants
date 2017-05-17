@@ -53,7 +53,7 @@ export class UpdateRestaurantComponent implements OnInit
     }
     this.newDish();
     this.newDrink();
-    this.restaurantService.getByManager(1).subscribe(
+    this.restaurantService.getByManager(0).subscribe(
       data =>  {this.restaurant = data; console.log(this.restaurant);}
     );
   }

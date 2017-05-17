@@ -36,6 +36,15 @@ public class UserController
         return new ResponseEntity(saved, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/register/provider", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> registerProvider(@RequestBody Provider provider)
+    {
+        UserDTO saved = userService.addProvider(provider);
+        if(saved == null)
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        return new ResponseEntity(saved, HttpStatus.CREATED);
+    }
+
     @RequestMapping(value = "/{userId}/addSchedule", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addSchedule(@PathVariable Long userId, @RequestBody List<WorkScheduleDTO> workSchedule)
     {

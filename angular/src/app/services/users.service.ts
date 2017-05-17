@@ -26,6 +26,22 @@ export class UserService
       .map(res => res.json());
   }
 
+  addProvider(email: string, pass: string, firstName: string, lastName: string)
+  {
+    var provider =
+    {
+      email: email,
+      password: pass,
+      firstName: firstName,
+      lastName: lastName,
+    };
+    var param = JSON.stringify(provider);
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post("http://localhost:8080/users/register/provider", param, { headers : headers })
+      .map(res => res.json());
+  }
+
   updateBarman(id: number, email: string, pass: string, firstName: string, lastName: string)
   {
     var user =
@@ -120,6 +136,7 @@ export class UserService
     {
       schedule.push(oneSchedule);
     }
+    console.log(schedule);
     var param = JSON.stringify(schedule);
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
