@@ -122,4 +122,14 @@ export class GuestService
       .map(res => res.json());
   }
 
+
+  sendReservation(guestId: number, reservation: any)
+  {
+    let param = JSON.stringify(reservation);
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post("http://localhost:8080/guest/" + guestId + "/sendReservation", param, {headers: headers})
+      .map(res => res.json());
+  }
+
 }

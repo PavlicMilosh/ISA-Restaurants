@@ -61,6 +61,14 @@ export class RestaurantService
     return this.http.post("http://localhost:8080/restaurants/" + restaurantId + "/addRM", param, { headers : headers })
       .map(res => res.json());
   }
+
+  searchRestaurants(searchParams: string)
+  {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.put("http://localhost:8080/restaurants/searchRestaurants", searchParams, {headers: headers})
+      .map(res => res.json());
+  }
 }
 
 interface Restaurant

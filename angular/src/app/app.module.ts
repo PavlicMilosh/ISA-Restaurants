@@ -24,7 +24,7 @@ import { RegisterGuestComponent } from "./components/registerGuest/registerGuest
 import { UpdateGuestComponent } from "./components/guest/updateGuest/updateGuest.component";
 import { GuestPageComponent } from './components/guest/guestMainPage/guest-page.component';
 import { GuestFriendsPageComponent } from './components/guest/guestFriendsPage/guestFriendsPage.component';
-import { GuestRestaurantsPageComponent } from './components/guest/guestRestaurantsPage/guest-restaurants-page.component';
+import { GuestRestaurantsPageComponent } from './components/guest/guestRestaurantsPage/guestRestaurantsPage.component';
 import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
 import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
 

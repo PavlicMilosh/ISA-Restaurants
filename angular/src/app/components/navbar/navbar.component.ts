@@ -102,7 +102,10 @@ export class NavbarComponent implements OnInit {
     var dropdownRestaurants =
       {
         text: "Restaurants",
-        links: []
+        links:
+          [
+            {text: "Send reservation", routerLink: "/guestRestaurantsPage"}
+          ]
       };
 
     this.addDropdown(dropdownMyProfile);
