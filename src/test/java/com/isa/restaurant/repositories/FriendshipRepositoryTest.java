@@ -109,17 +109,6 @@ public class FriendshipRepositoryTest
         Assert.assertEquals(expected, actual);
     }
 
-    @Test
-    public void testSearchAllGuests()
-    {
-
-    }
-
-    @Test
-    public void testSearchAllFriends()
-    {
-
-    }
 
     @After
     public void tearDown()

@@ -1,17 +1,14 @@
 package com.isa.restaurant;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isa.restaurant.domain.DTO.FriendshipDTO;
-import com.isa.restaurant.domain.DTO.GuestAndRelationDTO;
 import com.isa.restaurant.domain.DTO.GuestDTO;
 import com.isa.restaurant.domain.Friendship;
 import com.isa.restaurant.domain.FriendshipStatus;
 import com.isa.restaurant.domain.Guest;
 import com.isa.restaurant.repositories.FriendshipRepository;
 import com.isa.restaurant.repositories.UserRepository;
-import com.isa.restaurant.search.GuestSearch;
 import com.isa.restaurant.services.FriendshipService;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +21,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -48,9 +44,6 @@ public class FriendshipIntegrationTest
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private FriendshipService friendshipService;
 
 
     private MockMvc mvc;
@@ -257,54 +250,7 @@ public class FriendshipIntegrationTest
     }
 
 
-    @Test
-    public void testSearchAllGuests()
-    {
-        // ACCEPTED
-        List<GuestAndRelationDTO> results = friendshipService.searchAllGuests("guest2", g1_id);
-        Guest g = (Guest) userRepository.findById(g2_id);
-        Friendship f = friendshipRepository.findByBothUsers(g1_id, g2_id);
-        GuestAndRelationDTO expected = new GuestAndRelationDTO(g, f.getStatus(), f.getActionUser().getId());
-        GuestAndRelationDTO got = results.get(0);
-        Assert.assertEquals(expected, got);
 
-
-        // DECLINED
-        results = friendshipService.searchAllGuests("guest3", g1_id);
-        g = (Guest) userRepository.findById(g3_id);
-        f = friendshipRepository.findByBothUsers(g1_id, g3_id);
-        expected = new GuestAndRelationDTO(g, f.getStatus(), f.getActionUser().getId());
-        got = results.get(0);
-        Assert.assertEquals(expected, got);
-
-
-        // NONE
-        results = friendshipService.searchAllGuests("guest7", g1_id);
-        g = (Guest) userRepository.findById(g7_id);
-        expected = new GuestAndRelationDTO(g, FriendshipStatus.NONE, null);
-        got = results.get(0);
-        Assert.assertEquals(expected, got);
-    }
-
-
-    @Test
-    public void testSearchUserFriends()
-    {
-        // POSITIVE
-        List<GuestAndRelationDTO> results = friendshipService.searchUserFriends("guest2", g1_id);
-        Guest g = (Guest) userRepository.findById(g2_id);
-        Friendship f = friendshipRepository.findByBothUsers(g1_id, g2_id);
-        GuestAndRelationDTO expected = new GuestAndRelationDTO(g, f.getStatus(), f.getActionUser().getId());
-        GuestAndRelationDTO got = results.get(0);
-        Assert.assertEquals(expected, got);
-
-
-        //NEGATIVE
-        results = friendshipService.searchUserFriends("NO_GUEST_WITH_THIS_NAME", g1_id);
-        int expectedSize = 0;
-        int gotSize = results.size();
-        Assert.assertEquals(expectedSize, gotSize);
-    }
 
 
     @After

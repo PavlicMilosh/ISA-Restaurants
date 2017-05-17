@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -32,7 +34,7 @@ public class RestaurantTable
     private Double left;
 
     @Column(name = "angle")
-    private double angle;
+    private Double angle;
 
     @ManyToOne
     @JsonIgnore

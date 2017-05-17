@@ -56,4 +56,28 @@ public class VerificationToken
     {
         return guest.getId().longValue() == userId.longValue();
     }
+
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof VerificationToken)) return false;
+
+        VerificationToken vt = (VerificationToken) o;
+
+        if (guest != null ? !guest.equals(vt.guest) : vt.guest != null) return false;
+        if (token != null ? !token.equals(vt.token) : vt.token != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = 0;
+        result = 31 * result + (guest != null ? guest.hashCode() : 0);
+        result = 31 * result + (token != null ? token.hashCode() : 0);
+        return result;
+    }
 }

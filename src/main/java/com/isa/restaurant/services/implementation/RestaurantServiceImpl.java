@@ -1,15 +1,20 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
+import com.isa.restaurant.domain.DTO.RestaurantDTO;
+import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.repositories.*;
+import com.isa.restaurant.search.RestaurantSearch;
 import com.isa.restaurant.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Null;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Milos on 13-Apr-17.
@@ -17,20 +22,30 @@ import java.util.List;
 @Service
 public class RestaurantServiceImpl implements RestaurantService
 {
-    @Autowired
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
+    private final DishRepository dishRepository;
+    private final DrinkRepository drinkRepository;
+    private final TableRepository tableRepository;
+    private final RestaurantSearch restaurantSearch;
+
 
     @Autowired
-    private UserRepository userRepository;
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository,
+                                 UserRepository userRepository,
+                                 DishRepository dishRepository,
+                                 DrinkRepository drinkRepository,
+                                 TableRepository tableRepository,
+                                 RestaurantSearch restaurantSearch)
+    {
+        this.restaurantRepository = restaurantRepository;
+        this.userRepository = userRepository;
+        this.dishRepository = dishRepository;
+        this.drinkRepository = drinkRepository;
+        this.tableRepository = tableRepository;
+        this.restaurantSearch = restaurantSearch;
+    }
 
-    @Autowired
-    private DishRepository dishRepository;
-
-    @Autowired
-    private DrinkRepository drinkRepository;
-
-    @Autowired
-    private TableRepository tableRepository;
 
     @Override
     public Restaurant addRestaurant(Restaurant restaurant)
@@ -112,5 +127,15 @@ public class RestaurantServiceImpl implements RestaurantService
         restaurantManager.setRestaurant(r);
         userRepository.save(restaurantManager);
         return new UserDTO(restaurantManager);
+    }
+
+    public List<RestaurantDTO> searchRestaurantsByNameAndDescription(String searchText)
+    {
+        List<Restaurant> restaurants = restaurantSearch.searchAll(searchText);
+        List<RestaurantDTO> ret = new ArrayList<>();
+        for (Restaurant r : restaurants)
+            ret.add(new RestaurantDTO(r));
+        return ret;
+
     }
 }
