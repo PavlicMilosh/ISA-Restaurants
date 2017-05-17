@@ -1,9 +1,8 @@
 package com.isa.restaurant;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.isa.restaurant.domain.Dish;
-import com.isa.restaurant.domain.Drink;
-import com.isa.restaurant.domain.Restaurant;
+import com.isa.restaurant.domain.*;
+import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.repositories.RestaurantRepository;
 import com.isa.restaurant.services.RestaurantService;
 import org.junit.After;
@@ -16,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashSet;
@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Transactional
 public class RestaurantIntegrationTest
 {
     @Autowired
@@ -47,7 +48,8 @@ public class RestaurantIntegrationTest
     public void setUp()
     {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
-        restaurantRepository.save(new Restaurant("R1", "desc"));
+        Restaurant r = new Restaurant("R1", "desc");
+        restaurantRepository.save(r);
     }
 
     @Test
@@ -79,15 +81,52 @@ public class RestaurantIntegrationTest
     {
         ObjectMapper om = new ObjectMapper();
         Restaurant r = restaurantService.getRestaurant("R1");
-        Restaurant r1 = new Restaurant(r.getId(), r.getName(), r.getDescription(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
+        Restaurant r1 = new Restaurant(r);
         r1.addDish(new Dish("dish1", "desc1", 1l, r1));
         r1.addDrink(new Drink("drink1", "descd", 1l, r1));
+        Region region = new Region("bascu", r1, new HashSet<>());
+        r1.addRegion(region);
+        r1.addTable(new RestaurantTable(new Double(1), new Double(1), new Double(1), region, new HashSet<>()));
         String s = om.writeValueAsString(r1);
         this.mvc.perform(put("/restaurants/" + r.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(s))
                 .andExpect(status().isOk())
                 .andExpect(content().json(s));
+    }
+
+    @Test
+    public void testAddingWorkers() throws Exception
+    {
+        ObjectMapper om = new ObjectMapper();
+        Restaurant r = restaurantService.getRestaurant("R1");
+        Bartender b = new Bartender("b", "b", "b", "b");
+        UserDTO bb = new UserDTO(b);
+        bb.setId(1l);
+        Cook c = new Cook("c", "c", "c", "c");
+        UserDTO cc = new UserDTO(c);
+        cc.setId(2l);
+        Waiter w = new Waiter("w", "w", "w", "w");
+        UserDTO ww = new UserDTO(w);
+        ww.setId(3l);
+        this.mvc.perform(post("/restaurants/" + r.getId() + "/addBartender")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(b)))
+                .andExpect(status().isCreated())
+                .andExpect((content().json(om.writeValueAsString(bb))));
+
+        this.mvc.perform(post("/restaurants/" + r.getId() + "/addCook")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(c)))
+                .andExpect(status().isCreated())
+                .andExpect((content().json(om.writeValueAsString(cc))));
+
+        this.mvc.perform(post("/restaurants/" + r.getId() + "/addWaiter")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(w)))
+                .andExpect(status().isCreated())
+                .andExpect((content().json(om.writeValueAsString(ww))));
+
     }
 
     @After

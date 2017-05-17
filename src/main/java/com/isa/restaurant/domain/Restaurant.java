@@ -47,12 +47,32 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<RestaurantTable> tables;
 
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Bartender> bartenders;
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Cook> cooks;
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Waiter> waiters;
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<WorkSchedule> schedule;
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Region> regions;
+
     public Restaurant()
     {
         this.dishes = new HashSet<>();
         this.drinks = new HashSet<>();
         this.managers = new HashSet<>();
         this.tables = new HashSet<>();
+        this.bartenders = new HashSet<>();
+        this.cooks = new HashSet<>();
+        this.waiters = new HashSet<>();
+        this.schedule = new HashSet<>();
+        this.regions = new HashSet<>();
     }
 
     public Restaurant(String name, String description)
@@ -60,6 +80,21 @@ public class Restaurant
         this();
         this.name = name;
         this.description = description;
+    }
+
+    public Restaurant(Restaurant other)
+    {
+        this.name = other.getName();
+        this.description = other.getDescription();
+        this.dishes = other.getDishes();
+        this.drinks = other.getDrinks();
+        this.managers = other.getManagers();
+        this.tables = other.getTables();
+        this.bartenders = other.getBartenders();
+        this.cooks = other.getCooks();
+        this.waiters = other.getWaiters();
+        this.schedule = other.getSchedule();
+        this.regions = other.getRegions();
     }
 
     @Override
@@ -111,4 +146,8 @@ public class Restaurant
         this.drinks.add(drink);
     }
 
+    public void addRegion(Region region)
+    {
+        this.regions.add(region);
+    }
 }

@@ -3,8 +3,6 @@ package com.isa.restaurant.controllers;
 import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.domain.Guest;
 import com.isa.restaurant.domain.Invitation;
-import com.isa.restaurant.domain.Reservation;
-import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

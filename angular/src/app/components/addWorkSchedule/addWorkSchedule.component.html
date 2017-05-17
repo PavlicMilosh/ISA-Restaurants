@@ -1,0 +1,65 @@
+<div class="container"><div class="row main"><div class="main-login main-center">
+
+  <form class="main-center sidebyside" method="post" action="#">
+    <h2>Workers</h2>
+    <hr/>
+    <div class="form-group">
+      <div class="cols-sm-10">
+        <div class="input-group">
+          <span class="input-group-addon"></span>
+          <input type="button"
+                 class="form-control dropdown-toggle"
+                 data-toggle="dropdown"
+                 name="dish"
+                 id="dish"
+                 value="Select worker..."/>
+          <ul *ngIf="workers.length > 0" class="dropdown-menu" role="menu">
+              <li *ngFor="let worker of workers"><a (click)="selectWorker(worker)">{{worker.firstName}} {{worker.lastName}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form class="" method="post" action="#">
+    <h2>Add Work Schedule</h2>
+    <hr/>
+    <div class="form-group">
+      <label for="startTime" class="cols-sm-2 control-label">Start Time</label>
+      <div class="cols-sm-10">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-time" aria-hidden="true"></i></span>
+          <input type="text" class="form-control" name="startTime" id="startTime" [(ngModel)]="schedule.startTime"  placeholder="Start Time"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="endTime" class="cols-sm-2 control-label">End Time</label>
+      <div class="cols-sm-10">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-time" aria-hidden="true"></i></span>
+          <input type="text" class="form-control" name="endTime" id="endTime" [(ngModel)]="schedule.endTime"  placeholder="End Time"/>
+        </div>
+      </div>
+    </div>
+
+    <div class = "form-group">
+      <label for="day" class="cols-sm-2 control-label">Day</label>
+      <div class="cols-sm-10">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i></span>
+          <select class="form-control" name="day" id="day" placeholder="Day">
+            <option *ngFor="let day of days; let i = index" [value] = "i">{{day}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group ">
+      <a (click)="addSchedule()" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Register</a>
+    </div>
+
+  </form>
+
+</div></div></div>

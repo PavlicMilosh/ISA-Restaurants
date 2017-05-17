@@ -18,6 +18,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { RegisterRMComponent } from './components/registerRM/registerRM.component';
 import { RegisterEmployeeComponent } from './components/registerEmployee/registerEmployee.component';
+import { AddWorkerComponent } from './components/addWorker/addWorker.component';
 import { ChangePassword } from './components/changePassword/changePassword.component';
 
 import { RegisterGuestComponent } from "./components/registerGuest/registerGuest.component";
@@ -27,6 +28,7 @@ import { GuestFriendsPageComponent } from './components/guest/guestFriendsPage/g
 import { GuestRestaurantsPageComponent } from './components/guest/guestRestaurantsPage/guestRestaurantsPage.component';
 import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
 import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
+import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
 
 
 @NgModule({
@@ -38,6 +40,8 @@ import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/gue
     RegisterSMComponent,
     RegisterRMComponent,
     RegisterEmployeeComponent,
+    AddWorkerComponent,
+    ChangePassword,
     AddRestaurantComponent,
     UpdateRestaurantComponent,
 
@@ -53,6 +57,7 @@ import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/gue
     GuestRequestPageComponent,
     GuestRestaurantsPageComponent,
     GuestPeoplePageComponent,
+    AddWorkScheduleComponent
   ],
   imports: [
     BrowserModule,

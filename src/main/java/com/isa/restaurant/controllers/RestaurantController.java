@@ -6,6 +6,8 @@ import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.domain.RestaurantManager;
 import com.isa.restaurant.domain.RestaurantTable;
+import com.isa.restaurant.domain.*;
+import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,6 +72,42 @@ public class RestaurantController
         if(saved == null)
             return new ResponseEntity(HttpStatus.CONFLICT);
         return new ResponseEntity(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/addWaiter", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> addWaiter(@PathVariable Long restaurantId, @RequestBody Waiter waiter)
+    {
+        UserDTO saved = restaurantService.addWaiter(waiter, restaurantId);
+        if(saved == null)
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/addBartender", method = RequestMethod.POST)
+    public ResponseEntity<UserDTO> addBartender(@PathVariable Long restaurantId, @RequestBody Bartender bartender)
+    {
+        UserDTO saved = restaurantService.addBartender(bartender, restaurantId);
+        if(saved == null)
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/addCook", method = RequestMethod.POST)
+    public ResponseEntity<UserDTO> addCook(@PathVariable Long restaurantId, @RequestBody Cook cook)
+    {
+        UserDTO saved = restaurantService.addCook(cook, restaurantId);
+        if(saved == null)
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "getWorkersByRMId/{managerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getWorkersByRMId(@PathVariable Long managerId)
+    {
+        List<UserDTO> workers = restaurantService.getWorkersByRMId(managerId);
+        if(workers == null)
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity(workers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/searchRestaurants", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

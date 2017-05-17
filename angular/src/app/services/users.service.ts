@@ -47,7 +47,7 @@ export class UserService
   {
     var user =
       {
-        id:id,
+        id: id,
         email: email,
         password: pass,
         firstName: firstName,
@@ -57,6 +57,30 @@ export class UserService
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/users/update/barman", param, { headers : headers })
+      .map(res => res.json());
+  }
+
+  addWorker(firstName: string, lastName: string, email: string, password: string, clothesNumber: number, footwearNumber: number, role: string) {
+    var worker =
+    {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      clothesNumber: clothesNumber,
+      footwearNumber: footwearNumber
+    }
+    var path = '';
+    if (role == 'Waiter')
+      path = "/addWaiter";
+    else if (role == 'Cook')
+      path = "/addCook";
+    else
+      path = "/addBartender";
+    var param = JSON.stringify(worker);
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post("http://localhost:8080/restaurants/" + 1 + path, param, {headers: headers})
       .map(res => res.json());
   }
 
@@ -74,5 +98,41 @@ export class UserService
     return this.http.post("http://localhost:8080/users/register/barman", param, { headers : headers })
       .map(res => res.json());
   }
+
+  addSchedule(oneSchedule: Schedule, userId: number)
+  {
+    var schedule = [];
+    if(oneSchedule.day == 0)
+    {
+      for(var i = 0; i < 8; i++)
+      {
+        var s =
+        {
+          id : oneSchedule.id,
+          startTime: oneSchedule.startTime,
+          endTime: oneSchedule.endTime,
+          day: i
+        }
+        schedule.push(s);
+      }
+    }
+    else
+    {
+      schedule.push(oneSchedule);
+    }
+    var param = JSON.stringify(schedule);
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post("http://localhost:8080/users/" + userId + "/addSchedule", param, { headers : headers })
+      .map(res => res.json());
+  }
+}
+
+interface Schedule
+{
+  id: number;
+  startTime: string;
+  endTime: string;
+  day: number;
 }
 

@@ -56,7 +56,7 @@ input::-webkit-input-placeholder {
 {
   box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
 }
-#drinksButton, #dishButton, #restaurantButton
+#button
 {
   border: 1px solid #4461f5;
   margin-top: 28px;
@@ -66,7 +66,7 @@ input::-webkit-input-placeholder {
   border-radius: 3px 3px;
   background: #4461f5;
 }
-#drinksButton:hover, #dishButton:hover, #restaurantButton:hover
+#button:hover
 {
   color: #4461f5;
   background: #ffffff;
@@ -96,78 +96,4 @@ span.input-group-addon i {
   text-align: center;
 }
 
-#restaurantDescription
-{
-  column-span: 2;
-}
-
-
-.wrapper
-{
-  margin: auto;
-  width: 90%;
-  height: 80vh;
-}
-
-#leftpart
-{
-  width: 40%;
-  height: 100%;
-  float: left;
-}
-
-#rightpart
-{
-  float:right;
-  width: 60%;
-  height: 100%;
-  position: relative;
-}
-
-#canvasOptions
-{
-  width: 20%;
-  float: left;
-}
-
-#canvasDiv
-{
-  width: 80%;
-  height: 100%;
-  float:right;
-}
-
-#canvas
-{
-  width: inherit;
-  height: inherit;
-  background: rgba(0,0,0,0.5);
-}
-
-.list-group
-{
-  background: rgba(0,0,0,0);
-  stroke-opacity: 0;
-  border-style: hidden;
-}
-
-.list-group-item
-{
-  background: rgba(0,0,0,0);
-  border-style: none;
-}
-
-.canvas-btn
-{
-  width: 100%;
-  background: rgba(0,0,0,0.7);
-  border-style: none;
-}
-
-.canvas-btn:hover
-{
-  width: 100%;
-  background: rgba(1,1,1,0.7);
-  border-style: none;
-}
 

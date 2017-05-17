@@ -41,5 +41,17 @@ public class RestaurantTable
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "restaurantTable", fetch = FetchType.LAZY)
-    private Set<Bill> Bills;
+    private Set<Bill> bills;
+
+    @ManyToOne
+    private Region region;
+
+    public RestaurantTable(Double top, Double left, Double angle, Region region, Set<Bill> bills)
+    {
+        this.top = top;
+        this.left = left;
+        this.angle = angle;
+        this.region = region;
+        this.bills = bills;
+    }
 }

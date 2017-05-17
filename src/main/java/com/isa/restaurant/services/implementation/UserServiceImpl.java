@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService
         return new UserDTO(saved);
     }
 
-
     @Override
     public GuestDTO updateGuest(Guest guest)
     {
@@ -79,7 +78,6 @@ public class UserServiceImpl implements UserService
         return new GuestDTO(saved);
     }
 
-
     @Override
     public UserDTO addSystemManager(SystemManager systemManager)
     {
@@ -89,50 +87,17 @@ public class UserServiceImpl implements UserService
         User saved = userRepository.save(systemManager);
         return new UserDTO(saved);
     }
-
-
-    // EMPLOYEE RELATED
-
-    public UserDTO addBarman(Barman barman)
+    @Override
+    public UserDTO changeWaiter(Waiter waiter)
     {
-        Barman br = (Barman) userRepository.findByEmail(barman.getEmail());
-        if(br != null)
+        Waiter w = (Waiter) userRepository.findByEmail(waiter.getEmail());
+        if (w != null)
             return null;
-        User saved = userRepository.save(barman);
+        User saved = userRepository.save(w);
         return new UserDTO(saved);
     }
 
-
-    public UserDTO changeBarman(Barman barman)
-    {
-        Barman br = (Barman) userRepository.findById(barman.getId());
-        if(br == null)
-            return null;
-        User saved = userRepository.save(barman);
-        return new UserDTO(saved);
-    }
-
-
-    public UserDTO addCook(Cook cook)
-    {
-        Cook ck = (Cook) userRepository.findByEmail(cook.getEmail());
-        if(ck != null)
-            return null;
-        User saved = userRepository.save(cook);
-        return new UserDTO(saved);
-    }
-
-
-    public UserDTO addBartender(Bartender bartender)
-    {
-        Bartender br = (Bartender) userRepository.findByEmail(bartender.getEmail());
-        if(br != null)
-            return null;
-        User saved = userRepository.save(bartender);
-        return new UserDTO(saved);
-    }
-
-
+    @Override
     public UserDTO changeCook(Cook cook)
     {
         Cook ck = (Cook) userRepository.findById(cook.getId());
@@ -142,7 +107,7 @@ public class UserServiceImpl implements UserService
         return new UserDTO(saved);
     }
 
-
+    @Override
     public UserDTO changeBartender(Bartender bartender)
     {
         Bartender br = (Bartender) userRepository.findById(bartender.getId());

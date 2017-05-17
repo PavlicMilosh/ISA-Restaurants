@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-group ">
-          <a (click)="manageRestaurant()" target="_blank" type="button" id="restaurantButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+          <a (click)="manageRestaurant()" target="_self" type="button" id="restaurantButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
         </div>
 
       </form>
@@ -95,7 +95,7 @@
         </div>
 
         <div class="form-group ">
-          <a (click)="manageDrink()" target="_blank" type="button" id="drinksButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+          <a (click)="manageDrink()" target="_self" type="button" id="drinksButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
         </div>
 
       </form>
@@ -158,7 +158,7 @@
         </div>
 
         <div class="form-group ">
-          <a (click)="manageDish()" target="_blank" type="button" id="dishButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+          <a (click)="manageDish()" target="_self" type="button" id="dishButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
         </div>
 
       </form>
@@ -167,11 +167,58 @@
 
   </div>
   <div id = "rightpart">
+    <div>
+      <form class="main-center sidebyside" method="post" action="#">
+        <h2>Regions</h2>
+        <hr/>
+        <div class="form-group">
+          <label for="restaurantDescription" class="cols-sm-2 control-label">Region Name</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="dishPrice" id="regionName" [(ngModel)]="editingRegion.name"  placeholder="Region Name"/>
+            </div>
+          </div>
+        </div>
 
+        <div class="form-group">
+          <label for="restaurantDescription" class="cols-sm-2 control-label">Color</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="dishPrice" id="color" [(ngModel)]="editingRegion.color"  placeholder="Color"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <a (click)="addRegion()" target="_self" type="button" id="regionButton" class="btn btn-primary btn-lg btn-block login-button">Add</a>
+        </div>
+      </form>
+    </div>
     <div id = "canvasOptions">
       <ul class="list-group">
+        <li class="list-group-item">
+          <div class="form-group">
+            <label class="cols-sm-2 control-label">Select Region...</label>
+            <div class="cols-sm-10">
+              <div class="input-group">
+                <span class="input-group-addon"></span>
+                <input type="button"
+                       class="form-control dropdown-toggle"
+                       data-toggle="dropdown"
+                       name="dish"
+                       id="region"
+                       value="Select Region..."/>
+                <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
+                  <li><a (click)="newDish()">Add new</a></li>
+                    <li *ngFor="let region of restaurant.regions"><a (click)="selectRegion(region)">{{region.name}}</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </li>
         <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="addTable()">Add Table</a></li>
-        <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="updateTable()">Update Table</a></li>
         <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="removeTable()">Remove Table</a></li>
       </ul>
     </div>
@@ -181,6 +228,5 @@
     </div>
 
   </div>
-
-
+  
 </div>

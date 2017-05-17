@@ -14,8 +14,8 @@ export class RestaurantService
   {
     var restaurant =
     {
-      restaurantName: restaurantName,
-      restaurantDescription: restaurantDescription
+      name: restaurantName,
+      description: restaurantDescription
     }
     var param = JSON.stringify(restaurant);
     var headers = new Headers();
@@ -62,6 +62,12 @@ export class RestaurantService
       .map(res => res.json());
   }
 
+  getWorkersByRMId(managerId: number)
+  {
+    return this.http.get("http://localhost:8080/restaurants/getWorkersByRMId/" + managerId)
+      .map(res => res.json());
+  }
+
   searchRestaurants(searchParams: string)
   {
     let headers = new Headers();
@@ -69,6 +75,7 @@ export class RestaurantService
     return this.http.put("http://localhost:8080/restaurants/searchRestaurants", searchParams, {headers: headers})
       .map(res => res.json());
   }
+
 }
 
 interface Restaurant
