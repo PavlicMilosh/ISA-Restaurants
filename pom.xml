@@ -100,18 +100,19 @@
 		</dependency>
 
 		<!-- ELASTICSEARCH -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search-elasticsearch</artifactId>
 			<version>5.6.1.Final</version>
-		</dependency>
+		</dependency-->
 
 		<!-- JAVA NATIVE ACCESS -->
-		<dependency>
+		<!--dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 			<version>4.4.0</version>
-		</dependency>
+		</dependency-->
+
 
 
 	</dependencies>
