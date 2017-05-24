@@ -33,6 +33,9 @@ import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSc
 import { MakeOrder } from './components/makeOrder/makeOrder.component';
 import { OrderDishes } from './components/orderDishes/orderDishes.component';
 import { OrderDrinks } from './components/orderDrinks/orderDrinks.component';
+import { TableDisplay } from './components/tableDisplay/tableDisplay.component';
+import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWorkShedule.component";
+import {CalendarComponent} from "ap-angular2-fullcalendar/src/calendar/calendar";
 
 
 @NgModule({
@@ -55,6 +58,9 @@ import { OrderDrinks } from './components/orderDrinks/orderDrinks.component';
     MakeOrder,
     OrderDishes,
     OrderDrinks,
+    TableDisplay,
+    EmployeeWorkShedule,
+    CalendarComponent,
 
 
     //Ogi

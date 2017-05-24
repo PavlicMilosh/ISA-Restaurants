@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.25",
+    "ap-angular2-fullcalendar": "^1.2.8",
     "core-js": "^2.4.1",
     "fabric": "^1.7.11",
     "ng2-dropdown": "0.0.21",
