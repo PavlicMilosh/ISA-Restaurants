@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -62,6 +63,7 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Region> regions;
 
+
     public Restaurant()
     {
         this.dishes = new HashSet<>();
@@ -75,12 +77,14 @@ public class Restaurant
         this.regions = new HashSet<>();
     }
 
+
     public Restaurant(String name, String description)
     {
         this();
         this.name = name;
         this.description = description;
     }
+
 
     public Restaurant(Restaurant other)
     {
@@ -96,6 +100,16 @@ public class Restaurant
         this.schedule = other.getSchedule();
         this.regions = other.getRegions();
     }
+
+
+    public Restaurant(RestaurantDTO restaurant)
+    {
+        this();
+        this.id = restaurant.getId();
+        this.name = restaurant.getName();
+        this.description = restaurant.getDescription();
+    }
+
 
     @Override
     public boolean equals(Object o)

@@ -214,13 +214,20 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/sendInvitation",
+    /*@RequestMapping(value = "/{guestId}/sendInvitation",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReservationDTO> sendInvitation(@PathVariable Long guestId, @RequestBody Invitation invitation)
     {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }*/
+
+
+    @RequestMapping(value = "/{guestId}/updateReservation/{reservationId}")
+    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable Long guestId, @PathVariable Long reservationId)
+    {
+        return null;
     }
 
 

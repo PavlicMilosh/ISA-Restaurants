@@ -83,6 +83,7 @@ export class NavbarComponent implements OnInit {
         text: "Profile",
         links:
           [
+            {text: "Main Page", routerLink: "/mainPageGuest"},
             {text: "Register", routerLink: "/registerGuest"},
             {text: "Update", routerLink: "/updateGuest"},
           ]

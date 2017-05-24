@@ -6,7 +6,7 @@ import {GuestService} from "../../../services/guest.service";
   moduleId: module.id,
   selector: 'registerGuest',
   templateUrl: 'updateGuest.component.html',
-  styleUrls: ['updateGuest.component.css'],
+  styleUrls: ['updateGuest.component.css', '../../style/formStyle.css'],
   providers: [GuestService]
 })
 
@@ -18,7 +18,6 @@ export class UpdateGuestComponent
   password: string;
   firstName: string;
   lastName: string;
-
 
   constructor(private guestService: GuestService){}
 

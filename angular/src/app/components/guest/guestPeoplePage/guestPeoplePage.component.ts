@@ -24,7 +24,7 @@ export class GuestPeoplePageComponent implements OnInit {
         this.people = data;
 
       },
-      error => alert(error)
+      //error => alert(error)
     );
 
   }
@@ -44,7 +44,7 @@ export class GuestPeoplePageComponent implements OnInit {
             this.people[i].lastActionUserId = 1; // generalizovati id
           }
       },
-      error => alert(error)
+     // error => alert(error)
     );
   }
 
@@ -61,7 +61,7 @@ export class GuestPeoplePageComponent implements OnInit {
 
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
 
@@ -77,7 +77,7 @@ export class GuestPeoplePageComponent implements OnInit {
           }
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
 
@@ -97,7 +97,7 @@ export class GuestPeoplePageComponent implements OnInit {
           }
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
 
@@ -109,13 +109,13 @@ export class GuestPeoplePageComponent implements OnInit {
       this.guestService.getAllGuests(1).subscribe
       (
         data => this.people = data,
-        error => alert(error)
+        //error => alert(error)
       );
     }
 
     this.guestService.searchAllGuests(1, this.searchParams).subscribe(
       data => this.people = data,
-      error => alert(error)
+      //error => alert(error)
     );
   }
 

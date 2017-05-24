@@ -20,15 +20,17 @@ import { RegisterRMComponent } from './components/registerRM/registerRM.componen
 import { RegisterEmployeeComponent } from './components/registerEmployee/registerEmployee.component';
 import { AddWorkerComponent } from './components/addWorker/addWorker.component';
 import { ChangePassword } from './components/changePassword/changePassword.component';
+import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
 
-import { RegisterGuestComponent } from "./components/registerGuest/registerGuest.component";
+import { RegisterGuestComponent } from "./components/guest/registerGuest/registerGuest.component";
 import { UpdateGuestComponent } from "./components/guest/updateGuest/updateGuest.component";
-import { GuestPageComponent } from './components/guest/guestMainPage/guest-page.component';
 import { GuestFriendsPageComponent } from './components/guest/guestFriendsPage/guestFriendsPage.component';
 import { GuestRestaurantsPageComponent } from './components/guest/guestRestaurantsPage/guestRestaurantsPage.component';
 import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
 import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
-import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
+import { GuestMainPageComponent } from "./components/guest/guestMainPage/guestMainPage.component";
+import { FormWizardModule } from "angular2-wizard/dist";
+import { GuestReservationWizardComponent } from "./components/guest/guestReservationWizard/guestReservationWizard.component";
 
 
 @NgModule({
@@ -52,18 +54,20 @@ import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSc
     //Ogi
     RegisterGuestComponent,
     UpdateGuestComponent,
-    GuestPageComponent,
     GuestFriendsPageComponent,
+    GuestMainPageComponent,
     GuestRequestPageComponent,
     GuestRestaurantsPageComponent,
     GuestPeoplePageComponent,
-    AddWorkScheduleComponent
+    AddWorkScheduleComponent,
+    GuestReservationWizardComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     routing,
+    FormWizardModule,
     NgbModule.forRoot()
   ],
   providers: [],

@@ -50,13 +50,11 @@ public class ReservationServiceImpl implements ReservationService
         Date reservationDateTimeStart = Utilities.createDateFromString(reservationDTO.getStartDate(), reservationDTO.getStartTime());
         Date reservationDateTimeEnd = Utilities.addMinutesToDate(reservationDateTimeStart, reservationDTO.getDuration());
 
-        boolean occupied = true;
-        HashMap<Boolean, List<RestaurantTable>> allTables = getTables(restaurant, reservationDateTimeStart, reservationDateTimeEnd);
-
         if (guest == null ||
             restaurant == null ||
             reservationDateTimeStart == null ||
-            reservationDateTimeEnd == null) return null;
+            reservationDateTimeEnd == null ||
+            hasOccupiedTables(reservationDTO.getTables(), restaurant, reservationDateTimeStart, reservationDateTimeEnd)) return null;
 
         // STANDARD
         Reservation reservation = new Reservation();
@@ -65,28 +63,34 @@ public class ReservationServiceImpl implements ReservationService
         reservation.setDateTimeStart(reservationDateTimeStart);
         reservation.setDateTimeEnd(reservationDateTimeEnd);
 
+        // TABLES
+        for (RestaurantTableDTO rtDTO : reservationDTO.getTables())
+        {
+            RestaurantTable table = tableRepository.findOne(rtDTO.getId());
+            reservation.addTable(table);
+        }
+
         // INVITATIONS
         Set<Invitation> invitations = new HashSet<>();
         /* TODO 1: Implement adding invitations */
         reservation.setInvitations(invitations);
 
-        // TABLES
-        Set<RestaurantTable> restaurantTables = new HashSet<>();
-
-        for (RestaurantTable rt : allTables.get(occupied))
-            for (RestaurantTableDTO rtDTO : reservationDTO.getTables())
-                if (rt.getId().longValue() == rtDTO.getId().longValue())
-                    return null;
-
-        for (RestaurantTable rt : allTables.get(!occupied))
-            for (RestaurantTableDTO rtDTO : reservationDTO.getTables())
-                if (rt.getId().longValue() == rtDTO.getId().longValue())
-                    restaurantTables.add(rt);
-
-        reservation.setTables(restaurantTables);
-
         reservationRepository.save(reservation);
         return new ReservationDTO(reservation);
+    }
+
+
+    private boolean hasOccupiedTables(Set<RestaurantTableDTO> reservedTables, Restaurant restaurant, Date reservationDateTimeStart, Date reservationDateTimeEnd)
+    {
+        boolean occupied = true;
+        HashMap<Boolean, List<RestaurantTable>> relevantTables = getTables(restaurant, reservationDateTimeStart, reservationDateTimeEnd);
+
+        for (RestaurantTable rt : relevantTables.get(occupied))
+            for (RestaurantTableDTO rtDTO : reservedTables)
+                if (rt.getId().longValue() == rtDTO.getId().longValue())
+                    return true;
+
+        return false;
     }
 
 

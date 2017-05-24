@@ -1,4 +1,9 @@
 package com.isa.restaurant.domain;
+import com.isa.restaurant.domain.DTO.InvitationDTO;
+import com.isa.restaurant.domain.DTO.OrderDTO;
+import com.isa.restaurant.domain.DTO.ReservationDTO;
+import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
+import com.isa.restaurant.ulitity.Utilities;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +14,12 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by Q on 13-May-17.
  */
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -51,6 +56,31 @@ public class Reservation
 
     @OneToMany
     private Set<Order> orders;
+
+
+    public Reservation()
+    {
+        this.invitations = new HashSet<>();
+        this.orders = new HashSet<>();
+        this.tables = new HashSet<>();
+    }
+
+
+    public Reservation(ReservationDTO reservationDTO)
+    {
+        this.tables = new HashSet<>();
+        this.invitations = new HashSet<>();
+        this.orders = new HashSet<>();
+
+        this.restaurant = new Restaurant(reservationDTO.getRestaurant());
+        this.reserver = new Guest(reservationDTO.getReserver());
+
+        this.dateTimeStart = Utilities.createDateFromString(reservationDTO.getStartDate(), reservationDTO.getStartTime());
+        this.dateTimeEnd = Utilities.addMinutesToDate(this.dateTimeStart, reservationDTO.getDuration());
+
+        for (RestaurantTableDTO rtDTO : reservationDTO.getTables())
+            this.tables.add(new RestaurantTable(rtDTO));
+    }
 
 
     @Override
@@ -91,4 +121,12 @@ public class Reservation
                 return true;
         return false;
     }
+
+    public void addTable(RestaurantTable table)
+    {
+        if (!this.tables.contains(table))
+            this.tables.add(table);
+    }
+
+
 }

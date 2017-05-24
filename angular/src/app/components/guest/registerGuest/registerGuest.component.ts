@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { UserService } from "../../services/users.service";
-import {GuestService} from "../../services/guest.service";
+import {GuestService} from "../../../services/guest.service";
 
 
 @Component({
   moduleId: module.id,
   selector: 'registerGuest',
-  templateUrl: './registerGuest.component.html',
-  styleUrls: ['./registerGuest.component.css'],
+  templateUrl: 'registerGuest.component.html',
+  styleUrls: ['registerGuest.component.css', '../../style/formStyle.css'],
   providers: [GuestService]
 })
 
