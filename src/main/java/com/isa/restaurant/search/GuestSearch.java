@@ -3,7 +3,7 @@ package com.isa.restaurant.search;
 import com.isa.restaurant.domain.Friendship;
 import com.isa.restaurant.domain.Guest;
 import org.apache.lucene.search.Query;
-import org.hibernate.search.elasticsearch.ElasticsearchQueries;
+//import org.hibernate.search.elasticsearch.ElasticsearchQueries;
 import org.hibernate.search.exception.EmptyQueryException;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
@@ -40,7 +40,7 @@ public class GuestSearch
         {
             @SuppressWarnings("unchecked")
             List<Guest> result = ftem.createFullTextQuery(
-                    queryBuilder.keyword().onFields("firstName", "lastName", "email").matching(text).createQuery()
+                    queryBuilder.keyword().onFields("firstName", "lastName", "email").matching("*" + text + "*").createQuery()
                     , Guest.class).getResultList();
             return result;
         }

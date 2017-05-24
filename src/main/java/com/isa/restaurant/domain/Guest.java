@@ -20,7 +20,6 @@ import java.util.Set;
  * Created by Q on 15-Apr-17.
  */
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -28,8 +27,6 @@ import java.util.Set;
 @Indexed
 public class Guest extends User
 {
-    @Column(name = "guest_enabled")
-    private Boolean enabled;
 
 //    @OneToMany(mappedBy = "firstUser")
 //    private Set<Friendship> friendships1;

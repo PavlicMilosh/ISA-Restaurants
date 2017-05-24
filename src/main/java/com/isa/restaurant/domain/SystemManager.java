@@ -11,20 +11,28 @@ import javax.persistence.Table;
 /**
  * Created by Milos on 10-Apr-17.
  */
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "system_manager")
 public class SystemManager extends User
 {
+    public SystemManager()
+    {
+        this.enabled = true;
+        this.authorities = Role.SYSTEM_MANAGER;
+    }
+
+
     public SystemManager(String email, String password, String firstName, String lastName)
     {
+        this();
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
 
     @Override
     public boolean equals(Object o)

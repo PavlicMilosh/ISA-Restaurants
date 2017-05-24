@@ -14,7 +14,6 @@ import java.util.Set;
  * Created by djuro on 4/13/2017.
  */
 
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -29,8 +28,16 @@ public class Waiter extends User
     private Set<WorkSchedule> schedule;
     //private Set<RestaurantTable> tables;
 
+
+    public Waiter()
+    {
+        this.enabled = true;
+        this.authorities = Role.WAITER;
+    }
+
     public Waiter(String email, String password, String firstName, String lastName)
     {
+        this();
         this.email = email;
         this.password = password;
         this.firstName = firstName;

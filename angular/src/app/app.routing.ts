@@ -15,18 +15,25 @@ import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/g
 import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
 
 import { UpdateUser } from './components/updateUser/updateUser.component';
+import {ChangePassword} from "./components/changePassword/changePassword.component";
+import {GuestRestaurantsPageComponent} from "./components/guest/guestRestaurantsPage/guestRestaurantsPage.component";
 import { AddWorkerComponent } from "./components/addWorker/addWorker.component";
-import { ChangePassword } from "./components/changePassword/changePassword.component";
 import { AddWorkScheduleComponent } from "./components/addWorkSchedule/addWorkSchedule.component";
-import {AddProviderComponent} from "./components/addProvider/addProvider.component";
+import { AddProviderComponent } from "./components/addProvider/addProvider.component";
+import { AuthenticationComponent } from "./components/authentication/authentication.component";
 
 
 const appRoutes : Routes =
   [
     {
       path : '',
-      component : RegisterSMComponent
+      component : AuthenticationComponent
     },
+    {
+      path: 'auth',
+      component: AuthenticationComponent
+    },
+
     {
       path : 'registerSM',
       component : RegisterSMComponent
@@ -34,10 +41,6 @@ const appRoutes : Routes =
     {
       path : 'registerRM',
       component : RegisterRMComponent
-    },
-    {
-      path : 'registerEmployee',
-      component : RegisterEmployeeComponent
     },
     {
       path : 'addRestaurant',
@@ -51,14 +54,18 @@ const appRoutes : Routes =
       path : 'addProvider',
       component : AddProviderComponent
     },
+    {
+      path : 'addWorker',
+      component : AddWorkerComponent
+    },
+    {
+      path : 'addWorkSchedule',
+      component : AddWorkScheduleComponent
+    },
 
     {
       path : 'registerGuest',
       component : RegisterGuestComponent
-    },
-    {
-      path : 'addWorker',
-      component : AddWorkerComponent
     },
     {
       path : 'updateGuest',
@@ -77,11 +84,9 @@ const appRoutes : Routes =
       component : GuestPeoplePageComponent
     },
     {
-      path : 'addWorkSchedule',
-      component : AddWorkScheduleComponent
+      path : 'guestRestaurantsPage',
+      component : GuestRestaurantsPageComponent
     },
-
-
 
 
     {

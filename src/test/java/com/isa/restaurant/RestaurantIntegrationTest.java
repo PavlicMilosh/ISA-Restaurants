@@ -59,7 +59,7 @@ public class RestaurantIntegrationTest
 
         this.mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\" : \"My restaurant2\", \"description\" : \"Some text for description\"}"))
+                .content("{\"name\" : \"My restaurant1\", \"description\" : \"Some text for description\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{\"name\" : \"My restaurant2\", \"description\" : \"Some text for description\"}"));
 

@@ -1,5 +1,11 @@
 package com.isa.restaurant.controllers;
 
+import com.isa.restaurant.domain.DTO.RestaurantDTO;
+import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
+import com.isa.restaurant.domain.DTO.UserDTO;
+import com.isa.restaurant.domain.Restaurant;
+import com.isa.restaurant.domain.RestaurantManager;
+import com.isa.restaurant.domain.RestaurantTable;
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.services.RestaurantService;
@@ -10,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Milos on 14-Apr-17.
@@ -101,6 +108,13 @@ public class RestaurantController
         if(workers == null)
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         return new ResponseEntity(workers, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/searchRestaurants", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RestaurantDTO>> searchRestaurants(@RequestBody String searchParams)
+    {
+        List<RestaurantDTO> ret = restaurantService.searchRestaurantsByNameAndDescription(searchParams);
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
 }

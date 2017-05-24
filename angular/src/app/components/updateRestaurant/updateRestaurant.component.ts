@@ -43,17 +43,17 @@ export class UpdateRestaurantComponent implements OnInit
       name: "",
       tables: [],
       color: "blue"
-    }
+    };
     this.currentRegion =
     {
       id: null,
       name: "",
       tables: [],
       color: "blue"
-    }
+    };
     this.newDish();
     this.newDrink();
-    this.restaurantService.getByManager(0).subscribe(
+    this.restaurantService.getByManager().subscribe(
       data =>  {this.restaurant = data; console.log(this.restaurant);}
     );
   }
@@ -66,7 +66,6 @@ export class UpdateRestaurantComponent implements OnInit
 
   addTable()
   {
-    console.log(this.regionIndex);
     var rect = new fabric.Rect(
       {
         left: 100,

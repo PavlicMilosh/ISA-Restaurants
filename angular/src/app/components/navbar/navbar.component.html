@@ -5,7 +5,18 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li *ngFor="let link of links"><a routerLink="{{link.routerLink}}">{{link.text}}</a></li>
+
+        <li *ngFor="let link of links">
+
+          <ng-container *ngIf="link.text == 'Logout'">
+            <a (click)="logout()" routerLink="{{link.routerLink}}">{{link.text}}</a>
+          </ng-container>
+
+          <ng-container *ngIf="link.text != 'Logout'">
+            <a routerLink="{{link.routerLink}}">{{link.text}}</a>
+          </ng-container>
+        </li>
+
         <li *ngFor="let dropdown of dropdowns" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown">{{dropdown.text}} <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">

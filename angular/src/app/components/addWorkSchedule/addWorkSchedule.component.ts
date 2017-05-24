@@ -17,9 +17,9 @@ export class AddWorkScheduleComponent implements OnInit
 
   constructor(private userService: UserService, private restaurantService: RestaurantService)
   {
-    this.restaurantService.getWorkersByRMId(1).subscribe(
+    this.restaurantService.getWorkersByRMId().subscribe(
       data => this.workers = data
-    )
+    );
     this.workers = [];
     this.schedule =
     {

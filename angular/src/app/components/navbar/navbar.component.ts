@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgFor} from "@angular/common";
+import {LoggedUtils} from "../../utils/logged.utils";
 
 @Component
 ({
@@ -18,13 +19,21 @@ export class NavbarComponent implements OnInit {
   {
     this.links = [];
     this.dropdowns = [];
-    console.log(this.dropdowns);
-    //this.presetSM();
-    this.presetG();
-    if (this.links.length == 0)
+
+    if (LoggedUtils.isEmpty())
+      this.defaultElements();
+    else
     {
-      this.nempty = false;
+      if (LoggedUtils.hasRole("GUEST"))
+        this.presetG();
+      else if (LoggedUtils.hasRole("SYSTEM_MANAGER"))
+        this.presetSM();
+      else if (LoggedUtils.hasRole("RESTAURANT_MANAGER"))
+        this.presetRM();
     }
+
+    if (this.links.length == 0)
+      this.nempty = false;
   }
 
   ngOnInit()
@@ -44,6 +53,13 @@ export class NavbarComponent implements OnInit {
   }
 
 
+  defaultElements()
+  {
+    this.addLink({text: "Login", routerLink: "/auth"});
+    this.addLink({text: "Register", routerLink: "/registerGuest"});
+  }
+
+
   presetSM()
   {
     var dropdownRestaurant =
@@ -51,8 +67,7 @@ export class NavbarComponent implements OnInit {
       text: "Restaurants",
       links:
       [
-        {text: "Add restaurant", routerLink: "/addRestaurant"},
-        {text: "Update restaurant", routerLink: "/updateRestaurant"}
+        {text: "Add restaurant", routerLink: "/addRestaurant"}
       ]
     };
 
@@ -68,11 +83,37 @@ export class NavbarComponent implements OnInit {
 
     this.addDropdown(dropdownRestaurant);
     this.addDropdown(dropdownUsers);
+    this.addLink({text: "Logout", routerLink:"/auth" });
   }
+
 
   presetRM()
   {
+    var dropdownRestaurant =
+    {
+      text: "Restaurants",
+      links:
+        [
+          {text: "Update restaurant", routerLink: "/updateRestaurant"}
+        ]
+    };
 
+    var dropdownUsers =
+    {
+      text: "Workers",
+      links:
+        [
+          {text: "Add worker", routerLink: "/addWorker"},
+          {text: "Add work schedule", routerLink: "/addWorkSchedule"}
+        ]
+    };
+
+    this.addLink({text: "Add provider", routerLink: "/addProvider"});
+
+    this.addDropdown(dropdownRestaurant);
+    this.addDropdown(dropdownUsers);
+
+    this.addLink({text: "Logout", routerLink:"/auth" });
   }
 
 
@@ -102,15 +143,25 @@ export class NavbarComponent implements OnInit {
     var dropdownRestaurants =
       {
         text: "Restaurants",
-        links: []
+        links:
+          [
+            {text: "Send reservation", routerLink: "/guestRestaurantsPage"}
+          ]
       };
 
     this.addDropdown(dropdownMyProfile);
     this.addDropdown(dropdownFriendships);
     this.addDropdown(dropdownRestaurants);
 
+    this.addLink({text: "Logout", routerLink:"/auth" });
+
   }
 
+
+  logout()
+  {
+    LoggedUtils.clearLocalStorage();
+  }
 }
 
 

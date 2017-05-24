@@ -1,15 +1,9 @@
 package com.isa.restaurant.controllers;
 
-import com.isa.restaurant.domain.DTO.FriendshipDTO;
-import com.isa.restaurant.domain.DTO.GuestAndRelationDTO;
-import com.isa.restaurant.domain.DTO.GuestDTO;
-import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.domain.Friendship;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.domain.Guest;
-import com.isa.restaurant.services.FriendshipService;
-import com.isa.restaurant.services.MailService;
-import com.isa.restaurant.services.UserService;
-import com.isa.restaurant.services.VerificationTokenService;
+import com.isa.restaurant.domain.Invitation;
+import com.isa.restaurant.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,20 +23,25 @@ public class GuestController
 {
     private final UserService userService;
     private final FriendshipService friendshipService;
+    private final ReservationService reservationService;
     private final VerificationTokenService verificationTokenService;
     private final MailService mailService;
-
+    private final RestaurantService restaurantService;
 
     @Autowired
     public GuestController(FriendshipService friendshipService,
                            UserService userService,
+                           ReservationService reservationService,
                            VerificationTokenService verificationTokenService,
-                           MailService mailService)
+                           MailService mailService,
+                           RestaurantService restaurantService)
     {
+        this.reservationService = reservationService;
         this.verificationTokenService = verificationTokenService;
         this.friendshipService = friendshipService;
         this.userService = userService;
         this.mailService = mailService;
+        this.restaurantService = restaurantService;
     }
 
 
@@ -180,7 +179,7 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/searchMyFriends/",
+    @RequestMapping(value = "/{guestId}/searchMyFriends",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -188,5 +187,48 @@ public class GuestController
     {
         List<GuestAndRelationDTO> retSet = friendshipService.searchUserFriends(stringParam, guestId);
         return new ResponseEntity<>(retSet, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/{guestId}/sendReservation",
+                    method = RequestMethod.POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ReservationDTO> sendReservation(@PathVariable Long guestId, @RequestBody ReservationDTO reservationDTO)
+    {
+        ReservationDTO ret = reservationService.addReservation(guestId, reservationDTO);
+        if (ret == null)
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/{guestId}/searchRestaurants",
+                    method = RequestMethod.POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RestaurantDTO>> searchRestaurants(@PathVariable Long guestId, @RequestBody String searchParam)
+    {
+        List<RestaurantDTO> ret = restaurantService.searchRestaurantsByNameAndDescription(searchParam);
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/{guestId}/sendInvitation",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ReservationDTO> sendInvitation(@PathVariable Long guestId, @RequestBody Invitation invitation)
+    {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+
+    @RequestMapping(value = "/{guestId}/acceptInvitation/{verificationTokenValue}",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ReservationDTO> acceptInvitation(@PathVariable Long guestId, @PathVariable String verificationTokenValue)
+    {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }

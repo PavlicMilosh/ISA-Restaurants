@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
+import {LoggedUtils} from "../utils/logged.utils";
 
 @Injectable()
 export class UserService
@@ -21,6 +22,7 @@ export class UserService
     };
     var param = JSON.stringify(systemManager);
     var headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/users/register/sysManager", param, { headers : headers })
       .map(res => res.json());
@@ -37,6 +39,7 @@ export class UserService
     };
     var param = JSON.stringify(provider);
     var headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/users/register/provider", param, { headers : headers })
       .map(res => res.json());
@@ -54,6 +57,7 @@ export class UserService
       };
     var param = JSON.stringify(user);
     var headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/users/update/barman", param, { headers : headers })
       .map(res => res.json());
@@ -71,13 +75,14 @@ export class UserService
       };
     var param = JSON.stringify(user);
     var headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/users/update/barman", param, { headers : headers })
       .map(res => res.json());
   }
 
   addWorker(firstName: string, lastName: string, email: string, password: string, clothesNumber: number, footwearNumber: number, role: string) {
-    var worker =
+    let worker =
     {
       firstName: firstName,
       lastName: lastName,
@@ -85,31 +90,39 @@ export class UserService
       password: password,
       clothesNumber: clothesNumber,
       footwearNumber: footwearNumber
-    }
-    var path = '';
+    };
+
+    let path = '';
+    let id = LoggedUtils.getId();
+
     if (role == 'Waiter')
       path = "/addWaiter";
     else if (role == 'Cook')
       path = "/addCook";
     else
       path = "/addBartender";
-    var param = JSON.stringify(worker);
-    var headers = new Headers();
+
+    let param = JSON.stringify(worker);
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/restaurants/" + 1 + path, param, {headers: headers})
+    return this.http.post("http://localhost:8080/restaurants/" + id + path, param, {headers: headers})
       .map(res => res.json());
   }
 
-  getUser(email: string, pass: string, firstName: string, lastName: string){
-    var user =
+
+  getUser(email: string, pass: string, firstName: string, lastName: string)
+  {
+    let user =
       {
         email: email,
         password: pass,
         firstName: firstName,
         lastName: lastName,
       };
-    var param = JSON.stringify(user);
-    var headers = new Headers();
+    let param = JSON.stringify(user);
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/users/register/barman", param, { headers : headers })
       .map(res => res.json());
@@ -117,18 +130,18 @@ export class UserService
 
   addSchedule(oneSchedule: Schedule, userId: number)
   {
-    var schedule = [];
+    let schedule = [];
     if(oneSchedule.day == 0)
     {
       for(var i = 0; i < 8; i++)
       {
-        var s =
+        let s =
         {
           id : oneSchedule.id,
           startTime: oneSchedule.startTime,
           endTime: oneSchedule.endTime,
           day: i
-        }
+        };
         schedule.push(s);
       }
     }
@@ -137,8 +150,9 @@ export class UserService
       schedule.push(oneSchedule);
     }
     console.log(schedule);
-    var param = JSON.stringify(schedule);
-    var headers = new Headers();
+    let param = JSON.stringify(schedule);
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/users/" + userId + "/addSchedule", param, { headers : headers })
       .map(res => res.json());

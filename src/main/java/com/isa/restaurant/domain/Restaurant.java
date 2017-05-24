@@ -3,6 +3,8 @@ package com.isa.restaurant.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,17 +18,21 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "restaurant")
+@Indexed
 public class Restaurant
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "restaurant_id", unique = true, nullable = false)
+    @Field(name = "restaurant_id")
     private Long id;
 
     @Column(name = "restaurant_name", unique = true, nullable = false)
+    @Field
     private String name;
 
     @Column(name = "restaurant_desc")
+    @Field
     private String description;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

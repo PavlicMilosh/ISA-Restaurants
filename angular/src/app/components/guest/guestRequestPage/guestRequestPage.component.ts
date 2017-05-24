@@ -17,7 +17,7 @@ export class GuestRequestPageComponent implements OnInit {
 
   constructor(private guestService: GuestService) {
     this.requests = [];
-    this.guestService.getFriendRequests(1).subscribe(
+    this.guestService.getFriendRequests().subscribe(
       data => {
         this.requests = data;
         console.log(data)
@@ -32,7 +32,7 @@ export class GuestRequestPageComponent implements OnInit {
 
   declineRequest(fromWhomId: number)
   {
-    this.guestService.declineFriendRequest(1, fromWhomId).subscribe
+    this.guestService.declineFriendRequest(fromWhomId).subscribe
     (
       data =>
       {
@@ -48,7 +48,7 @@ export class GuestRequestPageComponent implements OnInit {
 
   acceptRequest(fromWhomId: number)
   {
-    this.guestService.acceptFriendRequest(1, fromWhomId).subscribe
+    this.guestService.acceptFriendRequest(fromWhomId).subscribe
     (
       data =>
       {

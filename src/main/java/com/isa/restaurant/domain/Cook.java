@@ -12,7 +12,6 @@ import java.util.Set;
  * Created by djuro on 4/14/2017.
  */
 
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -26,8 +25,16 @@ public class Cook extends User
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkSchedule> schedule;
 
+
+    public Cook()
+    {
+        this.enabled = true;
+        this.authorities = Role.COOK;
+    }
+
     public Cook(String email, String password, String firstName, String lastName)
     {
+        this();
         this.email = email;
         this.password = password;
         this.firstName = firstName;

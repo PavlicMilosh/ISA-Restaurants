@@ -20,7 +20,7 @@ export class GuestFriendsPageComponent implements OnInit
   constructor(private guestService: GuestService)
   {
     this.friends = [];
-    this.guestService.getFriends(1).subscribe(
+    this.guestService.getFriends().subscribe(
       data => { this.friends = data; console.log(data) },
       error => alert(error)
     );
@@ -38,7 +38,7 @@ export class GuestFriendsPageComponent implements OnInit
 
   unfriend(whoId: number)
   {
-    this.guestService.unfriend(1, whoId).subscribe(
+    this.guestService.unfriend(whoId).subscribe(
       data =>
       {
         for (let i = 0; i < this.friends.length; i++)
@@ -54,14 +54,14 @@ export class GuestFriendsPageComponent implements OnInit
   {
     if (this.searchParams == null || !this.searchParams.replace(/\s/g, '').length)
     {
-      this.guestService.getFriends(1).subscribe
+      this.guestService.getFriends().subscribe
       (
         data => this.friends = data,
         error => alert(error)
       );
     }
 
-    this.guestService.searchFriends(1, this.searchParams).subscribe(
+    this.guestService.searchFriends(this.searchParams).subscribe(
       data => this.friends = data,
       error => alert(error)
     );

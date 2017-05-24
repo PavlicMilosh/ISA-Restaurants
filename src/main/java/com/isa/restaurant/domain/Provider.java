@@ -17,8 +17,9 @@ public class Provider extends User
 {
     public Provider()
     {
-
+        this.enabled = true;
     }
+
     public Provider(String email, String password, String firstName, String lastName)
     {
         this.email = email;

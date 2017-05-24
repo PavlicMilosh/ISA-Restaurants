@@ -1,0 +1,117 @@
+
+
+<div class="panel panel-default"><div class="panel-body"><div class="table-container">
+
+  <!-- SEARCH BAR -->
+  <div class="row"><div class="col-sm-6 col-sm-offset-3"><div id="imaginary_container"><div class="input-group stylish-input-group">
+    <input type="text" class="form-control" [(ngModel)]="searchParams" placeholder="Search">
+    <span class="input-group-addon">
+          <button type="submit" (click)="searchRestaurants()">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </span>
+  </div></div></div></div>
+
+  <ng-container *ngIf="restaurants.length > 0">
+
+    <!-- TABLE -->
+    <table class="table table-filter"><tbody>
+
+    <tr *ngFor="let restaurant of restaurants">
+
+      <td class="image">
+        <img src="https://s-media-cache-ak0.pinimg.com/originals/14/c3/8c/14c38ce05dc93cc7b5d82a9b8f04db08.jpg" class="media-photo">
+      </td>
+
+      <td>
+        <div class = "table-name">{{restaurant.name}}</div>
+      </td>
+
+      <td>
+        <div class = "table-row-name">{{restaurant.description}}</div>
+      </td>
+
+      <td>
+        <div class="table-number">289
+        </div>
+        <div class="table-row-name">visits</div>
+      </td>
+
+      <td>
+        <div class="table-number">5.8</div>
+        <div class="table-row-name">mean mark</div>
+      </td>
+
+      <td class="buttons">
+        <div class="left">
+          <button (click)="selectRestaurant(restaurant.id)" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Make reservation</button>
+        </div>
+      </td>
+
+    </tr>
+
+    </tbody></table>
+
+    <!-- MODAL WINDOW -->
+    <div id="myModal" class="modal fade" role="dialog"><div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Reservation at: {{selectedRestaurant.name}}</h4>
+          </div>
+
+          <div class="modal-body">
+
+            <form class="" action="#">
+
+              <div class="form-group"> <!-- Date input -->
+                <label class="control-label" for="date">Date</label>
+                <div class = "input-group">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i></span>
+                  <input class="form-control" id="date" name="date" [(ngModel)]="reservation.date" placeholder="DD.MM.YYYY." type="text"/>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="time" class="cols-sm-2 control-label">Time and Duration</label>
+                <div class="cols-sm-10">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-time" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" name="time" id="time" [(ngModel)]="reservation.time"  placeholder="HH:mm (24 hour format)"/>
+                  </div>
+                </div>
+                <div class="cols-sm-10">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-time" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" name="time" id="duration" [(ngModel)]="reservation.duration"  placeholder="duration in minutes"/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group ">
+                <a href="" (click)="sendReservation()" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Send reservation</a>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+    </div></div>
+
+
+  </ng-container>
+
+  <ng-container *ngIf="restaurants.length == 0">
+    <div class="no-content-message">No restaurants :(</div>
+  </ng-container>
+
+</div></div></div>
+
+
+
+

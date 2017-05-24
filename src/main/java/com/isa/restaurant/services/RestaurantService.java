@@ -1,5 +1,5 @@
 package com.isa.restaurant.services;
-
+import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
 
@@ -31,4 +31,6 @@ public interface RestaurantService
     UserDTO addCook(Cook cook, Long restaurantId);
 
     List<UserDTO> getWorkersByRMId(Long managerId);
+
+    List<RestaurantDTO> searchRestaurantsByNameAndDescription(String searchText);
 }
