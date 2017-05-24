@@ -106,6 +106,7 @@ public class RestaurantIntegrationTest
         Cook c = new Cook("c", "c", "c", "c");
         UserDTO cc = new UserDTO(c);
         cc.setId(2l);
+        DishType dishType = new DishType(r,"salate");
         Waiter w = new Waiter("w", "w", "w", "w");
         UserDTO ww = new UserDTO(w);
         ww.setId(3l);

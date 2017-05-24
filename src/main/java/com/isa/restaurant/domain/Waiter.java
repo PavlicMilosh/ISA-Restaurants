@@ -1,13 +1,10 @@
 package com.isa.restaurant.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -26,7 +23,6 @@ public class Waiter extends User
 
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkSchedule> schedule;
-    //private Set<RestaurantTable> tables;
 
 
     public Waiter()
@@ -35,6 +31,7 @@ public class Waiter extends User
         this.authorities = Role.WAITER;
     }
 
+
     public Waiter(String email, String password, String firstName, String lastName)
     {
         this();
@@ -42,12 +39,6 @@ public class Waiter extends User
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        //this.tables=new HashSet<RestaurantTable>();
-    }
-
-    public void addRestaurantTable(RestaurantTable table)
-    {
-        //tables.add(table);
     }
 
     @Override

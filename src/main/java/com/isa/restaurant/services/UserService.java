@@ -4,6 +4,8 @@ import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.GuestDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
 
+import java.util.Set;
+
 /**
  * Created by Milos on 15-Apr-17.
  */
@@ -19,4 +21,7 @@ public interface UserService
     UserDTO changeWaiter(Waiter waiter);
     UserDTO changeCook(Cook cook);
     UserDTO changeBartender(Bartender bartender);
+    Set<WorkSchedule> getWaiterSchedule(Long id);
+    Set<WorkSchedule> getCookSchedule(Long id);
+    Set<WorkSchedule> getBartenderSchedule(Long id);
 }

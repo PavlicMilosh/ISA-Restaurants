@@ -117,4 +117,15 @@ public class RestaurantController
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/addDishType", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DishType> addDishType(@RequestBody DishType dishType)
+    {
+        DishType saved = restaurantService.addDishType(dishType);
+        if(saved == null)
+        {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
 }

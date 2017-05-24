@@ -157,6 +157,20 @@ export class UserService
     return this.http.post("http://localhost:8080/users/" + userId + "/addSchedule", param, { headers : headers })
       .map(res => res.json());
   }
+
+  getSchedule(userId:number, role: string)
+  {
+    var path = '';
+    if (role == 'Waiter')
+      path = "/waiter";
+    else if (role == 'Cook')
+      path = "/cook";
+    else
+      path = "/bartender";
+
+    return this.http.get("http://localhost:8080/users/"+path+"/getSchedule")
+      .map(res => res.json());
+  }
 }
 
 interface Schedule
@@ -165,5 +179,85 @@ interface Schedule
   startTime: string;
   endTime: string;
   day: number;
+}
+
+interface UserDTO
+{
+  id: number;
+  email: string;
+  password:string;
+  firstName: string;
+  lastName: string;
+}
+
+interface Dish
+{
+  id:number;
+  name:string;
+  description:string;
+  price:number;
+}
+
+interface Drink
+{
+  id:number;
+  name: string;
+  description: string;
+  price: number;
+}
+
+interface OrderItem
+{
+  dish: Dish;
+  drink: Drink;
+  isDish: Boolean;
+  number: number;
+  preparing:Boolean;
+  finished:Boolean;
+}
+
+interface RestaurantTable
+{
+  id: number;
+  top: number;
+  left: number;
+  angle: number;
+}
+
+interface Barman
+{
+  id: number;
+  email: string;
+  password:string;
+  firstName: string;
+  lastName: string;
+  dishType: DishType;
+}
+
+interface DishType
+{
+  id:number;
+  restaurant:Restaurant;
+  name:string;
+}
+
+interface Restaurant
+{
+  id : number;
+  name : string;
+  description : string;
+  dishes : Dish[];
+  drinks : Drink[];
+  tables : RestaurantTable[];
+  managers: Manager[];
+}
+
+interface Manager
+{
+  id: number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
 }
 

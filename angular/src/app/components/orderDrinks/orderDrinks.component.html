@@ -1,0 +1,59 @@
+<div class="span7">
+  <div class="widget stacked widget-table action-table">
+
+    <div class="widget-header">
+      <i class="icon-th-list"></i>
+      <h3>Drinks</h3>
+    </div> <!-- /widget-header -->
+
+    <div class="widget-content">
+      <table class="table table-striped table-bordered">
+        <tbody>
+        <tr *ngFor="let order of orders">
+          <td>
+            <table class="table table-striped table-bordered">
+              <tr *ngFor="let item of order.orderItems; let i = index">
+                <td *ngIf="item.isDish == false">{{item.drink.name}}</td>
+                <td *ngIf="item.isDish == false">{{item.drink.description}}</td>
+                <td class="td-actions" *ngIf="item.isDish == false">
+                  <button (click)="selectOrder( order.id, i )" type="button" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div> <!-- /widget-content -->
+  </div> <!-- /widget -->
+</div>
+
+<div class="span7">
+  <div class="widget stacked widget-table action-table">
+
+    <div class="widget-header">
+      <i class="icon-th-list"></i>
+      <h3>Confirm drinks</h3>
+    </div> <!-- /widget-header -->
+
+    <div class="widget-content">
+      <table class="table table-striped table-bordered">
+        <tbody>
+        <tr *ngFor="let item of selectItems; let i = index">
+          <td *ngIf="item.isDish == false">{{item.drink.name}}</td>
+          <td *ngIf="item.isDish == false">{{item.drink.description}}</td>
+          <td (click)="finishedItem( i )" colspan="5" align="right"><button type="button" class="btn btn-danger">Finish</button></td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div> <!-- /widget-content -->
+  </div> <!-- /widget -->
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

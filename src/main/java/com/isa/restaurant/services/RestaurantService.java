@@ -33,4 +33,6 @@ public interface RestaurantService
     List<UserDTO> getWorkersByRMId(Long managerId);
 
     List<RestaurantDTO> searchRestaurantsByNameAndDescription(String searchText);
+
+    DishType addDishType(DishType dishType);
 }

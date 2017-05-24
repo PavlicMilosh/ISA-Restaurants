@@ -34,6 +34,13 @@ import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/gue
 import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
 import { AddProviderComponent } from './components/addProvider/addProvider.component';
 
+import { MakeOrder } from './components/makeOrder/makeOrder.component';
+import { OrderDishes } from './components/orderDishes/orderDishes.component';
+import { OrderDrinks } from './components/orderDrinks/orderDrinks.component';
+import { TableDisplay } from './components/tableDisplay/tableDisplay.component';
+import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWorkShedule.component";
+import {CalendarComponent} from "ap-angular2-fullcalendar/src/calendar/calendar";
+
 
 @NgModule({
   declarations: [
@@ -53,6 +60,13 @@ import { AddProviderComponent } from './components/addProvider/addProvider.compo
     // Djura
     UpdateUser,
     ChangePassword,
+    MakeOrder,
+    OrderDishes,
+    OrderDrinks,
+    TableDisplay,
+    EmployeeWorkShedule,
+    CalendarComponent,
+
 
     //Ogi
     RegisterGuestComponent,

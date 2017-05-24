@@ -43,6 +43,12 @@ public class BillRepositoryTest
     @Autowired
     private DishRepository dishRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private TableRepository tableRepository;
+
     private Long id;
 
     @Before
@@ -69,26 +75,33 @@ public class BillRepositoryTest
     @Test
     public void testSaveBillWithOrder()
     {
-        Guest user = new Guest("billRepositoryUser3@gmail.com", "123321", "billUser3", "billUser3");
+        Restaurant r1=restaurantRepository.save(new Restaurant("restoranBill1","desc"));
+
+        DishType dishType = new DishType(r1,"salate");
+        Waiter user = new Waiter("billRepositoryUser4@gmail.com", "123321", "billUser4", "billUser4");
         userRepository.save(user);
+
         Bill bill= new Bill(user);
 
-        Restaurant r1=restaurantRepository.save(new Restaurant("restoranBill1","desc"));
+        RestaurantTable table=tableRepository.save(new RestaurantTable());
         Drink d1=drinkRepository.save(new Drink("Coca Cola 1","Gazirano pice",150L, r1));
         Drink d2=drinkRepository.save(new Drink("Pepsi 1","Gazirano pice",150L, r1));
 
         Dish di1=dishRepository.save(new Dish("dish1 1","desc",450L,r1));
         Dish di2=dishRepository.save(new Dish("dish2 1","desc",600L,r1));
 
-        HashSet<Drink> drinks = new HashSet<Drink>();
-        drinks.add(d1);
-        drinks.add(d2);
+        OrderItem orderItem1 = orderItemRepository.save(new OrderItem(d1,2));
+        OrderItem orderItem2 = orderItemRepository.save(new OrderItem(d2,2));
+        OrderItem orderItem3 = orderItemRepository.save(new OrderItem(di1,2));
+        OrderItem orderItem4 = orderItemRepository.save(new OrderItem(di2,2));
 
-        HashSet<Dish> dishes = new HashSet<Dish>();
-        dishes.add(di1);
-        dishes.add(di2);
+        HashSet<OrderItem> orderItems=new HashSet<OrderItem>();
+        orderItems.add(orderItem1);
+        orderItems.add(orderItem2);
+        orderItems.add(orderItem3);
+        orderItems.add(orderItem4);
 
-        Order order=orderRepository.save(new Order(user,drinks,dishes));
+        Order order=orderRepository.save(new Order(user,orderItems,table));
 
         bill.addOrder(order);
         Bill saved=billRepository.save(bill);
