@@ -59,13 +59,14 @@ export class EmployeeWorkShedule{
   };
 
   constructor(private userService: UserService) {
+
     /*
-     this.userService.getUserShedule(1).subscribe
+     this.userService.getSchedule(1,"waiter").subscribe
      (
-     (data:UserDTO) => this.items = data,
+     (data:WorkShedule[]) => this.items = data,
      error => alert(error)
      );
-     */
+    */
   }
 
   ngOnInit()
@@ -129,6 +130,15 @@ interface SheduleElement
   start: Date;
   end: Date;
 }
+
+interface Schedule
+{
+  id: number;
+  startTime: string;
+  endTime: string;
+  day: number;
+}
+
 
 
 

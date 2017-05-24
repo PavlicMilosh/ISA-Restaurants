@@ -99,22 +99,6 @@ export class UserService
       .map(res => res.json());
   }
 
-  getUser1(email: string, pass: string, firstName: string, lastName: string, dishType: DishType){
-    var user =
-      {
-        email: email,
-        password: pass,
-        firstName: firstName,
-        lastName: lastName,
-        dishType: dishType
-      };
-    var param = JSON.stringify(user);
-    var headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/users/register/barman", param, { headers : headers })
-      .map(res => res.json());
-  }
-
   addSchedule(oneSchedule: Schedule, userId: number)
   {
     var schedule = [];
@@ -140,6 +124,20 @@ export class UserService
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/users/" + userId + "/addSchedule", param, { headers : headers })
+      .map(res => res.json());
+  }
+
+  getSchedule(userId:number, role: string)
+  {
+    var path = '';
+    if (role == 'Waiter')
+      path = "/waiter";
+    else if (role == 'Cook')
+      path = "/cook";
+    else
+      path = "/bartender";
+
+    return this.http.get("http://localhost:8080/users/"+path+"/getSchedule")
       .map(res => res.json());
   }
 }

@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Milos on 10-Apr-17.
  */
@@ -115,5 +118,38 @@ public class UserServiceImpl implements UserService
             return null;
         User saved = userRepository.save(bartender);
         return new UserDTO(saved);
+    }
+
+    @Override
+    public Set<WorkSchedule> getWaiterSchedule(Long id)
+    {
+        Set<WorkSchedule> schedule=null;
+        Waiter w=(Waiter) userRepository.findById(id);
+        if(w == null)
+            return schedule;
+        schedule=w.getSchedule();
+        return schedule;
+    }
+
+    @Override
+    public Set<WorkSchedule> getCookSchedule(Long id)
+    {
+        Set<WorkSchedule> schedule=null;
+        Cook w=(Cook) userRepository.findById(id);
+        if(w == null)
+            return schedule;
+        schedule=w.getSchedule();
+        return schedule;
+    }
+
+    @Override
+    public Set<WorkSchedule> getBartenderSchedule(Long id)
+    {
+        Set<WorkSchedule> schedule=null;
+        Bartender w=(Bartender) userRepository.findById(id);
+        if(w == null)
+            return schedule;
+        schedule=w.getSchedule();
+        return schedule;
     }
 }

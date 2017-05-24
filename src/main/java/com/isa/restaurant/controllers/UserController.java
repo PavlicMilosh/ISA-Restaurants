@@ -11,7 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Milos on 10-Apr-17.
@@ -67,5 +69,32 @@ public class UserController
         if(saved == null)
             return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
         return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/waiter/{id}/getSchedule", method = RequestMethod.GET)
+    public ResponseEntity<Set<WorkSchedule>> getWaiterSchedule(@PathVariable Long id){
+        Set<WorkSchedule> schedule=userService.getWaiterSchedule(id);
+        if(schedule==null){
+            schedule=new HashSet<>();
+        }
+        return new ResponseEntity(schedule, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/cook/{id}/getSchedule", method = RequestMethod.GET)
+    public ResponseEntity<Set<WorkSchedule>> getCookSchedule(@PathVariable Long id){
+        Set<WorkSchedule> schedule=userService.getCookSchedule(id);
+        if(schedule==null){
+            schedule=new HashSet<>();
+        }
+        return new ResponseEntity(schedule, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/bartender/{id}/getSchedule", method = RequestMethod.GET)
+    public ResponseEntity<Set<WorkSchedule>> getBartenderSchedule(@PathVariable Long id){
+        Set<WorkSchedule> schedule=userService.getBartenderSchedule(id);
+        if(schedule==null){
+            schedule=new HashSet<>();
+        }
+        return new ResponseEntity(schedule, HttpStatus.OK);
     }
 }
