@@ -29,12 +29,17 @@ public class Waiter extends User
     private Set<WorkSchedule> schedule;
     //private Set<RestaurantTable> tables;
 
-    public Waiter(String email, String password, String firstName, String lastName)
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "dish_type_id", name = "barman_dish_type_id")
+    private DishType dishType;
+
+    public Waiter(String email, String password, String firstName, String lastName, DishType dishType)
     {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.dishType = dishType;
         //this.tables=new HashSet<RestaurantTable>();
     }
 

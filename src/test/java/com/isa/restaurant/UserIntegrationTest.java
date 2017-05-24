@@ -1,5 +1,6 @@
 package com.isa.restaurant;
 
+import com.isa.restaurant.domain.DishType;
 import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.domain.Waiter;
 import com.isa.restaurant.repositories.RestaurantRepository;
@@ -42,7 +43,8 @@ public class UserIntegrationTest
     {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
         Restaurant r = restaurantRepository.save(new Restaurant("MyFirstRestaurant", "My first restaurant"));
-        Waiter w = new Waiter("e", "e", "e", "e");
+        DishType dishType = new DishType(r,"salate");
+        Waiter w = new Waiter("e", "e", "e", "e",dishType);
         w.setRestaurant(r);
         userRepository.save(w);
     }

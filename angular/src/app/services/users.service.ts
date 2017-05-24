@@ -99,6 +99,22 @@ export class UserService
       .map(res => res.json());
   }
 
+  getUser1(email: string, pass: string, firstName: string, lastName: string, dishType: DishType){
+    var user =
+      {
+        email: email,
+        password: pass,
+        firstName: firstName,
+        lastName: lastName,
+        dishType: dishType
+      };
+    var param = JSON.stringify(user);
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post("http://localhost:8080/users/register/barman", param, { headers : headers })
+      .map(res => res.json());
+  }
+
   addSchedule(oneSchedule: Schedule, userId: number)
   {
     var schedule = [];
@@ -134,5 +150,85 @@ interface Schedule
   startTime: string;
   endTime: string;
   day: number;
+}
+
+interface UserDTO
+{
+  id: number;
+  email: string;
+  password:string;
+  firstName: string;
+  lastName: string;
+}
+
+interface Dish
+{
+  id:number;
+  name:string;
+  description:string;
+  price:number;
+}
+
+interface Drink
+{
+  id:number;
+  name: string;
+  description: string;
+  price: number;
+}
+
+interface OrderItem
+{
+  dish: Dish;
+  drink: Drink;
+  isDish: Boolean;
+  number: number;
+  preparing:Boolean;
+  finished:Boolean;
+}
+
+interface RestaurantTable
+{
+  id: number;
+  top: number;
+  left: number;
+  angle: number;
+}
+
+interface Barman
+{
+  id: number;
+  email: string;
+  password:string;
+  firstName: string;
+  lastName: string;
+  dishType: DishType;
+}
+
+interface DishType
+{
+  id:number;
+  restaurant:Restaurant;
+  name:string;
+}
+
+interface Restaurant
+{
+  id : number;
+  name : string;
+  description : string;
+  dishes : Dish[];
+  drinks : Drink[];
+  tables : RestaurantTable[];
+  managers: Manager[];
+}
+
+interface Manager
+{
+  id: number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
 }
 

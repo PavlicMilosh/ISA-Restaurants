@@ -20,6 +20,8 @@ import {GuestRestaurantsPageComponent} from "./components/guest/guestRestaurants
 import { AddWorkerComponent } from "./components/addWorker/addWorker.component";
 import { AddWorkScheduleComponent } from "./components/addWorkSchedule/addWorkSchedule.component";
 
+import { MakeOrder } from './components/makeOrder/makeOrder.component';
+
 
 const appRoutes : Routes =
   [
@@ -90,7 +92,11 @@ const appRoutes : Routes =
     {
       path: 'changePassword',
       component : ChangePassword
-    }
+    },
+    {
+      path: 'makeOrder',
+      component : MakeOrder
+    },
   ];
 
 export const routing : ModuleWithProviders = RouterModule.forRoot(appRoutes);

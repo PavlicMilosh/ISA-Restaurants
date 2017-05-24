@@ -106,7 +106,8 @@ public class RestaurantIntegrationTest
         Cook c = new Cook("c", "c", "c", "c");
         UserDTO cc = new UserDTO(c);
         cc.setId(2l);
-        Waiter w = new Waiter("w", "w", "w", "w");
+        DishType dishType = new DishType(r,"salate");
+        Waiter w = new Waiter("w", "w", "w", "w", dishType);
         UserDTO ww = new UserDTO(w);
         ww.setId(3l);
         this.mvc.perform(post("/restaurants/" + r.getId() + "/addBartender")

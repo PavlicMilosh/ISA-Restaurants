@@ -30,6 +30,8 @@ import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/g
 import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
 import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
 
+import { MakeOrder } from './components/makeOrder/makeOrder.component';
+
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSc
     // Djura
     UpdateUser,
     ChangePassword,
+    MakeOrder,
 
     //Ogi
     RegisterGuestComponent,
