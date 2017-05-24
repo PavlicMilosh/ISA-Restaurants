@@ -31,6 +31,8 @@ import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/gue
 import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
 
 import { MakeOrder } from './components/makeOrder/makeOrder.component';
+import { OrderDishes } from './components/orderDishes/orderDishes.component';
+import { OrderDrinks } from './components/orderDrinks/orderDrinks.component';
 
 
 @NgModule({
@@ -51,6 +53,9 @@ import { MakeOrder } from './components/makeOrder/makeOrder.component';
     UpdateUser,
     ChangePassword,
     MakeOrder,
+    OrderDishes,
+    OrderDrinks,
+
 
     //Ogi
     RegisterGuestComponent,

@@ -21,6 +21,8 @@ import { AddWorkerComponent } from "./components/addWorker/addWorker.component";
 import { AddWorkScheduleComponent } from "./components/addWorkSchedule/addWorkSchedule.component";
 
 import { MakeOrder } from './components/makeOrder/makeOrder.component';
+import { OrderDishes } from './components/orderDishes/orderDishes.component';
+import { OrderDrinks } from './components/orderDrinks/orderDrinks.component';
 
 
 const appRoutes : Routes =
@@ -97,6 +99,14 @@ const appRoutes : Routes =
       path: 'makeOrder',
       component : MakeOrder
     },
+    {
+      path: 'orderDishes',
+      component : OrderDishes
+    },
+    {
+      path: 'orderDrinks',
+      component : OrderDrinks
+    }
   ];
 
 export const routing : ModuleWithProviders = RouterModule.forRoot(appRoutes);
