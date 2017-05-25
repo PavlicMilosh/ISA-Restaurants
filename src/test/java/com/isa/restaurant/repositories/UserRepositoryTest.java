@@ -1,5 +1,6 @@
 package com.isa.restaurant.repositories;
 
+import com.isa.restaurant.domain.Provider;
 import com.isa.restaurant.domain.SystemManager;
 import com.isa.restaurant.domain.User;
 import org.junit.After;
@@ -44,6 +45,9 @@ public class UserRepositoryTest
         User steva = new SystemManager("steva", "steva", "Steva", "Stevic");    //insert
         User savedSteva = userRepository.save(steva);
         Assert.assertEquals(steva, savedSteva);
+        User jova = new Provider("jova", "jova", "jova", "jova");
+        User savedJova = userRepository.save(jova);
+        Assert.assertEquals(jova, savedJova);
     }
 
     @After

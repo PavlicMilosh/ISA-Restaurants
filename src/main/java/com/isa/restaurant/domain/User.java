@@ -42,6 +42,12 @@ public abstract class User
     @Field
     protected String lastName;
 
+    @Column(name = "user_authorities")
+    protected String authorities;
+
+    @Column(name = "user_enabled")
+    protected Boolean enabled;
+
     @Override
     public boolean equals(Object o)
     {

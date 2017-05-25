@@ -36,30 +36,44 @@ public class OrderRepositoryTest
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private TableRepository tableRepository;
+
+
     private Long id;
 
     @Before
     public void setUp()
     {
-        Guest user = new Guest("billRepositoryUser4@gmail.com", "123321", "billUser4", "billUser4");
+        Restaurant r1=restaurantRepository.save(new Restaurant("restoranOrder","desc"));
+
+        DishType dishType = new DishType(r1,"salate");
+        Waiter user = new Waiter("billRepositoryUser4@gmail.com", "123321", "billUser4", "billUser4");
         userRepository.save(user);
 
-        Restaurant r1=restaurantRepository.save(new Restaurant("restoranOrder","desc"));
+
+        RestaurantTable table=tableRepository.save(new RestaurantTable());
         Drink d1=drinkRepository.save(new Drink("Coca Cola 2","Gazirano pice",150L, r1));
         Drink d2=drinkRepository.save(new Drink("Pepsi 2","Gazirano pice",150L, r1));
 
         Dish di1=dishRepository.save(new Dish("dish1 2","desc",450L,r1));
         Dish di2=dishRepository.save(new Dish("dish2 2","desc",600L,r1));
 
-        HashSet<Drink> drinks = new HashSet<Drink>();
-        drinks.add(d1);
-        drinks.add(d2);
+        OrderItem orderItem1 = orderItemRepository.save(new OrderItem(d1,2));
+        OrderItem orderItem2 = orderItemRepository.save(new OrderItem(d2,2));
+        OrderItem orderItem3 = orderItemRepository.save(new OrderItem(di1,2));
+        OrderItem orderItem4 = orderItemRepository.save(new OrderItem(di2,2));
 
-        HashSet<Dish> dishes = new HashSet<Dish>();
-        dishes.add(di1);
-        dishes.add(di2);
+        HashSet<OrderItem> orderItems=new HashSet<OrderItem>();
+        orderItems.add(orderItem1);
+        orderItems.add(orderItem2);
+        orderItems.add(orderItem3);
+        orderItems.add(orderItem4);
 
-        Order order=new Order(user,drinks,dishes);
+        Order order=new Order(user,orderItems,table);
         orderRepository.save(order);
         id=order.getId();
     }
@@ -67,25 +81,29 @@ public class OrderRepositoryTest
     @Test
     public void testSave()
     {
-        Guest user = new Guest("billRepositoryUser5@gmail.com", "123321", "billUser5", "billUser5");
-        userRepository.save(user);
-
         Restaurant r1=restaurantRepository.save(new Restaurant("restoranOrder1","desc"));
+        DishType dishType = new DishType(r1,"salate");
+        Waiter user = new Waiter("billRepositoryUser4@gmail.com", "123321", "billUser4", "billUser4");
+        userRepository.save(user);
+        RestaurantTable table=tableRepository.save(new RestaurantTable());
         Drink d1=drinkRepository.save(new Drink("Coca Cola 3","Gazirano pice",150L, r1));
         Drink d2=drinkRepository.save(new Drink("Pepsi 3","Gazirano pice",150L, r1));
 
         Dish di1=dishRepository.save(new Dish("dish1 3","desc",450L,r1));
         Dish di2=dishRepository.save(new Dish("dish2 3","desc",600L,r1));
 
-        HashSet<Drink> drinks = new HashSet<Drink>();
-        drinks.add(d1);
-        drinks.add(d2);
+        OrderItem orderItem1 = orderItemRepository.save(new OrderItem(d1,2));
+        OrderItem orderItem2 = orderItemRepository.save(new OrderItem(d2,2));
+        OrderItem orderItem3 = orderItemRepository.save(new OrderItem(di1,2));
+        OrderItem orderItem4 = orderItemRepository.save(new OrderItem(di2,2));
 
-        HashSet<Dish> dishes = new HashSet<Dish>();
-        dishes.add(di1);
-        dishes.add(di2);
+        HashSet<OrderItem> orderItems=new HashSet<OrderItem>();
+        orderItems.add(orderItem1);
+        orderItems.add(orderItem2);
+        orderItems.add(orderItem3);
+        orderItems.add(orderItem4);
 
-        Order order=new Order(user,drinks,dishes);
+        Order order=new Order(user,orderItems,table);
         Order saved=orderRepository.save(order);
         Assert.assertEquals(order, saved);
     }

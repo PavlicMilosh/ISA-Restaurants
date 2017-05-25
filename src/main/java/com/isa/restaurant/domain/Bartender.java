@@ -13,7 +13,6 @@ import java.util.Set;
 /**
  * Created by djuro on 4/14/2017.
  */
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -27,8 +26,16 @@ public class Bartender extends User
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkSchedule> schedule;
 
+
+    public Bartender()
+    {
+        this.enabled = true;
+        this.authorities = Role.BARTENDER;
+    }
+
     public Bartender(String email, String password, String firstName, String lastName)
     {
+        this();
         this.email = email;
         this.password = password;
         this.firstName = firstName;

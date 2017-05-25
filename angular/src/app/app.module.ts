@@ -11,6 +11,9 @@ import { RegisterSMComponent } from "./components/registerSM/registerSM.componen
 
 
 import { routing } from "./app.routing";
+
+import { AuthenticationComponent } from "./components/authentication/authentication.component";
+
 import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateRestaurant.component";
 
 import { UpdateUser } from "./components/updateUser/updateUser.component";
@@ -21,22 +24,31 @@ import { RegisterEmployeeComponent } from './components/registerEmployee/registe
 import { AddWorkerComponent } from './components/addWorker/addWorker.component';
 import { ChangePassword } from './components/changePassword/changePassword.component';
 import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
+import { AddProviderComponent } from './components/addProvider/addProvider.component';
 
 import { RegisterGuestComponent } from "./components/guest/registerGuest/registerGuest.component";
 import { UpdateGuestComponent } from "./components/guest/updateGuest/updateGuest.component";
 import { GuestFriendsPageComponent } from './components/guest/guestFriendsPage/guestFriendsPage.component';
-import { GuestRestaurantsPageComponent } from './components/guest/guestRestaurantsPage/guestRestaurantsPage.component';
-import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
 import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
-import { GuestMainPageComponent } from "./components/guest/guestMainPage/guestMainPage.component";
+import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
 import { FormWizardModule } from "angular2-wizard/dist";
 import { GuestReservationWizardComponent } from "./components/guest/guestReservationWizard/guestReservationWizard.component";
+import { GuestRestaurantsPageComponent } from "./components/guest/guestRestaurantsPage/guestRestaurantsPage.component";
+
+
+import { MakeOrder } from './components/makeOrder/makeOrder.component';
+import { OrderDishes } from './components/orderDishes/orderDishes.component';
+import { OrderDrinks } from './components/orderDrinks/orderDrinks.component';
+import { TableDisplay } from './components/tableDisplay/tableDisplay.component';
+import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWorkShedule.component";
+import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calendar";
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
+    AuthenticationComponent,
 
     // Losmi
     RegisterSMComponent,
@@ -46,21 +58,29 @@ import { GuestReservationWizardComponent } from "./components/guest/guestReserva
     ChangePassword,
     AddRestaurantComponent,
     UpdateRestaurantComponent,
+    AddProviderComponent,
 
     // Djura
     UpdateUser,
     ChangePassword,
+    MakeOrder,
+    OrderDishes,
+    OrderDrinks,
+    TableDisplay,
+    EmployeeWorkShedule,
+    CalendarComponent,
+
 
     //Ogi
     RegisterGuestComponent,
     UpdateGuestComponent,
     GuestFriendsPageComponent,
-    GuestMainPageComponent,
     GuestRequestPageComponent,
-    GuestRestaurantsPageComponent,
     GuestPeoplePageComponent,
     AddWorkScheduleComponent,
-    GuestReservationWizardComponent
+    GuestReservationWizardComponent,
+    GuestRestaurantsPageComponent
+
   ],
   imports: [
     BrowserModule,

@@ -9,7 +9,7 @@ declare let fabric;
   moduleId: module.id,
   selector: 'updateRestaurant',
   templateUrl: './updateRestaurant.component.html',
-  styleUrls: ['./updateRestaurant.component.css'],
+  styleUrls: ['./updateRestaurant.component.css', '../style/formStyle.css'],
   providers: [UserService, RestaurantService]
 })
 export class UpdateRestaurantComponent implements OnInit
@@ -43,17 +43,17 @@ export class UpdateRestaurantComponent implements OnInit
       name: "",
       tables: [],
       color: "blue"
-    }
+    };
     this.currentRegion =
     {
       id: null,
       name: "",
       tables: [],
       color: "blue"
-    }
+    };
     this.newDish();
     this.newDrink();
-    this.restaurantService.getByManager(1).subscribe(
+    this.restaurantService.getByManager().subscribe(
       data =>  {this.restaurant = data; console.log(this.restaurant);}
     );
   }
@@ -61,12 +61,11 @@ export class UpdateRestaurantComponent implements OnInit
   ngOnInit()
   {
     this.canvas = new fabric.Canvas('canvas');
-    this.canvas.setDimensions({width:500, height:600});
+    this.canvas.setDimensions({width:900, height:900});
   }
 
   addTable()
   {
-    console.log(this.regionIndex);
     var rect = new fabric.Rect(
       {
         left: 100,

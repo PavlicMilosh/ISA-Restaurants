@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,16 +28,12 @@ public class Order
     private Long id;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "dish_id", name = "order_dishes_id")
-    private Set<Dish> dishes;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(referencedColumnName = "drink_id", name = "order_drink_id")
-    private Set<Drink> drinks;
+    @JoinColumn(referencedColumnName = "order_item_id", name = "order_order_item_id")
+    private Set<OrderItem> orderItems;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "user_id", name = "order_user")
-    private User user;
+    @JoinColumn(referencedColumnName = "user_id", name = "order_waiter")
+    private Waiter waiter;
 
     @Column(name = "order_finished")
     private Boolean finished;
@@ -44,29 +41,59 @@ public class Order
     @Column(name = "order_price")
     private Double price;
 
-    public Order(User user)
+    @Column(name = "order_time")
+    private Date orderTime;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "table_id", name = "restaurant_order_table_id")
+    private RestaurantTable orderTable;
+
+    public Order(Waiter waiter)
     {
         this.price=0.0;
-        this.user=user;
+        this.waiter=waiter;
         this.finished=false;
-        this.drinks=new HashSet<Drink>();
-        this.dishes=new HashSet<Dish>();
+        this.orderItems=new HashSet<OrderItem>();
+        this.orderTime=null;
+        this.orderTable=null;
     }
 
-    public Order(User user, HashSet<Drink> drinks, HashSet<Dish> dishes)
+    public Order(Waiter waiter, HashSet<OrderItem> orderItems, RestaurantTable restaurantTable)
     {
         this.price=0.0;
-        this.user=user;
+        this.waiter=waiter;
         this.finished=false;
-        this.drinks=drinks;
-        this.dishes=dishes;
+        this.orderItems=orderItems;
+        this.orderTable=restaurantTable;
     }
 
 
     public void calculateOrderPrice()
     {
-        for (Dish dish: dishes) this.price += dish.getPrice();
-        for (Drink drink: drinks) this.price += drink.getPrice();
+        for(OrderItem orderItem : orderItems)
+        {
+            if(orderItem.getIsDish())
+            {
+                this.price += orderItem.getDish().getPrice()*orderItem.getNumber();
+            }else
+            {
+                this.price += orderItem.getDrink().getPrice()*orderItem.getNumber();
+            }
+        }
+    }
+
+    public void isFinished()
+    {
+        Boolean finished=true;
+        for (OrderItem item:this.orderItems)
+        {
+            if(item.getFinished()==false)
+            {
+                finished=false;
+                break;
+            }
+        }
+        this.finished=finished;
     }
 
 }

@@ -18,7 +18,7 @@ export class GuestPeoplePageComponent implements OnInit {
 
   constructor(private guestService: GuestService) {
     this.people = [];
-    this.guestService.getAllGuests(1).subscribe
+    this.guestService.getAllGuests().subscribe
     (
       data => {
         this.people = data;
@@ -35,7 +35,7 @@ export class GuestPeoplePageComponent implements OnInit {
 
 
   sendFriendRequest(toWhomId: number) {
-    this.guestService.sendFriendRequest(1, toWhomId).subscribe
+    this.guestService.sendFriendRequest(toWhomId).subscribe
     (
       data => {
         for (let i = 0; i < this.people.length; i++)
@@ -50,7 +50,7 @@ export class GuestPeoplePageComponent implements OnInit {
 
 
   declineRequest(fromWhomId: number) {
-    this.guestService.declineFriendRequest(1, fromWhomId).subscribe
+    this.guestService.declineFriendRequest(fromWhomId).subscribe
     (
       data => {
         for (let i = 0; i < this.people.length; i++)
@@ -67,7 +67,7 @@ export class GuestPeoplePageComponent implements OnInit {
 
 
   acceptRequest(fromWhomId: number) {
-    this.guestService.acceptFriendRequest(1, fromWhomId).subscribe
+    this.guestService.acceptFriendRequest(fromWhomId).subscribe
     (
       data => {
         for (let i = 0; i < this.people.length; i++)
@@ -88,7 +88,7 @@ export class GuestPeoplePageComponent implements OnInit {
 
 
   unfriend(whoId: number) {
-    this.guestService.unfriend(1, whoId).subscribe(
+    this.guestService.unfriend(whoId).subscribe(
       data => {
         for (let i = 0; i < this.people.length; i++)
           if (this.people[i].id == whoId) {
@@ -106,14 +106,14 @@ export class GuestPeoplePageComponent implements OnInit {
   {
     if (this.searchParams == null || !this.searchParams.replace(/\s/g, '').length)
     {
-      this.guestService.getAllGuests(1).subscribe
+      this.guestService.getAllGuests().subscribe
       (
         data => this.people = data,
         //error => alert(error)
       );
     }
 
-    this.guestService.searchAllGuests(1, this.searchParams).subscribe(
+    this.guestService.searchAllGuests(this.searchParams).subscribe(
       data => this.people = data,
       //error => alert(error)
     );

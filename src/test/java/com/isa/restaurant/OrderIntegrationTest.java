@@ -45,6 +45,13 @@ public class OrderIntegrationTest
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private TableRepository tableRepository;
+
+
     private MockMvc mvc;
 
     private Long orderId;
@@ -56,26 +63,31 @@ public class OrderIntegrationTest
     {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
 
-        Guest g1 = new Guest("gost@gmail.com", "123321", "Gost", "Guestovic");
-        userRepository.save(g1);
-
         Restaurant r1=restaurantRepository.save(new Restaurant("restoran","desc"));
 
+        DishType dishType = new DishType(r1,"salate");
+        Waiter g1 = new Waiter("billRepositoryUser4@gmail.com", "123321", "billUser4", "billUser4");
+        userRepository.save(g1);
+
+        RestaurantTable table=tableRepository.save(new RestaurantTable());
         Drink d1=drinkRepository.save(new Drink("Coca Cola","Gazirano pice",150L, r1));
         Drink d2=drinkRepository.save(new Drink("Pepsi","Gazirano pice",150L, r1));
 
         Dish di1=dishRepository.save(new Dish("dish1","desc",450L,r1));
         Dish di2=dishRepository.save(new Dish("dish2","desc",600L,r1));
 
-        HashSet<Drink> drinks = new HashSet<Drink>();
-        drinks.add(d1);
-        drinks.add(d2);
+        OrderItem orderItem1 = orderItemRepository.save(new OrderItem(d1,2));
+        OrderItem orderItem2 = orderItemRepository.save(new OrderItem(d2,2));
+        OrderItem orderItem3 = orderItemRepository.save(new OrderItem(di1,2));
+        OrderItem orderItem4 = orderItemRepository.save(new OrderItem(di2,2));
 
-        HashSet<Dish> dishes = new HashSet<Dish>();
-        dishes.add(di1);
-        dishes.add(di2);
+        HashSet<OrderItem> orderItems=new HashSet<OrderItem>();
+        orderItems.add(orderItem1);
+        orderItems.add(orderItem2);
+        orderItems.add(orderItem3);
+        orderItems.add(orderItem4);
 
-        order=orderRepository.save(new Order(g1,drinks,dishes));
+        order=orderRepository.save(new Order(g1, orderItems, table));
 
         orderId=order.getId();
     }

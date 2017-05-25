@@ -24,7 +24,7 @@ export class UpdateGuestComponent
 
   updateGuest()
   {
-    this.guestService.updateGuest(1, this.email, this.password, this.firstName, this.lastName).subscribe
+    this.guestService.updateGuest(this.email, this.password, this.firstName, this.lastName).subscribe
     (
       data => this.userDTO = data,
       error => alert(error)

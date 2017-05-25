@@ -5,6 +5,7 @@ import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.search.RestaurantSearch;
+import com.isa.restaurant.services.RestaurantOrdersService;
 import com.isa.restaurant.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
  * Created by Milos on 13-Apr-17.
  */
 @Service
+@Transactional
 public class RestaurantServiceImpl implements RestaurantService
 {
     private final RestaurantRepository restaurantRepository;
@@ -24,6 +26,8 @@ public class RestaurantServiceImpl implements RestaurantService
     private final DrinkRepository drinkRepository;
     private final TableRepository tableRepository;
     private final RestaurantSearch restaurantSearch;
+    private final DishTypeRepository dishTypeRepository;
+    private final RestaurantOrdersService restaurantOrdersService;
 
 
     @Autowired
@@ -32,7 +36,9 @@ public class RestaurantServiceImpl implements RestaurantService
                                  DishRepository dishRepository,
                                  DrinkRepository drinkRepository,
                                  TableRepository tableRepository,
-                                 RestaurantSearch restaurantSearch)
+                                 RestaurantSearch restaurantSearch,
+                                 DishTypeRepository dishTypeRepository,
+                                 RestaurantOrdersService restaurantOrdersService)
     {
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -40,6 +46,8 @@ public class RestaurantServiceImpl implements RestaurantService
         this.drinkRepository = drinkRepository;
         this.tableRepository = tableRepository;
         this.restaurantSearch = restaurantSearch;
+        this.dishTypeRepository = dishTypeRepository;
+        this.restaurantOrdersService = restaurantOrdersService;
     }
 
 
@@ -53,6 +61,10 @@ public class RestaurantServiceImpl implements RestaurantService
         }
         catch(Exception e)
         {
+        }
+        if(saved.getId()!=null)
+        {
+            restaurantOrdersService.addRestaurantOrders(saved.getId());
         }
         return saved;
     }
@@ -81,6 +93,7 @@ public class RestaurantServiceImpl implements RestaurantService
         }
         for(Region r : restaurant.getRegions())
             r.setRestaurant(restaurant);
+
         Restaurant retval = restaurantRepository.save(restaurant);
         return retval;
     }
@@ -193,5 +206,13 @@ public class RestaurantServiceImpl implements RestaurantService
         for (Restaurant r : restaurants)
             ret.add(new RestaurantDTO(r));
         return ret;
+    }
+
+    @Override
+    public DishType addDishType(DishType dishType)
+    {
+        DishType saved=null;
+        saved=dishTypeRepository.save(dishType);
+        return saved;
     }
 }

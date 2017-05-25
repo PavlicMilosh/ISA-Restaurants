@@ -15,7 +15,6 @@ import javax.persistence.Table;
  */
 @Entity
 @AllArgsConstructor(suppressConstructorProperties = true)
-@NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "restaurant_manager")
@@ -25,8 +24,16 @@ public class RestaurantManager extends User
     @JsonIgnore
     private Restaurant restaurant;
 
+
+    public RestaurantManager()
+    {
+        this.enabled = true;
+        this.authorities = Role.RESTAURANT_MANAGER;
+    }
+
     public RestaurantManager(String email, String pass, String firstName, String lastName, Restaurant restaurant)
     {
+        this();
         this.email = email;
         this.password = pass;
         this.firstName = firstName;

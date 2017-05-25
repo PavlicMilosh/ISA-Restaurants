@@ -70,10 +70,10 @@ export class GuestReservationWizardComponent implements OnInit {
   sendReservation()
   {
     this.reservation.restaurant = this.selectedRestaurant;
-    this.guestService.sendReservation(1, this.reservation).subscribe
+    this.guestService.sendReservation(this.reservation).subscribe
     (
       data => console.log(data),
-      //error => alert(error)
+      error => alert(error)
     );
   }
 

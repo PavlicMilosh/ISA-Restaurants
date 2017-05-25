@@ -1,232 +1,240 @@
-<div class="wrapper">
+<div>
 
-  <div id="leftpart">
+  <div class="container">
 
-    <div class="container"><div class=""><div>
-
-      <!-- RESTAURANT -->
-      <form class="main-center sidebyside" method="post" action="#">
-
-        <h2>Restaurant</h2>
-        <hr/>
-
-        <div class="form-group">
-          <label for="restaurantName" class="cols-sm-2 control-label">Restaurant Name</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="restaurantName" id="restaurantName" [(ngModel)]="rnameEditing"  placeholder="Restaurant Name"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="restaurantDescription" class="cols-sm-2 control-label">Restaurant Description</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="restaurantDescription" id="restaurantDescription" [(ngModel)]="rdescEditing"  placeholder="Restaurant Description"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group ">
-          <a (click)="manageRestaurant()" target="_self" type="button" id="restaurantButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
-        </div>
-
-      </form>
-
-
-      <!-- DRINKS -->
-      <form class="main-center sidebyside" method="post" action="#">
-        <h2>Drinks</h2>
-        <hr/>
-
-        <div class="form-group">
-          <label class="cols-sm-2 control-label">Select Drink...</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"></span>
-              <input type="button"
-                     class="form-control dropdown-toggle"
-                     data-toggle="dropdown"
-                     name="drink"
-                     id="drink"
-                     value="Select drink.."/>
-
-              <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
-                <li><a (click)="newDrink()">Add new</a></li>
-                <ng-container *ngIf="restaurant.drinks.length > 0">
-                  <li *ngFor="let drink of restaurant.drinks"><a (click)="selectDrink(drink)">{{drink.name}}</a></li>
-                </ng-container>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="restaurantName" class="cols-sm-2 control-label">Drink Name</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="drinkName" id="drinkName" [(ngModel)]="editingDrink.name"  placeholder="Drink Name"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group ">
-          <label for="restaurantDescription" class="cols-sm-2 control-label">Drink Description</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="drinkDescription" id="drinkDescription" [(ngModel)]="editingDrink.description"  placeholder="Drink Description"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="restaurantDescription" class="cols-sm-2 control-label">Drink Price</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="drinkPrice" id="drinkPrice" [(ngModel)]="editingDrink.price"  placeholder="Drink Price"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group ">
-          <a (click)="manageDrink()" target="_self" type="button" id="drinksButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
-        </div>
-
-      </form>
-
-
-      <!-- DISHES -->
-      <form class="main-center sidebyside" method="post" action="#">
-        <h2>Dishes</h2>
-        <hr/>
-
-        <div class="form-group">
-          <label class="cols-sm-2 control-label">Select Dish...</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"></span>
-              <input type="button"
-                     class="form-control dropdown-toggle"
-                     data-toggle="dropdown"
-                     name="dish"
-                     id="dish"
-                     value="Select dish.."/>
-              <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
-                <li><a (click)="newDish()">Add new</a></li>
-                <ng-container *ngIf="restaurant.dishes.length > 0">
-                  <li *ngFor="let dish of restaurant.dishes"><a (click)="selectDish(dish)">{{dish.name}}</a></li>
-                </ng-container>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="restaurantName" class="cols-sm-2 control-label">Dish Name</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="dishName" id="dishName" [(ngModel)]="editingDish.name"  placeholder="Dish Name"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="restaurantDescription" class="cols-sm-2 control-label">Dish Description</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="dishDescription" id="dishDescription" [(ngModel)]="editingDish.description"  placeholder="Dish Description"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="restaurantDescription" class="cols-sm-2 control-label">Dish Price</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="dishPrice" id="dishPrice" [(ngModel)]="editingDish.price"  placeholder="Dish Price"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group ">
-          <a (click)="manageDish()" target="_self" type="button" id="dishButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
-        </div>
-
-      </form>
-
-    </div></div></div>
-
-  </div>
-  <div id = "rightpart">
-    <div>
-      <form class="main-center sidebyside" method="post" action="#">
-        <h2>Regions</h2>
-        <hr/>
-        <div class="form-group">
-          <label for="restaurantDescription" class="cols-sm-2 control-label">Region Name</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="dishPrice" id="regionName" [(ngModel)]="editingRegion.name"  placeholder="Region Name"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="restaurantDescription" class="cols-sm-2 control-label">Color</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="dishPrice" id="color" [(ngModel)]="editingRegion.color"  placeholder="Color"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group ">
-          <a (click)="addRegion()" target="_self" type="button" id="regionButton" class="btn btn-primary btn-lg btn-block login-button">Add</a>
-        </div>
-      </form>
+    <!-- UPDATE BUTTON -->
+    <div class="form-group">
+      <a (click)="updateRestaurant()" target="_self" type="button" id="updateButton" class="btn btn-primary btn-lg btn-block login-button updatebutton">UPDATE</a>
     </div>
-    <div id = "canvasOptions">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <div class="form-group">
-            <label class="cols-sm-2 control-label">Select Region...</label>
-            <div class="cols-sm-10">
-              <div class="input-group">
-                <span class="input-group-addon"></span>
-                <input type="button"
-                       class="form-control dropdown-toggle"
-                       data-toggle="dropdown"
-                       name="dish"
-                       id="region"
-                       value="Select Region..."/>
-                <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
-                  <li><a (click)="newDish()">Add new</a></li>
+
+    <!-- RESTAURANT -->
+    <form class="main-center sidebyside" method="post" action="#">
+
+      <h2>Restaurant</h2>
+      <hr/>
+
+      <div class="form-group">
+        <label for="restaurantName" class="cols-sm-2 control-label">Restaurant Name</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="restaurantName" id="restaurantName" [(ngModel)]="rnameEditing"  placeholder="Restaurant Name"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="restaurantDescription" class="cols-sm-2 control-label">Restaurant Description</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="restaurantDescription" id="restaurantDescription" [(ngModel)]="rdescEditing"  placeholder="Restaurant Description"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <a (click)="manageRestaurant()" target="_self" type="button" id="restaurantButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+      </div>
+
+    </form>
+
+    <br/>
+
+    <!-- DRINKS -->
+    <form class="main-center">
+      <h2>Drinks</h2>
+      <hr/>
+
+      <div class="form-group">
+        <label class="cols-sm-2 control-label">Select Drink...</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"></span>
+            <input type="button"
+                   class="form-control dropdown-toggle"
+                   data-toggle="dropdown"
+                   name="drink"
+                   id="drink"
+                   value="Select drink.."/>
+
+            <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
+              <li><a (click)="newDrink()">Add new</a></li>
+              <ng-container *ngIf="restaurant.drinks.length > 0">
+                <li *ngFor="let drink of restaurant.drinks"><a (click)="selectDrink(drink)">{{drink.name}}</a></li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="drinkName" class="cols-sm-2 control-label">Drink Name</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="drinkName" id="drinkName" [(ngModel)]="editingDrink.name"  placeholder="Drink Name"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <label for="drinkDescription" class="cols-sm-2 control-label">Drink Description</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="drinkDescription" id="drinkDescription" [(ngModel)]="editingDrink.description"  placeholder="Drink Description"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="drinkPrice" class="cols-sm-2 control-label">Drink Price</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="drinkPrice" id="drinkPrice" [(ngModel)]="editingDrink.price"  placeholder="Drink Price"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <a (click)="manageDrink()" target="_self" type="button" id="drinksButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+      </div>
+
+    </form>
+
+    <br/>
+
+    <!-- DISHES -->
+    <form class="main-center">
+      <h2>Dishes</h2>
+      <hr/>
+
+      <div class="form-group">
+        <label class="cols-sm-2 control-label">Select Dish...</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"></span>
+            <input type="button"
+                   class="form-control dropdown-toggle"
+                   data-toggle="dropdown"
+                   name="dish"
+                   id="dish"
+                   value="Select dish.."/>
+            <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
+              <li><a (click)="newDish()">Add new</a></li>
+              <ng-container *ngIf="restaurant.dishes.length > 0">
+                <li *ngFor="let dish of restaurant.dishes"><a (click)="selectDish(dish)">{{dish.name}}</a></li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="restaurantName" class="cols-sm-2 control-label">Dish Name</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="dishName" id="dishName" [(ngModel)]="editingDish.name"  placeholder="Dish Name"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="restaurantDescription" class="cols-sm-2 control-label">Dish Description</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="dishDescription" id="dishDescription" [(ngModel)]="editingDish.description"  placeholder="Dish Description"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="restaurantDescription" class="cols-sm-2 control-label">Dish Price</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="dishPrice" id="dishPrice" [(ngModel)]="editingDish.price"  placeholder="Dish Price"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <a (click)="manageDish()" target="_self" type="button" id="dishButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+      </div>
+
+    </form>
+
+    <br/>
+
+    <!-- REGIONS -->
+    <form class="main-center">
+      <h2>Regions</h2>
+      <hr/>
+
+      <div class="form-group">
+        <label for="regionName" class="cols-sm-2 control-label">Region Name</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="regionName" id="regionName" [(ngModel)]="editingRegion.name"  placeholder="Region Name"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="color" class="cols-sm-2 control-label">Color</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="color" class="form-control" name="color" id="color" [(ngModel)]="editingRegion.color"  value = "#ffffff"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <a (click)="addRegion()" target="_self" type="button" id="regionButton" class="btn btn-primary btn-lg btn-block login-button">Add</a>
+      </div>
+    </form>
+
+    <!-- CANVAS RIP -->
+    <div class="canvasContainer">
+      <div id = "canvasOptions">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="form-group">
+              <label class="cols-sm-2 control-label">Select Region...</label>
+              <div class="cols-sm-10">
+                <div class="input-group">
+                  <span class="input-group-addon"></span>
+                  <input type="button"
+                         class="form-control dropdown-toggle"
+                         data-toggle="dropdown"
+                         name="region"
+                         id="region"
+                         value="Select Region..."/>
+                  <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
+                    <li><a (click)="newDish()">Add new</a></li>
                     <li *ngFor="let region of restaurant.regions"><a (click)="selectRegion(region)">{{region.name}}</a></li>
-                </ul>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-        <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="addTable()">Add Table</a></li>
-        <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="removeTable()">Remove Table</a></li>
-      </ul>
-    </div>
+          </li>
+          <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="addTable()">Add Table</a></li>
+          <li class="list-group-item"><a class="btn btn-info canvas-btn" role="button" (click)="removeTable()">Remove Table</a></li>
+        </ul>
+      </div>
 
-    <div id = "canvasDiv">
-      <canvas id="canvas" class="canvas"></canvas>
-    </div>
+      <div id = "canvasDiv">
+        <canvas id="canvas" class="canvas"></canvas>
+      </div>
 
+    </div>
   </div>
-  
+
+
 </div>

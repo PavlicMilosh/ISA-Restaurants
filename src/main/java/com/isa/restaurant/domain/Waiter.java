@@ -1,20 +1,16 @@
 package com.isa.restaurant.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by djuro on 4/13/2017.
  */
 
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -27,20 +23,22 @@ public class Waiter extends User
 
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkSchedule> schedule;
-    //private Set<RestaurantTable> tables;
+
+
+    public Waiter()
+    {
+        this.enabled = true;
+        this.authorities = Role.WAITER;
+    }
+
 
     public Waiter(String email, String password, String firstName, String lastName)
     {
+        this();
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        //this.tables=new HashSet<RestaurantTable>();
-    }
-
-    public void addRestaurantTable(RestaurantTable table)
-    {
-        //tables.add(table);
     }
 
     @Override

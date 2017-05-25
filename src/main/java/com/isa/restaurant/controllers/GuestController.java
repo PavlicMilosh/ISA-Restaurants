@@ -66,8 +66,9 @@ public class GuestController
         if(saved == null)
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 
-        String token = verificationTokenService.getTokenByUserId(guest.getId());
-        mailService.sendUserActivationEmail(guest, token);
+        //TODO: OVO KADA SE PONOVO UVEDE MAIL OTKOMENTARISATI
+        //String token = verificationTokenService.getTokenByUserId(guest.getId());
+        //mailService.sendUserActivationEmail(guest, token);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 

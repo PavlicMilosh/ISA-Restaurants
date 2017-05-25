@@ -20,8 +20,6 @@ import java.util.Set;
 /**
  * Created by Q on 15-Apr-17.
  */
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -29,16 +27,22 @@ import java.util.Set;
 @Indexed
 public class Guest extends User
 {
-    @Column(name = "guest_enabled")
-    private Boolean enabled;
+
+    public Guest()
+    {
+        this.enabled = true;
+        this.authorities = Role.GUEST;
+    }
+
 
     public Guest(String email, String password, String firstName, String lastName)
     {
+        this();
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.enabled = false;
+        //this.enabled = false;
     }
 
 

@@ -7,6 +7,8 @@ import { UserService } from "../../services/users.service";
   styleUrls: ['./addWorker.component.css'],
   providers: [ UserService ]
 })
+
+
 export class AddWorkerComponent implements OnInit
 {
   private firstName: string;
@@ -23,9 +25,7 @@ export class AddWorkerComponent implements OnInit
     this.role = "Select Role";
   }
 
-  ngOnInit()
-  {
-  }
+  ngOnInit(){  }
 
   setRole(role: string)
   {

@@ -31,7 +31,7 @@ export class GuestRestaurantsPageComponent implements OnInit
     this.restaurantService.getRestaurants().subscribe
     (
       data => this.restaurants = data,
-      //error => alert(error)
+      error => console.log(error)
     );
   }
 
@@ -64,14 +64,25 @@ export class GuestRestaurantsPageComponent implements OnInit
       this.restaurantService.getRestaurants().subscribe
       (
         data => this.restaurants = data,
-       // error => alert(error)
+        error => alert(error)
       );
     }
 
     this.restaurantService.searchRestaurants(this.searchParams).subscribe
     (
       data => this.restaurants = data,
-     //error => alert(error)
+      error => alert(error)
+    );
+  }
+
+
+  sendReservation()
+  {
+    this.reservation.restaurant = this.selectedRestaurant;
+    this.guestService.sendReservation(this.reservation).subscribe
+    (
+      data => console.log(data),
+      error => alert(error)
     );
   }
 

@@ -1,0 +1,5 @@
+.calendar {
+  background-color: lightgray;
+  border-color: dimgray;
+  display: table;
+}
