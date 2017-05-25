@@ -10,8 +10,8 @@
           <input type="button"
                  class="form-control dropdown-toggle"
                  data-toggle="dropdown"
-                 name="dish"
-                 id="dish"
+                 name="worker"
+                 id="worker"
                  value="Select worker..."/>
           <ul *ngIf="workers.length > 0" class="dropdown-menu" role="menu">
               <li *ngFor="let worker of workers"><a (click)="selectWorker(worker)">{{worker.firstName}} {{worker.lastName}}</a></li>
@@ -29,7 +29,7 @@
       <div class="cols-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="glyphicon glyphicon-time" aria-hidden="true"></i></span>
-          <input type="text" class="form-control" name="startTime" id="startTime" [(ngModel)]="schedule.startTime"  placeholder="Start Time"/>
+          <input type="time" class="form-control" name="startTime" id="startTime" [(ngModel)]="schedule.startTime"  placeholder="Start Time"/>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
       <div class="cols-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="glyphicon glyphicon-time" aria-hidden="true"></i></span>
-          <input type="text" class="form-control" name="endTime" id="endTime" [(ngModel)]="schedule.endTime"  placeholder="End Time"/>
+          <input type="time" class="form-control" name="endTime" id="endTime" [(ngModel)]="schedule.endTime"  placeholder="End Time"/>
         </div>
       </div>
     </div>
