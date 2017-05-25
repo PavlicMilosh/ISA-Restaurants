@@ -33,10 +33,10 @@ public class OrderController
     @Autowired
     private OrderItemService orderItemService;
 
-    @RequestMapping(value = "/add/{restaurantId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Order> addOrder(@PathVariable Long restaurantId, @RequestBody Order order)
+    @RequestMapping(value = "/{waiterId}/add/{restaurantId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Order> addOrder(@PathVariable Long restaurantId, @PathVariable Long waiterId, @RequestBody Order order)
     {
-        Order saved = restaurantOrdersService.addOrder(order,restaurantId);
+        Order saved = restaurantOrdersService.addOrder(order,restaurantId,waiterId);
         if(saved == null)
             return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
         return new ResponseEntity(saved, HttpStatus.OK);

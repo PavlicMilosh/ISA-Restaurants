@@ -86,30 +86,24 @@ public class UserController
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/waiter/{id}/getSchedule", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/getSchedule", method = RequestMethod.GET)
     public ResponseEntity<Set<WorkSchedule>> getWaiterSchedule(@PathVariable Long id){
-        Set<WorkSchedule> schedule=userService.getWaiterSchedule(id);
+        Set<WorkSchedule> schedule=userService.getSchedule(id);
         if(schedule==null){
-            schedule=new HashSet<>();
+            schedule=new HashSet<WorkSchedule>();
         }
         return new ResponseEntity(schedule, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/cook/{id}/getSchedule", method = RequestMethod.GET)
-    public ResponseEntity<Set<WorkSchedule>> getCookSchedule(@PathVariable Long id){
-        Set<WorkSchedule> schedule=userService.getCookSchedule(id);
-        if(schedule==null){
-            schedule=new HashSet<>();
-        }
-        return new ResponseEntity(schedule, HttpStatus.OK);
+    @RequestMapping(value = "/{id}/getRestaurant", method = RequestMethod.GET)
+    public ResponseEntity<Restaurant> getUserRestaurant(@PathVariable Long id){
+        Restaurant r=userService.getUserRestaurant(id);
+        return new ResponseEntity(r, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/bartender/{id}/getSchedule", method = RequestMethod.GET)
-    public ResponseEntity<Set<WorkSchedule>> getBartenderSchedule(@PathVariable Long id){
-        Set<WorkSchedule> schedule=userService.getBartenderSchedule(id);
-        if(schedule==null){
-            schedule=new HashSet<>();
-        }
-        return new ResponseEntity(schedule, HttpStatus.OK);
+    @RequestMapping(value = "/{id}/getRestaurantOrders", method = RequestMethod.GET)
+    public ResponseEntity<Set<Order>> getRestaurantOrders(@PathVariable Long id) {
+        Set<Order> orders = userService.getRestaurantOrders(id);
+        return new ResponseEntity(orders, HttpStatus.OK);
     }
 }

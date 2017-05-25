@@ -158,17 +158,21 @@ export class UserService
       .map(res => res.json());
   }
 
-  getSchedule(userId:number, role: string)
+  getSchedule()
   {
-    var path = '';
-    if (role == 'Waiter')
-      path = "/waiter";
-    else if (role == 'Cook')
-      path = "/cook";
-    else
-      path = "/bartender";
+    let userId = LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/users/"+userId+"/getSchedule")
+      .map(res => res.json());
+  }
 
-    return this.http.get("http://localhost:8080/users/"+path+"/getSchedule")
+  getRestaurant()
+  {
+    let userId = LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/users/"+ userId+"/getRestaurant", { headers : headers })
       .map(res => res.json());
   }
 }
