@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
+import {LoggedUtils} from "../utils/logged.utils";
 
 @Injectable()
 export class OrderService
@@ -10,33 +11,38 @@ export class OrderService
 
   }
 
-  makeOrder(orderItems:OrderItem[], barman: Barman, finished: boolean, price: number, table: RestaurantTable)
+  makeOrder(orderItems:OrderItem[], finished: boolean, price: number,id:number)
   {
     var date=Date.now();
     var order =
       {
         orderItems: orderItems,
-        barman: barman,
         finished: finished,
         price: price,
-        orderTable: table,
         orderTime: date
       }
     var param = JSON.stringify(order);
-    var headers = new Headers();
+    let waiterId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/order/add/1", param, { headers : headers })
+    return this.http.post("http://localhost:8080/order/"+waiterId+"/add/"+id, param, { headers : headers })
       .map(res => res.json());
   }
 
   finishedOrder(id:number)
   {
-    return this.http.put("http://localhost:8080/order/"+id+"/finish","");
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.put("http://localhost:8080/order/"+id+"/finish", { headers : headers });
   }
 
-  getAllOrders(id:number)
+  getAllOrders()
   {
-    return this.http.get("http://localhost:8080/order/"+id+"/getOrders")
+    let userId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/users/"+userId+"/getRestaurantOrders", { headers : headers })
       .map(res => res.json());
   }
 

@@ -53,12 +53,10 @@ export class MakeOrder
 
   constructor(private orderService: OrderService, private userService: UserService, private restaurantService: RestaurantService)
   {
-    this.restaurantService.updateRestaurant(this.restaurant).subscribe(
+    this.userService.getRestaurant().subscribe(
       data => this.restaurant = data,
-      error => alert(error),
-      ()=>this.init()
+      error => alert(error)
     );
-
   }
 
   init()
@@ -82,7 +80,7 @@ export class MakeOrder
 
   makeOrder()
   {
-    this.orderService.makeOrder(this.orderItems,this.barman,false,0,this.restaurant.tables[0]).subscribe(
+    this.orderService.makeOrder(this.orderItems,false,0,this.restaurant.id).subscribe(
       data => this.order = data,
       error => alert(error),
       ()=>this.removeItems()

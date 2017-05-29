@@ -30,6 +30,12 @@ export class NavbarComponent implements OnInit {
         this.presetSM();
       else if (LoggedUtils.hasRole("RESTAURANT_MANAGER"))
         this.presetRM();
+      else if (LoggedUtils.hasRole("WAITER"))
+        this.presetWaiter();
+      else if (LoggedUtils.hasRole("COOK"))
+        this.presetCook();
+      else if (LoggedUtils.hasRole("BARTENDER"))
+        this.presetBartender();
     }
 
     if (this.links.length == 0)
@@ -156,6 +162,54 @@ export class NavbarComponent implements OnInit {
 
     this.addLink({text: "Logout", routerLink:"/auth" });
 
+  }
+
+  presetWaiter()
+  {
+    var dropdownOrder =
+      {
+        text: "Orders",
+        links:
+          [
+            {text: "Make order", routerLink: "/makeOrder"}
+          ]
+      };
+
+    this.addLink({text: "Logout", routerLink:"/auth" });
+    this.addDropdown(dropdownOrder);
+    this.addLink({text: "Schedule", routerLink:"/employeeWorkShedule" });
+  }
+
+  presetCook()
+  {
+    var dropdownOrder =
+      {
+        text: "Orders",
+        links:
+          [
+            {text: "Confirm order", routerLink: "/orderDishes"}
+          ]
+      };
+
+    this.addLink({text: "Logout", routerLink:"/auth" });
+    this.addDropdown(dropdownOrder);
+    this.addLink({text: "Schedule", routerLink:"/employeeWorkShedule" });
+  }
+
+  presetBartender()
+  {
+    var dropdownOrder =
+      {
+        text: "Orders",
+        links:
+          [
+            {text: "Confirm order", routerLink: "/orderDrinks"}
+          ]
+      };
+
+    this.addLink({text: "Logout", routerLink:"/auth" });
+    this.addDropdown(dropdownOrder);
+    this.addLink({text: "Schedule", routerLink:"/employeeWorkShedule" });
   }
 
 

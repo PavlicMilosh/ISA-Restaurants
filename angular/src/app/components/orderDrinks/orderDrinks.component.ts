@@ -43,7 +43,7 @@ export class OrderDrinks {
 
   constructor(private orderService: OrderService) {
 
-    this.orderService.getAllOrders(1).subscribe
+    this.orderService.getAllOrders().subscribe
     (
       (data: Order[]) => this.orders = data,
       error => alert(error)

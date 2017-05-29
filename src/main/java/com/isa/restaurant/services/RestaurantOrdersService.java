@@ -11,7 +11,7 @@ import java.util.Set;
  * Created by djuro on 5/24/2017.
  */
 public interface RestaurantOrdersService {
-    Order addOrder(Order order, Long id);
+    Order addOrder(Order order, Long id, Long waiterId);
 
     Set<Dish> getAllDishes(Long id);
 

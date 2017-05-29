@@ -21,7 +21,7 @@ public interface UserService
     UserDTO changeWaiter(Waiter waiter);
     UserDTO changeCook(Cook cook);
     UserDTO changeBartender(Bartender bartender);
-    Set<WorkSchedule> getWaiterSchedule(Long id);
-    Set<WorkSchedule> getCookSchedule(Long id);
-    Set<WorkSchedule> getBartenderSchedule(Long id);
+    Set<WorkSchedule> getSchedule(Long id);
+    Restaurant getUserRestaurant(Long id);
+    Set<Order> getRestaurantOrders(Long id);
 }

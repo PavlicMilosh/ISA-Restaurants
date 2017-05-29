@@ -32,11 +32,12 @@ export class EmployeeWorkShedule{
   minutes:string;
 
 
-  workShedule1:WorkShedule={startTime:this.date1,endTime:this.date2,day:1,restaurant:null,worker:null};
-  workShedule2:WorkShedule={startTime:this.date3,endTime:this.date4,day:2,restaurant:null,worker:null};
-  workShedule3:WorkShedule={startTime:this.date5,endTime:this.date6,day:3,restaurant:null,worker:null};
-  items:WorkShedule[]=[this.workShedule1, this.workShedule2, this.workShedule3];
 
+  workShedule1:WorkShedule={id:null, startTime:this.date1,endTime:this.date2,day:1,restaurant:null,worker:null};
+  workShedule2:WorkShedule={id:null, startTime:this.date3,endTime:this.date4,day:2,restaurant:null,worker:null};
+  workShedule3:WorkShedule={id:null, startTime:this.date5,endTime:this.date6,day:3,restaurant:null,worker:null};
+
+  items:WorkShedule[]=[this.workShedule1, this.workShedule2, this.workShedule3];
 
   calendarOptions = {
     height: 'auto',
@@ -59,14 +60,14 @@ export class EmployeeWorkShedule{
   };
 
   constructor(private userService: UserService) {
-
     /*
-     this.userService.getSchedule(1,"waiter").subscribe
+     this.userService.getSchedule().subscribe
      (
      (data:WorkShedule[]) => this.items = data,
      error => alert(error)
      );
     */
+
   }
 
   ngOnInit()
@@ -74,6 +75,7 @@ export class EmployeeWorkShedule{
     let newEvents=[];
     for(var i=1; i<this.items.length; i++)
     {
+
       if(this.items[i].startTime.getUTCHours()<10) this.hour='0'+this.items[i].startTime.getUTCHours().toString(); else this.hour=this.items[i].startTime.getUTCHours().toString();
 
       if(this.items[i].startTime.getUTCMinutes()<10) this.minutes='0'+this.items[i].startTime.getUTCMinutes().toString(); else this.minutes=this.items[i].startTime.getUTCMinutes().toString();
@@ -85,6 +87,7 @@ export class EmployeeWorkShedule{
       if(this.items[i].endTime.getUTCMinutes()<10) this.minutes='0'+this.items[i].endTime.getUTCMinutes().toString(); else this.minutes=this.items[i].endTime.getUTCMinutes().toString();
 
       this.end='2017-05-0'+(this.items[i].day-1)+'T'+this.hour+':'+this.minutes;
+
 
       console.log(this.start);
       console.log(this.end);
@@ -109,11 +112,12 @@ interface UserDTO
 
 interface WorkShedule
 {
+  id:number;
   startTime:Date;
   endTime:Date;
   day:number;
-  worker:UserDTO;
-  restaurant:Restaurant;
+  worker:any;
+  restaurant:any;
 }
 
 interface Restaurant
