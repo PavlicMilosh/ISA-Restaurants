@@ -20,11 +20,11 @@ export class UpdateRestaurantComponent implements OnInit
   private editingDish: Dish;
   private rnameEditing: string;
   private rdescEditing: string;
-  private regionIndex: number;
   private editingRegion: RestaurantRegion;
   private currentRegion: RestaurantRegion;
+  private seats: number;
 
-  constructor(private userService: UserService, private restaurantService: RestaurantService)
+  constructor(private restaurantService: RestaurantService)
   {
     this.restaurant =
     {
@@ -53,50 +53,101 @@ export class UpdateRestaurantComponent implements OnInit
     };
     this.newDish();
     this.newDrink();
-    this.restaurantService.getByManager().subscribe(
-      data =>  {this.restaurant = data; console.log(this.restaurant);}
-    );
   }
 
   ngOnInit()
   {
     this.canvas = new fabric.Canvas('canvas');
     this.canvas.setDimensions({width:900, height:900});
+    this.restaurantService.getByManager().subscribe(
+      data =>
+      {
+        this.restaurant = data;
+        console.log(this.restaurant);
+        for(let region of this.restaurant.regions)
+        {
+          for(let table of region.tables)
+          {
+            let text = new fabric.Text(String(table.seats), {
+              fontFamily: 'Comic Sans',
+              fontSize: 18,
+              lockRotation: true
+            });
+            let rect = new fabric.Rect(
+              {
+                width: 50,
+                height: 50,
+                fill: region.color,
+                id: table.id
+              });
+            let group = new fabric.Group([rect, text],
+              {
+                left: table.left,
+                top: table.top,
+                region: region,
+                lockRotation: true
+              });
+            this.canvas.add(group);
+          }
+        }
+      }
+    );
   }
 
   addTable()
   {
-    var rect = new fabric.Rect(
+    let group = {rect:null, text:null};
+    let text = new fabric.Text(String(this.seats), {
+      fontFamily: 'Comic Sans',
+      fontSize: 18,
+      lockRotation: true
+    });
+    let rect = new fabric.Rect(
       {
-        left: 100,
-        top: 100,
         fill: this.currentRegion.color,
         width: 50,
         height: 50,
-        region: this.currentRegion
+        id: null
       }
     );
-    this.canvas.add(rect);
+    group = new fabric.Group([rect, text],
+      {
+        left: 100,
+        top: 100,
+        region: this.currentRegion,
+        lockRotation: true
+      }
+    );
+    this.canvas.add(group);
   }
 
   removeTable()
   {
-    this.canvas.getActiveObject().remove();
+    let g = this.canvas.getActiveObject();
   }
 
   updateRestaurant()
   {
-    for(let rectangle of this.canvas.getObjects())
+    this.restaurant.tables = [];
+    for(let region of this.restaurant.regions)
     {
-      this.restaurant.tables.push(
-        {
-          id: null,
-          topC: rectangle.getTop(),
-          leftC: rectangle.getLeft(),
-          angle: rectangle.getAngle(),
-          region: rectangle.region
-        });
+      region.tables = [];
     }
+    for(let group of this.canvas.getObjects())
+    {
+      console.log(group);
+      let t = {
+        id: group.id,
+        top: group.getTop(),
+        left: group.getLeft(),
+        angle: 0.0,
+        seats: Number(group.item(1).text)
+      };
+      let region = group.region;
+      region.tables.push(t);
+      this.restaurant.tables.push(t);
+    }
+    console.log(this.restaurant);
     this.restaurantService.updateRestaurant(this.restaurant).subscribe(
       data => this.restaurant = data
     );
@@ -203,7 +254,7 @@ export class UpdateRestaurantComponent implements OnInit
   addRegion()
   {
     this.restaurant.regions.push(this.editingRegion);
-    this.editingRegion = {id:null, name:"", color: "blue", tables:[]};
+    this.editingRegion = {id:null, name:"", color: "#0000ff", tables:[]};
   }
 }
 
@@ -247,10 +298,10 @@ interface Manager
 interface RestaurantTable
 {
   id: number;
-  topC: number;
-  leftC: number;
+  top: number;
+  left: number;
   angle: number;
-  region: RestaurantRegion;
+  seats: number;
 }
 
 interface RestaurantRegion

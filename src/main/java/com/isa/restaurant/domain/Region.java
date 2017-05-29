@@ -26,8 +26,10 @@ public class Region
     @Column(name = "region_name")
     private String name;
 
-    @OneToMany(mappedBy = "region")
-    @JsonIgnore
+    @Column(name = "region_color")
+    private String color;
+
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
     private Set<RestaurantTable> tables;
 
     @ManyToOne

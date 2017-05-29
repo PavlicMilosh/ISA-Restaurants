@@ -26,7 +26,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long>
 
     @Query("SELECT f FROM Friendship f WHERE " +
             "LOWER(f.status) = 'pending' AND " +
-            "f.actionUser.id != :user_id")
+            "f.actionUser.id != :user_id AND " +
+            "(f.firstUser.id = :user_id OR f.secondUser.id = :user_id)")
     Set<Friendship> findAllIncomingFriendRequestsByUserId (@Param("user_id") Long userId);
 
 

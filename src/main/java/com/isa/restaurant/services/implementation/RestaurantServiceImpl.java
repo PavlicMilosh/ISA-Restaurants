@@ -1,6 +1,7 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
+import com.isa.restaurant.domain.DTO.RegionDTO;
 import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.repositories.*;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Milos on 13-Apr-17.
@@ -80,25 +82,78 @@ public class RestaurantServiceImpl implements RestaurantService
     @Override
     public Restaurant updateRestaurant(Restaurant restaurant)
     {
+        Restaurant rest = getRestaurant(restaurant.getId());
         for(Dish d : restaurant.getDishes())
-            d.setRestaurant(restaurant);
-        for(Drink d : restaurant.getDrinks())
-            d.setRestaurant(restaurant);
-        for(RestaurantManager rm : restaurant.getManagers())
-            rm.setRestaurant(restaurant);
-        for(RestaurantTable t : restaurant.getTables())
         {
-            t.setRestaurant(restaurant);
-            t.getRegion().addTable(t);
-        }
-        for(Region r : restaurant.getRegions())
-            r.setRestaurant(restaurant);
+            Dish dish = rest.getDish(d.getId());
+            if (dish == null)
+            {
+                d.setRestaurant(rest);
+                rest.addDish(d);
+            }
+            else
+            {
+                dish.setName(d.getName());
+                dish.setDescription(d.getDescription());
+                dish.setPrice(d.getPrice());
+                dish.setRestaurant(rest);
 
-        Restaurant retval = restaurantRepository.save(restaurant);
+            }
+        }
+        for(Drink d : restaurant.getDrinks())
+        {
+            Drink drink = rest.getDrink(d.getId());
+            if(drink == null)
+            {
+                d.setRestaurant(rest);
+                rest.addDrink(d);
+            }
+            else
+            {
+                drink.setName(d.getName());
+                drink.setDescription(d.getDescription());
+                drink.setPrice(d.getPrice());
+                drink.setRestaurant(rest);
+            }
+        }
+
+        for(RestaurantManager rm : rest.getManagers())
+            rm.setRestaurant(rest);
+
+
+        for(Region r : restaurant.getRegions())
+        {
+            Region region = rest.getRegion(r.getId());
+            if(region == null)
+            {
+                rest.addRegion(r);
+                r.setRestaurant(rest);
+            }
+            for (RestaurantTable t : r.getTables())
+            {
+                RestaurantTable table = rest.getTable(t.getId());
+                if(table == null)
+                {
+                    t.setRegion(r);
+                    t.setRestaurant(rest);
+                    rest.addTable(t);
+                }
+                else
+                {
+                    table.setRegion(r);
+                    table.setTop(t.getTop());
+                    table.setLeft(t.getLeft());
+                    table.setAngle(t.getAngle());
+                    table.setSeats(t.getSeats());
+                }
+            }
+        }
+
+        Restaurant retval = restaurantRepository.save(rest);
         return retval;
     }
 
-    @Transactional
+    @Override
     public Restaurant getRestaurant(Long id)
     {
         Restaurant r = restaurantRepository.findOne(id);
@@ -117,10 +172,12 @@ public class RestaurantServiceImpl implements RestaurantService
         r.getDrinks();
         r.getDishes();
         r.getTables();
+        r.getRegions();
+        r.getTables();
         return r;
     }
 
-    @Transactional
+    @Override
     public Restaurant getByManagerId(Long managerId)
     {
         RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
@@ -214,5 +271,20 @@ public class RestaurantServiceImpl implements RestaurantService
         DishType saved=null;
         saved=dishTypeRepository.save(dishType);
         return saved;
+    }
+
+    @Override
+    public List<RegionDTO> getRegions(Long restaurantId)
+    {
+        Restaurant restaurant = restaurantRepository.findOne(restaurantId);
+        if (restaurant == null) return null;
+
+        List<RegionDTO> regionDTOs = new ArrayList<>();
+        Set<Region> regions = restaurant.getRegions();
+
+        for (Region r : regions)
+            regionDTOs.add(new RegionDTO(r));
+
+        return regionDTOs;
     }
 }

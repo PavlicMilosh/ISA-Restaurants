@@ -54,7 +54,7 @@ public class AuthenticationController
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

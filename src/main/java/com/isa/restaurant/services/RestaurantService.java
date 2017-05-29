@@ -1,4 +1,5 @@
 package com.isa.restaurant.services;
+import com.isa.restaurant.domain.DTO.RegionDTO;
 import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
@@ -35,4 +36,6 @@ public interface RestaurantService
     List<RestaurantDTO> searchRestaurantsByNameAndDescription(String searchText);
 
     DishType addDishType(DishType dishType);
+
+    List<RegionDTO> getRegions(Long restaurantId);
 }

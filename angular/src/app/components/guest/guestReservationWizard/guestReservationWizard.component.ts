@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { GuestService } from "../../../services/guest.service";
 import { RestaurantService } from "../../../services/restaurants.service"
 import {GuestRestaurantsPageComponent } from "../guestRestaurantsPage/guestRestaurantsPage.component";
+import 'fabric';
+
+declare let fabric;
 declare let jQuery: any;
 
 @Component({
@@ -17,18 +20,26 @@ export class GuestReservationWizardComponent implements OnInit {
 
   private selectedRestaurant: Restaurant;
   private reservation: Reservation;
-
+  private tables: RestaurantTable[];
+  private regions: Region[];
+  private canvas;
 
   constructor(private guestService: GuestService, private restaurantService: RestaurantService)
   {
     this.selectedRestaurant = {id: 0, name: "", description: ""};
-    this.reservation = {time : "", date: "", duration: 0, restaurant: this.selectedRestaurant};
+    this.reservation = {startTime : "", startDate: "", duration: 0, restaurant: this.selectedRestaurant};
+    this.tables = [];
+    this.regions = [];
+    this.getRegions();
     this.createWizard();
-    this.initDatePicker();
   }
 
 
-  ngOnInit() {}
+  ngOnInit()
+  {
+    this.canvas = new fabric.Canvas('canvas');
+    this.canvas.setDimensions({width:900, height:900});
+  }
 
 
   createWizard()
@@ -63,7 +74,58 @@ export class GuestReservationWizardComponent implements OnInit {
   selectedRestaurantNotify(restaurant: Restaurant)
   {
     this.selectedRestaurant = restaurant;
-    console.log(this.selectedRestaurant);
+    this.reservation.restaurant = restaurant;
+  }
+
+
+
+
+
+  initTables()
+  {
+
+    this.getTables();
+
+    let ctx = this.canvas.getContext('2d');
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    for (let i = 0; i < this.tables.length; i++)
+    {
+      console.log(this.tables[i]);
+      let rect = new fabric.Rect(
+        {
+          left: this.tables[i].left,
+          top: this.tables[i].top,
+          fill: 'blue',
+          width: 50,
+          height: 50,
+        }
+      );
+      this.canvas.add(rect);
+      this.canvas.item(i).hasControls = false;
+      this.canvas.item(i).hasBorders = false;
+    }
+  }
+
+
+  getTables()
+  {
+    console.log(this.reservation);
+    this.guestService.getTables(this.reservation).subscribe
+    (
+      data => this.tables = data,
+      error => alert(error)
+    );
+  }
+
+
+  getRegions()
+  {
+    this.restaurantService.getRegions(this.selectedRestaurant.id).subscribe
+    (
+      data => this.regions = data,
+      error => alert(error)
+    );
   }
 
 
@@ -77,6 +139,9 @@ export class GuestReservationWizardComponent implements OnInit {
     );
   }
 
+
+
+
 }
 
 
@@ -87,10 +152,30 @@ interface Restaurant
   description: string;
 }
 
+
 interface Reservation
 {
-  time: string;
+  startTime: string;
   duration: number;
-  date: string;
+  startDate: string;
   restaurant: Restaurant;
+}
+
+
+interface RestaurantTable
+{
+  id: number;
+  top: number;
+  left: number;
+  angle: number;
+  occupied: boolean;
+  regionId: number;
+}
+
+
+interface Region
+{
+  name: string;
+  color: string;
+  id: number;
 }

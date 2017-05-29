@@ -153,4 +153,13 @@ export class GuestService
       .map(res => res.json());
   }
 
+
+  getTables(reservation: any)
+  {
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.put("http://localhost:8080/guest/" + LoggedUtils.getId() + "/getTables", reservation, {headers: headers})
+      .map(res => res.json());
+  }
+
 }

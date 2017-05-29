@@ -1,8 +1,6 @@
 package com.isa.restaurant.controllers;
 
-import com.isa.restaurant.domain.DTO.RestaurantDTO;
-import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
-import com.isa.restaurant.domain.DTO.UserDTO;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.domain.RestaurantManager;
 import com.isa.restaurant.domain.RestaurantTable;
@@ -15,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -126,6 +125,15 @@ public class RestaurantController
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/getRegions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RegionDTO>> getRegions(@PathVariable Long restaurantId)
+    {
+        List<RegionDTO> regions = this.restaurantService.getRegions(restaurantId);
+        if (regions == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(regions, HttpStatus.OK);
     }
 
 }

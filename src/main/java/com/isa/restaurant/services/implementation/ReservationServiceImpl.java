@@ -94,6 +94,35 @@ public class ReservationServiceImpl implements ReservationService
     }
 
 
+    public List<RestaurantTableDTO> getTables(Long guestId, ReservationDTO reservationDTO)
+    {
+        Guest guest = (Guest) userRepository.findById(guestId);
+        Restaurant restaurant = restaurantRepository.findByName(reservationDTO.getRestaurant().getName());
+
+        Date reservationDateTimeStart = Utilities.createDateFromString(reservationDTO.getStartDate(), reservationDTO.getStartTime());
+        Date reservationDateTimeEnd = Utilities.addMinutesToDate(reservationDateTimeStart, reservationDTO.getDuration());
+
+        if (guest == null ||
+                restaurant == null ||
+                reservationDateTimeStart == null ||
+                reservationDateTimeEnd == null ||
+                hasOccupiedTables(reservationDTO.getTables(), restaurant, reservationDateTimeStart, reservationDateTimeEnd)) return null;
+
+        HashMap<Boolean, List<RestaurantTable>> tables =  getTables(restaurant, reservationDateTimeStart, reservationDateTimeEnd);
+
+        List<RestaurantTableDTO> ret = new ArrayList<>();
+
+        for (RestaurantTable rt : tables.get(true))
+            ret.add(new RestaurantTableDTO(rt, true));
+        for (RestaurantTable rt : tables.get(false))
+            ret.add(new RestaurantTableDTO(rt, false));
+
+        return ret;
+
+
+    }
+
+
     private HashMap<Boolean, List<RestaurantTable>> getTables(Restaurant restaurant, Date reservationStart, Date reservationEnd)
     {
         // true - OCCUPIED, false - FREE

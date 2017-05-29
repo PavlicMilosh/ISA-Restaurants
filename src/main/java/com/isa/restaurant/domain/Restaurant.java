@@ -164,4 +164,44 @@ public class Restaurant
     {
         this.regions.add(region);
     }
+
+    public Dish getDish(Long dishId)
+    {
+        if(dishId == null)
+            return null;
+        for(Dish d : this.dishes)
+            if(d.getId() == dishId)
+                return d;
+        return null;
+    }
+
+    public Drink getDrink(Long drinkId)
+    {
+        if(drinkId == null)
+            return null;
+        for(Drink d : this.drinks)
+            if(d.getId() == drinkId)
+                return d;
+        return null;
+    }
+
+    public Region getRegion(Long reigonId)
+    {
+        if(reigonId == null)
+            return null;
+        for(Region r : this.regions)
+            if(r.getId() == reigonId)
+                return r;
+        return null;
+    }
+
+    public RestaurantTable getTable(Long tableId)
+    {
+        if(tableId == null)
+            return null;
+        for(RestaurantTable t : this.tables)
+            if(t.getId() == tableId)
+                return t;
+        return null;
+    }
 }

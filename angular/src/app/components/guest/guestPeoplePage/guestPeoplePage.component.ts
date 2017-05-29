@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
+import {LoggedUtils} from "../../../utils/logged.utils";
 
 @Component
 ({
@@ -15,9 +16,11 @@ export class GuestPeoplePageComponent implements OnInit {
 
   private people: GuestAndRelation[];
   private searchParams: string;
+  private myId: number;
 
   constructor(private guestService: GuestService) {
     this.people = [];
+    this.myId = LoggedUtils.getId();
     this.guestService.getAllGuests().subscribe
     (
       data => {
@@ -30,7 +33,9 @@ export class GuestPeoplePageComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+  ngOnInit()
+  {
+    this.myId = LoggedUtils.getId();
   }
 
 

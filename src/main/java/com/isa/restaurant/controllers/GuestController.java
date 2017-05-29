@@ -3,6 +3,7 @@ package com.isa.restaurant.controllers;
 import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.domain.Guest;
 import com.isa.restaurant.domain.Invitation;
+import com.isa.restaurant.domain.RestaurantTable;
 import com.isa.restaurant.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -184,7 +186,7 @@ public class GuestController
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GuestAndRelationDTO>> searchMyFriends(@PathVariable Long guestId, @PathVariable String stringParam)
+    public ResponseEntity<List<GuestAndRelationDTO>> searchMyFriends(@PathVariable Long guestId, @RequestBody String stringParam)
     {
         List<GuestAndRelationDTO> retSet = friendshipService.searchUserFriends(stringParam, guestId);
         return new ResponseEntity<>(retSet, HttpStatus.OK);
@@ -223,6 +225,19 @@ public class GuestController
     {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }*/
+
+
+    @RequestMapping(value = "/{guestId}/getTables",
+                    method = RequestMethod.PUT,
+                    produces = MediaType.APPLICATION_JSON_VALUE,
+                    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RestaurantTableDTO>> getTables(@PathVariable Long guestId, @RequestBody ReservationDTO reservationDTO)
+    {
+        List<RestaurantTableDTO> ret = this.reservationService.getTables(guestId, reservationDTO);
+        if (ret == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
 
 
     @RequestMapping(value = "/{guestId}/updateReservation/{reservationId}")
