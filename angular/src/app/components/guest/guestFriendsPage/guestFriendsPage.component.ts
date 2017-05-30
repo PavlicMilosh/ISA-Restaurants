@@ -13,42 +13,39 @@ import {GuestService} from "../../../services/guest.service";
 
 export class GuestFriendsPageComponent implements OnInit
 {
-  private friends: Guest[];
-  private searchParams: string;
 
+  private people: Guest[];
+  private searchParams: string;
 
   constructor(private guestService: GuestService)
   {
-    this.friends = [];
-    this.guestService.getFriends().subscribe(
-      data => { this.friends = data; console.log(data) },
+    this.people = [];
+    this.searchParams = "";
+    this.guestService.getFriends().subscribe
+    (
+      data => this.people = data,
       error => alert(error)
     );
   }
 
-  ngOnInit()
-  {
 
-  }
+  ngOnInit() {}
 
-  sendInvitation(toWhomId: number)
-  {
-    this.guestService.sendInvitation(toWhomId);
-  }
 
-  unfriend(whoId: number)
-  {
+  unfriend(whoId: number) {
     this.guestService.unfriend(whoId).subscribe(
-      data =>
-      {
-        for (let i = 0; i < this.friends.length; i++)
-          if (this.friends[i].id == whoId)
-            this.friends.splice(i, 1);
+      data => {
+        for (let i = 0; i < this.people.length; i++)
+          if (this.people[i].id == whoId)
+          {
+            this.people.splice(i, 1);
+          }
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
+
 
   searchFriends()
   {
@@ -56,18 +53,23 @@ export class GuestFriendsPageComponent implements OnInit
     {
       this.guestService.getFriends().subscribe
       (
-        data => this.friends = data,
-        error => alert(error)
+        data => this.people = data,
+        //error => alert(error)
       );
     }
 
-    this.guestService.searchFriends(this.searchParams).subscribe(
-      data => this.friends = data,
+    this.guestService.searchFriends(this.searchParams).subscribe
+    (
+      data => this.people = data,
       error => alert(error)
     );
   }
 
+
+
+
 }
+
 
 interface Guest
 {
@@ -75,4 +77,5 @@ interface Guest
   firstName: string;
   lastName: string;
   email: string;
+  enabled: boolean;
 }

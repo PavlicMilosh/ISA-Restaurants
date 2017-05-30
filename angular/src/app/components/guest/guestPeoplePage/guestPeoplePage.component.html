@@ -44,7 +44,7 @@
             <td class="buttons">
 
               <!-- USER ITSELF-->
-              <ng-container *ngIf='person.id != 1'>
+              <ng-container *ngIf='person.id != myId'>
 
                 <ng-container *ngIf='person.friendshipStatus == "NONE" ||
                                      person.friendshipStatus == "UNFRIENDED" ||
@@ -55,9 +55,6 @@
                 </ng-container>
 
                 <ng-container *ngIf='person.friendshipStatus == "ACCEPTED"'>
-                  <div class="left">
-                    <a href="" (click)="sendInvitation(person.id)" target="_blank" type="button" class="btn btn-primary btn-lg">Send invitation</a>
-                  </div>
                   <div class="left">
                     <a href="" (click)="unfriend(person.id)" target="_blank" type="button" class="btn btn-default btn-lg">Unfriend</a>
                   </div>

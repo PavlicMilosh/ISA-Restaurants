@@ -17,7 +17,7 @@
 	-------------------------------------------------- */
 .panel {
   border: none;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(255, 248, 249, 0.7);
   width: 80%;
   margin: auto;
 }
@@ -28,7 +28,7 @@
   transition: background-color .3s ease;
 }
 .table-filter {
-  background-color: #fff;
+  background-color: #fff8f9;
   border-bottom: 2px solid #eee;
   border-top: 2px solid #eee;
 }
@@ -36,6 +36,19 @@
   cursor: pointer;
   background-color: #eee;
 }
+
+tr.selected
+{
+  cursor: pointer;
+  background-color: rgba(69, 73, 245, 0.6);
+}
+
+tr.deselected
+{
+  cursor: pointer;
+  background-color: #eee;
+}
+
 .table-filter tbody tr td {
   padding: 10px;
   vertical-align: middle;
@@ -107,11 +120,11 @@ div.table-row-name
 
 div.no-content-message
 {
-  background: rgba(0,0,0,0.7);
+  background: rgba(255, 248, 249, 0.7);
   padding: 5%;
   display: block;
   font-size: 50px;
-  color: whitesmoke;
+  color: #000000;
   text-align: center;
   margin: auto;
 }

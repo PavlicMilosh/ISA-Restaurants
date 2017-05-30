@@ -1,10 +1,8 @@
 package com.isa.restaurant.services.implementation;
 
-import com.isa.restaurant.domain.Dish;
-import com.isa.restaurant.domain.Drink;
-import com.isa.restaurant.domain.Order;
-import com.isa.restaurant.domain.RestaurantOrders;
+import com.isa.restaurant.domain.*;
 import com.isa.restaurant.repositories.RestaurantOrdersRepository;
+import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.OrdersService;
 import com.isa.restaurant.services.RestaurantOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +22,13 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService
     @Autowired
     private OrdersService orderService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public Order addOrder(Order order, Long id){
+    public Order addOrder(Order order, Long id, Long waiterId){
+        Waiter w=(Waiter) userRepository.findById(waiterId);
+        order.setWaiter(w);
         Order saved = orderService.addOrder(order);
         RestaurantOrders restaurantOrders= restaurantOrdersRepository.findByRestaurantId(id);
         if(restaurantOrders != null)

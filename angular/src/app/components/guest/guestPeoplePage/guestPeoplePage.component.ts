@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
+import {LoggedUtils} from "../../../utils/logged.utils";
 
 @Component
 ({
@@ -15,16 +16,23 @@ export class GuestPeoplePageComponent implements OnInit {
 
   private people: GuestAndRelation[];
   private searchParams: string;
+  private myId: number;
 
   constructor(private guestService: GuestService) {
     this.people = [];
+
+    if (LoggedUtils.isEmpty())
+      this.myId = -10;
+    else
+      this.myId = LoggedUtils.getId();
+
     this.guestService.getAllGuests().subscribe
     (
       data => {
         this.people = data;
 
       },
-      error => alert(error)
+      //error => alert(error)
     );
 
   }
@@ -44,7 +52,7 @@ export class GuestPeoplePageComponent implements OnInit {
             this.people[i].lastActionUserId = 1; // generalizovati id
           }
       },
-      error => alert(error)
+     // error => alert(error)
     );
   }
 
@@ -61,7 +69,7 @@ export class GuestPeoplePageComponent implements OnInit {
 
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
 
@@ -77,7 +85,7 @@ export class GuestPeoplePageComponent implements OnInit {
           }
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
 
@@ -97,7 +105,7 @@ export class GuestPeoplePageComponent implements OnInit {
           }
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
 
@@ -109,13 +117,13 @@ export class GuestPeoplePageComponent implements OnInit {
       this.guestService.getAllGuests().subscribe
       (
         data => this.people = data,
-        error => alert(error)
+        //error => alert(error)
       );
     }
 
     this.guestService.searchAllGuests(this.searchParams).subscribe(
       data => this.people = data,
-      error => alert(error)
+      //error => alert(error)
     );
   }
 

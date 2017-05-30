@@ -66,8 +66,9 @@ public class GuestController
         if(saved == null)
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 
-        String token = verificationTokenService.getTokenByUserId(guest.getId());
-        mailService.sendUserActivationEmail(guest, token);
+        //TODO: OVO KADA SE PONOVO UVEDE MAIL OTKOMENTARISATI
+        //String token = verificationTokenService.getTokenByUserId(guest.getId());
+        //mailService.sendUserActivationEmail(guest, token);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
@@ -90,7 +91,8 @@ public class GuestController
 
 
     @RequestMapping(value = "/{guestId}/sendFriendRequest/{toWhomId}",
-                    method = RequestMethod.POST)
+                    method = RequestMethod.POST,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FriendshipDTO> sendFriendshipRequest(@PathVariable Long guestId, @PathVariable Long toWhomId)
     {
         FriendshipDTO saved = friendshipService.sendRequest(guestId, toWhomId);
@@ -101,7 +103,8 @@ public class GuestController
 
 
     @RequestMapping(value = "/{guestId}/acceptFriendRequest/{fromWhomId}",
-                    method = RequestMethod.PUT)
+                    method = RequestMethod.PUT,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FriendshipDTO> acceptFriendshipRequest(@PathVariable Long guestId, @PathVariable Long fromWhomId)
     {
         FriendshipDTO friendshipDTO = friendshipService.acceptRequest(guestId, fromWhomId);
@@ -112,7 +115,8 @@ public class GuestController
 
 
     @RequestMapping(value = "/{guestId}/declineFriendRequest/{fromWhomId}",
-                    method = RequestMethod.PUT)
+                    method = RequestMethod.PUT,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FriendshipDTO> declineFriendshipRequest(@PathVariable Long guestId, @PathVariable Long fromWhomId)
     {
         FriendshipDTO friendshipDTO = friendshipService.declineRequest(guestId, fromWhomId);
@@ -123,7 +127,8 @@ public class GuestController
 
 
     @RequestMapping(value = "/{guestId}/unfriendUser/{friendId}",
-                    method = RequestMethod.PUT)
+                    method = RequestMethod.PUT,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FriendshipDTO> unfriendUser(@PathVariable Long guestId, @PathVariable Long friendId)
     {
         FriendshipDTO friendshipDTO = friendshipService.unfriendUser(guestId, friendId);
@@ -214,13 +219,20 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/sendInvitation",
+    /*@RequestMapping(value = "/{guestId}/sendInvitation",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReservationDTO> sendInvitation(@PathVariable Long guestId, @RequestBody Invitation invitation)
     {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }*/
+
+
+    @RequestMapping(value = "/{guestId}/updateReservation/{reservationId}")
+    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable Long guestId, @PathVariable Long reservationId)
+    {
+        return null;
     }
 
 

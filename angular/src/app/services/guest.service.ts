@@ -21,7 +21,7 @@ export class GuestService
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/guest/register/", param, { headers : headers })
+    return this.http.post("http://localhost:8080/guest/register", param, { headers : headers })
       .map(res => res.json());
   }
 
@@ -38,6 +38,7 @@ export class GuestService
     let guestId = LoggedUtils.getId();
     let param = JSON.stringify(guest);
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.put("http://localhost:8080/guest/" + guestId + "/update", param, { headers : headers })
       .map(res => res.json());
@@ -48,6 +49,7 @@ export class GuestService
   {
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.get("http://localhost:8080/guest/" + guestId + "/getAllGuests", { headers: headers })
       .map(res => res.json());
   }
@@ -57,6 +59,7 @@ export class GuestService
   {
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.get("http://localhost:8080/guest/" + guestId + "/getFriends", { headers: headers })
       .map(res => res.json());
   }
@@ -66,6 +69,7 @@ export class GuestService
   {
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.get("http://localhost:8080/guest/" + guestId + "/getFriendRequests", { headers: headers })
       .map(res => res.json());
   }
@@ -75,6 +79,7 @@ export class GuestService
   {
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.post("http://localhost:8080/guest/" + guestId + "/sendFriendRequest/" + toWhomId, { headers : headers })
       .map(res => res.json());
   }
@@ -84,6 +89,7 @@ export class GuestService
   {
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.put("http://localhost:8080//guest/" + guestId + "/acceptFriendRequest/" + fromWhomId, { headers : headers })
       .map(res => res.json());
   }
@@ -93,6 +99,7 @@ export class GuestService
   {
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.put("http://localhost:8080//guest/" + guestId + "/declineFriendRequest/" + fromWhomId, { headers : headers })
       .map(res => res.json());
   }
@@ -102,6 +109,7 @@ export class GuestService
   {
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.put("http://localhost:8080/guest/" + guestId + "/unfriendUser/" + friendId, {headers: headers})
       .map(res => res.json());
   }
@@ -117,6 +125,7 @@ export class GuestService
   {
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.put("http://localhost:8080/guest/" + guestId + "/searchForFriends", searchParams, {headers: headers})
       .map(res => res.json());
@@ -126,6 +135,7 @@ export class GuestService
   {
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.put("http://localhost:8080/guest/" + guestId + "/searchMyFriends", searchParams, {headers: headers})
       .map(res => res.json());
@@ -137,6 +147,7 @@ export class GuestService
     let guestId = LoggedUtils.getId();
     let param = JSON.stringify(reservation);
     let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
     return this.http.post("http://localhost:8080/guest/" + guestId + "/sendReservation", param, {headers: headers})
       .map(res => res.json());

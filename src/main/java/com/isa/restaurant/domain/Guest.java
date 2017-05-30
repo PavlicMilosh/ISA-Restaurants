@@ -1,6 +1,7 @@
 package com.isa.restaurant.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.isa.restaurant.domain.DTO.GuestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,6 @@ import java.util.Set;
 /**
  * Created by Q on 15-Apr-17.
  */
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -28,19 +28,32 @@ import java.util.Set;
 public class Guest extends User
 {
 
-//    @OneToMany(mappedBy = "firstUser")
-//    private Set<Friendship> friendships1;
-//
-//    @OneToMany(mappedBy = "secondUser")
-//    private  Set<Friendship> friendships2;
+    public Guest()
+    {
+        this.enabled = true;
+        this.authorities = Role.GUEST;
+    }
+
 
     public Guest(String email, String password, String firstName, String lastName)
     {
+        this();
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.enabled = false;
+        //this.enabled = false;
+    }
+
+
+    public Guest(GuestDTO guestDTO)
+    {
+        super();
+        this.id = guestDTO.getId();
+        this.email = guestDTO.getEmail();
+        this.firstName = guestDTO.getFirstName();
+        this.lastName = guestDTO.getLastName();
+        this.enabled = guestDTO.getEnabled();
     }
 
 

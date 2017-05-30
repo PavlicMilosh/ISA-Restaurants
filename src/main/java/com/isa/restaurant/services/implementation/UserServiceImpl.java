@@ -3,8 +3,10 @@ package com.isa.restaurant.services.implementation;
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.GuestDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
+import com.isa.restaurant.repositories.RestaurantOrdersRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.repositories.VerificationTokenRepository;
+import com.isa.restaurant.repositories.WorkScheduleRepository;
 import com.isa.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class UserServiceImpl implements UserService
 {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
+    private final RestaurantOrdersRepository restaurantOrdersRepository;
     private final Integer verificationTokenExpiryTime = 1440;
 
 
@@ -29,10 +32,13 @@ public class UserServiceImpl implements UserService
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           VerificationTokenRepository verificationTokenRepository)
+                           VerificationTokenRepository verificationTokenRepository,
+                            RestaurantOrdersRepository restaurantOrdersRepository,
+                           WorkScheduleRepository workScheduleRepository)
     {
         this.userRepository = userRepository;
         this.verificationTokenRepository = verificationTokenRepository;
+        this.restaurantOrdersRepository=restaurantOrdersRepository;
     }
 
 
@@ -60,7 +66,8 @@ public class UserServiceImpl implements UserService
         Guest g = (Guest) userRepository.findByEmail(guest.getEmail());
         if(g != null)
             return null;
-        guest.setEnabled(false);
+        //TODO: OVO KADA SE PONOVO UVEDE MAIL OTKOMENTARISATI
+        //guest.setEnabled(false);
         User saved = userRepository.save(guest);
         VerificationToken verificationToken = new VerificationToken(guest, this.verificationTokenExpiryTime);
         verificationTokenRepository.save(verificationToken);
@@ -131,35 +138,52 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public Set<WorkSchedule> getWaiterSchedule(Long id)
+    public Set<WorkSchedule> getSchedule(Long id)
     {
-        Set<WorkSchedule> schedule=null;
+        User u = userRepository.findById(id);
+        Set<WorkSchedule> ws = null;
+        if(u instanceof Bartender)
+        {
+            ws = ((Bartender) u).getSchedule();
+        }
+        else if(u instanceof Cook)
+        {
+            ws = ((Cook) u).getSchedule();
+        }
+        else if(u instanceof Waiter)
+        {
+            ws = ((Waiter) u).getSchedule();
+        }
+        return ws;
+    }
+
+    @Override
+    public Restaurant getUserRestaurant(Long id)
+    {
         Waiter w=(Waiter) userRepository.findById(id);
         if(w == null)
-            return schedule;
-        schedule=w.getSchedule();
-        return schedule;
+            return null;
+        return w.getRestaurant();
     }
 
     @Override
-    public Set<WorkSchedule> getCookSchedule(Long id)
+    public Set<Order> getRestaurantOrders(Long id)
     {
-        Set<WorkSchedule> schedule=null;
-        Cook w=(Cook) userRepository.findById(id);
-        if(w == null)
-            return schedule;
-        schedule=w.getSchedule();
-        return schedule;
-    }
-
-    @Override
-    public Set<WorkSchedule> getBartenderSchedule(Long id)
-    {
-        Set<WorkSchedule> schedule=null;
-        Bartender w=(Bartender) userRepository.findById(id);
-        if(w == null)
-            return schedule;
-        schedule=w.getSchedule();
-        return schedule;
+        User u = userRepository.findById(id);
+        Restaurant r = null;
+        if(u instanceof Bartender)
+        {
+            r = ((Bartender) u).getRestaurant();
+        }
+        else if(u instanceof Cook)
+        {
+            r = ((Cook) u).getRestaurant();
+        }
+        else if(u instanceof Waiter)
+        {
+            r = ((Waiter) u).getRestaurant();
+        }
+        RestaurantOrders ro=restaurantOrdersRepository.findByRestaurantId(r.getId());
+        return ro.getOrders();
     }
 }

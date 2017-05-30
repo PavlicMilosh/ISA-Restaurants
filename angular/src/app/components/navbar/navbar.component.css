@@ -1,17 +1,30 @@
+.navbar, .dropdown-menu{
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
 
-.btn-fb{
-  color: #fff;
-  background-color:#3b5998;
 }
-.btn-fb:hover{
-  color: #fff;
-  background-color:#496ebc
+
+.nav>li>a, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover, .dropdown-menu>li>a, .dropdown-menu>li{
+  border-bottom: 3px solid transparent;
 }
-.btn-tw{
-  color: #fff;
-  background-color:#55acee;
+.nav>li>a:focus, .nav>li>a:hover,.nav .open>a, .nav .open>a:focus, .nav .open>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover{
+  border-bottom: 3px solid transparent;
+  background: none;
 }
-.btn-tw:hover{
-  color: #fff;
-  background-color:#59b5fa;
+.navbar a, .dropdown-menu>li>a, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover, .navbar-toggle{
+  color: #000000;
+}
+.dropdown-menu{
+  -webkit-box-shadow: none;
+  box-shadow:none;
+}
+
+.nav li:hover, .nav li.active
+{
+  border-bottom: #000000 3px solid;
+}
+
+.navbar-toggle .icon-bar{
+  color: #000000;
+  background: #fff8f9;
 }

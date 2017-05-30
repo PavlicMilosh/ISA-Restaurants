@@ -8,7 +8,7 @@ import { RegisterEmployeeComponent } from "./components/registerEmployee/registe
 import { AddRestaurantComponent } from './components/addRestaurant/addRestaurant.component';
 import { UpdateRestaurantComponent } from "./components/updateRestaurant/updateRestaurant.component";
 
-import { RegisterGuestComponent} from './components/registerGuest/registerGuest.component';
+import { RegisterGuestComponent} from './components/guest/registerGuest/registerGuest.component';
 import { UpdateGuestComponent } from "./components/guest/updateGuest/updateGuest.component";
 import { GuestFriendsPageComponent } from "./components/guest/guestFriendsPage/guestFriendsPage.component";
 import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
@@ -16,9 +16,9 @@ import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/gue
 
 import { UpdateUser } from './components/updateUser/updateUser.component';
 import {ChangePassword} from "./components/changePassword/changePassword.component";
-import {GuestRestaurantsPageComponent} from "./components/guest/guestRestaurantsPage/guestRestaurantsPage.component";
 import { AddWorkerComponent } from "./components/addWorker/addWorker.component";
 import { AddWorkScheduleComponent } from "./components/addWorkSchedule/addWorkSchedule.component";
+import { GuestReservationWizardComponent } from "./components/guest/guestReservationWizard/guestReservationWizard.component";
 import { AddProviderComponent } from "./components/addProvider/addProvider.component";
 import { AuthenticationComponent } from "./components/authentication/authentication.component";
 
@@ -91,7 +91,7 @@ const appRoutes : Routes =
     },
     {
       path : 'guestRestaurantsPage',
-      component : GuestRestaurantsPageComponent
+      component : GuestReservationWizardComponent
     },
 
 

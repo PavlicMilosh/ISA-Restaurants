@@ -17,38 +17,38 @@
     <!-- TABLE -->
     <table class="table table-filter"><tbody>
 
-    <tr *ngFor="let restaurant of restaurants">
+      <tr *ngFor="let restaurant of restaurants" [attr.id]="'restaurant_' + restaurant.id">
 
-      <td class="image">
-        <img src="https://s-media-cache-ak0.pinimg.com/originals/14/c3/8c/14c38ce05dc93cc7b5d82a9b8f04db08.jpg" class="media-photo">
-      </td>
+        <td class="image">
+          <img src="https://s-media-cache-ak0.pinimg.com/originals/14/c3/8c/14c38ce05dc93cc7b5d82a9b8f04db08.jpg" class="media-photo">
+        </td>
 
-      <td>
-        <div class = "table-name">{{restaurant.name}}</div>
-      </td>
+        <td>
+          <div class = "table-name">{{restaurant.name}}</div>
+        </td>
 
-      <td>
-        <div class = "table-row-name">{{restaurant.description}}</div>
-      </td>
+        <td>
+          <div class = "table-row-name">{{restaurant.description}}</div>
+        </td>
 
-      <td>
-        <div class="table-number">289
-        </div>
-        <div class="table-row-name">visits</div>
-      </td>
+        <td>
+          <div class="table-number">289
+          </div>
+          <div class="table-row-name">visits</div>
+        </td>
 
-      <td>
-        <div class="table-number">5.8</div>
-        <div class="table-row-name">mean mark</div>
-      </td>
+        <td>
+          <div class="table-number">5.8</div>
+          <div class="table-row-name">mean mark</div>
+        </td>
 
-      <td class="buttons">
-        <div class="left">
-          <button (click)="selectRestaurant(restaurant.id)" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Make reservation</button>
-        </div>
-      </td>
+        <td class="buttons">
+          <div class="left">
+            <button (click)="selectRestaurant(restaurant.id)" type="button" class="btn btn-primary btn-lg">Select</button>
+          </div>
+        </td>
 
-    </tr>
+      </tr>
 
     </tbody></table>
 
@@ -65,7 +65,7 @@
 
           <div class="modal-body">
 
-            <form class="" action="#">
+            <form>
 
               <div class="form-group"> <!-- Date input -->
                 <label class="control-label" for="date">Date</label>

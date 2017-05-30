@@ -6,7 +6,7 @@ import {GuestService} from "../../../services/guest.service";
   moduleId: module.id,
   selector: 'guestFriendsPage',
   templateUrl: 'guestRequestPage.component.html',
-  styleUrls: ['guestRequestPage.component.css'],
+  styleUrls: ['guestRequestPage.component.css', '../../style/tableStyle.css'],
   providers: [GuestService]
 })
 
@@ -22,7 +22,7 @@ export class GuestRequestPageComponent implements OnInit {
         this.requests = data;
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
 
@@ -41,7 +41,7 @@ export class GuestRequestPageComponent implements OnInit {
             this.requests.splice(i, 1);
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
 
@@ -57,7 +57,7 @@ export class GuestRequestPageComponent implements OnInit {
             this.requests.splice(i, 1);
         console.log(data)
       },
-      error => alert(error)
+      //error => alert(error)
     );
   }
 
