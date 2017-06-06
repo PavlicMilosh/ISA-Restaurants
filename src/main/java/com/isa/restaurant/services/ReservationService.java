@@ -15,4 +15,5 @@ public interface ReservationService
 {
     ReservationDTO addReservation(Long guestId, ReservationDTO reservation);
     List<RestaurantTableDTO> getTables(Long guestId, ReservationDTO reservationDTO);
+    Integer getNumberOfVisitedRestaurants(Long guestId);
 }

@@ -28,6 +28,7 @@ public class RestaurantServiceImpl implements RestaurantService
     private final DishRepository dishRepository;
     private final DrinkRepository drinkRepository;
     private final TableRepository tableRepository;
+    private final RestaurantMarkRepository restaurantMarkRepository;
     private final RestaurantSearch restaurantSearch;
     private final DishTypeRepository dishTypeRepository;
     private final RestaurantOrdersService restaurantOrdersService;
@@ -42,6 +43,7 @@ public class RestaurantServiceImpl implements RestaurantService
                                  DishRepository dishRepository,
                                  DrinkRepository drinkRepository,
                                  TableRepository tableRepository,
+                                 RestaurantMarkRepository restaurantMarkRepository,
                                  RestaurantSearch restaurantSearch,
                                  DishTypeRepository dishTypeRepository,
                                  RestaurantOrdersService restaurantOrdersService)
@@ -51,6 +53,7 @@ public class RestaurantServiceImpl implements RestaurantService
         this.dishRepository = dishRepository;
         this.drinkRepository = drinkRepository;
         this.tableRepository = tableRepository;
+        this.restaurantMarkRepository = restaurantMarkRepository;
         this.restaurantSearch = restaurantSearch;
         this.dishTypeRepository = dishTypeRepository;
         this.restaurantOrdersService = restaurantOrdersService;
@@ -78,11 +81,31 @@ public class RestaurantServiceImpl implements RestaurantService
         return saved;
     }
 
+
     @Override
     public List<Restaurant> getRestaurants()
     {
         List<Restaurant> restaurants = restaurantRepository.findAll();
         return restaurants;
+    }
+
+
+    @Override
+    public List<RestaurantDTO> getRestaurants(Long guestId)
+    {
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        List<RestaurantDTO> restaurantDTOs = new ArrayList<>();
+        for (Restaurant r : restaurants)
+        {
+            Double meanMark = 0.0;
+            Double friendsMark = 0.0;
+            /*TODO: Djuro ovo implementiraj imas metodu za dobijanje meanMark-a restorana u RestaurantMarkRepository,
+            *       a friendsMark ces morati da dobavis prvo sve prijatelje na osnovu guesta, izvuces njihove id-eve i tek onda
+            *       pomocu metode u RestaurantMarkRepositoryju dobijes jedan mark za guestId i restaurantId... skupis sve te
+            *       i onda nadjes srednju vrednost*/
+            restaurantDTOs.add(new RestaurantDTO(r, meanMark, friendsMark));
+        }
+        return restaurantDTOs;
     }
 
 
@@ -160,6 +183,7 @@ public class RestaurantServiceImpl implements RestaurantService
         return retval;
     }
 
+
     @Override
     public Restaurant getRestaurant(Long id)
     {
@@ -171,6 +195,8 @@ public class RestaurantServiceImpl implements RestaurantService
         return r;
     }
 
+
+    @Override
     @Transactional
     public Restaurant getRestaurant(String name)
     {
@@ -183,6 +209,7 @@ public class RestaurantServiceImpl implements RestaurantService
         r.getTables();
         return r;
     }
+
 
     @Override
     public Restaurant getByManagerId(Long managerId)
@@ -197,6 +224,8 @@ public class RestaurantServiceImpl implements RestaurantService
         }
     }
 
+
+    @Override
     public UserDTO addRestaurantManager(RestaurantManager restaurantManager, Long restaurantId)
     {
         restaurantManager.setPassword(passwordEncoder.encode(restaurantManager.getPassword()));
@@ -208,6 +237,7 @@ public class RestaurantServiceImpl implements RestaurantService
         return new UserDTO(restaurantManager);
     }
 
+
     @Override
     public UserDTO addWaiter(Waiter waiter, Long managerId)
     {
@@ -216,6 +246,7 @@ public class RestaurantServiceImpl implements RestaurantService
         userRepository.save(waiter);
         return new UserDTO(waiter);
     }
+
 
     @Override
     public UserDTO addBartender(Bartender bartender, Long managerId)
@@ -226,6 +257,7 @@ public class RestaurantServiceImpl implements RestaurantService
         return new UserDTO(bartender);
     }
 
+
     @Override
     public UserDTO addCook(Cook cook, Long managerId)
     {
@@ -234,6 +266,7 @@ public class RestaurantServiceImpl implements RestaurantService
         userRepository.save(cook);
         return new UserDTO(cook);
     }
+
 
     @Override
     public List<UserDTO> getWorkersByRMId(Long managerId)
@@ -263,6 +296,7 @@ public class RestaurantServiceImpl implements RestaurantService
         }
     }
 
+
     @Override
     public List<RestaurantDTO> searchRestaurantsByNameAndDescription(String searchText)
     {
@@ -273,6 +307,7 @@ public class RestaurantServiceImpl implements RestaurantService
         return ret;
     }
 
+
     @Override
     public DishType addDishType(DishType dishType)
     {
@@ -280,6 +315,7 @@ public class RestaurantServiceImpl implements RestaurantService
         saved=dishTypeRepository.save(dishType);
         return saved;
     }
+
 
     @Override
     public List<RegionDTO> getRegions(Long restaurantId)
@@ -302,10 +338,16 @@ public class RestaurantServiceImpl implements RestaurantService
         RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
         Restaurant r = rm.getRestaurant();
         List<RegionDTO> regions = new ArrayList<>();
-        for(Region region : r.getRegions())
+        for (Region region : r.getRegions())
         {
             regions.add(new RegionDTO(region));
         }
         return regions;
+    }
+
+    @Override
+    public Integer getMedianMark(Long restaurantId)
+    {
+        return 0;
     }
 }

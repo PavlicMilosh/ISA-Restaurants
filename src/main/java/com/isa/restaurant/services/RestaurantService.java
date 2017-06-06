@@ -15,6 +15,8 @@ public interface RestaurantService
 
     List<Restaurant> getRestaurants();
 
+    List<RestaurantDTO> getRestaurants(Long guestId);
+
     Restaurant updateRestaurant(Restaurant restaurant);
 
     Restaurant getRestaurant(Long id);
@@ -40,4 +42,6 @@ public interface RestaurantService
     List<RegionDTO> getRegions(Long restaurantId);
 
     List<RegionDTO> getRegionsByRMId(Long managerId);
+
+    Integer getMedianMark(Long guestId);
 }

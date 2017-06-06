@@ -26,15 +26,14 @@ import { ChangePassword } from './components/changePassword/changePassword.compo
 import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
 import { AddProviderComponent } from './components/addProvider/addProvider.component';
 
-import { RegisterGuestComponent } from "./components/guest/registerGuest/registerGuest.component";
-import { UpdateGuestComponent } from "./components/guest/updateGuest/updateGuest.component";
-import { GuestFriendsPageComponent } from './components/guest/guestFriendsPage/guestFriendsPage.component';
-import { GuestPeoplePageComponent } from "./components/guest/guestPeoplePage/guestPeoplePage.component";
-import { GuestRequestPageComponent } from "./components/guest/guestRequestPage/guestRequestPage.component";
-import { FormWizardModule } from "angular2-wizard/dist";
-import { GuestReservationWizardComponent } from "./components/guest/guestReservationWizard/guestReservationWizard.component";
-import { GuestRestaurantsPageComponent } from "./components/guest/guestRestaurantsPage/guestRestaurantsPage.component";
-
+import { GuestRegisterComponent } from "./components/guest/guestRegister/guestRegister.component";
+import { GuestUpdateComponent } from "./components/guest/guestUpdate/guestUpdate.component";
+import { GuestFriendsComponent } from './components/guest/guestFriends/guestFriends.component';
+import { GuestPeopleComponent } from "./components/guest/guestPeople/guestPeople.component";
+import { GuestRequestsComponent } from "./components/guest/guestRequests/guestRequests.component";
+import { GuestReservationComponent } from "./components/guest/guestReservation/guestReservation.component";
+import { GuestRestaurantsComponent } from "./components/guest/guestRestaurants/guestRestaurants.component";
+import { GuestInvitationsComponent} from "./components/guest/guestInvitations/guestInvitations.component";
 
 import { MakeOrder } from './components/makeOrder/makeOrder.component';
 import { OrderDishes } from './components/orderDishes/orderDishes.component';
@@ -61,6 +60,8 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     AddRestaurantComponent,
     UpdateRestaurantComponent,
     AddProviderComponent,
+    AddShoppingListComponent,
+    UpdateProviderComponent,
 
     // Djura
     UpdateUser,
@@ -71,19 +72,17 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     TableDisplay,
     EmployeeWorkShedule,
     CalendarComponent,
-
-
-    //Ogi
-    RegisterGuestComponent,
-    UpdateGuestComponent,
-    GuestFriendsPageComponent,
-    GuestRequestPageComponent,
-    GuestPeoplePageComponent,
     AddWorkScheduleComponent,
-    GuestReservationWizardComponent,
-    GuestRestaurantsPageComponent,
-    UpdateProviderComponent,
-    AddShoppingListComponent
+
+    // Ogi
+    GuestRegisterComponent,
+    GuestUpdateComponent,
+    GuestFriendsComponent,
+    GuestRequestsComponent,
+    GuestPeopleComponent,
+    GuestReservationComponent,
+    GuestRestaurantsComponent,
+    GuestInvitationsComponent
 
   ],
   imports: [
@@ -91,7 +90,6 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     FormsModule,
     HttpModule,
     routing,
-    FormWizardModule,
     NgbModule.forRoot()
   ],
   providers: [],

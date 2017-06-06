@@ -68,6 +68,9 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ShoppingList> shoppingLists;
 
+    @OneToMany
+    private Set<RestaurantMark> restaurantMarks;
+
 
     public Restaurant()
     {

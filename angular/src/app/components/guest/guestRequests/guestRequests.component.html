@@ -1,0 +1,42 @@
+<ng-container *ngIf="requests.length > 0">
+
+  <div class="panel panel-default"><div class="panel-body"><div class="table-container">
+      <table class="table table-filter"><tbody>
+
+        <tr *ngFor="let request of requests">
+          <td class="image">
+            <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+          </td>
+
+          <td>
+            <div class = "table-name">{{request.firstName}}</div>
+          </td>
+
+          <td>
+            <div class = "table-name">{{request.lastName}}</div>
+          </td>
+
+          <td>
+            <div class = "table-name">{{request.email}}</div>
+          </td>
+
+          <td class="buttons">
+            <div class="left">
+              <a (click)="acceptRequest(request.id)" target="_blank" type="button" class="btn btn-primary btn-lg btn-block login-button">Accept</a>
+            </div>
+            <div class="left">
+              <a (click)="declineRequest(request.id)" target="_blank" type="button" class="btn btn-primary btn-lg btn-block login-button">Decline</a>
+            </div>
+          </td>
+
+        </tr>
+
+      </tbody></table>
+
+  </div></div></div>
+
+</ng-container>
+
+<ng-container *ngIf="requests.length == 0">
+  <div class="no-content-message">You have no new requests :(</div>
+</ng-container>

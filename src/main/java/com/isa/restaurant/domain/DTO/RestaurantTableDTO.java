@@ -21,9 +21,11 @@ public class RestaurantTableDTO
     private Double top;
     private Double left;
     private Double angle;
-    private RestaurantDTO restaurant;
     private Boolean occupied;
     private Long regionId;
+    private String regionColor;
+    private Integer seats;
+    private RestaurantDTO restaurantDTO;
 
 
     public RestaurantTableDTO(RestaurantTable restaurantTable, Boolean occupied)
@@ -32,9 +34,11 @@ public class RestaurantTableDTO
         this.top = restaurantTable.getTop();
         this.left = restaurantTable.getLeft();
         this.angle = restaurantTable.getAngle();
-        this.restaurant = new RestaurantDTO(restaurantTable.getRestaurant());
         this.occupied = occupied;
         this.regionId = restaurantTable.getRegion().getId();
+        this.regionColor = restaurantTable.getRegion().getColor();
+        this.seats = restaurantTable.getSeats();
+        this.restaurantDTO = new RestaurantDTO(restaurantTable.getRestaurant());
     }
 }
 
