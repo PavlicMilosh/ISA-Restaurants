@@ -67,17 +67,6 @@ public class RestaurantController
     }
 
 
-    @RequestMapping(value = "/{guestId}/getRestaurants", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RestaurantDTO>> getAllRestaurants(@PathVariable Long guestId)
-    {
-        UserDTO guest = userService.findById(guestId);
-        if (guest == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        List<RestaurantDTO> restaurants = restaurantService.getRestaurants(guestId);
-        return new ResponseEntity<>(restaurants, HttpStatus.OK);
-    }
-
-
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> updateRestaurant(@PathVariable Long id, @RequestBody Restaurant restaurant)
     {

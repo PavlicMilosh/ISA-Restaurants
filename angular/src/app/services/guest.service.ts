@@ -162,4 +162,14 @@ export class GuestService
       .map(res => res.json());
   }
 
+
+  getRestaurants()
+  {
+    let headers = new Headers();
+    let guestId = LoggedUtils.getId();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/guest/" + guestId + "/getRestaurants", { headers : headers })
+      .map(res => res.json());
+  }
+
 }

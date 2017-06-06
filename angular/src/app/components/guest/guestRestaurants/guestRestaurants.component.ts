@@ -26,7 +26,7 @@ export class GuestRestaurantsComponent implements OnInit
     this.restaurants = [];
     this.selectedRestaurant = {id: 0, name: "", description: "", friendsMark: null, meanMark: null};
 
-    this.restaurantService.getRestaurantsForGuest().subscribe
+    this.guestService.getRestaurants().subscribe
     (
       data => this.restaurants = data,
       error => console.log(error)

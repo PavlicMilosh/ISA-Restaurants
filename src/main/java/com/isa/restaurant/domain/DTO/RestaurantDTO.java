@@ -1,10 +1,14 @@
 package com.isa.restaurant.domain.DTO;
 
+import com.isa.restaurant.domain.Dish;
+import com.isa.restaurant.domain.Drink;
 import com.isa.restaurant.domain.Restaurant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 /**
  * Created by Q on 13-May-17.
@@ -21,6 +25,8 @@ public class RestaurantDTO
     private String description;
     private Double friendsMark;
     private Double meanMark;
+    private Set<Drink> drinks;
+    private Set<Dish> dishes;
 
 
     public RestaurantDTO(Restaurant restaurant)
@@ -30,6 +36,8 @@ public class RestaurantDTO
         this.description = restaurant.getDescription();
         this.friendsMark = 0.0;
         this.meanMark = 0.0;
+        this.drinks = restaurant.getDrinks();
+        this.dishes = restaurant.getDishes();
     }
 
 
@@ -40,6 +48,8 @@ public class RestaurantDTO
         this.description = restaurant.getDescription();
         this.friendsMark = meanMark;
         this.meanMark = friendsMark;
+        this.drinks = restaurant.getDrinks();
+        this.dishes = restaurant.getDishes();
     }
 
 

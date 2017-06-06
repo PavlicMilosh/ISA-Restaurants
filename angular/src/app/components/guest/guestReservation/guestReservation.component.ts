@@ -28,7 +28,7 @@ export class GuestReservationComponent implements OnInit {
 
   constructor(private guestService: GuestService, private restaurantService: RestaurantService)
   {
-    this.selectedRestaurant = {id: 0, name: "", description: ""};
+    this.selectedRestaurant = {id: 0, name: "", description: "", dishes: [], drinks: []};
     this.reservation = {startTime : "", startDate: "", duration: 0, restaurant: this.selectedRestaurant, tables: [], invites: []};
     this.tables = [];
     this.regions = [];
@@ -222,6 +222,8 @@ interface Restaurant
   id: number;
   name: string;
   description: string;
+  dishes: Dish[];
+  drinks: Drink[];
 }
 
 
@@ -233,6 +235,23 @@ interface Reservation
   restaurant: Restaurant;
   invites: Guest[];
   tables: RestaurantTable[];
+}
+
+
+interface Dish
+{
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+}
+
+interface Drink
+{
+  id: number;
+  name: string;
+  description: string;
+  price: number;
 }
 
 

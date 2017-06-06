@@ -217,6 +217,15 @@ public class GuestController
     }
 
 
+    @RequestMapping(value = "/{guestId}/getRestaurants", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RestaurantDTO>> getAllRestaurants(@PathVariable Long guestId)
+    {
+        UserDTO guest = userService.findById(guestId);
+        if (guest == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        List<RestaurantDTO> restaurants = restaurantService.getRestaurants(guestId);
+        return new ResponseEntity<>(restaurants, HttpStatus.OK);
+    }
     /*@RequestMapping(value = "/{guestId}/sendInvitation",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
