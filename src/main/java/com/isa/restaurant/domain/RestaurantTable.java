@@ -28,14 +28,17 @@ public class RestaurantTable
     @Column(name = "table_id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "top_coord")
+    @Column(name = "table_top_coord")
     private Double top;
 
-    @Column(name = "left_coord")
+    @Column(name = "table_left_coord")
     private Double left;
 
-    @Column(name = "angle")
+    @Column(name = "table_angle")
     private Double angle;
+
+    @Column(name = "table_seats")
+    private Integer seats;
 
     @ManyToOne
     @JsonIgnore
@@ -45,6 +48,7 @@ public class RestaurantTable
     private Set<Bill> bills;
 
     @ManyToOne
+    @JsonIgnore
     private Region region;
 
 

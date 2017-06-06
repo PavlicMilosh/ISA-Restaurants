@@ -23,6 +23,7 @@ public class RestaurantTableDTO
     private Double angle;
     private RestaurantDTO restaurant;
     private Boolean occupied;
+    private Long regionId;
 
 
     public RestaurantTableDTO(RestaurantTable restaurantTable, Boolean occupied)
@@ -33,6 +34,7 @@ public class RestaurantTableDTO
         this.angle = restaurantTable.getAngle();
         this.restaurant = new RestaurantDTO(restaurantTable.getRestaurant());
         this.occupied = occupied;
+        this.regionId = restaurantTable.getRegion().getId();
     }
 }
 

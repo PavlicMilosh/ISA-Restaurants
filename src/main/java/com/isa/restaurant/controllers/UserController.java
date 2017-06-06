@@ -1,6 +1,7 @@
 package com.isa.restaurant.controllers;
 
 import com.isa.restaurant.domain.*;
+import com.isa.restaurant.domain.DTO.UpdatingUser;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.DTO.WorkScheduleDTO;
 import com.isa.restaurant.services.UserService;
@@ -30,13 +31,9 @@ public class UserController
     @Autowired
     private WorkScheduleService workScheduleService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @RequestMapping(value = "/register/sysManager", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> registerSysManager(@RequestBody SystemManager systemManager)
     {
-        systemManager.setPassword(passwordEncoder.encode(systemManager.getPassword()));
         systemManager.setAuthorities(Role.SYSTEM_MANAGER);
         UserDTO saved = userService.addSystemManager(systemManager);
         if(saved == null)
@@ -53,11 +50,20 @@ public class UserController
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/{providerId}/updateProvider", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> updateProvider(@PathVariable Long providerId, @RequestBody Provider provider)
+    {
+        UserDTO saved = userService.updateProvider(providerId, provider);
+        if(saved == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(saved, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{userId}/addSchedule", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addSchedule(@PathVariable Long userId, @RequestBody List<WorkScheduleDTO> workSchedule)
     {
         boolean done = this.workScheduleService.addWorkSchedule(userId, workSchedule);
-        if(done == false)
+        if(!done)
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -89,21 +95,33 @@ public class UserController
     @RequestMapping(value = "/{id}/getSchedule", method = RequestMethod.GET)
     public ResponseEntity<Set<WorkSchedule>> getWaiterSchedule(@PathVariable Long id){
         Set<WorkSchedule> schedule=userService.getSchedule(id);
-        if(schedule==null){
-            schedule=new HashSet<WorkSchedule>();
+        if(schedule == null)
+        {
+            schedule = new HashSet<>();
         }
-        return new ResponseEntity(schedule, HttpStatus.OK);
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/getRestaurant", method = RequestMethod.GET)
     public ResponseEntity<Restaurant> getUserRestaurant(@PathVariable Long id){
         Restaurant r=userService.getUserRestaurant(id);
-        return new ResponseEntity(r, HttpStatus.OK);
+        return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/getRestaurantOrders", method = RequestMethod.GET)
     public ResponseEntity<Set<Order>> getRestaurantOrders(@PathVariable Long id) {
         Set<Order> orders = userService.getRestaurantOrders(id);
-        return new ResponseEntity(orders, HttpStatus.OK);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UpdatingUser> getUserForUpdate(@PathVariable Long userId)
+    {
+        UpdatingUser u = userService.findForUpdate(userId);
+        if(u == null)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(u, HttpStatus.OK);
     }
 }

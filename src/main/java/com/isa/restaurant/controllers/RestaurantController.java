@@ -1,8 +1,6 @@
 package com.isa.restaurant.controllers;
 
-import com.isa.restaurant.domain.DTO.RestaurantDTO;
-import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
-import com.isa.restaurant.domain.DTO.UserDTO;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.domain.RestaurantManager;
 import com.isa.restaurant.domain.RestaurantTable;
@@ -15,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -74,28 +73,28 @@ public class RestaurantController
         return new ResponseEntity(saved, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{restaurantId}/addWaiter", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> addWaiter(@PathVariable Long restaurantId, @RequestBody Waiter waiter)
+    @RequestMapping(value = "/{managerId}/addWaiter", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> addWaiter(@PathVariable Long managerId, @RequestBody Waiter waiter)
     {
-        UserDTO saved = restaurantService.addWaiter(waiter, restaurantId);
+        UserDTO saved = restaurantService.addWaiter(waiter, managerId);
         if(saved == null)
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{restaurantId}/addBartender", method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> addBartender(@PathVariable Long restaurantId, @RequestBody Bartender bartender)
+    @RequestMapping(value = "/{managerId}/addBartender", method = RequestMethod.POST)
+    public ResponseEntity<UserDTO> addBartender(@PathVariable Long managerId, @RequestBody Bartender bartender)
     {
-        UserDTO saved = restaurantService.addBartender(bartender, restaurantId);
+        UserDTO saved = restaurantService.addBartender(bartender, managerId);
         if(saved == null)
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{restaurantId}/addCook", method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> addCook(@PathVariable Long restaurantId, @RequestBody Cook cook)
+    @RequestMapping(value = "/{managerId}/addCook", method = RequestMethod.POST)
+    public ResponseEntity<UserDTO> addCook(@PathVariable Long managerId, @RequestBody Cook cook)
     {
-        UserDTO saved = restaurantService.addCook(cook, restaurantId);
+        UserDTO saved = restaurantService.addCook(cook, managerId);
         if(saved == null)
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
@@ -126,6 +125,24 @@ public class RestaurantController
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/getRegions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RegionDTO>> getRegions(@PathVariable Long restaurantId)
+    {
+        List<RegionDTO> regions = this.restaurantService.getRegions(restaurantId);
+        if (regions == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(regions, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/RM/{managerId}/getRegions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RegionDTO>> getRegionsByRMId(@PathVariable Long managerId)
+    {
+        List<RegionDTO> regions = this.restaurantService.getRegionsByRMId(managerId);
+        if (regions == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(regions, HttpStatus.OK);
     }
 
 }

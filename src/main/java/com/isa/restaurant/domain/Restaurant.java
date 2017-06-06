@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -63,6 +64,10 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Region> regions;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ShoppingList> shoppingLists;
+
 
     public Restaurant()
     {
@@ -75,6 +80,7 @@ public class Restaurant
         this.waiters = new HashSet<>();
         this.schedule = new HashSet<>();
         this.regions = new HashSet<>();
+        this.shoppingLists = new HashSet<>();
     }
 
 
@@ -88,6 +94,7 @@ public class Restaurant
 
     public Restaurant(Restaurant other)
     {
+        this.id = other.getId();
         this.name = other.getName();
         this.description = other.getDescription();
         this.dishes = other.getDishes();
@@ -99,6 +106,7 @@ public class Restaurant
         this.waiters = other.getWaiters();
         this.schedule = other.getSchedule();
         this.regions = other.getRegions();
+        this.shoppingLists = other.getShoppingLists();
     }
 
 
@@ -163,5 +171,45 @@ public class Restaurant
     public void addRegion(Region region)
     {
         this.regions.add(region);
+    }
+
+    public Dish getDish(Long dishId)
+    {
+        if(dishId == null)
+            return null;
+        for(Dish d : this.dishes)
+            if(d.getId() == dishId)
+                return d;
+        return null;
+    }
+
+    public Drink getDrink(Long drinkId)
+    {
+        if(drinkId == null)
+            return null;
+        for(Drink d : this.drinks)
+            if(d.getId() == drinkId)
+                return d;
+        return null;
+    }
+
+    public Region getRegion(Long reigonId)
+    {
+        if(reigonId == null)
+            return null;
+        for(Region r : this.regions)
+            if(r.getId() == reigonId)
+                return r;
+        return null;
+    }
+
+    public RestaurantTable getTable(Long tableId)
+    {
+        if(tableId == null)
+            return null;
+        for(RestaurantTable t : this.tables)
+            if(t.getId() == tableId)
+                return t;
+        return null;
     }
 }

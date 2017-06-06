@@ -42,6 +42,8 @@ import { OrderDrinks } from './components/orderDrinks/orderDrinks.component';
 import { TableDisplay } from './components/tableDisplay/tableDisplay.component';
 import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWorkShedule.component";
 import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calendar";
+import { UpdateProviderComponent } from './components/updateProvider/updateProvider.component';
+import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
 
 
 @NgModule({
@@ -79,7 +81,9 @@ import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calenda
     GuestPeoplePageComponent,
     AddWorkScheduleComponent,
     GuestReservationWizardComponent,
-    GuestRestaurantsPageComponent
+    GuestRestaurantsPageComponent,
+    UpdateProviderComponent,
+    AddShoppingListComponent
 
   ],
   imports: [

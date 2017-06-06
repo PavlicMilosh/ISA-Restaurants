@@ -2,6 +2,7 @@ package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.GuestDTO;
+import com.isa.restaurant.domain.DTO.UpdatingUser;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.repositories.RestaurantOrdersRepository;
 import com.isa.restaurant.repositories.UserRepository;
@@ -9,6 +10,7 @@ import com.isa.restaurant.repositories.VerificationTokenRepository;
 import com.isa.restaurant.repositories.WorkScheduleRepository;
 import com.isa.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService
     private final VerificationTokenRepository verificationTokenRepository;
     private final RestaurantOrdersRepository restaurantOrdersRepository;
     private final Integer verificationTokenExpiryTime = 1440;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     // USER RELATED (for all user subclasses)
@@ -91,6 +96,7 @@ public class UserServiceImpl implements UserService
     @Override
     public UserDTO addSystemManager(SystemManager systemManager)
     {
+        systemManager.setPassword(passwordEncoder.encode(systemManager.getPassword()));
         SystemManager sm = (SystemManager) userRepository.findByEmail(systemManager.getEmail());
         if(sm != null)
             return null;
@@ -101,6 +107,7 @@ public class UserServiceImpl implements UserService
     @Override
     public UserDTO addProvider(Provider provider)
     {
+        provider.setPassword(passwordEncoder.encode(provider.getPassword()));
         Provider p = (Provider) userRepository.findByEmail(provider.getEmail());
         if(p != null)
             return null;
@@ -185,5 +192,21 @@ public class UserServiceImpl implements UserService
         }
         RestaurantOrders ro=restaurantOrdersRepository.findByRestaurantId(r.getId());
         return ro.getOrders();
+    }
+
+    @Override
+    public UserDTO updateProvider(Long providerId, Provider provider)
+    {
+        Provider p = (Provider)userRepository.findOne(providerId);
+        if(p == null)
+            return null;
+        return new UserDTO(userRepository.save(provider));
+    }
+
+    @Override
+    public UpdatingUser findForUpdate(Long userId)
+    {
+        User u = userRepository.findOne(userId);
+        return new UpdatingUser(u);
     }
 }

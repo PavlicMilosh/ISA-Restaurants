@@ -38,7 +38,9 @@ export class GuestPeoplePageComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+  ngOnInit()
+  {
+    this.myId = LoggedUtils.getId();
   }
 
 

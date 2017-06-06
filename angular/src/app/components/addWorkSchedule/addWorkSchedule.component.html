@@ -56,8 +56,29 @@
       </div>
     </div>
 
+    <form *ngIf="selectedWorker.authorities.indexOf('WAITER') != -1" class="main-center sidebyside" method="post" action="#">
+      <h2>Regions</h2>
+      <hr/>
+      <div class="form-group">
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"></span>
+            <input type="button"
+                   class="form-control dropdown-toggle"
+                   data-toggle="dropdown"
+                   name="region"
+                   id="region"
+                   value="Select Region.."/>
+            <ul *ngIf="regions.length > 0" class="dropdown-menu" role="menu">
+              <li *ngFor="let region of regions"><a (click)="selectRegion(region)">{{region.name}}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </form>
+
     <div class="form-group ">
-      <a (click)="addSchedule()" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Register</a>
+      <a (click)="addSchedule()" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Register</a>
     </div>
 
   </form>

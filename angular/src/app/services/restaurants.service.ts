@@ -37,7 +37,9 @@ export class RestaurantService
 
   updateRestaurant(restaurant: Restaurant)
   {
+    console.log(restaurant);
     var param = JSON.stringify(restaurant);
+    console.log(param);
     var headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
@@ -89,6 +91,22 @@ export class RestaurantService
       .map(res => res.json());
   }
 
+  getRegions(restaurantId: number)
+  {
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/restaurants/" + restaurantId + "/getRegions", {headers: headers})
+      .map(res => res.json());
+  }
+
+  getRegionsByRMId()
+  {
+    let userId = LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/restaurants/RM/" + userId + "/getRegions", {headers: headers})
+      .map(res => res.json());
+  }
 }
 
 interface Restaurant

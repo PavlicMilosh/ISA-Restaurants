@@ -2,16 +2,16 @@
   <div class="row main">
     <div class="main-login main-center">
 
-      <h3>Send reservation to: </h3>
+      <h3>Send reservation to: {{selectedRestaurant.name}}</h3>
       <hr/>
 
       <div id="smartwizard">
         <ul>
           <li><a href="#step-1">Find Restaurant</a></li>
-          <li><a href="#step-2">Date and time</a></li>
+          <li><a href="#step-2">Reservation</a></li>
           <li><a href="#step-3">Invite friends</a></li>
-          <li><a href="#step-4">Place order</a></li>
-          <li><a href="#step-4">Summary</a></li>
+          <li><a href="#step-4">Place orders</a></li>
+          <li><a href="#step-5">Summary</a></li>
         </ul>
 
         <div>
@@ -26,7 +26,7 @@
               <label class="control-label" for="date">Date</label>
               <div class = "input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i></span>
-                <input class="form-control" id="date" name="date" [(ngModel)]="reservation.date" placeholder="DD.MM.YYYY." type="text"/>
+                <input class="form-control" id="date" name="date" [(ngModel)]="reservation.startDate" placeholder="DD.MM.YYYY." type="text"/>
               </div>
             </div>
 
@@ -34,20 +34,42 @@
               <label class="control-label" for="date">Time</label>
               <div class = "input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i></span>
-                <input class="form-control" id="time" name="time" [(ngModel)]="reservation.time" placeholder="HH:MM (24 hour clock)" type="text"/>
+                <input class="form-control" id="time" name="time" [(ngModel)]="reservation.startTime" placeholder="HH:MM (24 hour clock)" type="text"/>
               </div>
             </div>
-            <script type="text/javascript">
 
-            </script>
+            <div class="form-group"> <!-- Duration input -->
+              <label class="control-label" for="duration">Duration</label>
+              <div class = "input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i></span>
+                <input class="form-control" id="duration" name="duration" [(ngModel)]="reservation.duration" placeholder="(in minutes)" type="text"/>
+              </div>
+            </div>
+
+            <a class="btn btn-info canvas-btn" role="button" (click)="initTables()">Check tables</a>
+
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let region of regions">
+                <a class="btn btn-info canvas-btn" role="button">{{region.name}}</a>
+              </li>
+            </ul>
+
+            <div id = "tables">
+              <canvas id="canvas" class="canvas"></canvas>
+            </div>
+
           </div> <!-- STEP 2 END -->
 
           <div id="step-3" class="">
-            Step Content Tree
+            INVITES
           </div> <!-- STEP 3 END -->
 
           <div id="step-4" class="">
-            Step Content Mokuyoubi
+            PREORDER
+          </div> <!-- STEP 4 END -->
+
+          <div id="step-5" class="">
+            FINISH
           </div> <!-- STEP 4 END -->
 
         </div>

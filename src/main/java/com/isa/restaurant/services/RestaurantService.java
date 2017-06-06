@@ -1,4 +1,5 @@
 package com.isa.restaurant.services;
+import com.isa.restaurant.domain.DTO.RegionDTO;
 import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.UserDTO;
@@ -24,15 +25,19 @@ public interface RestaurantService
 
     UserDTO addRestaurantManager(RestaurantManager restaurantManager, Long restaurantId);
 
-    UserDTO addWaiter(Waiter waiter, Long restaurantId);
+    UserDTO addWaiter(Waiter waiter, Long managerId);
 
-    UserDTO addBartender(Bartender bartender, Long restaurantId);
+    UserDTO addBartender(Bartender bartender, Long managerId);
 
-    UserDTO addCook(Cook cook, Long restaurantId);
+    UserDTO addCook(Cook cook, Long managerId);
 
     List<UserDTO> getWorkersByRMId(Long managerId);
 
     List<RestaurantDTO> searchRestaurantsByNameAndDescription(String searchText);
 
     DishType addDishType(DishType dishType);
+
+    List<RegionDTO> getRegions(Long restaurantId);
+
+    List<RegionDTO> getRegionsByRMId(Long managerId);
 }

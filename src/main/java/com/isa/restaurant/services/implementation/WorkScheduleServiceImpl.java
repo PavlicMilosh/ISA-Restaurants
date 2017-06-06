@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Milos on 14-May-17.
@@ -42,7 +43,6 @@ public class WorkScheduleServiceImpl implements WorkScheduleService
         {
             r = ((Waiter) u).getRestaurant();
         }
-
         for(WorkScheduleDTO ws : workSchedule)
         {
             ws.setWorker(u);
@@ -56,7 +56,18 @@ public class WorkScheduleServiceImpl implements WorkScheduleService
             {
                 return false;
             }
-            workScheduleRepository.save(toSave);
+            if(ws.getRegionId() != null)
+            {
+                for (Region region : r.getRegions())
+                {
+                    if (region.getId() == ws.getRegionId())
+                    {
+                        toSave.setRegion(region);
+                    }
+                }
+
+                workScheduleRepository.save(toSave);
+            }
         }
 
         return true;
