@@ -80,20 +80,7 @@ public class ReservationServiceImpl implements ReservationService
     }
 
 
-    private boolean hasOccupiedTables(Set<RestaurantTableDTO> reservedTables, Restaurant restaurant, Date reservationDateTimeStart, Date reservationDateTimeEnd)
-    {
-        boolean occupied = true;
-        HashMap<Boolean, List<RestaurantTable>> relevantTables = getTables(restaurant, reservationDateTimeStart, reservationDateTimeEnd);
-
-        for (RestaurantTable rt : relevantTables.get(occupied))
-            for (RestaurantTableDTO rtDTO : reservedTables)
-                if (rt.getId().longValue() == rtDTO.getId().longValue())
-                    return true;
-
-        return false;
-    }
-
-
+    @Override
     public List<RestaurantTableDTO> getTables(Long guestId, ReservationDTO reservationDTO)
     {
         Guest guest = (Guest) userRepository.findById(guestId);
@@ -118,8 +105,27 @@ public class ReservationServiceImpl implements ReservationService
             ret.add(new RestaurantTableDTO(rt, false));
 
         return ret;
+    }
 
 
+    @Override
+    public Integer getNumberOfVisitedRestaurants(Long guestId)
+    {
+        return 0;
+    }
+
+
+    private boolean hasOccupiedTables(Set<RestaurantTableDTO> reservedTables, Restaurant restaurant, Date reservationDateTimeStart, Date reservationDateTimeEnd)
+    {
+        boolean occupied = true;
+        HashMap<Boolean, List<RestaurantTable>> relevantTables = getTables(restaurant, reservationDateTimeStart, reservationDateTimeEnd);
+
+        for (RestaurantTable rt : relevantTables.get(occupied))
+            for (RestaurantTableDTO rtDTO : reservedTables)
+                if (rt.getId().longValue() == rtDTO.getId().longValue())
+                    return true;
+
+        return false;
     }
 
 

@@ -63,6 +63,9 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Region> regions;
 
+    @OneToMany
+    private Set<RestaurantMark> restaurantMarks;
+
 
     public Restaurant()
     {

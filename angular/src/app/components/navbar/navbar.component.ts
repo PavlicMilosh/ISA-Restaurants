@@ -1,6 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {NgFor} from "@angular/common";
+import {Component, OnInit, ViewChild, NgModule} from '@angular/core';
 import {LoggedUtils} from "../../utils/logged.utils";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+@NgModule({
+  declarations: [NavbarComponent],
+  imports: [NgbModule]
+})
 
 @Component
 ({
@@ -62,7 +67,7 @@ export class NavbarComponent implements OnInit {
   defaultElements()
   {
     this.addLink({text: "Login", routerLink: "/auth"});
-    this.addLink({text: "Register", routerLink: "/registerGuest"});
+    this.addLink({text: "Register", routerLink: "/guest/register"});
   }
 
 
@@ -130,9 +135,9 @@ export class NavbarComponent implements OnInit {
         text: "Profile",
         links:
           [
-            {text: "Main Page", routerLink: "/mainPageGuest"},
-            {text: "Register", routerLink: "/registerGuest"},
-            {text: "Update", routerLink: "/updateGuest"},
+            {text: "Main Page", routerLink: "/main"},
+            {text: "Register", routerLink: "/guest/register"},
+            {text: "Update", routerLink: "/guest/update"},
           ]
       };
 
@@ -141,9 +146,9 @@ export class NavbarComponent implements OnInit {
         text: "Friendships",
         links:
           [
-            {text: "Friends", routerLink: "/guestFriendsPage"},
-            {text: "Requests", routerLink: "/guestRequestsPage"},
-            {text: "People", routerLink: "/guestPeoplePage"},
+            {text: "Friends", routerLink: "/guest/friends"},
+            {text: "Requests", routerLink: "/guest/requests"},
+            {text: "People", routerLink: "/guest/people"},
           ]
       };
 
@@ -152,7 +157,7 @@ export class NavbarComponent implements OnInit {
         text: "Restaurants",
         links:
           [
-            {text: "Send reservation", routerLink: "/guestRestaurantsPage"}
+            {text: "Send reservation", routerLink: "/guest/reservations"}
           ]
       };
 

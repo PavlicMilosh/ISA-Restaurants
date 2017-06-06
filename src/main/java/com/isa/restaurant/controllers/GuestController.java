@@ -234,8 +234,6 @@ public class GuestController
     public ResponseEntity<List<RestaurantTableDTO>> getTables(@PathVariable Long guestId, @RequestBody ReservationDTO reservationDTO)
     {
         List<RestaurantTableDTO> ret = this.reservationService.getTables(guestId, reservationDTO);
-        if (ret == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 

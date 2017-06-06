@@ -1,0 +1,62 @@
+
+
+<div class="panel panel-default"><div class="panel-body"><div class="table-container">
+
+  <!-- SEARCH BAR -->
+  <div class="row"><div class="col-sm-6 col-sm-offset-3"><div id="imaginary_container"><div class="input-group stylish-input-group">
+    <input type="text" class="form-control" [(ngModel)]="searchParams" placeholder="Search">
+    <span class="input-group-addon">
+          <button type="submit" (click)="searchRestaurants()">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </span>
+  </div></div></div></div>
+
+  <ng-container *ngIf="restaurants.length > 0">
+
+    <!-- TABLE -->
+    <table class="table table-filter"><tbody>
+
+      <tr *ngFor="let restaurant of restaurants" [attr.id]="'restaurant_' + restaurant.id">
+
+        <td class="image">
+          <img src="https://s-media-cache-ak0.pinimg.com/originals/14/c3/8c/14c38ce05dc93cc7b5d82a9b8f04db08.jpg" class="media-photo">
+        </td>
+
+        <td>
+          <div class = "table-name">{{restaurant.name}}</div>
+          <div class = "table-row-name">{{restaurant.description}}</div>
+        </td>
+
+        <td>
+          <div class="table-number">{{restaurant.meanMark}}</div>
+          <div class="table-row-name">mean mark</div>
+        </td>
+
+        <td>
+          <div class="table-number">{{restaurant.friendsMark}}</div>
+          <div class="table-row-name">friends mark</div>
+        </td>
+
+        <td class="buttons">
+          <div class="left">
+            <button (click)="selectRestaurant(restaurant.id)" type="button" class="btn btn-primary btn-lg">Select</button>
+          </div>
+        </td>
+
+      </tr>
+
+    </tbody></table>
+
+
+  </ng-container>
+
+  <ng-container *ngIf="restaurants.length == 0">
+    <div class="no-content-message">No restaurants :(</div>
+  </ng-container>
+
+</div></div></div>
+
+
+
+

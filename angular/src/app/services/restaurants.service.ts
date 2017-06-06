@@ -53,6 +53,16 @@ export class RestaurantService
       .map(res => res.json());
   }
 
+
+  getRestaurantsForGuest()
+  {
+    let headers = new Headers();
+    let guestId = LoggedUtils.getId();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/restaurants/" + guestId + "/getRestaurants", { headers : headers })
+      .map(res => res.json());
+  }
+
   addRM(restaurantId: number, email: string, password: string, firstName: string, lastName: string)
   {
     var manager =
