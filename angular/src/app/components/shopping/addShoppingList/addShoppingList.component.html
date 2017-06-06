@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="row main">
+    <div class="main-login main-center">
+      <form class="" method="post" action="#">
+        <h2>Shopping List</h2>
+        <hr/>
+
+        <div class="form-group">
+          <label for="deadline" class="cols-sm-2 control-label">Birth Date</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+              <input type="datetime-local" class="form-control" name="deadline" id="deadline" [(ngModel)]="shoppingList.deadlineDate" placeholder="Deadline"/>
+            </div>
+          </div>
+        </div>
+
+        <div *ngFor="let item of shoppingList.items; let i = index;" class="form-group">
+          <div class="cols-sm-10">
+            <span>
+              <input type="text" class="form-control" name="itemName{{i}}" [(ngModel)]="shoppingList.items[i].name" placeholder="Item name"/>
+              <input type="text" class="form-control" name="itemAmount{{i}}" [(ngModel)]="shoppingList.items[i].amount" placeholder="Amount"/>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <a (click)="addItem()" type="button" id="addItemButton" class="btn btn-primary btn-lg btn-block login-button">New Item</a>
+        </div>
+        <div class="form-group ">
+          <a (click)="addList()" type="button" id="addListButton" class="btn btn-primary btn-lg btn-block login-button">Add List</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

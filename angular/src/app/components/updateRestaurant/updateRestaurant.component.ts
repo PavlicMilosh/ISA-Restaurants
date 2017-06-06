@@ -42,14 +42,14 @@ export class UpdateRestaurantComponent implements OnInit
       id: null,
       name: "",
       tables: [],
-      color: "blue"
+      color: "#000000"
     };
     this.currentRegion =
     {
       id: null,
       name: "",
       tables: [],
-      color: "blue"
+      color: "#000000"
     };
     this.newDish();
     this.newDrink();

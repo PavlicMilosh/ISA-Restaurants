@@ -9,6 +9,7 @@ import com.isa.restaurant.search.RestaurantSearch;
 import com.isa.restaurant.services.RestaurantOrdersService;
 import com.isa.restaurant.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class RestaurantServiceImpl implements RestaurantService
     private final RestaurantSearch restaurantSearch;
     private final DishTypeRepository dishTypeRepository;
     private final RestaurantOrdersService restaurantOrdersService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Autowired
@@ -60,6 +64,9 @@ public class RestaurantServiceImpl implements RestaurantService
     public Restaurant addRestaurant(Restaurant restaurant)
     {
         Restaurant saved = null;
+        Restaurant sameName = restaurantRepository.findByName(restaurant.getName());
+        if(sameName != null)
+            return null;
         try
         {
             saved = restaurantRepository.save(restaurant);
@@ -221,6 +228,7 @@ public class RestaurantServiceImpl implements RestaurantService
     @Override
     public UserDTO addRestaurantManager(RestaurantManager restaurantManager, Long restaurantId)
     {
+        restaurantManager.setPassword(passwordEncoder.encode(restaurantManager.getPassword()));
         Restaurant r = restaurantRepository.findOne(restaurantId);
         if(r == null)
             return null;
@@ -231,9 +239,9 @@ public class RestaurantServiceImpl implements RestaurantService
 
 
     @Override
-    public UserDTO addWaiter(Waiter waiter, Long restaurantId)
+    public UserDTO addWaiter(Waiter waiter, Long managerId)
     {
-        Restaurant r = restaurantRepository.findOne(restaurantId);
+        Restaurant r = getByManagerId(managerId);
         waiter.setRestaurant(r);
         userRepository.save(waiter);
         return new UserDTO(waiter);
@@ -241,9 +249,9 @@ public class RestaurantServiceImpl implements RestaurantService
 
 
     @Override
-    public UserDTO addBartender(Bartender bartender, Long restaurantId)
+    public UserDTO addBartender(Bartender bartender, Long managerId)
     {
-        Restaurant r = restaurantRepository.findOne(restaurantId);
+        Restaurant r = getByManagerId(managerId);
         bartender.setRestaurant(r);
         userRepository.save(bartender);
         return new UserDTO(bartender);
@@ -251,9 +259,9 @@ public class RestaurantServiceImpl implements RestaurantService
 
 
     @Override
-    public UserDTO addCook(Cook cook, Long restaurantId)
+    public UserDTO addCook(Cook cook, Long managerId)
     {
-        Restaurant r = restaurantRepository.findOne(restaurantId);
+        Restaurant r = getByManagerId(managerId);
         cook.setRestaurant(r);
         userRepository.save(cook);
         return new UserDTO(cook);
@@ -324,6 +332,18 @@ public class RestaurantServiceImpl implements RestaurantService
         return regionDTOs;
     }
 
+    @Override
+    public List<RegionDTO> getRegionsByRMId(Long managerId)
+    {
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
+        Restaurant r = rm.getRestaurant();
+        List<RegionDTO> regions = new ArrayList<>();
+        for (Region region : r.getRegions())
+        {
+            regions.add(new RegionDTO(region));
+        }
+        return regions;
+    }
 
     @Override
     public Integer getMedianMark(Long restaurantId)

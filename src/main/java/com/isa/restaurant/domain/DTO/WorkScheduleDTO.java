@@ -1,6 +1,7 @@
 package com.isa.restaurant.domain.DTO;
 
 import com.isa.restaurant.domain.Day;
+import com.isa.restaurant.domain.Region;
 import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.domain.User;
 import lombok.AllArgsConstructor;
@@ -29,10 +30,13 @@ public class WorkScheduleDTO
 
     private Restaurant restaurant;
 
-    public WorkScheduleDTO(String startTime, String endTime, Day day)
+    private Long regionId;
+
+    public WorkScheduleDTO(String startTime, String endTime, Day day, Region region)
     {
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
+        this.regionId = region.getId();
     }
 }

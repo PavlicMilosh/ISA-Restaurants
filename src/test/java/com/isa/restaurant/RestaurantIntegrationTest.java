@@ -59,14 +59,14 @@ public class RestaurantIntegrationTest
 
         this.mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\" : \"My restaurant1\", \"description\" : \"Some text for description\"}"))
+                .content("{\"name\" : \"My restaurant2\", \"description\" : \"Some text for description\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{\"name\" : \"My restaurant2\", \"description\" : \"Some text for description\"}"));
 
         this.mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
-                        "\"name\": \"My restaurant1\",\n" +
+                        "\"name\": \"R1\",\n" +
                         "\"description\": \"Some text for description\",\n" +
                         "\"dishes\": [],\n" +
                         "\"drinks\": [],\n" +
@@ -82,11 +82,11 @@ public class RestaurantIntegrationTest
         ObjectMapper om = new ObjectMapper();
         Restaurant r = restaurantService.getRestaurant("R1");
         Restaurant r1 = new Restaurant(r);
-        r1.addDish(new Dish("dish1", "desc1", 1l, r1));
-        r1.addDrink(new Drink("drink1", "descd", 1l, r1));
-        Region region = new Region("bascu", r1, new HashSet<>());
+        r1.addDish(new Dish("dish1", "desc1", 1l, null));
+        r1.addDrink(new Drink("drink1", "descd", 1l, null));
+        Region region = new Region("bascu", null, new HashSet<>());
         r1.addRegion(region);
-        r1.addTable(new RestaurantTable(new Double(1), new Double(1), new Double(1), region, new HashSet<>()));
+        r1.addTable(new RestaurantTable(new Double(1), new Double(1), new Double(1), null, new HashSet<>()));
         String s = om.writeValueAsString(r1);
         this.mvc.perform(put("/restaurants/" + r.getId())
                 .contentType(MediaType.APPLICATION_JSON)

@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -63,6 +64,10 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Region> regions;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ShoppingList> shoppingLists;
+
     @OneToMany
     private Set<RestaurantMark> restaurantMarks;
 
@@ -78,6 +83,7 @@ public class Restaurant
         this.waiters = new HashSet<>();
         this.schedule = new HashSet<>();
         this.regions = new HashSet<>();
+        this.shoppingLists = new HashSet<>();
     }
 
 
@@ -91,6 +97,7 @@ public class Restaurant
 
     public Restaurant(Restaurant other)
     {
+        this.id = other.getId();
         this.name = other.getName();
         this.description = other.getDescription();
         this.dishes = other.getDishes();
@@ -102,6 +109,7 @@ public class Restaurant
         this.waiters = other.getWaiters();
         this.schedule = other.getSchedule();
         this.regions = other.getRegions();
+        this.shoppingLists = other.getShoppingLists();
     }
 
 

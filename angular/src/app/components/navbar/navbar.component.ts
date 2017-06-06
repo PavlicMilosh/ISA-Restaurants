@@ -88,7 +88,8 @@ export class NavbarComponent implements OnInit {
       links:
         [
           {text: "System manager", routerLink: "/registerSM"},
-          {text: "Restaurant manager", routerLink: "/registerRM"}
+          {text: "Restaurant manager", routerLink: "/registerRM"},
+          {text: "Add Provider", routerLink: "/addProvider"}
         ]
     };
 
@@ -105,7 +106,8 @@ export class NavbarComponent implements OnInit {
       text: "Restaurants",
       links:
         [
-          {text: "Update restaurant", routerLink: "/updateRestaurant"}
+          {text: "Update restaurant", routerLink: "/updateRestaurant"},
+          {text: "Add Shopping List", routerLink: "/addShoppingList"}
         ]
     };
 

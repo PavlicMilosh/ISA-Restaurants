@@ -27,11 +27,11 @@ public interface RestaurantService
 
     UserDTO addRestaurantManager(RestaurantManager restaurantManager, Long restaurantId);
 
-    UserDTO addWaiter(Waiter waiter, Long restaurantId);
+    UserDTO addWaiter(Waiter waiter, Long managerId);
 
-    UserDTO addBartender(Bartender bartender, Long restaurantId);
+    UserDTO addBartender(Bartender bartender, Long managerId);
 
-    UserDTO addCook(Cook cook, Long restaurantId);
+    UserDTO addCook(Cook cook, Long managerId);
 
     List<UserDTO> getWorkersByRMId(Long managerId);
 
@@ -40,6 +40,8 @@ public interface RestaurantService
     DishType addDishType(DishType dishType);
 
     List<RegionDTO> getRegions(Long restaurantId);
+
+    List<RegionDTO> getRegionsByRMId(Long managerId);
 
     Integer getMedianMark(Long guestId);
 }

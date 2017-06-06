@@ -18,6 +18,7 @@ public class Provider extends User
     public Provider()
     {
         this.enabled = true;
+        this.authorities = Role.PROVIDER;
     }
 
     public Provider(String email, String password, String firstName, String lastName)

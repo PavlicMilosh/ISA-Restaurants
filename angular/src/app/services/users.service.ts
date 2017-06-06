@@ -45,6 +45,17 @@ export class UserService
       .map(res => res.json());
   }
 
+  updateProvider(provider: Provider)
+  {
+    console.log(provider);
+    var param = JSON.stringify(provider);
+    var headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    headers.append('Content-Type', 'application/json');
+    return this.http.put("http://localhost:8080/users/" + provider.id + "/updateProvider", param, { headers: headers })
+      .map(res => res.json());
+  }
+
   updateBarman(id: number, email: string, pass: string, firstName: string, lastName: string)
   {
     var user =
@@ -128,8 +139,17 @@ export class UserService
       .map(res => res.json());
   }
 
+  getById(userId: number)
+  {
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/users/" + userId, { headers : headers })
+      .map(res => res.json());
+  }
+
   addSchedule(oneSchedule: Schedule, userId: number)
   {
+    console.log(oneSchedule);
     let schedule = [];
     if(oneSchedule.day == 0)
     {
@@ -140,7 +160,8 @@ export class UserService
           id : oneSchedule.id,
           startTime: oneSchedule.startTime,
           endTime: oneSchedule.endTime,
-          day: i
+          day: i,
+          regionId: oneSchedule.regionId
         };
         schedule.push(s);
       }
@@ -183,7 +204,10 @@ interface Schedule
   startTime: string;
   endTime: string;
   day: number;
+  regionId: number;
 }
+
+
 
 interface UserDTO
 {
@@ -257,6 +281,15 @@ interface Restaurant
 }
 
 interface Manager
+{
+  id: number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+interface Provider
 {
   id: number;
   email: string;

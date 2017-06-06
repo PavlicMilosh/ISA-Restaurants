@@ -41,6 +41,9 @@ public class WorkSchedule
     @ManyToOne
     private Restaurant restaurant;
 
+    @ManyToOne
+    private Region region;
+
     public WorkSchedule(String start, String end, Day day) throws ParseException
     {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");

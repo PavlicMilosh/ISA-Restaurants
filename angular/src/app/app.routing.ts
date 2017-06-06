@@ -26,6 +26,8 @@ import { OrderDishes } from './components/orderDishes/orderDishes.component';
 import { OrderDrinks } from './components/orderDrinks/orderDrinks.component';
 import { TableDisplay } from './components/tableDisplay/tableDisplay.component';
 import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWorkShedule.component";
+import { UpdateProviderComponent } from "./components/updateProvider/updateProvider.component";
+import {AddShoppingListComponent} from "./components/shopping/addShoppingList/addShoppingList.component";
 
 
 const appRoutes : Routes =
@@ -68,6 +70,10 @@ const appRoutes : Routes =
     {
       path : 'addWorkSchedule',
       component : AddWorkScheduleComponent
+    },
+    {
+      path : 'updateProvider',
+      component : UpdateProviderComponent
     },
 
 
@@ -126,6 +132,12 @@ const appRoutes : Routes =
     {
       path : 'employeeWorkShedule',
       component : EmployeeWorkShedule
+    },
+
+    //shopping
+    {
+      path : 'addShoppingList',
+      component: AddShoppingListComponent
     }
   ];
 

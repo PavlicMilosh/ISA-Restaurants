@@ -41,6 +41,8 @@ import { OrderDrinks } from './components/orderDrinks/orderDrinks.component';
 import { TableDisplay } from './components/tableDisplay/tableDisplay.component';
 import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWorkShedule.component";
 import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calendar";
+import { UpdateProviderComponent } from './components/updateProvider/updateProvider.component';
+import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
 
 
 @NgModule({
@@ -58,6 +60,8 @@ import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calenda
     AddRestaurantComponent,
     UpdateRestaurantComponent,
     AddProviderComponent,
+    AddShoppingListComponent,
+    UpdateProviderComponent,
 
     // Djura
     UpdateUser,
@@ -70,8 +74,7 @@ import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calenda
     CalendarComponent,
     AddWorkScheduleComponent,
 
-
-    //Ogi
+    // Ogi
     GuestRegisterComponent,
     GuestUpdateComponent,
     GuestFriendsComponent,

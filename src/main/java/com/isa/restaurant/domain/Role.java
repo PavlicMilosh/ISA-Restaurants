@@ -12,4 +12,5 @@ public class Role
     public static final String COOK = "COOK";
     public static final String WAITER = "WAITER";
     public static final String BARTENDER = "BARTENDER";
+    public static final String PROVIDER = "PROVIDER";
 }

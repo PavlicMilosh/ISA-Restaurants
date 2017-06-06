@@ -20,7 +20,12 @@ export class GuestPeopleComponent implements OnInit {
 
   constructor(private guestService: GuestService) {
     this.people = [];
-    this.myId = LoggedUtils.getId();
+
+    if (LoggedUtils.isEmpty())
+      this.myId = -10;
+    else
+      this.myId = LoggedUtils.getId();
+
     this.guestService.getAllGuests().subscribe
     (
       data => {
