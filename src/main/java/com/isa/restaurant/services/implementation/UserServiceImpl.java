@@ -29,21 +29,20 @@ public class UserServiceImpl implements UserService
     private final RestaurantOrdersRepository restaurantOrdersRepository;
     private final Integer verificationTokenExpiryTime = 1440;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    private final PasswordEncoder passwordEncoder;
 
     // USER RELATED (for all user subclasses)
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            VerificationTokenRepository verificationTokenRepository,
-                            RestaurantOrdersRepository restaurantOrdersRepository,
-                           WorkScheduleRepository workScheduleRepository)
+                           RestaurantOrdersRepository restaurantOrdersRepository,
+                           WorkScheduleRepository workScheduleRepository, PasswordEncoder passwordEncoder)
     {
         this.userRepository = userRepository;
         this.verificationTokenRepository = verificationTokenRepository;
         this.restaurantOrdersRepository=restaurantOrdersRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -72,9 +71,9 @@ public class UserServiceImpl implements UserService
         if(g != null)
             return null;
         //TODO: OVO KADA SE PONOVO UVEDE MAIL OTKOMENTARISATI
-        //guest.setEnabled(false);
+        guest.setEnabled(false);
         User saved = userRepository.save(guest);
-        VerificationToken verificationToken = new VerificationToken(guest, this.verificationTokenExpiryTime);
+        VerificationToken verificationToken = new VerificationToken(guest, this.verificationTokenExpiryTime, VerificationTokenPurpose.REGISTRATION);
         verificationTokenRepository.save(verificationToken);
         return new UserDTO(saved);
     }

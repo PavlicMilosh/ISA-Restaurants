@@ -1,16 +1,10 @@
 package com.isa.restaurant.domain;
-import com.isa.restaurant.domain.DTO.InvitationDTO;
-import com.isa.restaurant.domain.DTO.OrderDTO;
 import com.isa.restaurant.domain.DTO.ReservationDTO;
 import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
 import com.isa.restaurant.ulitity.Utilities;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,7 +14,7 @@ import java.util.Set;
 /**
  * Created by Q on 13-May-17.
  */
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
 @Setter
 @Entity
@@ -48,20 +42,23 @@ public class Reservation
     @JoinColumn(referencedColumnName = "user_id", name = "reservation_reserver_id")
     private Guest reserver;
 
+    @Column(name = "reservation_status")
+    private String status;
+
     @OneToMany
     private Set<Invitation> invitations;
 
     @OneToMany
     private Set<RestaurantTable> tables;
 
-    @OneToMany
-    private Set<Order> orders;
+    @OneToOne
+    @JoinColumn(referencedColumnName = "order_id", name = "reservation_order_id")
+    private Order order;
 
 
     public Reservation()
     {
         this.invitations = new HashSet<>();
-        this.orders = new HashSet<>();
         this.tables = new HashSet<>();
     }
 
@@ -70,7 +67,6 @@ public class Reservation
     {
         this.tables = new HashSet<>();
         this.invitations = new HashSet<>();
-        this.orders = new HashSet<>();
 
         this.restaurant = new Restaurant(reservationDTO.getRestaurant());
         this.reserver = new Guest(reservationDTO.getReserver());
@@ -96,7 +92,8 @@ public class Reservation
         if (dateTimeStart != null ? !dateTimeStart.equals(reservation.dateTimeStart) : reservation.dateTimeStart != null) return false;
         if (dateTimeEnd != null ? !dateTimeEnd.equals(reservation.dateTimeEnd) : reservation.dateTimeEnd != null) return false;
         if (reserver != null ? !reserver.equals(reservation.reserver) : reservation.reserver != null) return false;
-
+        if (order != null ? !order.equals(reservation.order) : reservation.order != null) return false;
+        if (status != null ? !status.equals(reservation.status) : reservation.status != null) return false;
         return true;
 
     }
@@ -110,6 +107,8 @@ public class Reservation
         result = 31 * result + (dateTimeStart != null ? dateTimeStart.hashCode() : 0);
         result = 31 * result + (dateTimeEnd != null ? dateTimeEnd.hashCode() : 0);
         result = 31 * result + (reserver != null ? reserver.hashCode() : 0);
+        result = 31 * result + (order != null ? order.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 
@@ -122,10 +121,17 @@ public class Reservation
         return false;
     }
 
+
     public void addTable(RestaurantTable table)
     {
         if (!this.tables.contains(table))
             this.tables.add(table);
+    }
+
+
+    public void addInvitation(Invitation invitation)
+    {
+        this.invitations.add(invitation);
     }
 
 

@@ -6,16 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by djuro on 4/21/2017.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @NoArgsConstructor
 @Getter
 @Setter
@@ -53,7 +50,7 @@ public class Order
         this.price=0.0;
         this.waiter=waiter;
         this.finished=false;
-        this.orderItems=new HashSet<OrderItem>();
+        this.orderItems=new HashSet<>();
         this.orderTime=null;
         this.orderTable=null;
     }
@@ -65,6 +62,15 @@ public class Order
         this.finished=false;
         this.orderItems=orderItems;
         this.orderTable=restaurantTable;
+    }
+
+    public Order(HashSet<OrderItem> orderItems, Date orderTime)
+    {
+        this.orderItems = orderItems;
+        this.price = 0.0;
+        this.calculateOrderPrice();
+        this.finished = false;
+        this.orderTime = orderTime;
     }
 
 

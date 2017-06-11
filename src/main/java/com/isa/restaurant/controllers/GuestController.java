@@ -4,6 +4,7 @@ import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.domain.Guest;
 import com.isa.restaurant.domain.Invitation;
 import com.isa.restaurant.domain.RestaurantTable;
+import com.isa.restaurant.domain.VerificationTokenPurpose;
 import com.isa.restaurant.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,8 +70,8 @@ public class GuestController
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 
         //TODO: OVO KADA SE PONOVO UVEDE MAIL OTKOMENTARISATI
-        //String token = verificationTokenService.getTokenByUserId(guest.getId());
-        //mailService.sendUserActivationEmail(guest, token);
+        String token = verificationTokenService.getTokenByUserIdAndPurpose(guest.getId(), VerificationTokenPurpose.REGISTRATION);
+        mailService.sendUserActivationEmail(guest, token);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 

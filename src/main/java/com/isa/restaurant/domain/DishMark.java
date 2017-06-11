@@ -14,10 +14,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Entity
 @Table(name = "dish_mark",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"dish_mark_guest_id", "dish_mark_dish_id"}))
+       uniqueConstraints = @UniqueConstraint(columnNames = {"dish_mark_guest_id", "dish_mark_dish_id"}))
 public class DishMark
 {
     @Id

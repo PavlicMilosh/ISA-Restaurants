@@ -12,7 +12,7 @@ import java.util.Set;
  * Created by djuro on 5/24/2017.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
 @Setter
 @Table(name = "restaurant_orders")

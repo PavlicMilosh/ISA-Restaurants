@@ -24,15 +24,21 @@ export class GuestReservationComponent implements OnInit {
   private invites: Guest[];
   private selectedTables: RestaurantTable[];
   private regions: Region[];
+  private drinkOrders: Drink[];
+  private dishOrders: Dish[];
   private canvas;
 
   constructor(private guestService: GuestService, private restaurantService: RestaurantService)
   {
     this.selectedRestaurant = {id: 0, name: "", description: "", dishes: [], drinks: []};
-    this.reservation = {startTime : "", startDate: "", duration: 0, restaurant: this.selectedRestaurant, tables: [], invites: []};
+    this.reservation = {startTime : "", startDate: "", duration: 0,
+                        restaurant: this.selectedRestaurant, tables: [],
+                        invites: [], dishOrders: [], drinkOrders:[]};
     this.tables = [];
     this.regions = [];
     this.invites = [];
+    this.drinkOrders = [];
+    this.dishOrders = [];
     this.selectedTables = [];
   }
 
@@ -57,7 +63,7 @@ export class GuestReservationComponent implements OnInit {
   initDatePicker()
   {
     //console.log("Date picker init");
-    jQuery(document).ready(function()
+    /*jQuery(document).ready(function()
     {
       let date_input=jQuery('#date'); //our date input has the name "date"
       let container=jQuery('.bootstrap-iso form').length>0 ? jQuery('.bootstrap-iso form').parent() : "body";
@@ -70,7 +76,7 @@ export class GuestReservationComponent implements OnInit {
         };
       date_input.datepicker(options);
     });
-    jQuery('#time').clockpicker();
+    jQuery('#time').clockpicker();*/
   }
 
 
@@ -80,10 +86,25 @@ export class GuestReservationComponent implements OnInit {
     this.reservation.restaurant = restaurant;
   }
 
+
   invitesNotify(invites: Guest[])
   {
     this.invites = invites;
     this.reservation.invites = this.invites;
+  }
+
+
+  drinkOrdersNotify(drinks: Drink[])
+  {
+    this.drinkOrders = drinks;
+    this.reservation.drinkOrders = this.drinkOrders;
+  }
+
+
+  dishOrdersNotify(dishes: Dish[])
+  {
+    this.dishOrders = dishes;
+    this.reservation.dishOrders = this.dishOrders;
   }
 
 
@@ -209,11 +230,11 @@ export class GuestReservationComponent implements OnInit {
     this.reservation.restaurant = this.selectedRestaurant;
     this.reservation.tables = this.selectedTables;
     console.log(this.reservation);
+    this.guestService.sendReservation(this.reservation).subscribe(
+      data => console.log(data),
+      error => alert(error)
+    );
   }
-
-
-
-
 }
 
 
@@ -235,6 +256,8 @@ interface Reservation
   restaurant: Restaurant;
   invites: Guest[];
   tables: RestaurantTable[];
+  drinkOrders: Drink[];
+  dishOrders: Dish[];
 }
 
 
@@ -244,7 +267,9 @@ interface Dish
   name: string;
   description: string;
   price: number;
+  quantity: number;
 }
+
 
 interface Drink
 {
@@ -252,6 +277,7 @@ interface Drink
   name: string;
   description: string;
   price: number;
+  quantity: number;
 }
 
 

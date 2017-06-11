@@ -25,6 +25,7 @@ public class RestaurantTableDTO
     private Long regionId;
     private String regionColor;
     private Integer seats;
+    private Long version;
     private RestaurantDTO restaurantDTO;
 
 
@@ -38,6 +39,7 @@ public class RestaurantTableDTO
         this.regionId = restaurantTable.getRegion().getId();
         this.regionColor = restaurantTable.getRegion().getColor();
         this.seats = restaurantTable.getSeats();
+        this.version = restaurantTable.getVersion();
         this.restaurantDTO = new RestaurantDTO(restaurantTable.getRestaurant());
     }
 }

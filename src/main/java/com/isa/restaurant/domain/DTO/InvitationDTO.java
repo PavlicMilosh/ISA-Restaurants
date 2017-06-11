@@ -13,7 +13,7 @@ import javax.persistence.*;
  * Created by Q on 16-May-17.
  */
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Setter
 @Getter
 public class InvitationDTO

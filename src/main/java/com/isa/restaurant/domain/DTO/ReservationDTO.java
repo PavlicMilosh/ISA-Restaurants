@@ -1,4 +1,6 @@
 package com.isa.restaurant.domain.DTO;
+import com.isa.restaurant.domain.Dish;
+import com.isa.restaurant.domain.Drink;
 import com.isa.restaurant.domain.Reservation;
 import com.isa.restaurant.domain.RestaurantTable;
 import com.isa.restaurant.ulitity.Utilities;
@@ -18,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class ReservationDTO
 {
     private Long id;
@@ -29,6 +31,8 @@ public class ReservationDTO
     private GuestDTO reserver;
     private Set<RestaurantTableDTO> tables;
     private Set<GuestDTO> invites;
+    private Set<DrinkOrderDTO> drinkOrders;
+    private Set<DishOrderDTO> dishOrders;
 
 
     public ReservationDTO(Reservation reservation)
@@ -46,6 +50,8 @@ public class ReservationDTO
         this.reserver = new GuestDTO(reservation.getReserver());
         this.invites = new HashSet<>();
         this.tables = new HashSet<>();
+        this.drinkOrders = new HashSet<>();
+        this.dishOrders = new HashSet<>();
 
         for (RestaurantTable rt : reservation.getTables())
             this.tables.add(new RestaurantTableDTO(rt, false));

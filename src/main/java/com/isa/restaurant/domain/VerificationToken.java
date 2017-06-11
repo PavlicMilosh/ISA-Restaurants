@@ -34,12 +34,16 @@ public class VerificationToken
     @Column(name = "verification_token_expiry_date")
     private Date expiryDate;
 
+    @Column(name = "verification_token_purpose")
+    private String purpose;
 
-    public VerificationToken(Guest guest, Integer minutes)
+
+    public VerificationToken(Guest guest, Integer minutes, String purpose)
     {
         this.expiryDate = calculateExpiryDate(minutes);
         this.guest = guest;
         this.token = UUID.randomUUID().toString();
+        this.purpose = purpose;
     }
 
 
@@ -68,6 +72,7 @@ public class VerificationToken
 
         if (guest != null ? !guest.equals(vt.guest) : vt.guest != null) return false;
         if (token != null ? !token.equals(vt.token) : vt.token != null) return false;
+        if (purpose != null ? !purpose.equals(vt.purpose) : vt.purpose != null) return false;
 
         return true;
     }
@@ -78,6 +83,7 @@ public class VerificationToken
         int result = 0;
         result = 31 * result + (guest != null ? guest.hashCode() : 0);
         result = 31 * result + (token != null ? token.hashCode() : 0);
+        result = 31 * result + (purpose != null ? purpose.hashCode() : 0);
         return result;
     }
 }

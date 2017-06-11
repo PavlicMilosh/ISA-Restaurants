@@ -3,6 +3,7 @@ package com.isa.restaurant.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import javax.persistence.*;
 
@@ -40,23 +41,41 @@ public class OrderItem {
     @Column (name = "order_item_finished")
     private Boolean finished;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "user_id", name = "order_item_guest_id")
+    private Guest guest;
+
+
     public OrderItem(Dish dish, int number)
     {
-        this.dish=dish;
-        this.drink=null;
-        this.isDish=true;
-        this.number=number;
-        this.preparing=false;
-        this.finished=false;
+        this.dish = dish;
+        this.drink = null;
+        this.isDish = true;
+        this.number = number;
+        this.preparing = false;
+        this.finished = false;
+        this.guest = null;
     }
 
     public OrderItem(Drink drink, int number)
     {
-        this.dish=null;
-        this.drink=drink;
-        this.isDish=false;
-        this.number=number;
-        this.preparing=false;
-        this.finished=false;
+        this.dish = null;
+        this.drink = drink;
+        this.isDish = false;
+        this.number = number;
+        this.preparing = false;
+        this.finished = false;
+        this.guest = guest;
+    }
+
+    public OrderItem(Drink drink, int number, Guest guest)
+    {
+        this.dish = null;
+        this.drink = drink;
+        this.isDish = false;
+        this.number = number;
+        this.preparing = false;
+        this.finished = false;
+        this.guest = guest;
     }
 }

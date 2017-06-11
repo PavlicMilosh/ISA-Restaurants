@@ -16,6 +16,7 @@
           <li><a href="#step-5">Summary</a></li>
         </ul>
 
+
         <div>
 
           <div id="step-1" class="">
@@ -62,13 +63,18 @@
 
           </div> <!-- STEP 2 END -->
 
+
           <div id="step-3" class="">
             <guestInvitations (notify)='invitesNotify($event)'></guestInvitations>
           </div> <!-- STEP 3 END -->
 
+
           <div id="step-4" class="">
-            PREORDER
+            <guestPreorder [restaurant]="selectedRestaurant"
+                           (notifyDishes)="dishOrdersNotify($event)"
+                           (notifyDrinks)="drinkOrdersNotify($event)"></guestPreorder>
           </div> <!-- STEP 4 END -->
+
 
           <div id="step-5" class="">
             FINISH

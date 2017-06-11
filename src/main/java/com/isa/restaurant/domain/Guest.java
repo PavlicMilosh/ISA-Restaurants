@@ -91,14 +91,5 @@ public class Guest extends User
         return result;
     }
 
-
-//    public Set<Friendship> getFriendships()
-//    {
-//        Set<Friendship> ret = new HashSet<>();
-//        ret = this.friendships1;
-//        ret.addAll(this.friendships2);
-//        return ret;
-//    }
-
 }
 

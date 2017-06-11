@@ -10,7 +10,7 @@ import lombok.Setter;
  * Created by Milos on 10-Apr-17.
  */
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
 @Setter
 public class GuestDTO

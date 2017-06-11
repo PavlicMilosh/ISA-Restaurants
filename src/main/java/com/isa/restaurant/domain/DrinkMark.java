@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Entity
 @Table(name = "drink_mark", uniqueConstraints = @UniqueConstraint(columnNames = {"drink_mark_guest_id", "drink_mark_drink_id"}))
 public class DrinkMark

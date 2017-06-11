@@ -1,12 +1,9 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
-import com.isa.restaurant.domain.DTO.ReservationDTO;
-import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
-import com.isa.restaurant.repositories.ReservationRepository;
-import com.isa.restaurant.repositories.RestaurantRepository;
-import com.isa.restaurant.repositories.TableRepository;
-import com.isa.restaurant.repositories.UserRepository;
+import com.isa.restaurant.domain.DTO.*;
+import com.isa.restaurant.repositories.*;
+import com.isa.restaurant.services.MailService;
 import com.isa.restaurant.services.ReservationService;
 import com.isa.restaurant.ulitity.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +23,32 @@ public class ReservationServiceImpl implements ReservationService
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final TableRepository tableRepository;
+    private final InvitationRepository invitationRepository;
+    private final DrinkRepository drinkRepository;
+    private final DishRepository dishRepository;
+    private final OrderRepository orderRepository;
+    private final MailService mailService;
 
     @Autowired
     public ReservationServiceImpl(ReservationRepository reservationRepository,
                                   UserRepository userRepository,
                                   RestaurantRepository restaurantRepository,
-                                  TableRepository tableRepository)
+                                  TableRepository tableRepository,
+                                  InvitationRepository invitationRepository,
+                                  DrinkRepository drinkRepository,
+                                  DishRepository dishRepository,
+                                  OrderRepository orderRepository,
+                                  MailService mailService)
     {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.tableRepository = tableRepository;
+        this.invitationRepository = invitationRepository;
+        this.drinkRepository = drinkRepository;
+        this.dishRepository = dishRepository;
+        this.orderRepository = orderRepository;
+        this.mailService = mailService;
     }
 
 
@@ -62,18 +74,62 @@ public class ReservationServiceImpl implements ReservationService
         reservation.setRestaurant(restaurant);
         reservation.setDateTimeStart(reservationDateTimeStart);
         reservation.setDateTimeEnd(reservationDateTimeEnd);
+        reservation.setStatus(ReservationStatus.SENT);
 
         // TABLES
         for (RestaurantTableDTO rtDTO : reservationDTO.getTables())
         {
             RestaurantTable table = tableRepository.findOne(rtDTO.getId());
-            reservation.addTable(table);
+            if (rtDTO.getVersion() >= table.getVersion())
+            {
+                table.incrementVersion();
+                tableRepository.save(table);
+                reservation.addTable(table);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // INVITATIONS
         Set<Invitation> invitations = new HashSet<>();
-        /* TODO 1: Implement adding invitations */
-        reservation.setInvitations(invitations);
+        for (GuestDTO i : reservationDTO.getInvites())
+        {
+            Guest invited = (Guest) userRepository.findById(i.getId());
+
+            if (invited != null)
+            {
+                Invitation invitation = new Invitation(invited, reservation);
+                invitationRepository.save(invitation);
+                reservation.addInvitation(invitation);
+                reservationRepository.save(reservation);
+                VerificationToken verificationToken = new VerificationToken(guest, null, VerificationTokenPurpose.INVITATION);
+                mailService.sendInvitationEmail(reservation.getReserver(), invited, reservation, verificationToken.getToken());
+            }
+        }
+
+
+        // ORDERS
+        HashSet<OrderItem> orderItems = new HashSet<>();
+        for (DrinkOrderDTO doDTO : reservationDTO.getDrinkOrders())
+        {
+            Drink drink = drinkRepository.getOne(doDTO.getId());
+            orderItems.add(new OrderItem(drink, doDTO.getQuantity()));
+        }
+        for (DishOrderDTO doDTO : reservationDTO.getDishOrders())
+        {
+            Drink drink = drinkRepository.getOne(doDTO.getId());
+            orderItems.add(new OrderItem(drink, doDTO.getQuantity()));
+        }
+        if (!orderItems.isEmpty())
+        {
+            Order order = new Order(orderItems, reservationDateTimeStart);
+            order.setOrderTable(reservation.getTables().iterator().next());
+            this.orderRepository.save(order);
+            reservation.setOrder(order);
+            reservationRepository.save(reservation);
+        }
 
         reservationRepository.save(reservation);
         return new ReservationDTO(reservation);
@@ -146,7 +202,8 @@ public class ReservationServiceImpl implements ReservationService
 
             for (Reservation r : reservations)
             {
-                if (r.hasTable(rt.getId()))
+                if (r.hasTable(rt.getId()) &&
+                        !r.getStatus().equalsIgnoreCase(ReservationStatus.CANCELED))
                 {
                     occupied.add(rt);
                     addedTable = true;

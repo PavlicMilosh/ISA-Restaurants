@@ -34,6 +34,7 @@ import { GuestRequestsComponent } from "./components/guest/guestRequests/guestRe
 import { GuestReservationComponent } from "./components/guest/guestReservation/guestReservation.component";
 import { GuestRestaurantsComponent } from "./components/guest/guestRestaurants/guestRestaurants.component";
 import { GuestInvitationsComponent} from "./components/guest/guestInvitations/guestInvitations.component";
+import { GuestPreorderComponent } from "./components/guest/guestPreorder/guestPreorder.component";
 
 import { MakeOrder } from './components/makeOrder/makeOrder.component';
 import { OrderDishes } from './components/orderDishes/orderDishes.component';
@@ -82,7 +83,8 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     GuestPeopleComponent,
     GuestReservationComponent,
     GuestRestaurantsComponent,
-    GuestInvitationsComponent
+    GuestInvitationsComponent,
+    GuestPreorderComponent
 
   ],
   imports: [

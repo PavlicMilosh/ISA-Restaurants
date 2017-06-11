@@ -13,7 +13,7 @@ import java.util.Set;
  * Created by djuro on 4/21/2017.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @NoArgsConstructor
 @Getter
 @Setter

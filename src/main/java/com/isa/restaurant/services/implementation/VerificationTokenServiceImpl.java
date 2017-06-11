@@ -40,9 +40,9 @@ public class VerificationTokenServiceImpl implements VerificationTokenService
     }
 
 
-    public String getTokenByUserId(Long userId)
+    public String getTokenByUserIdAndPurpose(Long userId, String purpose)
     {
-        String token = verificationTokenRepository.findTokenByUserId(userId);
+        String token = verificationTokenRepository.findTokenByUserIdAndPurpose(userId, purpose);
         return token;
     }
 }

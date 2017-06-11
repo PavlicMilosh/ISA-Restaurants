@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.isa.restaurant.domain.DTO.GuestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Entity
 @Table(name = "invitation")
 public class Invitation
@@ -36,4 +37,12 @@ public class Invitation
 
     @Column(name = "invitation_status")
     private String invitationStatus;
+
+
+    public Invitation(Guest to, Reservation reservation)
+    {
+        this.invited = to;
+        this.invitationStatus = InvitationStatus.PENDING;
+        this.reservation = reservation;
+    }
 }
