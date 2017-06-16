@@ -14,7 +14,7 @@ public class Utilities
     public static Date createDateFromString(String date, String time)
     {
         Date reservationDate = null;
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy. HH:mm");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try
         {
             reservationDate = df.parse(date + " " + time);

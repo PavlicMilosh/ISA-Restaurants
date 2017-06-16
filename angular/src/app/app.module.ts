@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { WizardModule } from 'ng2-archwizard';
+import { MyDatePickerModule } from 'mydatepicker';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -31,10 +33,12 @@ import { GuestUpdateComponent } from "./components/guest/guestUpdate/guestUpdate
 import { GuestFriendsComponent } from './components/guest/guestFriends/guestFriends.component';
 import { GuestPeopleComponent } from "./components/guest/guestPeople/guestPeople.component";
 import { GuestRequestsComponent } from "./components/guest/guestRequests/guestRequests.component";
-import { GuestReservationComponent } from "./components/guest/guestReservation/guestReservation.component";
+import { GuestReservationWizardComponent } from "./components/guest/guestReservationWizard/guestReservationWizard.component";
 import { GuestRestaurantsComponent } from "./components/guest/guestRestaurants/guestRestaurants.component";
 import { GuestInvitationsComponent} from "./components/guest/guestInvitations/guestInvitations.component";
 import { GuestPreorderComponent } from "./components/guest/guestPreorder/guestPreorder.component";
+import { GuestTablesComponent } from "./components/guest/guestTables/guestTables.component";
+import { GuestReservationSummaryComponent } from "./components/guest/guestReservationSummary/guestReservationSummary.component";
 
 import { MakeOrder } from './components/makeOrder/makeOrder.component';
 import { OrderDishes } from './components/orderDishes/orderDishes.component';
@@ -81,16 +85,20 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     GuestFriendsComponent,
     GuestRequestsComponent,
     GuestPeopleComponent,
-    GuestReservationComponent,
+    GuestReservationWizardComponent,
     GuestRestaurantsComponent,
     GuestInvitationsComponent,
-    GuestPreorderComponent
+    GuestPreorderComponent,
+    GuestTablesComponent,
+    GuestReservationSummaryComponent
 
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    WizardModule,
+    MyDatePickerModule,
     routing,
     NgbModule.forRoot()
   ],

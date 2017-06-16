@@ -92,11 +92,6 @@ export class GuestPeopleComponent implements OnInit {
   }
 
 
-  sendInvitation(toWhomId: number) {
-    this.guestService.sendInvitation(toWhomId);
-  }
-
-
   unfriend(whoId: number) {
     this.guestService.unfriend(whoId).subscribe(
       data => {

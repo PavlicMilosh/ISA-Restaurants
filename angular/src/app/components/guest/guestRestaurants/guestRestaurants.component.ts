@@ -47,7 +47,6 @@ export class GuestRestaurantsComponent implements OnInit
       }
     }
     this.notify.emit(this.selectedRestaurant);
-    console.log(this.selectedRestaurant);
   }
 
 

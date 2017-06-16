@@ -45,6 +45,10 @@ public class Order
     @JoinColumn(referencedColumnName = "table_id", name = "restaurant_order_table_id")
     private RestaurantTable orderTable;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "user_id", name = "order_item_guest_id")
+    private Guest guest;
+
     public Order(Waiter waiter)
     {
         this.price=0.0;

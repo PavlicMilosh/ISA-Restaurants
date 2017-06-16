@@ -15,14 +15,25 @@ var AddWorkScheduleComponent = (function () {
         this.userService = userService;
         this.restaurantService = restaurantService;
         this.days = ["Every Day", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        this.restaurantService.getWorkersByRMId(1).subscribe(function (data) { return _this.workers = data; });
+        this.selectedWorker =
+            {
+                id: -1000,
+                email: "",
+                password: "",
+                firstName: "",
+                lastName: "",
+                authorities: ""
+            };
+        this.restaurantService.getWorkersByRMId().subscribe(function (data) { return _this.workers = data; });
+        this.restaurantService.getRegionsByRMId().subscribe(function (data) { return _this.regions = data; });
         this.workers = [];
         this.schedule =
             {
                 id: null,
                 startTime: null,
                 endTime: null,
-                day: null
+                day: null,
+                regionId: null
             };
     }
     AddWorkScheduleComponent.prototype.ngOnInit = function () {
@@ -30,7 +41,12 @@ var AddWorkScheduleComponent = (function () {
     AddWorkScheduleComponent.prototype.selectWorker = function (worker) {
         this.selectedWorker = worker;
     };
+    AddWorkScheduleComponent.prototype.selectRegion = function (region) {
+        this.schedule.regionId = region.id;
+    };
     AddWorkScheduleComponent.prototype.addSchedule = function () {
+        this.schedule.day = 1;
+        console.log(this.schedule);
         this.userService.addSchedule(this.schedule, this.selectedWorker.id)
             .subscribe(function (data) { return console.log(data); });
     };

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {LoggedUtils} from "../utils/logged.utils";
+import {AddressUtils} from "../utils/address.utils";
 
 @Injectable()
 export class GuestService
@@ -21,7 +22,7 @@ export class GuestService
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/guest/register", param, { headers : headers })
+    return this.http.post(AddressUtils.backendAddress() + "/guest/register", param, { headers : headers })
       .map(res => res.json());
   }
 
@@ -40,7 +41,7 @@ export class GuestService
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
-    return this.http.put("http://localhost:8080/guest/" + guestId + "/update", param, { headers : headers })
+    return this.http.put(AddressUtils.backendAddress() + "/" + guestId + "/update", param, { headers : headers })
       .map(res => res.json());
   }
 
@@ -50,7 +51,7 @@ export class GuestService
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.get("http://localhost:8080/guest/" + guestId + "/getAllGuests", { headers: headers })
+    return this.http.get(AddressUtils.backendAddress() + "/guest/" + guestId + "/getAllGuests", { headers: headers })
       .map(res => res.json());
   }
 
@@ -60,7 +61,7 @@ export class GuestService
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.get("http://localhost:8080/guest/" + guestId + "/getFriends", { headers: headers })
+    return this.http.get(AddressUtils.backendAddress() + "/guest/" + guestId + "/getFriends", { headers: headers })
       .map(res => res.json());
   }
 
@@ -70,7 +71,7 @@ export class GuestService
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.get("http://localhost:8080/guest/" + guestId + "/getFriendRequests", { headers: headers })
+    return this.http.get(AddressUtils.backendAddress() + "/guest/" + guestId + "/getFriendRequests", { headers: headers })
       .map(res => res.json());
   }
 
@@ -80,7 +81,7 @@ export class GuestService
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.post("http://localhost:8080/guest/" + guestId + "/sendFriendRequest/" + toWhomId, { headers : headers })
+    return this.http.post(AddressUtils.backendAddress() + "/guest/" + guestId + "/sendFriendRequest/" + toWhomId, { headers : headers })
       .map(res => res.json());
   }
 
@@ -90,7 +91,7 @@ export class GuestService
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.put("http://localhost:8080//guest/" + guestId + "/acceptFriendRequest/" + fromWhomId, { headers : headers })
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/acceptFriendRequest/" + fromWhomId, { headers : headers })
       .map(res => res.json());
   }
 
@@ -100,7 +101,7 @@ export class GuestService
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.put("http://localhost:8080//guest/" + guestId + "/declineFriendRequest/" + fromWhomId, { headers : headers })
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/declineFriendRequest/" + fromWhomId, { headers : headers })
       .map(res => res.json());
   }
 
@@ -110,14 +111,8 @@ export class GuestService
     let guestId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.put("http://localhost:8080/guest/" + guestId + "/unfriendUser/" + friendId, {headers: headers})
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/unfriendUser/" + friendId, {headers: headers})
       .map(res => res.json());
-  }
-
-
-  sendInvitation(toWhom: number)
-  {
-    console.log("INVITATION NOT YET IMPLEMENTED!");
   }
 
 
@@ -127,7 +122,7 @@ export class GuestService
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
-    return this.http.put("http://localhost:8080/guest/" + guestId + "/searchForFriends", searchParams, {headers: headers})
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/searchForFriends", searchParams, {headers: headers})
       .map(res => res.json());
   }
 
@@ -137,7 +132,7 @@ export class GuestService
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
-    return this.http.put("http://localhost:8080/guest/" + guestId + "/searchMyFriends", searchParams, {headers: headers})
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/searchMyFriends", searchParams, {headers: headers})
       .map(res => res.json());
   }
 
@@ -149,7 +144,7 @@ export class GuestService
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/guest/" + guestId + "/sendReservation", param, {headers: headers})
+    return this.http.post(AddressUtils.backendAddress() + "/guest/" + guestId + "/sendReservation", param, {headers: headers})
       .map(res => res.json());
   }
 
@@ -158,7 +153,7 @@ export class GuestService
   {
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.put("http://localhost:8080/guest/" + LoggedUtils.getId() + "/getTables", reservation, {headers: headers})
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + LoggedUtils.getId() + "/getTables", reservation, {headers: headers})
       .map(res => res.json());
   }
 
@@ -168,7 +163,7 @@ export class GuestService
     let headers = new Headers();
     let guestId = LoggedUtils.getId();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.get("http://localhost:8080/guest/" + guestId + "/getRestaurants", { headers : headers })
+    return this.http.get(AddressUtils.backendAddress() + "/guest/" + guestId + "/getRestaurants", { headers : headers })
       .map(res => res.json());
   }
 

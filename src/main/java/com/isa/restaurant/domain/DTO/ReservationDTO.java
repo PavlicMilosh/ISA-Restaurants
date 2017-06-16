@@ -38,7 +38,7 @@ public class ReservationDTO
     public ReservationDTO(Reservation reservation)
     {
 
-        DateFormat dfDate = new SimpleDateFormat("dd.MM.yyyy.");
+        DateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat dfTime = new SimpleDateFormat("HH:mm");
 
         this.id = reservation.getId();

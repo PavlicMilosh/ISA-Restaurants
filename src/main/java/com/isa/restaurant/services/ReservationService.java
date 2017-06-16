@@ -4,6 +4,10 @@ import com.isa.restaurant.domain.DTO.ReservationDTO;
 import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
 import com.isa.restaurant.domain.Reservation;
 import com.isa.restaurant.domain.RestaurantTable;
+import com.isa.restaurant.exceptions.GuestNotFoundException;
+import com.isa.restaurant.exceptions.InvalidDateException;
+import com.isa.restaurant.exceptions.ReservingOccupiedTablesException;
+import com.isa.restaurant.exceptions.RestaurantNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +17,9 @@ import java.util.List;
  */
 public interface ReservationService
 {
-    ReservationDTO addReservation(Long guestId, ReservationDTO reservation);
-    List<RestaurantTableDTO> getTables(Long guestId, ReservationDTO reservationDTO);
+    ReservationDTO addReservation(Long guestId, ReservationDTO reservation)
+            throws GuestNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservingOccupiedTablesException;
+    List<RestaurantTableDTO> getTables(Long guestId, ReservationDTO reservationDTO)
+            throws GuestNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservingOccupiedTablesException;
     Integer getNumberOfVisitedRestaurants(Long guestId);
 }

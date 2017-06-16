@@ -24,6 +24,8 @@
     "ap-angular2-fullcalendar": "^1.2.8",
     "core-js": "^2.4.1",
     "fabric": "^1.7.11",
+    "mydatepicker": "^2.0.20",
+    "ng2-archwizard": "^1.6.0",
     "ngx-bootstrap": "^1.7.1",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"

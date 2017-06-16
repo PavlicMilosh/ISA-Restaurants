@@ -4,7 +4,7 @@
 
 .full
 {
-  background: rgb(94, 129, 255);/*url('bg.jpg') no-repeat center center fixed;*/
+  background: url('bg.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;

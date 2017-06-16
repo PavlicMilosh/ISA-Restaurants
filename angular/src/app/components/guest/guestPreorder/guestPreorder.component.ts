@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
 
 
@@ -11,7 +11,7 @@ import {GuestService} from "../../../services/guest.service";
 })
 
 
-export class GuestPreorderComponent
+export class GuestPreorderComponent implements OnChanges
 {
 
   @Input() restaurant: Restaurant;
@@ -21,10 +21,17 @@ export class GuestPreorderComponent
   private drinkOrders: Drink[];
   private dishOrders: Dish[];
 
-
-  constructor(private guestService: GuestService)
+  constructor()
   {
-    this.restaurant = {id: null, name: null, description: null, dishes: [], drinks: []};
+    this.drinkOrders = [];
+    this.dishOrders = [];
+  }
+
+
+  ngOnChanges(changes: SimpleChanges)
+  {
+    if (changes['restaurant'] != null)
+      this.restaurant = changes['restaurant'].currentValue;
     this.drinkOrders = [];
     this.dishOrders = [];
   }
@@ -37,17 +44,23 @@ export class GuestPreorderComponent
 
       if (this.restaurant.drinks[i].id == id)
       {
-        let exists = false;
+        let inTheList = false;
 
         for (let j = 0; j < this.drinkOrders.length; j++)
-          if (this.drinkOrders[j].id == id) exists = true;
-
-        if (exists)
-          this.drinkOrders[i].quantity++;
-        else
         {
-          this.drinkOrders.push(this.restaurant.drinks[i]);
-          this.drinkOrders[this.drinkOrders.length -1].quantity = 1;
+          if (this.drinkOrders[j].id == id)
+          {
+            this.drinkOrders[j].quantity++;
+            inTheList = true;
+            break;
+          }
+        }
+
+        if (!inTheList)
+        {
+          let d = this.restaurant.drinks[i];
+          d.quantity = 1;
+          this.drinkOrders.push(d);
         }
 
         break;
@@ -57,6 +70,7 @@ export class GuestPreorderComponent
     this.notifyDrinks.emit(this.drinkOrders);
   }
 
+
   addDish(id: number)
   {
     for (let i = 0; i < this.restaurant.dishes.length; i++)
@@ -64,24 +78,30 @@ export class GuestPreorderComponent
 
       if (this.restaurant.dishes[i].id == id)
       {
-        let exists = false;
+        let inTheList = false;
 
         for (let j = 0; j < this.dishOrders.length; j++)
-          if (this.dishOrders[j].id == id) exists = true;
-
-        if (exists)
-          this.dishOrders[i].quantity++;
-        else
         {
-          this.dishOrders.push(this.restaurant.dishes[i]);
-          this.dishOrders[this.dishOrders.length -1].quantity = 1;
+          if (this.dishOrders[j].id == id)
+          {
+            this.dishOrders[j].quantity++;
+            inTheList = true;
+            break;
+          }
+        }
+
+        if (!inTheList)
+        {
+          let d = this.restaurant.dishes[i];
+          d.quantity = 1;
+          this.dishOrders.push(d);
         }
 
         break;
       }
 
     }
-    this.notifyDrinks.emit(this.drinkOrders);
+    this.notifyDishes.emit(this.dishOrders);
   }
 
 

@@ -41,9 +41,6 @@ public class OrderItem {
     @Column (name = "order_item_finished")
     private Boolean finished;
 
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "user_id", name = "order_item_guest_id")
-    private Guest guest;
 
 
     public OrderItem(Dish dish, int number)
@@ -54,7 +51,6 @@ public class OrderItem {
         this.number = number;
         this.preparing = false;
         this.finished = false;
-        this.guest = null;
     }
 
     public OrderItem(Drink drink, int number)
@@ -65,7 +61,6 @@ public class OrderItem {
         this.number = number;
         this.preparing = false;
         this.finished = false;
-        this.guest = guest;
     }
 
     public OrderItem(Drink drink, int number, Guest guest)
@@ -76,6 +71,5 @@ public class OrderItem {
         this.number = number;
         this.preparing = false;
         this.finished = false;
-        this.guest = guest;
     }
 }

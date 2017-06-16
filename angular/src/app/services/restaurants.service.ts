@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {LoggedUtils} from "../utils/logged.utils";
+import {AddressUtils} from "../utils/address.utils";
 
 @Injectable()
 export class RestaurantService
@@ -107,6 +108,15 @@ export class RestaurantService
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.get("http://localhost:8080/restaurants/RM/" + userId + "/getRegions", {headers: headers})
       .map(res => res.json());
+  }
+
+  getTables(restaurantId: number)
+  {
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get(AddressUtils.backendAddress() + "/restaurants/" + restaurantId + "/getTables", {headers: headers})
+      .map(res => res.json());
+
   }
 }
 

@@ -10,6 +10,8 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,9 +42,11 @@ public class RestaurantTable
     @Column(name = "table_seats")
     private Integer seats;
 
-    @Column(name = "table_version")
+    @Column(name = "table_last_reservation_start")
     @JsonIgnore
-    private Long version;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Version
+    private Date lastReservationStart;
 
     @ManyToOne
     @JsonIgnore
@@ -59,7 +63,10 @@ public class RestaurantTable
     public RestaurantTable()
     {
         this.bills = new HashSet<>();
-        this.version = 0L;
+        Calendar cal = Calendar.getInstance();
+        Date today = cal.getTime();
+        cal.add(Calendar.YEAR, -1); // to get previous year add -1
+        lastReservationStart = cal.getTime();
     }
 
     public RestaurantTable(Double top, Double left, Double angle, Region region, Set<Bill> bills)
@@ -69,7 +76,7 @@ public class RestaurantTable
         this.angle = angle;
         this.region = region;
         this.bills = bills;
-        this.version = 0L;
+        this.lastReservationStart = null;
     }
 
 
@@ -80,12 +87,5 @@ public class RestaurantTable
         this.left = rtDTO.getTop();
         this.angle = rtDTO.getTop();
         this.restaurant = new Restaurant(rtDTO.getRestaurantDTO());
-        this.version = rtDTO.getVersion();
-    }
-
-
-    public void incrementVersion()
-    {
-        this.version++;
     }
 }

@@ -1,0 +1,59 @@
+<a class="btn-default" (click)="sendReservation()">SEND RESERVATION</a>
+
+<div class="container">
+  <div class="row main">
+    <div class="main-login main-center">
+
+      <h3>Send reservation to: {{reservation.restaurant.name}}</h3>
+      <hr/>
+
+      <wizard navBarLayout="large-filled">
+
+        <wizard-step title="Restaurant">
+          <guestRestaurants (notify)='selectedRestaurantNotify($event)'></guestRestaurants>
+          <ng-container *ngIf="restaurantChoosen">
+            <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Next</button>
+          </ng-container>
+        </wizard-step>
+
+        <wizard-step title="Tables">
+          <guestTables [restaurant]="reservation.restaurant"
+                       (notifyTables)="tablesNotify($event)"></guestTables>
+          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Previous</button>
+          <ng-container *ngIf="tablesChoosen">
+            <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Next</button>
+          </ng-container>
+        </wizard-step>
+
+
+        <wizard-step title="Invitations">
+          <guestInvitations [restaurant]="reservation.restaurant" (notify)='invitesNotify($event)'></guestInvitations>
+          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Previous</button>
+          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Next</button>
+        </wizard-step>
+
+
+        <wizard-step title="Orders">
+          <guestPreorder [restaurant]="reservation.restaurant"
+                         (notifyDishes)="dishOrdersNotify($event)"
+                         (notifyDrinks)="drinkOrdersNotify($event)"></guestPreorder>
+          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Previous</button>
+          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Summary</button>
+        </wizard-step>
+
+
+        <wizard-step title="Summary">
+          <guestReservationSummary [parentSubject]="parentSubject"></guestReservationSummary>
+          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Back</button>
+          <button type="button" class="btn btn-success btn-lg btn-block login-button pull-right" (click)="sendReservation()" nextStep>Send!</button>
+        </wizard-step>
+
+        <wizard-completion-step title="Send!">
+          Thank you for using our service. You can check your reservation and modify it.
+          To do that, click on the 'See reservation' button.
+          <button routerLink="../requests" type="button" class="btn btn-success btn-lg btn-block login-button">See reservations</button>
+        </wizard-completion-step>
+      </wizard>
+    </div>
+  </div>
+</div>

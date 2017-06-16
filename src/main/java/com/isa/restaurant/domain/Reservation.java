@@ -48,18 +48,18 @@ public class Reservation
     @OneToMany
     private Set<Invitation> invitations;
 
-    @OneToMany
+    @ManyToMany
     private Set<RestaurantTable> tables;
 
-    @OneToOne
-    @JoinColumn(referencedColumnName = "order_id", name = "reservation_order_id")
-    private Order order;
+    @OneToMany
+    private Set<Order> orders;
 
 
     public Reservation()
     {
         this.invitations = new HashSet<>();
         this.tables = new HashSet<>();
+        this.orders = new HashSet<>();
     }
 
 
@@ -79,6 +79,17 @@ public class Reservation
     }
 
 
+    public Reservation(Guest reserver, Restaurant restaurant, Date dateTimeStart, Date dateTimeEnd, String status)
+    {
+        this();
+        this.reserver = reserver;
+        this.restaurant = restaurant;
+        this.dateTimeStart = dateTimeStart;
+        this.dateTimeEnd = dateTimeEnd;
+        this.status = status;
+    }
+
+
     @Override
     public boolean equals(Object other)
     {
@@ -92,7 +103,7 @@ public class Reservation
         if (dateTimeStart != null ? !dateTimeStart.equals(reservation.dateTimeStart) : reservation.dateTimeStart != null) return false;
         if (dateTimeEnd != null ? !dateTimeEnd.equals(reservation.dateTimeEnd) : reservation.dateTimeEnd != null) return false;
         if (reserver != null ? !reserver.equals(reservation.reserver) : reservation.reserver != null) return false;
-        if (order != null ? !order.equals(reservation.order) : reservation.order != null) return false;
+        if (orders != null ? !orders.equals(reservation.orders) : reservation.orders != null) return false;
         if (status != null ? !status.equals(reservation.status) : reservation.status != null) return false;
         return true;
 
@@ -107,7 +118,7 @@ public class Reservation
         result = 31 * result + (dateTimeStart != null ? dateTimeStart.hashCode() : 0);
         result = 31 * result + (dateTimeEnd != null ? dateTimeEnd.hashCode() : 0);
         result = 31 * result + (reserver != null ? reserver.hashCode() : 0);
-        result = 31 * result + (order != null ? order.hashCode() : 0);
+        result = 31 * result + (orders != null ? orders.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
@@ -126,6 +137,12 @@ public class Reservation
     {
         if (!this.tables.contains(table))
             this.tables.add(table);
+    }
+
+
+    public void addOrder(Order order)
+    {
+        this.orders.add(order);
     }
 
 

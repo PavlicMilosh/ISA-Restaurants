@@ -12,7 +12,7 @@ import { GuestUpdateComponent } from "./components/guest/guestUpdate/guestUpdate
 import { GuestFriendsComponent } from "./components/guest/guestFriends/guestFriends.component";
 import { GuestRequestsComponent } from "./components/guest/guestRequests/guestRequests.component";
 import { GuestPeopleComponent } from "./components/guest/guestPeople/guestPeople.component";
-import { GuestReservationComponent } from "./components/guest/guestReservation/guestReservation.component";
+import { GuestReservationWizardComponent } from "./components/guest/guestReservationWizard/guestReservationWizard.component";
 
 import { UpdateUser } from './components/updateUser/updateUser.component';
 import { ChangePassword } from "./components/changePassword/changePassword.component";
@@ -100,7 +100,7 @@ const appRoutes : Routes =
     },
     {
       path : 'guest/reservations',
-      component : GuestReservationComponent
+      component : GuestReservationWizardComponent
     },
 
 
