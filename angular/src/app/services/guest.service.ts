@@ -167,4 +167,36 @@ export class GuestService
       .map(res => res.json());
   }
 
+
+  getReservations()
+  {
+    let headers = new Headers();
+    let guestId = LoggedUtils.getId();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get(AddressUtils.backendAddress() + "/guest/" + guestId + "/getReservations", { headers : headers })
+      .map(res => res.json());
+  }
+
+
+  getAcceptedInvitations()
+  {
+    let headers = new Headers();
+    let guestId = LoggedUtils.getId();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get(AddressUtils.backendAddress() + "/guest/" + guestId + "/getAcceptedInvitations", { headers : headers })
+      .map(res => res.json());
+  }
+
+
+  updateResevation(reservationId: number, updateData: any)
+  {
+    let headers = new Headers();
+    let guestId = LoggedUtils.getId();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/updateReservation/" + reservationId, updateData, { headers : headers })
+      .map(res => res.json());
+  }
+
+
+
 }

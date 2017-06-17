@@ -1,15 +1,11 @@
 package com.isa.restaurant.services;
 
-import com.isa.restaurant.domain.DTO.ReservationDTO;
-import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
-import com.isa.restaurant.domain.Reservation;
-import com.isa.restaurant.domain.RestaurantTable;
-import com.isa.restaurant.exceptions.GuestNotFoundException;
+import com.isa.restaurant.domain.DTO.*;
+import com.isa.restaurant.exceptions.ReservationException;
+import com.isa.restaurant.exceptions.UserNotFoundException;
 import com.isa.restaurant.exceptions.InvalidDateException;
-import com.isa.restaurant.exceptions.ReservingOccupiedTablesException;
 import com.isa.restaurant.exceptions.RestaurantNotFoundException;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,8 +14,19 @@ import java.util.List;
 public interface ReservationService
 {
     ReservationDTO addReservation(Long guestId, ReservationDTO reservation)
-            throws GuestNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservingOccupiedTablesException;
+            throws UserNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservationException;
+
     List<RestaurantTableDTO> getTables(Long guestId, ReservationDTO reservationDTO)
-            throws GuestNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservingOccupiedTablesException;
+            throws UserNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservationException;
+
     Integer getNumberOfVisitedRestaurants(Long guestId);
+
+    List<ReservationWithOrdersDTO> getReservations(Long guestId)
+            throws UserNotFoundException;
+
+    List<InvitationDTO> getAcceptedInvitations(Long guestId)
+            throws UserNotFoundException;
+
+    ReservationDTO updateReservation(Long guestId, Long reservationId, ReservationUpdateDTO reservationUpdateData)
+            throws ReservationException, UserNotFoundException;
 }

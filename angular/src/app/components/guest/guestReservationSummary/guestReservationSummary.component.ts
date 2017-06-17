@@ -20,17 +20,16 @@ export class GuestReservationSummaryComponent implements OnInit//, OnChanges
   @Input() parentSubject: Subject<any>;
   //@Input()
   reservation: Reservation;
-  private allTables: RestaurantTable[];
   private drinkOrdersTotal: number;
   private dishOrdersTotal: number;
   private canvas;
 
-  constructor(private restaurantService: RestaurantService)
+  constructor()
   {
     this.reservation = {startTime : "", startDate: "", duration: 0,
       tables: [], invites: [], dishOrders: [], drinkOrders:[],
       restaurant: {
-        id: null, name: null, description: null, dishes:[], drinks: []}};
+        id: null, name: null, description: null, dishes:[], drinks: [], tables: []}};
     this.dishOrdersTotal = 0;
     this.drinkOrdersTotal = 0;
   }
@@ -48,7 +47,6 @@ export class GuestReservationSummaryComponent implements OnInit//, OnChanges
       if (this.canvas != null)
         this.canvas.clear();
 
-      this.getTables();
       this.initTables();
     });
   }
@@ -74,16 +72,17 @@ export class GuestReservationSummaryComponent implements OnInit//, OnChanges
 
   initTables()
   {
-    if (this.allTables != null)
+    console.log(this.reservation);
+    if (this.reservation.restaurant.tables != null)
     {
-      for (let i = 0; i < this.allTables.length; i++) {
+      for (let i = 0; i < this.reservation.restaurant.tables.length; i++) {
         let rect = new fabric.Rect(
           {
-            id: this.allTables[i].id,
+            id: this.reservation.restaurant.tables[i].id,
             width: 50,
             height: 50,
-            left: this.allTables[i].left,
-            top: this.allTables[i].top,
+            left: this.reservation.restaurant.tables[i].left,
+            top: this.reservation.restaurant.tables[i].top,
             fill: 'gray',
             opacity: 0.5,
             strokeWidth: 0,
@@ -97,20 +96,20 @@ export class GuestReservationSummaryComponent implements OnInit//, OnChanges
         );
 
         for (let j = 0; j < this.reservation.tables.length; j++) {
-          if (this.reservation.tables[j].id == this.allTables[i].id) {
-            console.log(this.allTables[i]);
-            rect.fill = this.allTables[i].regionColor;
+          if (this.reservation.tables[j].id == this.reservation.restaurant.tables[i].id)
+          {
+            rect.fill = this.reservation.restaurant.tables[i].regionColor;
             rect.opacity = 1;
             break;
           }
         }
 
-        let text = new fabric.Text(String(this.allTables[i].seats),
+        let text = new fabric.Text(String(this.reservation.restaurant.tables[i].seats),
           {
             fontFamily: 'Comic Sans',
             fontSize: 18,
-            left: this.allTables[i].left,
-            top: this.allTables[i].top,
+            left: this.reservation.restaurant.tables[i].left,
+            top: this.reservation.restaurant.tables[i].top,
             lockMovementX: true,
             lockMovementY: true,
             lockUniScaling: true,
@@ -122,18 +121,6 @@ export class GuestReservationSummaryComponent implements OnInit//, OnChanges
         this.canvas.add(rect);
         this.canvas.add(text);
       }
-    }
-  }
-
-
-  getTables()
-  {
-    if (this.reservation.restaurant.id != null)
-    {
-      this.restaurantService.getTables(this.reservation.restaurant.id).subscribe(
-        data => { this.allTables = data; console.log(this.allTables)},
-        error => alert(error)
-      );
     }
   }
 }
@@ -159,6 +146,7 @@ interface Restaurant
   description: string;
   dishes: Dish[];
   drinks: Drink[];
+  tables: RestaurantTable[];
 }
 
 
@@ -202,5 +190,5 @@ interface Guest
   lastName: string;
   email: string;
   enabled: boolean;
-  confirmed: boolean;
+  status: string;
 }

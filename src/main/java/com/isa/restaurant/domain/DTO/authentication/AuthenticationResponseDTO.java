@@ -15,4 +15,5 @@ public class AuthenticationResponseDTO extends ModelBaseDTO
     private Long id;
     private String email;
     private String role;
+    private Boolean enabled;
 }

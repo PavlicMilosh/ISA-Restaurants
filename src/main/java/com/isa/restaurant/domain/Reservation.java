@@ -152,4 +152,24 @@ public class Reservation
     }
 
 
+    public Order getOrderByUserId(Long userId)
+    {
+        for (Order order : this.orders)
+            if (order.getGuest().getId() == userId)
+                return order;
+        return null;
+    }
+
+
+    public void deleteOrder(Long id)
+    {
+        for (Order order : this.orders)
+        {
+            if (order.getId() == id)
+            {
+                this.orders.remove(order);
+                break;
+            }
+        }
+    }
 }

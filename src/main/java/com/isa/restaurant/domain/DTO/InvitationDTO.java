@@ -1,6 +1,7 @@
 package com.isa.restaurant.domain.DTO;
 
 import com.isa.restaurant.domain.Guest;
+import com.isa.restaurant.domain.Invitation;
 import com.isa.restaurant.domain.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,15 @@ import javax.persistence.*;
 public class InvitationDTO
 {
     private Long id;
-    private ReservationDTO reservationDTO;
+    private ReservationWithOrdersDTO reservation;
     private GuestDTO invited;
-    private String invitationStatus;
+    private String status;
+
+    public InvitationDTO(Invitation invitation)
+    {
+        this.id = invitation.getId();
+        this.reservation = new ReservationWithOrdersDTO(invitation.getReservation());
+        this.invited = new GuestDTO(invitation.getInvited());
+        this.status = invitation.getStatus();
+    }
 }

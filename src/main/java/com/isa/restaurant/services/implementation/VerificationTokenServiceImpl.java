@@ -56,7 +56,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService
         if (invitation == null || token == null) return false;
         if (!token.isOwner(invitation.getInvited().getId())) return false;
 
-        invitation.setInvitationStatus(InvitationStatus.ACCEPTED);
+        invitation.setStatus(InvitationStatus.ACCEPTED);
         verificationTokenRepository.delete(token.getId());
 
         return true;

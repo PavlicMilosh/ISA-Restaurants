@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain.DTO;
 
+import com.isa.restaurant.domain.Dish;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,15 @@ public class DishOrderDTO
     private Long id;
     private String name;
     private String description;
-    private Long pricePerOne;
+    private Double price;
     private Integer quantity;
+
+    public DishOrderDTO(Dish dish, Integer quantity)
+    {
+        this.id = dish.getId();
+        this.name = dish.getName();
+        this.description = dish.getDescription();
+        this.price = dish.getPrice();
+        this.quantity = quantity;
+    }
 }

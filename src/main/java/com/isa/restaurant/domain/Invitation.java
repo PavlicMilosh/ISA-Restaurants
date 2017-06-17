@@ -36,13 +36,13 @@ public class Invitation
     private Guest invited;
 
     @Column(name = "invitation_status")
-    private String invitationStatus;
+    private String status;
 
 
     public Invitation(Guest to, Reservation reservation)
     {
         this.invited = to;
-        this.invitationStatus = InvitationStatus.PENDING;
+        this.status = InvitationStatus.PENDING;
         this.reservation = reservation;
     }
 }

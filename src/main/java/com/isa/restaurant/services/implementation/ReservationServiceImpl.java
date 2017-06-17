@@ -2,9 +2,9 @@ package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.*;
-import com.isa.restaurant.exceptions.GuestNotFoundException;
+import com.isa.restaurant.exceptions.UserNotFoundException;
 import com.isa.restaurant.exceptions.InvalidDateException;
-import com.isa.restaurant.exceptions.ReservingOccupiedTablesException;
+import com.isa.restaurant.exceptions.ReservationException;
 import com.isa.restaurant.exceptions.RestaurantNotFoundException;
 import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.services.MailService;
@@ -32,6 +32,7 @@ public class ReservationServiceImpl implements ReservationService
     private final DishRepository dishRepository;
     private final OrderRepository orderRepository;
     private final VerificationTokenRepository verificationTokenRepository;
+    private final OrderItemRepository orderItemRepository;
     private final MailService mailService;
 
     @Autowired
@@ -44,6 +45,7 @@ public class ReservationServiceImpl implements ReservationService
                                   DishRepository dishRepository,
                                   OrderRepository orderRepository,
                                   VerificationTokenRepository verificationTokenRepository,
+                                  OrderItemRepository orderItemRepository,
                                   MailService mailService)
     {
         this.reservationRepository = reservationRepository;
@@ -55,6 +57,7 @@ public class ReservationServiceImpl implements ReservationService
         this.dishRepository = dishRepository;
         this.orderRepository = orderRepository;
         this.verificationTokenRepository = verificationTokenRepository;
+        this.orderItemRepository = orderItemRepository;
         this.mailService = mailService;
     }
 
@@ -62,7 +65,7 @@ public class ReservationServiceImpl implements ReservationService
     @Override
     @Transactional
     public ReservationDTO addReservation(Long guestId, ReservationDTO reservationDTO)
-            throws GuestNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservingOccupiedTablesException
+            throws UserNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservationException
     {
         Guest guest = (Guest) userRepository.findById(guestId);
         Restaurant restaurant = restaurantRepository.findByName(reservationDTO.getRestaurant().getName());
@@ -71,7 +74,7 @@ public class ReservationServiceImpl implements ReservationService
         Date dateTimeEnd = Utilities.addMinutesToDate(dateTimeStart, reservationDTO.getDuration());
 
         if (guest == null)
-            throw new GuestNotFoundException();
+            throw new UserNotFoundException();
         if (restaurant == null)
             throw new RestaurantNotFoundException();
         if (dateTimeStart == null || dateTimeEnd == null)
@@ -79,7 +82,7 @@ public class ReservationServiceImpl implements ReservationService
         if (dateTimeStart.before(new Date()))
             throw new InvalidDateException();
         if (hasOccupiedTables(reservationDTO.getTables(), restaurant, dateTimeStart, dateTimeEnd))
-            throw new ReservingOccupiedTablesException();
+            throw new ReservationException();
 
         // STANDARD
         Reservation reservation = new Reservation(guest, restaurant, dateTimeStart, dateTimeEnd, ReservationStatus.SENT);
@@ -89,7 +92,7 @@ public class ReservationServiceImpl implements ReservationService
         {
             RestaurantTable table = tableRepository.findOne(rtDTO.getId());
             if (table.getLastReservationStart().after(dateTimeEnd))
-                throw new ReservingOccupiedTablesException();
+                throw new ReservationException();
             table.setLastReservationStart(dateTimeStart);
             tableRepository.save(table);
             reservation.addTable(table);
@@ -116,12 +119,16 @@ public class ReservationServiceImpl implements ReservationService
         for (DrinkOrderDTO doDTO : reservationDTO.getDrinkOrders())
         {
             Drink drink = drinkRepository.getOne(doDTO.getId());
-            orderItems.add(new OrderItem(drink, doDTO.getQuantity()));
+            OrderItem orderItem = new OrderItem(drink, doDTO.getQuantity());
+            orderItems.add(orderItem);
+            orderItemRepository.save(orderItem);
         }
         for (DishOrderDTO doDTO : reservationDTO.getDishOrders())
         {
             Dish dish = dishRepository.getOne(doDTO.getId());
-            orderItems.add(new OrderItem(dish, doDTO.getQuantity()));
+            OrderItem orderItem = new OrderItem(dish, doDTO.getQuantity());
+            orderItemRepository.save(orderItem);
+            orderItems.add(orderItem);
         }
         if (!orderItems.isEmpty())
         {
@@ -138,15 +145,9 @@ public class ReservationServiceImpl implements ReservationService
     }
 
 
-    public ReservationDTO updateReservation(Long guestId, Long reservationId)
-    {
-        return null;
-    }
-
-
     @Override
     public List<RestaurantTableDTO> getTables(Long guestId, ReservationDTO reservationDTO)
-            throws GuestNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservingOccupiedTablesException
+            throws UserNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservationException
     {
         Guest guest = (Guest) userRepository.findById(guestId);
         Restaurant restaurant = restaurantRepository.findByName(reservationDTO.getRestaurant().getName());
@@ -155,13 +156,13 @@ public class ReservationServiceImpl implements ReservationService
         Date dateTimeEnd = Utilities.addMinutesToDate(dateTimeStart, reservationDTO.getDuration());
 
         if (guest == null)
-            throw new GuestNotFoundException();
+            throw new UserNotFoundException();
         if (restaurant == null)
             throw new RestaurantNotFoundException();
         if (dateTimeStart == null || dateTimeEnd == null)
             throw new InvalidDateException();
         if (hasOccupiedTables(reservationDTO.getTables(), restaurant, dateTimeStart, dateTimeEnd))
-            throw new ReservingOccupiedTablesException();
+            throw new ReservationException();
 
         HashMap<Boolean, List<RestaurantTable>> tables =  getTables(restaurant, dateTimeStart, dateTimeEnd);
         List<RestaurantTableDTO> ret = new ArrayList<>();
@@ -179,6 +180,102 @@ public class ReservationServiceImpl implements ReservationService
     public Integer getNumberOfVisitedRestaurants(Long guestId)
     {
         return 0;
+    }
+
+
+    @Override
+    public List<ReservationWithOrdersDTO> getReservations(Long guestId)
+            throws UserNotFoundException
+    {
+        if (userRepository.findById(guestId) == null)
+            throw new UserNotFoundException("");
+
+        List<Reservation> reservations = reservationRepository.getReservationsByReserverId(guestId);
+        List<ReservationWithOrdersDTO> ret = new ArrayList<>();
+
+        for (Reservation reservation : reservations)
+            ret.add(new ReservationWithOrdersDTO(reservation));
+
+        return ret;
+    }
+
+
+    @Override
+    public List<InvitationDTO> getAcceptedInvitations(Long guestId)
+            throws UserNotFoundException
+    {
+        if (userRepository.findById(guestId) == null)
+            throw new UserNotFoundException("");
+
+        List<Invitation> invitations = invitationRepository.getUsersAcceptedInvitationsByUserId(guestId);
+        List<InvitationDTO> ret = new ArrayList<>();
+
+        for (Invitation invitation : invitations)
+            ret.add(new InvitationDTO(invitation));
+
+        return ret;
+    }
+
+
+    @Override
+    @Transactional
+    public ReservationDTO updateReservation(Long guestId, Long reservationId, ReservationUpdateDTO reservationUpdateData)
+            throws ReservationException, UserNotFoundException
+    {
+        Guest attendant = (Guest) userRepository.findById(guestId);
+        Reservation reservation = reservationRepository.findById(reservationId);
+
+        if (attendant == null)
+            throw new UserNotFoundException();
+        if (reservation == null)
+            throw new ReservationException();
+
+        for (Order o : reservation.getOrders())
+        {
+            if (o.getId() == reservationUpdateData.getOrderId())
+            {
+                reservation.deleteOrder(o.getId());
+                reservationRepository.save(reservation);
+                clearOrder(o.getId());
+            }
+        }
+
+        HashSet<OrderItem> newItems = new HashSet<>();
+        for (DrinkOrderDTO d : reservationUpdateData.getDrinkOrders())
+        {
+            Drink drink = drinkRepository.findById(d.getId());
+            OrderItem orderItem = new OrderItem(drink, d.getQuantity());
+            orderItemRepository.save(orderItem);
+            newItems.add(orderItem);
+        }
+        for (DishOrderDTO d : reservationUpdateData.getDishOrders())
+        {
+            Dish dish = dishRepository.findById(d.getId());
+            OrderItem orderItem = new OrderItem(dish, d.getQuantity());
+            orderItemRepository.save(orderItem);
+            newItems.add(orderItem);
+        }
+
+        if (!newItems.isEmpty())
+        {
+            Order order = new Order(newItems, reservation.getDateTimeStart());
+            order.setGuest(attendant);
+            reservation.addOrder(order);
+            orderRepository.save(order);
+        }
+
+        reservationRepository.save(reservation);
+
+        return new ReservationDTO(reservation);
+    }
+
+
+    private void clearOrder(Long orderId)
+    {
+        Order order = orderRepository.findById(orderId);
+        orderRepository.delete(orderId);
+        for (OrderItem orderItem : order.getOrderItems())
+            orderItemRepository.delete(orderItem.getId());
     }
 
 

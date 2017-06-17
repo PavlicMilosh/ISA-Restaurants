@@ -1,0 +1,162 @@
+<ng-container *ngIf="reservations != null">
+
+  <ng-container *ngIf="reservations.length > 0">
+    <div class="panel panel-default"><div class="panel-body"><div class="table-container">
+
+      <div class="section-name">My reservations: </div>
+
+      <table class="table table-filter"><tbody>
+
+      <tr *ngFor="let reservation of reservations">
+        <td class="image">
+          <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+        </td>
+
+        <td>
+          <div class = "table-name">{{reservation.restaurant.name}}</div>
+          <div class = "table-row-name">first name</div>
+        </td>
+
+        <td>
+          <div class = "table-name">{{reservation.startDate}}</div>
+          <div class = "table-row-name">date</div>
+        </td>
+
+        <td>
+          <div class = "table-name">{{reservation.startTime}}</div>
+          <div class = "table-row-name">time</div>
+        </td>
+
+        <td>
+          <div class = "table-name">{{reservation.duration}}</div>
+          <div class = "table-row-name">duration</div>
+        </td>
+
+        <td class="buttons">
+          <div class="left">
+            <a target="_blank" type="button" class="btn btn-primary btn-lg btn-block login-button" data-toggle="modal" data-target="#summaryModal"
+              (click)="selectReservation(reservation.id)">Details</a>
+          </div>
+          <div class="left">
+            <a target="_blank" type="button" class="btn btn-primary btn-lg btn-block login-button" data-toggle="modal" data-target="#updateModal"
+               (click)="selectReservation(reservation.id)">Update</a>
+          </div>
+          <div class="left">
+            <a target="_blank" type="button" class="btn btn-danger btn-lg btn-block login-button">Drop</a>
+          </div>
+        </td>
+
+      </tr>
+
+    </tbody></table>
+
+
+    </div></div></div>
+
+  </ng-container>
+  <ng-container *ngIf="reservations.length == 0">
+    <div class="no-content-message">You haven't made any recent reservations</div>
+  </ng-container>
+
+</ng-container>
+
+
+<ng-container *ngIf="acceptedInvitations != null">
+
+  <ng-container *ngIf="acceptedInvitations.length > 0">
+    <div class="panel panel-default"><div class="panel-body"><div class="table-container">
+
+      <div class="section-name">Confirmed attendances: </div>
+      <table class="table table-filter"><tbody>
+
+      <tr *ngFor="let invitation of acceptedInvitations">
+        <td class="image">
+          <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+        </td>
+
+        <td>
+          <div class = "table-name">{{invitation.reservation.restaurant.name}}</div>
+          <div class = "table-row-name">first name</div>
+        </td>
+
+        <td>
+          <div class = "table-name">{{invitation.reservation.startDate}}</div>
+          <div class = "table-row-name">date</div>
+        </td>
+
+        <td>
+          <div class = "table-name">{{invitation.reservation.startTime}}</div>
+          <div class = "table-row-name">time</div>
+        </td>
+
+        <td>
+          <div class = "table-name">{{invitation.reservation.duration}}</div>
+          <div class = "table-row-name">duration</div>
+        </td>
+
+        <td class="buttons">
+          <div class="left">
+            <a target="_blank" type="button" class="btn btn-primary btn-lg btn-block login-button" data-toggle="modal" data-target="#summaryModal"
+               (click)="selectReservationFromInvitation(invitation.reservation.id)">Details</a>
+          </div>
+          <div class="left">
+            <a target="_blank" type="button" class="btn btn-primary btn-lg btn-block login-button" data-toggle="modal" data-target="#updateModal"
+               (click)="selectReservationFromInvitation(invitation.reservation.id)">Update</a>
+          </div>
+        </td>
+
+      </tr>
+
+      </tbody></table>
+
+    </div></div></div>
+  </ng-container>
+  <ng-container *ngIf="acceptedInvitations.length == 0">
+    <div class="no-content-message">You haven't accepted any recent invitations</div>
+  </ng-container>
+</ng-container>
+
+
+<!-- Summary modal -->
+<div id="summaryModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Details</h4>
+      </div>
+      <div class="modal-body">
+        <guestReservationSummary [parentSubject]="parentSubjectS"></guestReservationSummary>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Update modal -->
+<div id="updateModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Details</h4>
+      </div>
+      <div class="modal-body">
+        <guestReservationUpdate [parentSubject]="parentSubjectU"></guestReservationUpdate>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+

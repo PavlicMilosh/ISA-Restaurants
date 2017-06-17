@@ -86,6 +86,5 @@ public class RestaurantTable
         this.top = rtDTO.getTop();
         this.left = rtDTO.getTop();
         this.angle = rtDTO.getTop();
-        this.restaurant = new Restaurant(rtDTO.getRestaurantDTO());
     }
 }

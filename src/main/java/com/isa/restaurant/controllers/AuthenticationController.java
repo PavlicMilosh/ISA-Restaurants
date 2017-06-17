@@ -65,7 +65,7 @@ public class AuthenticationController
         String token = this.tokenUtils.generateToken(userDetails);
 
         // Return the token
-        return new ResponseEntity<>(new AuthenticationResponseDTO(token, su.getId(), su.getEmail(), su.getAuthorities().toString()), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthenticationResponseDTO(token, su.getId(), su.getEmail(), su.getAuthorities().toString(), su.getEnabled()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "${isa.route.authentication.refresh}", method = RequestMethod.GET)
@@ -78,7 +78,7 @@ public class AuthenticationController
         if (this.tokenUtils.canTokenBeRefreshed(token))
         {
             String refreshedToken = this.tokenUtils.refreshToken(token);
-            return new ResponseEntity<>(new AuthenticationResponseDTO(refreshedToken, user.getId(), user.getEmail(), user.getAuthorities().toString()), HttpStatus.OK);
+            return new ResponseEntity<>(new AuthenticationResponseDTO(refreshedToken, user.getId(), user.getEmail(), user.getAuthorities().toString(), user.getEnabled()), HttpStatus.OK);
         }
         else
         {

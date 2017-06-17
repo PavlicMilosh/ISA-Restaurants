@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { WizardModule } from 'ng2-archwizard';
 import { MyDatePickerModule } from 'mydatepicker';
+import { Ng2TableModule } from 'ng2-table/ng2-table';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -39,6 +40,7 @@ import { GuestInvitationsComponent} from "./components/guest/guestInvitations/gu
 import { GuestPreorderComponent } from "./components/guest/guestPreorder/guestPreorder.component";
 import { GuestTablesComponent } from "./components/guest/guestTables/guestTables.component";
 import { GuestReservationSummaryComponent } from "./components/guest/guestReservationSummary/guestReservationSummary.component";
+import { GuestReservationUpdateComponent } from "./components/guest/guestReservationUpdate/guestReservationUpdate.component";
 
 import { MakeOrder } from './components/makeOrder/makeOrder.component';
 import { OrderDishes } from './components/orderDishes/orderDishes.component';
@@ -48,6 +50,7 @@ import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWo
 import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calendar";
 import { UpdateProviderComponent } from './components/updateProvider/updateProvider.component';
 import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
+import {GuestRestaurantAttendancesComponent} from "./components/guest/guestRestaurantAttendances/guestRestaurantAttendances.component";
 
 
 @NgModule({
@@ -90,7 +93,9 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     GuestInvitationsComponent,
     GuestPreorderComponent,
     GuestTablesComponent,
-    GuestReservationSummaryComponent
+    GuestReservationSummaryComponent,
+    GuestRestaurantAttendancesComponent,
+    GuestReservationUpdateComponent
 
   ],
   imports: [
@@ -99,6 +104,7 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     HttpModule,
     WizardModule,
     MyDatePickerModule,
+    Ng2TableModule,
     routing,
     NgbModule.forRoot()
   ],

@@ -56,11 +56,11 @@ public class OrderRepositoryTest
 
 
         RestaurantTable table=tableRepository.save(new RestaurantTable());
-        Drink d1=drinkRepository.save(new Drink("Coca Cola 2","Gazirano pice",150L, r1));
-        Drink d2=drinkRepository.save(new Drink("Pepsi 2","Gazirano pice",150L, r1));
+        Drink d1=drinkRepository.save(new Drink("Coca Cola 2","Gazirano pice",150.0, r1));
+        Drink d2=drinkRepository.save(new Drink("Pepsi 2","Gazirano pice",150.0, r1));
 
-        Dish di1=dishRepository.save(new Dish("dish1 2","desc",450L,r1));
-        Dish di2=dishRepository.save(new Dish("dish2 2","desc",600L,r1));
+        Dish di1=dishRepository.save(new Dish("dish1 2","desc",450.0,r1));
+        Dish di2=dishRepository.save(new Dish("dish2 2","desc",600.0,r1));
 
         OrderItem orderItem1 = orderItemRepository.save(new OrderItem(d1,2));
         OrderItem orderItem2 = orderItemRepository.save(new OrderItem(d2,2));
@@ -86,11 +86,11 @@ public class OrderRepositoryTest
         Waiter user = new Waiter("billRepositoryUser4@gmail.com", "123321", "billUser4", "billUser4");
         userRepository.save(user);
         RestaurantTable table=tableRepository.save(new RestaurantTable());
-        Drink d1=drinkRepository.save(new Drink("Coca Cola 3","Gazirano pice",150L, r1));
-        Drink d2=drinkRepository.save(new Drink("Pepsi 3","Gazirano pice",150L, r1));
+        Drink d1=drinkRepository.save(new Drink("Coca Cola 3","Gazirano pice",150.0, r1));
+        Drink d2=drinkRepository.save(new Drink("Pepsi 3","Gazirano pice",150.0, r1));
 
-        Dish di1=dishRepository.save(new Dish("dish1 3","desc",450L,r1));
-        Dish di2=dishRepository.save(new Dish("dish2 3","desc",600L,r1));
+        Dish di1=dishRepository.save(new Dish("dish1 3","desc",450.0,r1));
+        Dish di2=dishRepository.save(new Dish("dish2 3","desc",600.0,r1));
 
         OrderItem orderItem1 = orderItemRepository.save(new OrderItem(d1,2));
         OrderItem orderItem2 = orderItemRepository.save(new OrderItem(d2,2));

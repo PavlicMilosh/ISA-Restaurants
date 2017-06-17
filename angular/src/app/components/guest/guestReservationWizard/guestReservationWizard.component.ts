@@ -5,6 +5,7 @@ import { RestaurantService } from "../../../services/restaurants.service"
 import 'fabric';
 import {GuestReservationSummaryComponent} from "../guestReservationSummary/guestReservationSummary.component";
 import {Subject} from "rxjs";
+import {LoggedUtils} from "../../../utils/logged.utils";
 
 declare let fabric;
 declare let jQuery: any;
@@ -13,7 +14,7 @@ declare let jQuery: any;
   moduleId: module.id,
   selector: 'guestReservationWizard',
   templateUrl: 'guestReservationWizard.component.html',
-  styleUrls: ['guestReservationWizard.component.css', '../../style/formStyle.css'],
+  styleUrls: ['guestReservationWizard.component.css', '../../style/formStyle.css', '../../style/tableStyle.css'],
   providers: [GuestService, RestaurantService]
 })
 
@@ -23,6 +24,8 @@ export class GuestReservationWizardComponent implements OnInit {
   private reservation: Reservation;
   private restaurantChoosen: boolean;
   private tablesChoosen: boolean;
+  private logged: boolean;
+  private accountEnabled: boolean;
 
   parentSubject: Subject<any> = new Subject();
   notifyChildren()
@@ -36,7 +39,7 @@ export class GuestReservationWizardComponent implements OnInit {
     this.reservation = {startTime : "", startDate: "", duration: 0,
                         tables: [], invites: [], dishOrders: [], drinkOrders:[],
                         restaurant: {
-                          id: null, name: null, description: null, dishes:[], drinks: []}};
+                          id: null, name: null, description: null, dishes:[], drinks: [], tables: []}};
   }
 
 
@@ -123,6 +126,7 @@ interface Restaurant
   description: string;
   dishes: Dish[];
   drinks: Drink[];
+  tables: RestaurantTable[];
 }
 
 

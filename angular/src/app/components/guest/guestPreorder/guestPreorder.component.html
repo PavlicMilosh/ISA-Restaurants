@@ -14,7 +14,7 @@
       </td>
 
       <td>
-        <div class = "table-name">{{drink.price}}</div>
+        <div class = "table-name">{{drink.price | number:'1.2-2'}}</div>
         <div class= "table-row-name">price per unit</div>
       </td>
 
@@ -24,7 +24,7 @@
       </td>
 
       <td>
-        <div class = "table-name">{{drink.price * drink.quantity}}</div>
+        <div class = "table-name">{{drink.price * drink.quantity | number:'1.2-2'}}</div>
         <div class= "table-row-name">total price</div>
       </td>
 
@@ -51,7 +51,7 @@
       </td>
 
       <td>
-        <div class = "table-name">{{dish.price}}</div>
+        <div class = "table-name">{{dish.price | number:'1.2-2'}}</div>
         <div class= "table-row-name">price per unit</div>
       </td>
 
@@ -61,7 +61,7 @@
       </td>
 
       <td>
-        <div class = "table-name">{{dish.price * dish.quantity}}</div>
+        <div class = "table-name">{{dish.price * dish.quantity | number:'1.2-2'}}</div>
         <div class= "table-row-name">total price</div>
       </td>
 
@@ -94,8 +94,8 @@
       </td>
 
       <td>
-        <div class = "table-name">{{drink.price}}</div>
-        <div class = "table-row-name">price per one</div>
+        <div class = "table-name">{{drink.price | number:'1.2-2'}}</div>
+        <div class = "table-row-name">price</div>
       </td>
 
       <td>
@@ -121,8 +121,8 @@
       </td>
 
       <td>
-        <div class = "table-name">{{dish.price}}</div>
-        <div class = "table-row-name">price per one</div>
+        <div class = "table-name">{{dish.price | number:'1.2-2'}}</div>
+        <div class = "table-row-name">price</div>
       </td>
 
       <td>

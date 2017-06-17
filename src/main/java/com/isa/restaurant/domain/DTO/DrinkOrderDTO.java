@@ -1,5 +1,7 @@
 package com.isa.restaurant.domain.DTO;
 
+import com.isa.restaurant.domain.Dish;
+import com.isa.restaurant.domain.Drink;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +19,15 @@ public class DrinkOrderDTO
     private Long id;
     private String name;
     private String description;
-    private Double pricePerOne;
+    private Double price;
     private Integer quantity;
+
+    public DrinkOrderDTO(Drink drink, Integer quantity)
+    {
+        this.id = drink.getId();
+        this.name = drink.getName();
+        this.description = drink.getDescription();
+        this.price = drink.getPrice();
+        this.quantity = quantity;
+    }
 }

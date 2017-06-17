@@ -2,12 +2,10 @@ package com.isa.restaurant.controllers;
 
 import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.domain.Guest;
-import com.isa.restaurant.domain.Invitation;
-import com.isa.restaurant.domain.RestaurantTable;
 import com.isa.restaurant.domain.VerificationTokenPurpose;
-import com.isa.restaurant.exceptions.GuestNotFoundException;
+import com.isa.restaurant.exceptions.ReservationException;
+import com.isa.restaurant.exceptions.UserNotFoundException;
 import com.isa.restaurant.exceptions.InvalidDateException;
-import com.isa.restaurant.exceptions.ReservingOccupiedTablesException;
 import com.isa.restaurant.exceptions.RestaurantNotFoundException;
 import com.isa.restaurant.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -210,7 +207,7 @@ public class GuestController
         {
             ret = reservationService.addReservation(guestId, reservationDTO);
         }
-        catch (GuestNotFoundException e)
+        catch (UserNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -218,7 +215,7 @@ public class GuestController
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        catch (InvalidDateException | ReservingOccupiedTablesException e)
+        catch (InvalidDateException | ReservationException e)
         {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -260,7 +257,7 @@ public class GuestController
         {
             ret = this.reservationService.getTables(guestId, reservationDTO);
         }
-        catch (GuestNotFoundException e)
+        catch (UserNotFoundException e)
         {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -268,7 +265,7 @@ public class GuestController
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        catch (InvalidDateException | ReservingOccupiedTablesException e)
+        catch (InvalidDateException | ReservationException e)
         {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -276,16 +273,34 @@ public class GuestController
     }
 
 
-    @RequestMapping(value = "/{guestId}/updateReservation/{reservationId}")
-    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable Long guestId, @PathVariable Long reservationId)
+    @RequestMapping(value = "/{guestId}/updateReservation/{reservationId}",
+                    method = RequestMethod.PUT,
+                    consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ReservationDTO> updateReservation(@PathVariable Long guestId,
+                                                            @PathVariable Long reservationId,
+                                                            @RequestBody ReservationUpdateDTO reservationUpdateData)
     {
-        return null;
+        ReservationDTO ret = null;
+        try
+        {
+            ret = reservationService.updateReservation(guestId, reservationId, reservationUpdateData);
+        }
+        catch (ReservationException e)
+        {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        catch (UserNotFoundException e)
+        {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/{guestId}/acceptInvitation/{verificationTokenValue}",
-            method = RequestMethod.PUT,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+                    method = RequestMethod.PUT,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReservationDTO> acceptInvitation(@PathVariable Long guestId, @PathVariable String verificationTokenValue)
     {
         if (userService.findById(guestId) == null)
@@ -294,5 +309,41 @@ public class GuestController
             return new ResponseEntity<>(HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+
+    @RequestMapping(value = "/{guestId}/getReservations",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ReservationWithOrdersDTO>> getReservations(@PathVariable Long guestId)
+    {
+        List<ReservationWithOrdersDTO> ret = null;
+        try
+        {
+            ret = reservationService.getReservations(guestId);
+        }
+        catch (UserNotFoundException e)
+        {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/{guestId}/getAcceptedInvitations",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<InvitationDTO>> getAcceptedInvitations(@PathVariable Long guestId)
+    {
+        List<InvitationDTO> ret = null;
+        try
+        {
+            ret = reservationService.getAcceptedInvitations(guestId);
+        }
+        catch (UserNotFoundException e)
+        {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 }

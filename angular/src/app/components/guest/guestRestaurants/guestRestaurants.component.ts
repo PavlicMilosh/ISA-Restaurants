@@ -24,16 +24,18 @@ export class GuestRestaurantsComponent implements OnInit
   constructor(private guestService: GuestService, private restaurantService: RestaurantService)
   {
     this.restaurants = [];
-    this.selectedRestaurant = {id: 0, name: "", description: "", friendsMark: null, meanMark: null};
+    this.selectedRestaurant = {id: 0, name: "", description: "", friendsMark: null, meanMark: null, tables: []};
 
     this.guestService.getRestaurants().subscribe
     (
-      data => this.restaurants = data,
+      data => {this.restaurants = data; console.log(data)},
       error => console.log(error)
     );
   }
 
-  ngOnInit() {}
+  ngOnInit()
+  {
+  }
 
 
   selectRestaurant(selectedId: number)
@@ -46,6 +48,7 @@ export class GuestRestaurantsComponent implements OnInit
         break;
       }
     }
+    console.log(this.selectedRestaurant);
     this.notify.emit(this.selectedRestaurant);
   }
 
@@ -54,9 +57,9 @@ export class GuestRestaurantsComponent implements OnInit
   {
     if (this.searchParams == null || !this.searchParams.replace(/\s/g, '').length)
     {
-      this.restaurantService.getRestaurants().subscribe
+      this.guestService.getRestaurants().subscribe
       (
-        data => this.restaurants = data,
+        data => { this.restaurants = data; console.log(data)},
         error => alert(error)
       );
     }
@@ -78,4 +81,19 @@ interface Restaurant
   description: string;
   friendsMark: number;
   meanMark: number;
+  tables: RestaurantTable[];
 }
+
+
+interface RestaurantTable
+{
+  id: number;
+  top: number;
+  left: number;
+  angle: number;
+  occupied: boolean;
+  regionId: number;
+  regionColor: string;
+  seats: number;
+}
+

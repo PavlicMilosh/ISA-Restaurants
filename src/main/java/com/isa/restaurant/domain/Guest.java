@@ -42,7 +42,6 @@ public class Guest extends User
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        //this.enabled = false;
     }
 
 

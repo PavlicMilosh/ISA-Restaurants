@@ -13,6 +13,7 @@ import { GuestFriendsComponent } from "./components/guest/guestFriends/guestFrie
 import { GuestRequestsComponent } from "./components/guest/guestRequests/guestRequests.component";
 import { GuestPeopleComponent } from "./components/guest/guestPeople/guestPeople.component";
 import { GuestReservationWizardComponent } from "./components/guest/guestReservationWizard/guestReservationWizard.component";
+import {GuestRestaurantAttendancesComponent} from "./components/guest/guestRestaurantAttendances/guestRestaurantAttendances.component";
 
 import { UpdateUser } from './components/updateUser/updateUser.component';
 import { ChangePassword } from "./components/changePassword/changePassword.component";
@@ -101,6 +102,10 @@ const appRoutes : Routes =
     {
       path : 'guest/reservations',
       component : GuestReservationWizardComponent
+    },
+    {
+      path: 'guest/attendances',
+      component: GuestRestaurantAttendancesComponent
     },
 
 

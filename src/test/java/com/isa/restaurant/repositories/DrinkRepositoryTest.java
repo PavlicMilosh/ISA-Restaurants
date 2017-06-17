@@ -41,7 +41,7 @@ public class DrinkRepositoryTest
     {
         Restaurant restaurant=new Restaurant("restoran2", "desc");
         restaurantRepository.save(restaurant);
-        Drink drink=new Drink("Pice1","Moje pice",200L, restaurant);
+        Drink drink=new Drink("Pice1","Moje pice",200.0, restaurant);
         drinkRepository.save(drink);
         g1=restaurant.getId();
     }
@@ -52,7 +52,7 @@ public class DrinkRepositoryTest
         Restaurant restaurant=new Restaurant("restoran3","moj restoran");
         restaurantRepository.save(restaurant);
 
-        Drink drink= new Drink("Drink3","Moje pice2",300L,restaurant);
+        Drink drink= new Drink("Drink3","Moje pice2",300.0,restaurant);
         Drink saved=drinkRepository.save(drink);
         Assert.assertEquals(drink, saved);
     }

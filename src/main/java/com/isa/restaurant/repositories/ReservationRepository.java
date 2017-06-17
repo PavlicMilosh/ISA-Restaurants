@@ -23,4 +23,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>
                                                          @Param("date_start") Date start,
                                                          @Param("date_end") Date end);
 
+    @Query("SELECT r FROM Reservation r WHERE r.reserver.id = :user_id")
+    List<Reservation> getReservationsByReserverId(@Param("user_id") Long guestId);
 }

@@ -1,0 +1,12 @@
+div.section-name
+{
+  font-size: 30px;
+  display: block;
+  text-align: left;
+  margin-left: 30px;
+}
+
+.modal-dialog
+{
+  width: 80%;
+}
