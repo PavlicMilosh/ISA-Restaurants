@@ -18,13 +18,14 @@ export class GuestRestaurantsComponent implements OnInit
   @Output() notify: EventEmitter<Restaurant> = new EventEmitter<Restaurant>();
   private restaurants: Restaurant[];
   private selectedRestaurant: Restaurant;
+  private mapAddress: string;
   private searchParams: string;
 
 
   constructor(private guestService: GuestService, private restaurantService: RestaurantService)
   {
     this.restaurants = [];
-    this.selectedRestaurant = {id: 0, name: "", description: "", friendsMark: null, meanMark: null, tables: []};
+    this.selectedRestaurant = {id: 0, name: "", description: "", friendsMark: null, meanMark: null, tables: [], address: "", distance: null};
 
     this.guestService.getRestaurants().subscribe
     (
@@ -52,6 +53,18 @@ export class GuestRestaurantsComponent implements OnInit
     this.notify.emit(this.selectedRestaurant);
   }
 
+
+  showOnMap(id: number)
+  {
+    for (let i = 0; i < this.restaurants.length; i++)
+    {
+      if (this.restaurants[i].id == id)
+      {
+        this.mapAddress = this.restaurants[i].address;
+        break;
+      }
+    }
+  }
 
   searchRestaurants()
   {
@@ -81,6 +94,8 @@ interface Restaurant
   description: string;
   friendsMark: number;
   meanMark: number;
+  address: string;
+  distance: number;
   tables: RestaurantTable[];
 }
 

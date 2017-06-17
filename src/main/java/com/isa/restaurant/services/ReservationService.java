@@ -29,4 +29,7 @@ public interface ReservationService
 
     ReservationDTO updateReservation(Long guestId, Long reservationId, ReservationUpdateDTO reservationUpdateData)
             throws ReservationException, UserNotFoundException;
+
+    List<HistoryDTO> getHistoryOfVisits(Long guestId)
+            throws UserNotFoundException;
 }

@@ -1,10 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ApplicationRef  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { WizardModule } from 'ng2-archwizard';
 import { MyDatePickerModule } from 'mydatepicker';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
+import { AgmCoreModule } from '@agm/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -51,6 +52,7 @@ import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calenda
 import { UpdateProviderComponent } from './components/updateProvider/updateProvider.component';
 import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
 import {GuestRestaurantAttendancesComponent} from "./components/guest/guestRestaurantAttendances/guestRestaurantAttendances.component";
+import {GuestHistoryComponent} from "./components/guest/guestHistory/guestHistory.component";
 
 
 @NgModule({
@@ -95,7 +97,8 @@ import {GuestRestaurantAttendancesComponent} from "./components/guest/guestResta
     GuestTablesComponent,
     GuestReservationSummaryComponent,
     GuestRestaurantAttendancesComponent,
-    GuestReservationUpdateComponent
+    GuestReservationUpdateComponent,
+    GuestHistoryComponent
 
   ],
   imports: [
@@ -105,6 +108,9 @@ import {GuestRestaurantAttendancesComponent} from "./components/guest/guestResta
     WizardModule,
     MyDatePickerModule,
     Ng2TableModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDktm4_Qkq5wDW1sX9PY9UKHHGwXmCxnj0'
+    }),
     routing,
     NgbModule.forRoot()
   ],

@@ -346,4 +346,22 @@ public class GuestController
         }
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
+
+
+    @RequestMapping(value = "/{guestId}/getHistoryOfVisits",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<HistoryDTO>> getHistoryOfVisits(@PathVariable Long guestId)
+    {
+        List<HistoryDTO> ret = null;
+        try
+        {
+            ret = reservationService.getHistoryOfVisits(guestId);
+        }
+        catch (UserNotFoundException e)
+        {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
 }

@@ -12,39 +12,60 @@
         </span>
   </div></div></div></div>
 
-  <ng-container *ngIf="restaurants != null">
+  <ng-container *ngIf="historyData != null">
 
     <!-- TABLE -->
     <table class="table table-filter"><tbody>
 
-      <tr *ngFor="let restaurant of restaurants" [attr.id]="'restaurant_' + restaurant.id">
+      <tr *ngFor="let history of historyData">
 
-        <td class="image">
-          <img src="https://s-media-cache-ak0.pinimg.com/originals/14/c3/8c/14c38ce05dc93cc7b5d82a9b8f04db08.jpg" class="media-photo">
+        <td>
+          <div class = "table-name">{{history.restaurantName}}</div>
+          <div class = "table-row-name">{{history.restaurantDescription}}</div>
         </td>
 
         <td>
-          <div class = "table-name">name</div>
-          <div class = "table-row-name">description</div>
-        </td>
-
-        <td>
-          <div class = "table-name">date at time</div>
+          <div class = "table-name">{{history.dateOfVisit + ' ' + history.timeOfVisit}}</div>
           <div class = "table-row-name">visited</div>
         </td>
 
         <td>
-          <div class="table-number">mark</div>
+          <ng-container *ngIf="!history.restaurantMeanMark">
+            <div class="table-number"> N\A </div>
+          </ng-container>
+          <ng-container *ngIf="history.restaurantMeanMark">
+            <div class="table-number">{{history.restaurantMeanMark}}</div>
+          </ng-container>
           <div class="table-row-name">mean mark</div>
         </td>
 
         <td>
-          <div class="table-number">mark</div>
+          <ng-container *ngIf="!history.restaurantFriendsMark">
+            <div class="table-number"> N\A </div>
+          </ng-container>
+          <ng-container *ngIf="history.restaurantFriendsMark">
+            <div class="table-number">{{history.restaurantFriendsMark}}</div>
+          </ng-container>
           <div class="table-row-name">friends mark</div>
         </td>
 
         <td>
-          <div class="table-number">my mark</div>
+          <ng-container *ngIf="!history.restaurantMyMark">
+            <div class="table-number">not given</div>
+          </ng-container>
+          <ng-container *ngIf="history.restaurantMyMark">
+            <div class="table-number">{{history.restaurantMyMark}}</div>
+          </ng-container>
+          <div class="table-row-name">my mark</div>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!history.mealMyMark">
+            <div class="table-number">not given</div>
+          </ng-container>
+          <ng-container *ngIf="history.mealMyMark">
+            <div class="table-number">{{history.mealMyMark}}</div>
+          </ng-container>
           <div class="table-row-name">my mark</div>
         </td>
 
@@ -61,8 +82,8 @@
 
   </ng-container>
 
-  <ng-container *ngIf="restaurants.length == 0">
-    <div class="no-content-message">No restaurants :(</div>
+  <ng-container *ngIf="historyData.length == 0">
+    <div class="no-content-message">No visits :(</div>
   </ng-container>
 
 </div></div></div>

@@ -198,5 +198,15 @@ export class GuestService
   }
 
 
+  getHistoryData()
+  {
+    let headers = new Headers();
+    let guestId = LoggedUtils.getId();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get(AddressUtils.backendAddress() + "/guest/" + guestId + "/getHistoryOfVisits", { headers : headers })
+      .map(res => res.json());
+  }
+
+
 
 }

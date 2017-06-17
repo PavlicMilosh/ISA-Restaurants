@@ -26,6 +26,7 @@ public class RestaurantDTO
     private String description;
     private Double friendsMark;
     private Double meanMark;
+    private String address;
     private Set<Drink> drinks;
     private Set<Dish> dishes;
     private Set<RestaurantTableDTO> tables;

@@ -49,6 +49,9 @@ public class Order
     @JoinColumn(referencedColumnName = "user_id", name = "order_item_guest_id")
     private Guest guest;
 
+    @Column(name = "order_mark")
+    private Double mark;
+
     public Order(Waiter waiter)
     {
         this.price=0.0;

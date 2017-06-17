@@ -6,7 +6,7 @@ declare let jQuery:any;
 @Component
 ({
   moduleId: module.id,
-  selector: 'guestRestaurants',
+  selector: 'guestHistory',
   templateUrl: 'guestHistory.component.html',
   styleUrls: ['guestHistory.component.css', '../../style/tableStyle.css'],
   providers: [RestaurantService, GuestService]
@@ -15,14 +15,19 @@ declare let jQuery:any;
 
 export class GuestHistoryComponent implements OnInit
 {
+  private historyData: History[];
 
   constructor(private guestService: GuestService)
   {
-
+    this.historyData = [];
   }
 
   ngOnInit()
   {
+    this.guestService.getHistoryData().subscribe(
+      data => { this.historyData = data; console.log(data); },
+      error => alert(error)
+    );
   }
 
 
@@ -34,26 +39,33 @@ export class GuestHistoryComponent implements OnInit
 }
 
 
-interface Restaurant
+interface History
 {
-  id: number;
-  name: string;
-  description: string;
-  friendsMark: number;
-  meanMark: number;
-  tables: RestaurantTable[];
+  restaurantId: number;
+  reservationId: number;
+  orderId: number;
+
+  restaurantName: string;
+  restaurantDescription: string;
+  restaurantMeanMark: number;
+
+  restaurantFriendsMark: number;
+  restaurantMyMark: number;
+
+  mealMyMark: number;
+
+  dateOfVisit: string;
+  timeOfVisit: string;
+
 }
 
 
-interface RestaurantTable
+interface RestaurantMark
 {
-  id: number;
-  top: number;
-  left: number;
-  angle: number;
-  occupied: boolean;
-  regionId: number;
-  regionColor: string;
-  seats: number;
+  userId: number;
+  restaurantId: number;
+  reservationId: number;
+  orderId: number;
+  restaurantMark: number;
+  orderMark: number;
 }
-

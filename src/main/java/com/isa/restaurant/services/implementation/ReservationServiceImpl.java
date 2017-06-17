@@ -7,6 +7,7 @@ import com.isa.restaurant.exceptions.InvalidDateException;
 import com.isa.restaurant.exceptions.ReservationException;
 import com.isa.restaurant.exceptions.RestaurantNotFoundException;
 import com.isa.restaurant.repositories.*;
+import com.isa.restaurant.services.FriendshipService;
 import com.isa.restaurant.services.MailService;
 import com.isa.restaurant.services.ReservationService;
 import com.isa.restaurant.ulitity.Utilities;
@@ -34,6 +35,7 @@ public class ReservationServiceImpl implements ReservationService
     private final VerificationTokenRepository verificationTokenRepository;
     private final OrderItemRepository orderItemRepository;
     private final MailService mailService;
+    private final FriendshipService friendshipService;
 
     @Autowired
     public ReservationServiceImpl(ReservationRepository reservationRepository,
@@ -46,7 +48,8 @@ public class ReservationServiceImpl implements ReservationService
                                   OrderRepository orderRepository,
                                   VerificationTokenRepository verificationTokenRepository,
                                   OrderItemRepository orderItemRepository,
-                                  MailService mailService)
+                                  MailService mailService,
+                                  FriendshipService friendshipService)
     {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
@@ -59,6 +62,7 @@ public class ReservationServiceImpl implements ReservationService
         this.verificationTokenRepository = verificationTokenRepository;
         this.orderItemRepository = orderItemRepository;
         this.mailService = mailService;
+        this.friendshipService = friendshipService;
     }
 
 
@@ -177,9 +181,42 @@ public class ReservationServiceImpl implements ReservationService
 
 
     @Override
+    @Transactional
     public Integer getNumberOfVisitedRestaurants(Long guestId)
     {
-        return 0;
+        Map<Long, Integer> visits = new HashMap<>();
+        Integer ret = 0;
+
+        List<Reservation> reservations = reservationRepository.getReservationsByReserverId(guestId);
+        List<Invitation> invitations = invitationRepository.getUsersAcceptedInvitationsByUserId(guestId);
+
+        for (Reservation reservation : reservations)
+        {
+            if (reservation.getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))
+            {
+                Long restaurantId = reservation.getRestaurant().getId();
+                if (visits.containsKey(restaurantId))
+                    visits.put(restaurantId, visits.get(restaurantId) + 1);
+                else
+                    visits.put(restaurantId, 1);
+            }
+        }
+        for (Invitation invitation : invitations)
+        {
+            if (invitation.getReservation().getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))
+            {
+                Long restaurantId = invitation.getReservation().getRestaurant().getId();
+                if (visits.containsKey(restaurantId))
+                    visits.put(restaurantId, visits.get(restaurantId) + 1);
+                else
+                    visits.put(restaurantId, 1);
+            }
+        }
+
+        for (Integer numOfVisits : visits.values())
+            ret += numOfVisits;
+
+        return  ret;
     }
 
 
@@ -268,6 +305,74 @@ public class ReservationServiceImpl implements ReservationService
 
         return new ReservationDTO(reservation);
     }
+
+
+    @Override
+    @Transactional
+    public List<HistoryDTO> getHistoryOfVisits(Long guestId)
+            throws UserNotFoundException
+    {
+        if (userRepository.findById(guestId) == null)
+            throw new UserNotFoundException("");
+
+        List<Reservation> reservations = reservationRepository.getReservationsByReserverId(guestId);
+        List<Invitation> invitations = invitationRepository.getUsersAcceptedInvitationsByUserId(guestId);
+        List<HistoryDTO> ret = new ArrayList<>();
+
+        Set<GuestDTO> friends = friendshipService.getFriends(guestId);
+        Set<Long> friendIds = new HashSet<>();
+        for (GuestDTO friend : friends)
+            friendIds.add(friend.getId());
+
+        for (Reservation reservation : reservations)
+            if (reservation.getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))
+                ret.add(generateHistoryData(reservation, guestId, friendIds));
+
+        for (Invitation invitation : invitations)
+            if (invitation.getReservation().getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))
+                ret.add(generateHistoryData(invitation.getReservation(), guestId, friendIds));
+
+        return ret;
+    }
+
+
+    private HistoryDTO generateHistoryData(Reservation reservation, Long guestId, Set<Long> friendIds)
+    {
+        Double restaurantFriendsMark = 0.0;
+        Double restaurantMeanMark = 0.0;
+        Double restaurantMyMark = 0.0;
+
+        for (RestaurantMark rm : reservation.getRestaurant().getRestaurantMarks())
+        {
+            if (friendIds.contains(rm.getGuest().getId()))
+                restaurantFriendsMark += rm.getValue();
+            if (rm.getGuest().getId() == guestId)
+                restaurantMyMark = rm.getValue();
+            restaurantMeanMark += rm.getValue();
+        }
+
+        if (restaurantFriendsMark > 0)
+            restaurantFriendsMark /= friendIds.size();
+        else
+            restaurantFriendsMark = null;
+
+        if (restaurantMeanMark > 0)
+            restaurantMeanMark /= reservation.getRestaurant().getRestaurantMarks().size();
+        else
+            restaurantMeanMark = null;
+
+        if (restaurantMyMark == 0)
+            restaurantMyMark = null;
+
+        HistoryDTO history = new HistoryDTO(reservation,
+                restaurantFriendsMark,
+                restaurantMyMark,
+                restaurantMeanMark,
+                guestId);
+
+        return history;
+    }
+
 
 
     private void clearOrder(Long orderId)

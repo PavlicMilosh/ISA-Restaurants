@@ -29,6 +29,7 @@ import { TableDisplay } from './components/tableDisplay/tableDisplay.component';
 import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWorkShedule.component";
 import { UpdateProviderComponent } from "./components/updateProvider/updateProvider.component";
 import {AddShoppingListComponent} from "./components/shopping/addShoppingList/addShoppingList.component";
+import {GuestHistoryComponent} from "./components/guest/guestHistory/guestHistory.component";
 
 
 const appRoutes : Routes =
@@ -106,6 +107,10 @@ const appRoutes : Routes =
     {
       path: 'guest/attendances',
       component: GuestRestaurantAttendancesComponent
+    },
+    {
+      path: 'guest/visits',
+      component: GuestHistoryComponent
     },
 
 
