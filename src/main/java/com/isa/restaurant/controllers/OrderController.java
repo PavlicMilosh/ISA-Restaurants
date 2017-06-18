@@ -1,6 +1,8 @@
 package com.isa.restaurant.controllers;
 
 
+import com.isa.restaurant.domain.DTO.OrderDTO;
+import com.isa.restaurant.domain.DTO.OrderItemDTO;
 import com.isa.restaurant.domain.Dish;
 import com.isa.restaurant.domain.Drink;
 import com.isa.restaurant.domain.Order;
@@ -33,10 +35,10 @@ public class OrderController
     @Autowired
     private OrderItemService orderItemService;
 
-    @RequestMapping(value = "/{waiterId}/add/{restaurantId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Order> addOrder(@PathVariable Long restaurantId, @PathVariable Long waiterId, @RequestBody Order order)
+    @RequestMapping(value = "/{waiterId}/add/{restaurantId}/{tableId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderItemDTO> addOrder(@PathVariable Long restaurantId, @PathVariable Long waiterId, @PathVariable Long tableId, @RequestBody OrderItemDTO order)
     {
-        Order saved = restaurantOrdersService.addOrder(order,restaurantId,waiterId);
+        OrderItemDTO saved = restaurantOrdersService.addOrder(order,restaurantId,waiterId,tableId);
         if(saved == null)
             return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
         return new ResponseEntity(saved, HttpStatus.OK);

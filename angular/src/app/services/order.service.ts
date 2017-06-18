@@ -11,7 +11,7 @@ export class OrderService
 
   }
 
-  makeOrder(orderItems:OrderItem[], finished: boolean, price: number,id:number)
+  makeOrder(orderItems:OrderItem[], finished: boolean, price: number,id:number, tableId: number)
   {
     var date=Date.now();
     var order =
@@ -26,7 +26,7 @@ export class OrderService
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/order/"+waiterId+"/add/"+id, param, { headers : headers })
+    return this.http.post("http://localhost:8080/order/"+waiterId+"/add/"+id+"/"+tableId, param, { headers : headers })
       .map(res => res.json());
   }
 

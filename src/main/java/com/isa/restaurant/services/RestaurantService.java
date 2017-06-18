@@ -47,4 +47,6 @@ public interface RestaurantService
     Integer getMedianMark(Long guestId);
 
     List<RestaurantTableDTO> getTables(Long restaurantId);
+
+    List<RestaurantTableDTO> getRestaurantTables(Long waiterId);
 }

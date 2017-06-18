@@ -1,11 +1,9 @@
 package com.isa.restaurant.services.implementation;
 
-import com.isa.restaurant.domain.Bill;
-import com.isa.restaurant.domain.Order;
-import com.isa.restaurant.domain.OrderItem;
-import com.isa.restaurant.domain.User;
+import com.isa.restaurant.domain.*;
 import com.isa.restaurant.repositories.BillRepository;
 import com.isa.restaurant.repositories.OrderRepository;
+import com.isa.restaurant.repositories.TableRepository;
 import com.isa.restaurant.services.OrderItemService;
 import com.isa.restaurant.services.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +26,9 @@ public class OrdersServiceImpl implements OrdersService
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private TableRepository tableRepository;
 
     @Override
     public Order getById(Long id)
@@ -59,7 +60,7 @@ public class OrdersServiceImpl implements OrdersService
     }
 
     @Override
-    public Order addOrder(Order order)
+    public Order addOrder(Order order, Long tableId)
     {
         Order saved = null;
         try
@@ -71,6 +72,8 @@ public class OrdersServiceImpl implements OrdersService
                 savedOrderItems.add(savedOrderItem);
             }
             order.setOrderItems(savedOrderItems);
+            RestaurantTable table= tableRepository.findById(tableId);
+            order.setOrderTable(table);
             saved = orderRepository.save(order);
         }
         catch(Exception e)

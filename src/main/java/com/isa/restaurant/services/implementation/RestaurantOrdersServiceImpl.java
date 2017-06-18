@@ -1,6 +1,8 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
+import com.isa.restaurant.domain.DTO.OrderDTO;
+import com.isa.restaurant.domain.DTO.OrderItemDTO;
 import com.isa.restaurant.repositories.RestaurantOrdersRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.OrdersService;
@@ -26,17 +28,18 @@ public class RestaurantOrdersServiceImpl implements RestaurantOrdersService
     private UserRepository userRepository;
 
     @Override
-    public Order addOrder(Order order, Long id, Long waiterId){
+    public OrderItemDTO addOrder(OrderItemDTO orderDTO, Long id, Long waiterId, Long tableId){
         Waiter w=(Waiter) userRepository.findById(waiterId);
+        Order order = new Order(orderDTO.getOrderItems(),orderDTO.getOrderTime());
         order.setWaiter(w);
-        Order saved = orderService.addOrder(order);
+        Order saved = orderService.addOrder(order, tableId);
         RestaurantOrders restaurantOrders= restaurantOrdersRepository.findByRestaurantId(id);
         if(restaurantOrders != null)
         {
             restaurantOrders.addOrder(saved);
         }
         RestaurantOrders savedRestaurantOrders = restaurantOrdersRepository.save(restaurantOrders);
-        return saved;
+        return new OrderItemDTO(order);
     }
 
     @Override

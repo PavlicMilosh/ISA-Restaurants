@@ -12,7 +12,7 @@ public interface OrdersService
 
     public Order getByUser(User user);
 
-    public Order addOrder(Order order);
+    public Order addOrder(Order order, Long tableId);
 
     public Order finishOrder(Long id);
 }

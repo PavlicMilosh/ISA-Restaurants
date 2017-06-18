@@ -81,6 +81,15 @@ public class Order
         this.orderTime = orderTime;
     }
 
+    public Order(Set<OrderItem> orderItems, Date orderTime)
+    {
+        this.orderItems = orderItems;
+        this.price = 0.0;
+        this.calculateOrderPrice();
+        this.finished = false;
+        this.orderTime = orderTime;
+    }
+
 
     @Override
     public boolean equals(Object other)

@@ -1,6 +1,7 @@
 package com.isa.restaurant.controllers;
 
 import com.isa.restaurant.domain.*;
+import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import com.isa.restaurant.domain.DTO.UpdatingUser;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.domain.DTO.WorkScheduleDTO;
@@ -103,8 +104,8 @@ public class UserController
     }
 
     @RequestMapping(value = "/{id}/getRestaurant", method = RequestMethod.GET)
-    public ResponseEntity<Restaurant> getUserRestaurant(@PathVariable Long id){
-        Restaurant r=userService.getUserRestaurant(id);
+    public ResponseEntity<RestaurantDTO> getUserRestaurant(@PathVariable Long id){
+        RestaurantDTO r=userService.getUserRestaurant(id);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
@@ -123,5 +124,12 @@ public class UserController
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{userId}/getWaiterRegionId", method = RequestMethod.GET)
+    public ResponseEntity<Long> getWaiterRegionId(@PathVariable Long userId)
+    {
+        Long regionId = userService.getWaiterRegionId(userId);
+        return new ResponseEntity<>(regionId, HttpStatus.OK);
     }
 }

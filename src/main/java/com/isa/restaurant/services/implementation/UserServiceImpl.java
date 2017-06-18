@@ -2,6 +2,7 @@ package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.GuestDTO;
+import com.isa.restaurant.domain.DTO.RestaurantDTO;
 import com.isa.restaurant.domain.DTO.UpdatingUser;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.repositories.RestaurantOrdersRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -164,12 +166,14 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public Restaurant getUserRestaurant(Long id)
+    public RestaurantDTO getUserRestaurant(Long id)
     {
         Waiter w=(Waiter) userRepository.findById(id);
         if(w == null)
             return null;
-        return w.getRestaurant();
+        Restaurant r=w.getRestaurant();
+        RestaurantDTO restaurantDTO=new RestaurantDTO(r);
+        return restaurantDTO;
     }
 
     @Override
@@ -207,5 +211,27 @@ public class UserServiceImpl implements UserService
     {
         User u = userRepository.findOne(userId);
         return new UpdatingUser(u);
+    }
+
+    @Override
+    public Long getWaiterRegionId(Long userId)
+    {
+        User u = userRepository.findById(userId);
+        Waiter waiter = (Waiter) u;
+        Set<WorkSchedule> schedule=waiter.getSchedule();
+        Calendar calendar = Calendar.getInstance();
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        dayOfWeek=dayOfWeek-2;
+        if(dayOfWeek==-1) dayOfWeek=6;
+        Long regionId = -1l;
+        for(WorkSchedule ws : schedule)
+        {
+            if(ws.getDay().ordinal()==dayOfWeek)
+            {
+                regionId=ws.getRegion().getId();
+                break;
+            }
+        }
+        return regionId;
     }
 }

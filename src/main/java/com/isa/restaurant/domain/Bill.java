@@ -43,6 +43,14 @@ public class Bill {
         this.orders=new HashSet<>();
     }
 
+    public Bill(User user, RestaurantTable restaurantTable, Set<Order> orders)
+    {
+        this.orders=orders;
+        this.price=0.0;
+        this.restaurantTable=restaurantTable;
+        this.user=user;
+    }
+
     public void calculateBillPrice()
     {
         for (Order order: orders) this.price += order.getPrice();

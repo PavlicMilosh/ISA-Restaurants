@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OrderService } from "../../services/order.service";
 import { RestaurantService } from "../../services/restaurants.service";
 import { UserService } from "../../services/users.service";
+import { ActivatedRoute }    from '@angular/router';
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   moduleId: module.id,
@@ -11,7 +13,7 @@ import { UserService } from "../../services/users.service";
   providers: [OrderService,RestaurantService,UserService]
 })
 
-export class MakeOrder
+export class MakeOrder implements OnInit, OnDestroy
 {
 
   order: Order;
@@ -41,8 +43,7 @@ export class MakeOrder
   restaurantOrders:RestaurantOrders={id:null, dishes:[],drinks:[],orders:[],restaurantId:3};
 
   restaurant: Restaurant={id:1, name:"stefan", description:"stefan", dishes:this.dishes,
-    drinks:this.drinks, tables:[],managers:[],bartenders:[],cooks:[],waiters:[],
-    schedule:[],regions:[]};
+    drinks:this.drinks};
 
   countDrinks:number[]=[];
   countDishes:number[]=[];
@@ -50,37 +51,67 @@ export class MakeOrder
   dishType:DishType={id:null,restaurant:this.restaurant,name:"kuvana jela"};
 
 
+  selectedTableId:number;
 
-  constructor(private orderService: OrderService, private userService: UserService, private restaurantService: RestaurantService)
+  postsSubscription:Subscription;
+  timerSubscription:Subscription;
+
+
+
+
+  constructor(private orderService: OrderService, private userService: UserService,
+              private restaurantService: RestaurantService, private route: ActivatedRoute )
   {
-    this.userService.getRestaurant().subscribe(
-      data => this.restaurant = data,
-      error => alert(error)
-    );
+    /*
+     this.userService.getRestaurant().subscribe(
+     data => this.restaurant = data,
+     error => alert(error)
+     );
+     */
+    console.log(this.route.snapshot.params['p1']);
+    this.selectedTableId=this.route.snapshot.params['p1'];
+
+    this.refreshData();
+
   }
 
-  init()
-  {
-    this.orderService.addDishType(this.dishType).subscribe
-    (
-      (data:DishType) => this.dishType = data,
-      error => alert(error),
-      () => this.init1()
-    );
+  private refreshData(): void {
+    this.postsSubscription=this.userService.getRestaurant().subscribe(
+      data => {
+        this.restaurant = data;
+        this.subscribeToData();
+      });
   }
 
-  init1()
-  {
-    this.userService.addWorker("stefan", "stefan", "stefan@gmail.com", "12345", 33, 50, "Waiter").subscribe
-    (
-      (data:Barman) => this.barman = data,
-      error => alert(error)
-    );
+  private subscribeToData(): void {
+    this.timerSubscription=Observable.timer(5000).first().subscribe(() => this.refreshData());
   }
+
+
+
+  ngOnInit() {
+    /*
+     this.subscription = this.dataService.getData().subscribe(
+     id => { this.selectedTableId = id; },
+     ()=>this.aaa()
+     );
+     */
+  }
+  ngOnDestroy()
+  {
+    if (this.postsSubscription) {
+      this.postsSubscription.unsubscribe();
+    }
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+  }
+
 
   makeOrder()
   {
-    this.orderService.makeOrder(this.orderItems,false,0,this.restaurant.id).subscribe(
+
+    this.orderService.makeOrder(this.orderItems,false,0,this.restaurant.id,this.selectedTableId).subscribe(
       data => this.order = data,
       error => alert(error),
       ()=>this.removeItems()
@@ -147,13 +178,6 @@ interface Restaurant
   description : string;
   dishes : Dish[];
   drinks : Drink[];
-  tables : RestaurantTable[];
-  managers: Manager[];
-  bartenders: Bartender[];
-  cooks:Cook[];
-  waiters:Barman[];
-  schedule:WorkSchedule[];
-  regions:Region[];
 }
 
 interface OrderItem

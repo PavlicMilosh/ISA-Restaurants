@@ -32,7 +32,7 @@ import {AddShoppingListComponent} from "./components/shopping/addShoppingList/ad
 import {ShoppingListProviderComponent} from "./components/shopping/shoppingListProvider/shoppingListProvider.component";
 import {ShoppingListsRMComponent} from "./components/shopping/shoppingListsRM/shoppingListsRM.component";
 import {GuestHistoryComponent} from "./components/guest/guestHistory/guestHistory.component";
-
+import { CreateBill } from "./components/createBill/createBill.component";
 
 const appRoutes : Routes =
   [
@@ -126,7 +126,7 @@ const appRoutes : Routes =
       component : ChangePassword
     },
     {
-      path: 'makeOrder',
+      path: 'makeOrder/:p1',
       component : MakeOrder
     },
     {
@@ -144,6 +144,10 @@ const appRoutes : Routes =
     {
       path : 'employeeWorkShedule',
       component : EmployeeWorkShedule
+    },
+    {
+      path : 'createBill/:p1',
+      component : CreateBill
     },
 
     //shopping

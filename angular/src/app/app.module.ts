@@ -55,6 +55,7 @@ import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWo
 import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calendar";
 import { UpdateProviderComponent } from './components/updateProvider/updateProvider.component';
 import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
+import { CreateBill } from "./components/createBill/createBill.component";
 
 
 
@@ -86,6 +87,7 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     EmployeeWorkShedule,
     CalendarComponent,
     AddWorkScheduleComponent,
+    CreateBill,
 
     // Ogi
     GuestRegisterComponent,

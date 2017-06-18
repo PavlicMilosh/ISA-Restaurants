@@ -363,4 +363,17 @@ public class RestaurantServiceImpl implements RestaurantService
         }
         return ret;
     }
+
+    @Override
+    public List<RestaurantTableDTO> getRestaurantTables(Long waiterId)
+    {
+        User u = userRepository.findById(waiterId);
+        Waiter waiter = (Waiter) u;
+        List<RestaurantTableDTO> tables = new ArrayList<RestaurantTableDTO>();
+        for(RestaurantTable rt : waiter.getRestaurant().getTables())
+        {
+            tables.add(new RestaurantTableDTO(rt,false));
+        }
+        return tables;
+    }
 }
