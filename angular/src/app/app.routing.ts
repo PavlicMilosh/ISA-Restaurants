@@ -12,7 +12,8 @@ import { GuestUpdateComponent } from "./components/guest/guestUpdate/guestUpdate
 import { GuestFriendsComponent } from "./components/guest/guestFriends/guestFriends.component";
 import { GuestRequestsComponent } from "./components/guest/guestRequests/guestRequests.component";
 import { GuestPeopleComponent } from "./components/guest/guestPeople/guestPeople.component";
-import { GuestReservationComponent } from "./components/guest/guestReservation/guestReservation.component";
+import { GuestReservationWizardComponent } from "./components/guest/guestReservationWizard/guestReservationWizard.component";
+import {GuestRestaurantAttendancesComponent} from "./components/guest/guestRestaurantAttendances/guestRestaurantAttendances.component";
 
 import { UpdateUser } from './components/updateUser/updateUser.component';
 import { ChangePassword } from "./components/changePassword/changePassword.component";
@@ -30,6 +31,7 @@ import { UpdateProviderComponent } from "./components/updateProvider/updateProvi
 import {AddShoppingListComponent} from "./components/shopping/addShoppingList/addShoppingList.component";
 import {ShoppingListProviderComponent} from "./components/shopping/shoppingListProvider/shoppingListProvider.component";
 import {ShoppingListsRMComponent} from "./components/shopping/shoppingListsRM/shoppingListsRM.component";
+import {GuestHistoryComponent} from "./components/guest/guestHistory/guestHistory.component";
 
 
 const appRoutes : Routes =
@@ -102,7 +104,15 @@ const appRoutes : Routes =
     },
     {
       path : 'guest/reservations',
-      component : GuestReservationComponent
+      component : GuestReservationWizardComponent
+    },
+    {
+      path: 'guest/attendances',
+      component: GuestRestaurantAttendancesComponent
+    },
+    {
+      path: 'guest/visits',
+      component: GuestHistoryComponent
     },
 
 

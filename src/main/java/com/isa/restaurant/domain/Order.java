@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by djuro on 4/21/2017.
@@ -48,12 +45,19 @@ public class Order
     @JoinColumn(referencedColumnName = "table_id", name = "restaurant_order_table_id")
     private RestaurantTable orderTable;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "user_id", name = "order_item_guest_id")
+    private Guest guest;
+
+    @Column(name = "order_mark")
+    private Double mark;
+
     public Order(Waiter waiter)
     {
         this.price=0.0;
         this.waiter=waiter;
         this.finished=false;
-        this.orderItems=new HashSet<OrderItem>();
+        this.orderItems=new HashSet<>();
         this.orderTime=null;
         this.orderTable=null;
     }
@@ -65,6 +69,15 @@ public class Order
         this.finished=false;
         this.orderItems=orderItems;
         this.orderTable=restaurantTable;
+    }
+
+    public Order(HashSet<OrderItem> orderItems, Date orderTime)
+    {
+        this.orderItems = orderItems;
+        this.price = 0.0;
+        this.calculateOrderPrice();
+        this.finished = false;
+        this.orderTime = orderTime;
     }
 
 

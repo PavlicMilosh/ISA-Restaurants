@@ -82,8 +82,8 @@ public class RestaurantIntegrationTest
         ObjectMapper om = new ObjectMapper();
         Restaurant r = restaurantService.getRestaurant("R1");
         Restaurant r1 = new Restaurant(r);
-        r1.addDish(new Dish("dish1", "desc1", 1l, null));
-        r1.addDrink(new Drink("drink1", "descd", 1l, null));
+        r1.addDish(new Dish("dish1", "desc1", 11.0, null));
+        r1.addDrink(new Drink("drink1", "descd", 11.0, null));
         Region region = new Region("bascu", null, new HashSet<>());
         r1.addRegion(region);
         r1.addTable(new RestaurantTable(new Double(1), new Double(1), new Double(1), null, new HashSet<>()));

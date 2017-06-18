@@ -34,4 +34,9 @@ export class LoggedUtils
   {
     return localStorage.getItem("loggedUser") === null;
   }
+
+  static isLogged()
+  {
+    
+  }
 }

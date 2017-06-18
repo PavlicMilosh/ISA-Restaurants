@@ -40,7 +40,7 @@ public class DishRepositoryTest
     {
         Restaurant restaurant=new Restaurant("restoran0", "desc");
         restaurantRepository.save(restaurant);
-        Dish jelo=new Dish("Jelo1","Moje jelo",200L, restaurant);
+        Dish jelo=new Dish("Jelo1","Moje jelo",200.0, restaurant);
         dishRepository.save(jelo);
         g1=jelo.getId();
     }
@@ -51,7 +51,7 @@ public class DishRepositoryTest
         Restaurant restaurant=new Restaurant("restoran1","moj restoran");
         restaurantRepository.save(restaurant);
 
-        Dish dish= new Dish("Jelo2","Moje jelo2",300L,restaurant);
+        Dish dish= new Dish("Jelo2","Moje jelo2",300.0,restaurant);
         Dish saved=dishRepository.save(dish);
         Assert.assertEquals(dish, saved);
     }

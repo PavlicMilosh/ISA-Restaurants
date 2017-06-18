@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class RegionDTO
 {
     private String name;

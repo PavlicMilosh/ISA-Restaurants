@@ -13,8 +13,7 @@ var AddWorkerComponent = (function () {
         this.userService = userService;
         this.role = "Select Role";
     }
-    AddWorkerComponent.prototype.ngOnInit = function () {
-    };
+    AddWorkerComponent.prototype.ngOnInit = function () { };
     AddWorkerComponent.prototype.setRole = function (role) {
         this.role = role;
     };

@@ -25,7 +25,6 @@ public class RestaurantTableDTO
     private Long regionId;
     private String regionColor;
     private Integer seats;
-    private RestaurantDTO restaurantDTO;
 
 
     public RestaurantTableDTO(RestaurantTable restaurantTable, Boolean occupied)
@@ -38,7 +37,6 @@ public class RestaurantTableDTO
         this.regionId = restaurantTable.getRegion().getId();
         this.regionColor = restaurantTable.getRegion().getColor();
         this.seats = restaurantTable.getSeats();
-        this.restaurantDTO = new RestaurantDTO(restaurantTable.getRestaurant());
     }
 }
 

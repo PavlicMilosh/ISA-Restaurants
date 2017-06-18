@@ -1,0 +1,126 @@
+<ng-container *ngIf="reservation != null">
+
+  <div class="section-name">Order:</div><br/>
+  <div class="panel panel-default"><div class="panel-body"><div class="table-container">
+    <div class="table-name">Selected Drinks: </div><br/>
+    <ng-container *ngIf="drinkOrders != null">
+      <table class="table table-filter"><tbody>
+        <tr *ngFor="let drink of drinkOrders">
+          <td>
+            <div class = "table-name">{{drink.name}}</div>
+            <div class = "table-row-name">{{drink.description}}</div>
+          </td>
+          <td>
+            <div class = "table-name">{{drink.price | number:'1.2-2'}}</div>
+            <div class= "table-row-name">price per unit</div>
+          </td>
+          <td>
+            <div class = "table-name">{{drink.quantity}}</div>
+            <div class= "table-row-name">quantity</div>
+          </td>
+          <td>
+            <div class = "table-name">{{drink.price * drink.quantity | number:'1.2-2'}}</div>
+            <div class= "table-row-name">total price</div>
+          </td>
+          <td>
+            <div class="left">
+              <a (click)="removeDrink(drink.id)" type="button" class="btn btn-primary btn-lg arop">-</a>
+            </div>
+          </td>
+        </tr>
+      </tbody></table>
+    </ng-container>
+
+    <hr class="bighr"/>
+
+    <div class="table-name">Selected Dishes: </div><br/>
+    <ng-container *ngIf="dishOrders != null">
+      <table class="table table-filter"><tbody>
+        <tr *ngFor="let dish of dishOrders">
+          <td>
+            <div class = "table-name">{{dish.name}}</div>
+            <div class = "table-row-name">{{dish.description}}</div>
+          </td>
+          <td>
+            <div class = "table-name">{{dish.price | number:'1.2-2'}}</div>
+            <div class= "table-row-name">price per unit</div>
+          </td>
+          <td>
+            <div class = "table-name">{{dish.quantity}}</div>
+            <div class= "table-row-name">quantity</div>
+          </td>
+          <td>
+            <div class = "table-name">{{dish.price * dish.quantity | number:'1.2-2'}}</div>
+            <div class= "table-row-name">total price</div>
+          </td>
+          <td>
+            <div class="left">
+              <a (click)="removeDish(dish.id)" type="button" class="btn btn-primary btn-lg arop">-</a>
+            </div>
+          </td>
+        </tr>
+      </tbody></table>
+    </ng-container>
+
+  </div></div></div>
+
+  <br/><br/><br/>
+
+  <div class="section-name">Menu:</div>
+
+  <div class="panel panel-default"><div class="panel-body"><div class="table-container">
+
+    <div class="table-name">Drinks: </div><br/>
+    <ng-container *ngIf="reservation.restaurant.drinks != null">
+      <table class="table table-filter"><tbody>
+        <tr *ngFor="let drink of reservation.restaurant.drinks">
+          <td>
+            <div class = "table-name">{{drink.name}}</div>
+            <div class = "table-row-name">{{drink.description}}</div>
+          </td>
+          <td>
+            <div class = "table-name">{{drink.price | number:'1.2-2'}}</div>
+            <div class = "table-row-name">price</div>
+          </td>
+          <td>
+            <div class="left">
+              <a (click)="addDrink(drink.id)" type="button" class="btn btn-primary btn-lg arop">+</a>
+            </div>
+          </td>
+        </tr>
+      </tbody></table>
+    </ng-container>
+
+    <hr class="bighr"/>
+
+    <div class="table-name">Dishes: </div><br/>
+    <ng-container *ngIf="reservation.restaurant.dishes != null">
+      <table class="table table-filter"><tbody>
+        <tr *ngFor="let dish of reservation.restaurant.dishes">
+          <td>
+            <div class = "table-name">{{dish.name}}</div>
+            <div class = "table-row-name">{{dish.description}}</div>
+          </td>
+          <td>
+            <div class = "table-name">{{dish.price | number:'1.2-2'}}</div>
+            <div class = "table-row-name">price</div>
+          </td>
+          <td>
+            <div class="left">
+              <a (click)="addDish(dish.id)" type="button" class="btn btn-primary btn-lg arop">+</a>
+            </div>
+          </td>
+        </tr>
+      </tbody></table>
+    </ng-container>
+
+    <hr class="bighr"/>
+
+    <a class="btn btn-primary btn-lg" (click)="update()">Update order</a>
+
+  </div></div></div>
+
+</ng-container>
+
+
+

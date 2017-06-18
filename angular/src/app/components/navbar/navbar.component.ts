@@ -151,8 +151,6 @@ export class NavbarComponent implements OnInit {
         text: "Profile",
         links:
           [
-            {text: "Main Page", routerLink: "/main"},
-            {text: "Register", routerLink: "/guest/register"},
             {text: "Update", routerLink: "/guest/update"},
           ]
       };
@@ -173,7 +171,9 @@ export class NavbarComponent implements OnInit {
         text: "Restaurants",
         links:
           [
-            {text: "Send reservation", routerLink: "/guest/reservations"}
+            {text: "Visits", routerLink: "/guest/visits"},
+            {text: "Send reservation", routerLink: "/guest/reservations"},
+            {text: "Attendances", routerLink: "/guest/attendances"}
           ]
       };
 

@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.isa.restaurant.domain.DTO.GuestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,5 +36,13 @@ public class Invitation
     private Guest invited;
 
     @Column(name = "invitation_status")
-    private String invitationStatus;
+    private String status;
+
+
+    public Invitation(Guest to, Reservation reservation)
+    {
+        this.invited = to;
+        this.status = InvitationStatus.PENDING;
+        this.reservation = reservation;
+    }
 }

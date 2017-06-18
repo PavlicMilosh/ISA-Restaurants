@@ -11,9 +11,7 @@ var users_service_1 = require("../../services/users.service");
 var restaurants_service_1 = require("../../services/restaurants.service");
 require("fabric");
 var UpdateRestaurantComponent = (function () {
-    function UpdateRestaurantComponent(userService, restaurantService) {
-        var _this = this;
-        this.userService = userService;
+    function UpdateRestaurantComponent(restaurantService) {
         this.restaurantService = restaurantService;
         this.restaurant =
             {
@@ -31,50 +29,97 @@ var UpdateRestaurantComponent = (function () {
                 id: null,
                 name: "",
                 tables: [],
-                color: "blue"
+                color: "#000000"
             };
         this.currentRegion =
             {
                 id: null,
                 name: "",
                 tables: [],
-                color: "blue"
+                color: "#000000"
             };
         this.newDish();
         this.newDrink();
-        this.restaurantService.getByManager(1).subscribe(function (data) { _this.restaurant = data; console.log(_this.restaurant); });
     }
     UpdateRestaurantComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.canvas = new fabric.Canvas('canvas');
-        this.canvas.setDimensions({ width: 500, height: 600 });
+        this.canvas.setDimensions({ width: 900, height: 900 });
+        this.restaurantService.getByManager().subscribe(function (data) {
+            _this.restaurant = data;
+            console.log(_this.restaurant);
+            for (var _i = 0, _a = _this.restaurant.regions; _i < _a.length; _i++) {
+                var region = _a[_i];
+                for (var _b = 0, _c = region.tables; _b < _c.length; _b++) {
+                    var table = _c[_b];
+                    var text = new fabric.Text(String(table.seats), {
+                        fontFamily: 'Comic Sans',
+                        fontSize: 18,
+                        lockRotation: true
+                    });
+                    var rect = new fabric.Rect({
+                        width: 50,
+                        height: 50,
+                        fill: region.color,
+                        id: table.id
+                    });
+                    var group = new fabric.Group([rect, text], {
+                        left: table.left,
+                        top: table.top,
+                        region: region,
+                        lockRotation: true
+                    });
+                    _this.canvas.add(group);
+                }
+            }
+        });
     };
     UpdateRestaurantComponent.prototype.addTable = function () {
-        console.log(this.regionIndex);
+        var group = { rect: null, text: null };
+        var text = new fabric.Text(String(this.seats), {
+            fontFamily: 'Comic Sans',
+            fontSize: 18,
+            lockRotation: true
+        });
         var rect = new fabric.Rect({
-            left: 100,
-            top: 100,
             fill: this.currentRegion.color,
             width: 50,
             height: 50,
-            region: this.currentRegion
+            id: null
         });
-        this.canvas.add(rect);
+        group = new fabric.Group([rect, text], {
+            left: 100,
+            top: 100,
+            region: this.currentRegion,
+            lockRotation: true
+        });
+        this.canvas.add(group);
     };
     UpdateRestaurantComponent.prototype.removeTable = function () {
-        this.canvas.getActiveObject().remove();
+        var g = this.canvas.getActiveObject();
     };
     UpdateRestaurantComponent.prototype.updateRestaurant = function () {
         var _this = this;
-        for (var _i = 0, _a = this.canvas.getObjects(); _i < _a.length; _i++) {
-            var rectangle = _a[_i];
-            this.restaurant.tables.push({
-                id: null,
-                topC: rectangle.getTop(),
-                leftC: rectangle.getLeft(),
-                angle: rectangle.getAngle(),
-                region: rectangle.region
-            });
+        this.restaurant.tables = [];
+        for (var _i = 0, _a = this.restaurant.regions; _i < _a.length; _i++) {
+            var region = _a[_i];
+            region.tables = [];
         }
+        for (var _b = 0, _c = this.canvas.getObjects(); _b < _c.length; _b++) {
+            var group = _c[_b];
+            console.log(group);
+            var t = {
+                id: group.id,
+                top: group.getTop(),
+                left: group.getLeft(),
+                angle: 0.0,
+                seats: Number(group.item(1).text)
+            };
+            var region = group.region;
+            region.tables.push(t);
+            this.restaurant.tables.push(t);
+        }
+        console.log(this.restaurant);
         this.restaurantService.updateRestaurant(this.restaurant).subscribe(function (data) { return _this.restaurant = data; });
     };
     UpdateRestaurantComponent.prototype.selectRegion = function (region) {
@@ -154,7 +199,7 @@ var UpdateRestaurantComponent = (function () {
     };
     UpdateRestaurantComponent.prototype.addRegion = function () {
         this.restaurant.regions.push(this.editingRegion);
-        this.editingRegion = { id: null, name: "", color: "blue", tables: [] };
+        this.editingRegion = { id: null, name: "", color: "#0000ff", tables: [] };
     };
     return UpdateRestaurantComponent;
 }());
@@ -163,7 +208,7 @@ UpdateRestaurantComponent = __decorate([
         moduleId: module.id,
         selector: 'updateRestaurant',
         templateUrl: './updateRestaurant.component.html',
-        styleUrls: ['./updateRestaurant.component.css'],
+        styleUrls: ['./updateRestaurant.component.css', '../style/formStyle.css'],
         providers: [users_service_1.UserService, restaurants_service_1.RestaurantService]
     })
 ], UpdateRestaurantComponent);

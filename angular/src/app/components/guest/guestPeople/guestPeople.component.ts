@@ -51,7 +51,7 @@ export class GuestPeopleComponent implements OnInit {
         for (let i = 0; i < this.people.length; i++)
           if (this.people[i].id == toWhomId) {
             this.people[i].friendshipStatus = 'PENDING';
-            this.people[i].lastActionUserId = 1; // generalizovati id
+            this.people[i].lastActionUserId = this.myId; // generalizovati id
           }
       },
      // error => alert(error)
@@ -89,11 +89,6 @@ export class GuestPeopleComponent implements OnInit {
       },
       //error => alert(error)
     );
-  }
-
-
-  sendInvitation(toWhomId: number) {
-    this.guestService.sendInvitation(toWhomId);
   }
 
 

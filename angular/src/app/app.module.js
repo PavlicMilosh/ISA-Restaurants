@@ -10,11 +10,14 @@ var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
+var ng2_archwizard_1 = require("ng2-archwizard");
+var mydatepicker_1 = require("mydatepicker");
 var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
 var app_component_1 = require("./app.component");
 var addRestaurant_component_1 = require("./components/addRestaurant/addRestaurant.component");
 var registerSM_component_1 = require("./components/registerSM/registerSM.component");
 var app_routing_1 = require("./app.routing");
+var authentication_component_1 = require("./components/authentication/authentication.component");
 var updateRestaurant_component_1 = require("./components/updateRestaurant/updateRestaurant.component");
 var updateUser_component_1 = require("./components/updateUser/updateUser.component");
 var navbar_component_1 = require("./components/navbar/navbar.component");
@@ -23,13 +26,26 @@ var registerEmployee_component_1 = require("./components/registerEmployee/regist
 var addWorker_component_1 = require("./components/addWorker/addWorker.component");
 var changePassword_component_1 = require("./components/changePassword/changePassword.component");
 var addWorkSchedule_component_1 = require("./components/addWorkSchedule/addWorkSchedule.component");
-var registerGuest_component_1 = require("./components/guest/registerGuest/registerGuest.component");
-var updateGuest_component_1 = require("./components/guest/updateGuest/updateGuest.component");
-var guestFriendsPage_component_1 = require("./components/guest/guestFriendsPage/guestFriendsPage.component");
-var guestRestaurantsPage_component_1 = require("./components/guest/guestRestaurantsPage/guestRestaurantsPage.component");
-var guestRequestPage_component_1 = require("./components/guest/guestRequestPage/guestRequestPage.component");
-var guestPeoplePage_component_1 = require("./components/guest/guestPeoplePage/guestPeoplePage.component");
-var guestMainPage_component_1 = require("./components/guest/guestMainPage/guestMainPage.component");
+var addProvider_component_1 = require("./components/addProvider/addProvider.component");
+var guestRegister_component_1 = require("./components/guest/guestRegister/guestRegister.component");
+var guestUpdate_component_1 = require("./components/guest/guestUpdate/guestUpdate.component");
+var guestFriends_component_1 = require("./components/guest/guestFriends/guestFriends.component");
+var guestPeople_component_1 = require("./components/guest/guestPeople/guestPeople.component");
+var guestRequests_component_1 = require("./components/guest/guestRequests/guestRequests.component");
+var guestReservationWizard_component_1 = require("./components/guest/guestReservationWizard/guestReservationWizard.component");
+var guestRestaurants_component_1 = require("./components/guest/guestRestaurants/guestRestaurants.component");
+var guestInvitations_component_1 = require("./components/guest/guestInvitations/guestInvitations.component");
+var guestPreorder_component_1 = require("./components/guest/guestPreorder/guestPreorder.component");
+var guestTables_component_1 = require("./components/guest/guestTables/guestTables.component");
+var guestReservationSummary_component_1 = require("./components/guest/guestReservationSummary/guestReservationSummary.component");
+var makeOrder_component_1 = require("./components/makeOrder/makeOrder.component");
+var orderDishes_component_1 = require("./components/orderDishes/orderDishes.component");
+var orderDrinks_component_1 = require("./components/orderDrinks/orderDrinks.component");
+var tableDisplay_component_1 = require("./components/tableDisplay/tableDisplay.component");
+var employeeWorkShedule_component_1 = require("./components/employeeWorkShedule/employeeWorkShedule.component");
+var calendar_1 = require("ap-angular2-fullcalendar/src/calendar/calendar");
+var updateProvider_component_1 = require("./components/updateProvider/updateProvider.component");
+var addShoppingList_component_1 = require("./components/shopping/addShoppingList/addShoppingList.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -40,6 +56,7 @@ AppModule = __decorate([
         declarations: [
             app_component_1.AppComponent,
             navbar_component_1.NavbarComponent,
+            authentication_component_1.AuthenticationComponent,
             // Losmi
             registerSM_component_1.RegisterSMComponent,
             registerRM_component_1.RegisterRMComponent,
@@ -48,23 +65,38 @@ AppModule = __decorate([
             changePassword_component_1.ChangePassword,
             addRestaurant_component_1.AddRestaurantComponent,
             updateRestaurant_component_1.UpdateRestaurantComponent,
+            addProvider_component_1.AddProviderComponent,
+            addShoppingList_component_1.AddShoppingListComponent,
+            updateProvider_component_1.UpdateProviderComponent,
             // Djura
             updateUser_component_1.UpdateUser,
             changePassword_component_1.ChangePassword,
-            //Ogi
-            registerGuest_component_1.RegisterGuestComponent,
-            updateGuest_component_1.UpdateGuestComponent,
-            guestFriendsPage_component_1.GuestFriendsPageComponent,
-            guestMainPage_component_1.GuestMainPageComponent,
-            guestRequestPage_component_1.GuestRequestPageComponent,
-            guestRestaurantsPage_component_1.GuestRestaurantsPageComponent,
-            guestPeoplePage_component_1.GuestPeoplePageComponent,
-            addWorkSchedule_component_1.AddWorkScheduleComponent
+            makeOrder_component_1.MakeOrder,
+            orderDishes_component_1.OrderDishes,
+            orderDrinks_component_1.OrderDrinks,
+            tableDisplay_component_1.TableDisplay,
+            employeeWorkShedule_component_1.EmployeeWorkShedule,
+            calendar_1.CalendarComponent,
+            addWorkSchedule_component_1.AddWorkScheduleComponent,
+            // Ogi
+            guestRegister_component_1.GuestRegisterComponent,
+            guestUpdate_component_1.GuestUpdateComponent,
+            guestFriends_component_1.GuestFriendsComponent,
+            guestRequests_component_1.GuestRequestsComponent,
+            guestPeople_component_1.GuestPeopleComponent,
+            guestReservationWizard_component_1.GuestReservationWizardComponent,
+            guestRestaurants_component_1.GuestRestaurantsComponent,
+            guestInvitations_component_1.GuestInvitationsComponent,
+            guestPreorder_component_1.GuestPreorderComponent,
+            guestTables_component_1.GuestTablesComponent,
+            guestReservationSummary_component_1.GuestReservationSummaryComponent
         ],
         imports: [
             platform_browser_1.BrowserModule,
             forms_1.FormsModule,
             http_1.HttpModule,
+            ng2_archwizard_1.WizardModule,
+            mydatepicker_1.MyDatePickerModule,
             app_routing_1.routing,
             ng_bootstrap_1.NgbModule.forRoot()
         ],

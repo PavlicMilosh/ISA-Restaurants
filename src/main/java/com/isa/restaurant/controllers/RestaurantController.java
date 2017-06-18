@@ -162,4 +162,14 @@ public class RestaurantController
         return new ResponseEntity<>(regions, HttpStatus.OK);
     }
 
+
+    @RequestMapping(value = "/{restaurantId}/getTables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RestaurantTableDTO>> getTables(@PathVariable Long restaurantId)
+    {
+        List<RestaurantTableDTO> tables = this.restaurantService.getTables(restaurantId);
+        if (tables == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(tables, HttpStatus.OK);
+    }
+
 }

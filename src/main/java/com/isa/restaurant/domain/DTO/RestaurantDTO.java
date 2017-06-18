@@ -3,11 +3,13 @@ package com.isa.restaurant.domain.DTO;
 import com.isa.restaurant.domain.Dish;
 import com.isa.restaurant.domain.Drink;
 import com.isa.restaurant.domain.Restaurant;
+import com.isa.restaurant.domain.RestaurantTable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,8 +18,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class RestaurantDTO
 {
     private Long id;
@@ -25,12 +26,23 @@ public class RestaurantDTO
     private String description;
     private Double friendsMark;
     private Double meanMark;
+    private String address;
     private Set<Drink> drinks;
     private Set<Dish> dishes;
+    private Set<RestaurantTableDTO> tables;
+
+
+    public RestaurantDTO()
+    {
+        this.drinks = new HashSet<>();
+        this.dishes = new HashSet<>();
+        this.tables = new HashSet<>();
+    }
 
 
     public RestaurantDTO(Restaurant restaurant)
     {
+        this();
         this.id = restaurant.getId();
         this.name = restaurant.getName();
         this.description = restaurant.getDescription();
@@ -38,11 +50,15 @@ public class RestaurantDTO
         this.meanMark = 0.0;
         this.drinks = restaurant.getDrinks();
         this.dishes = restaurant.getDishes();
+
+        for (RestaurantTable rt : restaurant.getTables())
+            this.tables.add(new RestaurantTableDTO(rt, null));
     }
 
 
     public RestaurantDTO(Restaurant restaurant, Double meanMark, Double friendsMark)
     {
+        this();
         this.id = restaurant.getId();
         this.name = restaurant.getName();
         this.description = restaurant.getDescription();
@@ -50,6 +66,9 @@ public class RestaurantDTO
         this.meanMark = friendsMark;
         this.drinks = restaurant.getDrinks();
         this.dishes = restaurant.getDishes();
+
+        for (RestaurantTable rt : restaurant.getTables())
+            this.tables.add(new RestaurantTableDTO(rt, null));
     }
 
 

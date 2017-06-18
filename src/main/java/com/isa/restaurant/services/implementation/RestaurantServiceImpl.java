@@ -3,6 +3,7 @@ package com.isa.restaurant.services.implementation;
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.RegionDTO;
 import com.isa.restaurant.domain.DTO.RestaurantDTO;
+import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
 import com.isa.restaurant.domain.DTO.UserDTO;
 import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.search.RestaurantSearch;
@@ -349,5 +350,17 @@ public class RestaurantServiceImpl implements RestaurantService
     public Integer getMedianMark(Long restaurantId)
     {
         return 0;
+    }
+
+    @Override
+    public List<RestaurantTableDTO> getTables(Long restaurantId)
+    {
+        List<RestaurantTable> tables = tableRepository.findByRestaurantId(restaurantId);
+        List<RestaurantTableDTO> ret = new ArrayList<>();
+        for (RestaurantTable rt : tables)
+        {
+            ret.add(new RestaurantTableDTO(rt, false));
+        }
+        return ret;
     }
 }

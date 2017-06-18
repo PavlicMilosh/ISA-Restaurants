@@ -31,13 +31,13 @@ public class Dish
     private String description;
 
     @Column(name = "dish_price")
-    private Long price;
+    private Double price;
 
     @ManyToOne
     @JsonIgnore
     private Restaurant restaurant;
 
-    public Dish(String name, String description, Long price, Restaurant restaurant)
+    public Dish(String name, String description, Double price, Restaurant restaurant)
     {
         this.name = name;
         this.description = description;

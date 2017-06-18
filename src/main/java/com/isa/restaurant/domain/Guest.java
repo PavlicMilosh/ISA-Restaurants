@@ -42,7 +42,6 @@ public class Guest extends User
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        //this.enabled = false;
     }
 
 
@@ -90,15 +89,6 @@ public class Guest extends User
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
     }
-
-
-//    public Set<Friendship> getFriendships()
-//    {
-//        Set<Friendship> ret = new HashSet<>();
-//        ret = this.friendships1;
-//        ret.addAll(this.friendships2);
-//        return ret;
-//    }
 
 }
 

@@ -2,6 +2,7 @@ package com.isa.restaurant.repositories;
 
 import com.isa.restaurant.domain.Guest;
 import com.isa.restaurant.domain.VerificationToken;
+import com.isa.restaurant.domain.VerificationTokenPurpose;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -38,7 +39,7 @@ public class VerificationTokenRepositoryTest
     public void setUp()
     {
         Guest guest = new Guest("g1", "pass", "Guest", "Guestovic");
-        VerificationToken verificationToken = new VerificationToken(guest, 30);
+        VerificationToken verificationToken = new VerificationToken(guest, 30, VerificationTokenPurpose.REGISTRATION);
         token_value = "TEST_TOKEN_VALUE";
         verificationToken.setToken(token_value);
         userRepository.save(guest);
@@ -53,7 +54,7 @@ public class VerificationTokenRepositoryTest
     {
         Guest guest = (Guest) userRepository.findById(guest_id);
         VerificationToken got = verificationTokenRepository.findById(token_id);
-        VerificationToken expected = new VerificationToken(guest, 30);
+        VerificationToken expected = new VerificationToken(guest, 30, VerificationTokenPurpose.REGISTRATION);
         expected.setToken(token_value);
         Assert.assertEquals(got, expected);
     }
@@ -64,7 +65,7 @@ public class VerificationTokenRepositoryTest
     {
         Guest guest = (Guest) userRepository.findById(guest_id);
         VerificationToken got = verificationTokenRepository.findByToken(token_value);
-        VerificationToken expected = new VerificationToken(guest, 30);
+        VerificationToken expected = new VerificationToken(guest, 30, VerificationTokenPurpose.REGISTRATION);
         expected.setToken(token_value);
         Assert.assertEquals(got, expected);
     }
@@ -74,6 +75,14 @@ public class VerificationTokenRepositoryTest
     public void testFindTokenByUserId()
     {
         String got = verificationTokenRepository.findTokenByUserId(token_id);
+        String expected = token_value;
+        Assert.assertEquals(got, expected);
+    }
+
+    @Test
+    public void testFindTokenByUserIdAndPurpose()
+    {
+        String got = verificationTokenRepository.findTokenByUserIdAndPurpose(token_id, VerificationTokenPurpose.REGISTRATION);
         String expected = token_value;
         Assert.assertEquals(got, expected);
     }

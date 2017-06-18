@@ -10,6 +10,9 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -17,7 +20,6 @@ import java.util.Set;
  */
 @Entity
 @AllArgsConstructor(suppressConstructorProperties = true)
-@NoArgsConstructor
 @Getter
 @Setter
 @Table(name = "restaurant_table")
@@ -40,6 +42,12 @@ public class RestaurantTable
     @Column(name = "table_seats")
     private Integer seats;
 
+    @Column(name = "table_last_reservation_start")
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    @Version
+    private Date lastReservationStart;
+
     @ManyToOne
     @JsonIgnore
     private Restaurant restaurant;
@@ -52,6 +60,15 @@ public class RestaurantTable
     private Region region;
 
 
+    public RestaurantTable()
+    {
+        this.bills = new HashSet<>();
+        Calendar cal = Calendar.getInstance();
+        Date today = cal.getTime();
+        cal.add(Calendar.YEAR, -1); // to get previous year add -1
+        lastReservationStart = cal.getTime();
+    }
+
     public RestaurantTable(Double top, Double left, Double angle, Region region, Set<Bill> bills)
     {
         this.top = top;
@@ -59,6 +76,7 @@ public class RestaurantTable
         this.angle = angle;
         this.region = region;
         this.bills = bills;
+        this.lastReservationStart = null;
     }
 
 
@@ -68,6 +86,5 @@ public class RestaurantTable
         this.top = rtDTO.getTop();
         this.left = rtDTO.getTop();
         this.angle = rtDTO.getTop();
-        this.restaurant = new Restaurant(rtDTO.getRestaurantDTO());
     }
 }

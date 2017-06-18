@@ -1,7 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ApplicationRef  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { WizardModule } from 'ng2-archwizard';
+import { MyDatePickerModule } from 'mydatepicker';
+import { Ng2TableModule } from 'ng2-table/ng2-table';
+import { AgmCoreModule } from '@agm/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -31,9 +35,13 @@ import { GuestUpdateComponent } from "./components/guest/guestUpdate/guestUpdate
 import { GuestFriendsComponent } from './components/guest/guestFriends/guestFriends.component';
 import { GuestPeopleComponent } from "./components/guest/guestPeople/guestPeople.component";
 import { GuestRequestsComponent } from "./components/guest/guestRequests/guestRequests.component";
-import { GuestReservationComponent } from "./components/guest/guestReservation/guestReservation.component";
+import { GuestReservationWizardComponent } from "./components/guest/guestReservationWizard/guestReservationWizard.component";
 import { GuestRestaurantsComponent } from "./components/guest/guestRestaurants/guestRestaurants.component";
 import { GuestInvitationsComponent} from "./components/guest/guestInvitations/guestInvitations.component";
+import { GuestPreorderComponent } from "./components/guest/guestPreorder/guestPreorder.component";
+import { GuestTablesComponent } from "./components/guest/guestTables/guestTables.component";
+import { GuestReservationSummaryComponent } from "./components/guest/guestReservationSummary/guestReservationSummary.component";
+import { GuestReservationUpdateComponent } from "./components/guest/guestReservationUpdate/guestReservationUpdate.component";
 
 import { MakeOrder } from './components/makeOrder/makeOrder.component';
 import { OrderDishes } from './components/orderDishes/orderDishes.component';
@@ -45,6 +53,8 @@ import { UpdateProviderComponent } from './components/updateProvider/updateProvi
 import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
 import { ShoppingListProviderComponent } from './components/shopping/shoppingListProvider/shoppingListProvider.component';
 import { ShoppingListsRMComponent } from './components/shopping/shoppingListsRM/shoppingListsRM.component';
+import {GuestRestaurantAttendancesComponent} from "./components/guest/guestRestaurantAttendances/guestRestaurantAttendances.component";
+import {GuestHistoryComponent} from "./components/guest/guestHistory/guestHistory.component";
 
 
 @NgModule({
@@ -82,17 +92,29 @@ import { ShoppingListsRMComponent } from './components/shopping/shoppingListsRM/
     GuestFriendsComponent,
     GuestRequestsComponent,
     GuestPeopleComponent,
-    GuestReservationComponent,
+    GuestReservationWizardComponent,
     GuestRestaurantsComponent,
     GuestInvitationsComponent,
     ShoppingListProviderComponent,
-    ShoppingListsRMComponent
+    ShoppingListsRMComponent,
+    GuestPreorderComponent,
+    GuestTablesComponent,
+    GuestReservationSummaryComponent,
+    GuestRestaurantAttendancesComponent,
+    GuestReservationUpdateComponent,
+    GuestHistoryComponent
 
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    WizardModule,
+    MyDatePickerModule,
+    Ng2TableModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDktm4_Qkq5wDW1sX9PY9UKHHGwXmCxnj0'
+    }),
     routing,
     NgbModule.forRoot()
   ],

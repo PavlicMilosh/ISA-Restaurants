@@ -1,0 +1,93 @@
+
+
+<div class="panel panel-default"><div class="panel-body"><div class="table-container">
+
+  <!-- SEARCH BAR -->
+  <div class="row"><div class="col-sm-6 col-sm-offset-3"><div id="imaginary_container"><div class="input-group stylish-input-group">
+    <input type="text" class="form-control" [(ngModel)]="searchParams" placeholder="Search">
+    <span class="input-group-addon">
+          <button type="submit" (click)="searchRestaurants()">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </span>
+  </div></div></div></div>
+
+  <ng-container *ngIf="historyData != null">
+
+    <!-- TABLE -->
+    <table class="table table-filter"><tbody>
+
+      <tr *ngFor="let history of historyData">
+
+        <td>
+          <div class = "table-name">{{history.restaurantName}}</div>
+          <div class = "table-row-name">{{history.restaurantDescription}}</div>
+        </td>
+
+        <td>
+          <div class = "table-name">{{history.dateOfVisit + ' ' + history.timeOfVisit}}</div>
+          <div class = "table-row-name">visited</div>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!history.restaurantMeanMark">
+            <div class="table-number"> N\A </div>
+          </ng-container>
+          <ng-container *ngIf="history.restaurantMeanMark">
+            <div class="table-number">{{history.restaurantMeanMark}}</div>
+          </ng-container>
+          <div class="table-row-name">mean mark</div>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!history.restaurantFriendsMark">
+            <div class="table-number"> N\A </div>
+          </ng-container>
+          <ng-container *ngIf="history.restaurantFriendsMark">
+            <div class="table-number">{{history.restaurantFriendsMark}}</div>
+          </ng-container>
+          <div class="table-row-name">friends mark</div>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!history.restaurantMyMark">
+            <div class="table-number">not given</div>
+          </ng-container>
+          <ng-container *ngIf="history.restaurantMyMark">
+            <div class="table-number">{{history.restaurantMyMark}}</div>
+          </ng-container>
+          <div class="table-row-name">my mark</div>
+        </td>
+
+        <td>
+          <ng-container *ngIf="!history.mealMyMark">
+            <div class="table-number">not given</div>
+          </ng-container>
+          <ng-container *ngIf="history.mealMyMark">
+            <div class="table-number">{{history.mealMyMark}}</div>
+          </ng-container>
+          <div class="table-row-name">my mark</div>
+        </td>
+
+        <td class="buttons">
+          <div class="left">
+            <button  type="button" class="btn btn-primary btn-lg">Give mark</button>
+          </div>
+        </td>
+
+      </tr>
+
+    </tbody></table>
+
+
+  </ng-container>
+
+  <ng-container *ngIf="historyData.length == 0">
+    <div class="no-content-message">No visits :(</div>
+  </ng-container>
+
+</div></div></div>
+
+
+
+

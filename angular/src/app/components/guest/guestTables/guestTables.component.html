@@ -1,0 +1,44 @@
+<div>
+
+  <div class="form-block">
+    <div class="floating">
+      <label class="component">Date: </label>
+      <form #myForm="ngForm" class="component" novalidate>
+        <my-date-picker name="mydate" [options]="myDatePickerOptions" (dateChanged)="onDateChanged($event)" required></my-date-picker>
+      </form>
+    </div>
+
+    <div class="floating">
+      <label class="component">Time: </label>
+      <div class="component">
+        <div class = "input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i></span>
+          <input class="form-control" id="time" name="time" [(ngModel)]="ret.startTime" placeholder="HH:MM (24 hour clock)" type="text"/>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="floating">
+      <label class="component">Duration: </label>
+      <div class="component"> <!-- Duration input -->
+        <div class = "input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i></span>
+          <input class="form-control" id="duration" name="duration" [(ngModel)]="ret.duration" placeholder="(in minutes)" type="text"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="btn btn-info canvas-btn" role="button" (click)="initTables()">Check tables</a>
+
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let region of regions">
+      <a class="btn btn-info canvas-btn" role="button">{{region.name}}</a>
+    </li>
+  </ul>
+
+  <div id = "tables">
+    <canvas id="guestTablesCanvas"></canvas>
+  </div>
+</div>

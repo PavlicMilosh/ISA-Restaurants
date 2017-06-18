@@ -6,5 +6,6 @@ package com.isa.restaurant.services;
 public interface VerificationTokenService
 {
     Boolean activateGuest(Long guestId, String verificationTokenValue);
-    String getTokenByUserId(Long userId);
+    String getTokenByUserIdAndPurpose(Long userId, String purpose);
+    Boolean acceptInvitation(Long guestId, String verificationTokenValue);
 }

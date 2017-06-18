@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, Input} from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
 
 @Component
@@ -11,9 +11,9 @@ import {GuestService} from "../../../services/guest.service";
 })
 
 
-export class GuestInvitationsComponent implements OnInit
+export class GuestInvitationsComponent implements OnInit, OnChanges
 {
-
+  @Input() restaurant: any;
   @Output() notify: EventEmitter<Guest[]> = new EventEmitter<Guest[]>();
   private data: Guest[];
   private invites: Guest[];
@@ -26,6 +26,24 @@ export class GuestInvitationsComponent implements OnInit
     this.friends = [];
     this.invites = [];
     this.searchParams = "";
+    this.guestService.getFriends().subscribe
+    (
+      data =>
+      {
+        this.data = data;
+        for (let i = 0; i < this.data.length; i++)
+          this.data[i].invited=false;
+        this.friends = JSON.parse(JSON.stringify(this.data));
+      },
+      error => alert(error)
+    );
+  }
+
+
+  ngOnChanges(changes: SimpleChanges)
+  {
+    this.invites = [];
+    this.friends = [];
     this.guestService.getFriends().subscribe
     (
       data =>

@@ -15,35 +15,28 @@
 /*	--------------------------------------------------
 	:: Table Filter
 	-------------------------------------------------- */
-.panel {
+.panel
+{
   border: none;
   background-color: rgba(255, 248, 249, 0.7);
   width: 80%;
   margin: auto;
 }
 .panel .btn-group {
+
   margin: 15px 0 30px;
 }
-.panel .btn-group .btn {
+.panel .btn-group .btn
+{
   transition: background-color .3s ease;
 }
-.table-filter {
+.table-filter
+{
   background-color: #fff8f9;
   border-bottom: 2px solid #eee;
   border-top: 2px solid #eee;
 }
-.table-filter tbody tr:hover {
-  cursor: pointer;
-  background-color: #eee;
-}
-
-tr.selected
-{
-  cursor: pointer;
-  background-color: rgba(69, 73, 245, 0.6);
-}
-
-tr.deselected
+.table-filter tbody tr:hover
 {
   cursor: pointer;
   background-color: #eee;
@@ -101,21 +94,29 @@ td.buttons
 div.table-name
 {
   font-size: 20px;
+  display: block;
+  text-align: center;
 }
 
 div.table-email
 {
   font-size: 15px;
+  display: block;
+  text-align: center;
 }
 
 div.table-number
 {
   font-size: 30px;
+  display: block;
+  text-align: center;
 }
 
 div.table-row-name
 {
   font-size: 15px;
+  display: block;
+  text-align: center;
 }
 
 div.no-content-message
@@ -126,25 +127,9 @@ div.no-content-message
   font-size: 50px;
   color: #000000;
   text-align: center;
-  margin: auto;
+  margin: 50px auto;
 }
 
-.red
-{
-  background: rgb(252, 49, 54);
-}
-
-.white
-{
-  background: rgb(255, 255, 255);
-}
-
-.gray
-{
-  background: rgb(110, 110, 110);
-  stroke: rgba(0, 0, 0, 0);
-  stroke-width: 10px;
-}
 
 #imaginary_container{
   margin: 5%;

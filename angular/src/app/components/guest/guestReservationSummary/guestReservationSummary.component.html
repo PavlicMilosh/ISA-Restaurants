@@ -1,0 +1,112 @@
+
+  <div class="panel panel-default"><div class="panel-body"><div class="table-container">
+
+    <ng-container *ngIf="reservation != null">
+
+      <div class="section-name">Reservation:</div><br/>
+      <table class="table table-filter"><tbody>
+        <tr>
+          <td>
+            <div class = "table-name">{{reservation.restaurant.name}}</div>
+            <div class = "table-row-name">restaurant</div>
+          </td>
+          <td>
+            <div class = "table-name">{{reservation.startDate}}</div>
+            <div class= "table-row-name">date</div>
+          </td>
+          <td>
+            <div class = "table-name">{{reservation.startTime}}</div>
+            <div class= "table-row-name">time</div>
+          </td>
+          <td>
+            <div class = "table-name">{{reservation.duration}}</div>
+            <div class= "table-row-name">duration</div>
+          </td>
+          <td>
+            <div class = "table-name">{{drinkOrdersTotal + dishOrdersTotal}}</div>
+            <div class= "table-row-name">total price</div>
+          </td>
+        </tr>
+      </tbody></table>
+
+
+      <ng-container *ngIf="reservation.invites != null">
+      <div class="section-name">Invites:</div><br/>
+      <table class="table table-filter"><tbody>
+        <tr *ngFor="let person of reservation.invites">
+          <td class="image">
+            <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+          </td>
+          <td>
+            <div class = "table-name">{{person.firstName}} {{person.lastName}}</div>
+            <div class = "table-row-name">name</div>
+          </td>
+          <td>
+            <div class = "table-name">{{person.email}}</div>
+            <div class= "table-row-name">email</div>
+          </td>
+          <td>
+            <div class = "table-name">{{person.status}}</div>
+            <div class= "table-row-name">status</div>
+          </td>
+        </tr>
+      </tbody></table>
+      </ng-container>
+
+
+      <ng-container *ngIf="reservation.drinkOrders != null">
+      <div class="section-name">Drink orders:</div><br/>
+      <table class="table table-filter"><tbody>
+        <tr *ngFor="let drink of reservation.drinkOrders">
+          <td>
+            <div class = "table-name">{{drink.name}}</div>
+            <div class = "table-row-name">drink name</div>
+          </td>
+          <td>
+            <div class = "table-name">{{drink.price}}</div>
+            <div class= "table-row-name">price per one</div>
+          </td>
+          <td>
+            <div class = "table-name">{{drink.quantity}}</div>
+            <div class= "table-row-name">quantity</div>
+          </td>
+          <td>
+            <div class = "table-name">{{drink.quantity * drink.price}}</div>
+            <div class= "table-row-name">total</div>
+          </td>
+        </tr>
+      </tbody></table>
+      </ng-container>
+
+      <ng-container *ngIf="reservation.dishOrders != null">
+      <div class="section-name">Dish orders:</div><br/>
+      <table class="table table-filter"><tbody>
+        <tr *ngFor="let dish of reservation.dishOrders">
+          <td>
+            <div class = "table-name">{{dish.name}}</div>
+            <div class = "table-row-name">dish name</div>
+          </td>
+          <td>
+            <div class = "table-name">{{dish.price}}</div>
+            <div class= "table-row-name">price per one</div>
+          </td>
+          <td>
+            <div class = "table-name">{{dish.quantity}}</div>
+            <div class= "table-row-name">quantity</div>
+          </td>
+          <td>
+            <div class = "table-name">{{dish.quantity * dish.price}}</div>
+            <div class= "table-row-name">total</div>
+          </td>
+        </tr>
+      </tbody></table>
+      </ng-container>
+
+  </ng-container>
+
+    <div class="section-name">Tables:</div><br/>
+    <div id = "tables">
+      <canvas id="guestReservationSummaryCanvas"></canvas>
+    </div>
+
+  </div></div></div>
