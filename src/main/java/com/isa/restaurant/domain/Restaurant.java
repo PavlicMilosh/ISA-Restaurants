@@ -16,7 +16,7 @@ import java.util.Set;
  * Created by Milos on 11-Apr-17.
  */
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
 @Setter
 @Table(name = "restaurant")

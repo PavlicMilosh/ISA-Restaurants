@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * Created by Q on 13-May-17.
  */
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
 @Setter
 @Entity

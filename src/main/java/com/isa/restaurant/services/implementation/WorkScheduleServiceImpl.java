@@ -65,9 +65,8 @@ public class WorkScheduleServiceImpl implements WorkScheduleService
                         toSave.setRegion(region);
                     }
                 }
-
-                workScheduleRepository.save(toSave);
             }
+            workScheduleRepository.save(toSave);
         }
 
         return true;

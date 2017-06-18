@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Milos on 05-Jun-17.
@@ -58,6 +59,27 @@ public class ShoppingRepositoryTest
             Assert.assertEquals(expectedItems.get(i).getName(), savedItems.get(i).getName());
             Assert.assertEquals(expectedItems.get(i).getAmount(), savedItems.get(i).getAmount());
         }
+    }
+
+    @Test
+    public void testFindOne()
+    {
+
+        ShoppingList found = shoppingRepository.findOne(0l);
+        Assert.assertEquals(0l, found.getId().longValue());
+        Assert.assertEquals("Sarma", found.getName());
+        Assert.assertNull(found.getAcceptedOffer());
+        Assert.assertEquals(0l, found.getRestaurant().getId().longValue());
+
+        ShoppingList notFound = shoppingRepository.findOne(100l);
+        Assert.assertNull(notFound);
+
+    }
+
+    public void testFindAll()
+    {
+        List<ShoppingList> lists = shoppingRepository.findAll();
+        Assert.assertEquals(2, lists.size());
     }
 
     @After

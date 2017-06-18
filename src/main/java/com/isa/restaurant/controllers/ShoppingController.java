@@ -1,5 +1,6 @@
 package com.isa.restaurant.controllers;
 
+import com.isa.restaurant.domain.Offer;
 import com.isa.restaurant.domain.ShoppingList;
 import com.isa.restaurant.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by Milos on 04-Jun-17.
@@ -20,7 +23,7 @@ public class ShoppingController
     private ShoppingService shoppingService;
 
     @RequestMapping(value = "/{rmId}/addShoppingList", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addShoppingList(@PathVariable Long rmId, ShoppingList shoppingList)
+public ResponseEntity addShoppingList(@PathVariable Long rmId, @RequestBody ShoppingList shoppingList)
     {
         Boolean success = shoppingService.addShoppinglist(shoppingList, rmId);
         if(success)
@@ -28,4 +31,33 @@ public class ShoppingController
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ShoppingList>> getShoppingLists()
+    {
+        return new ResponseEntity<>(shoppingService.getShoppingLists(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/RM/{rmId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ShoppingList>> getShoppingListsByRMId(@PathVariable Long rmId)
+    {
+        return new ResponseEntity<>(shoppingService.getShoppingLists(rmId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{providerId}/{shoppingListId}/sendOffer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Offer> sendOffer(@RequestBody Offer o, @PathVariable Long providerId, @PathVariable Long shoppingListId)
+    {
+        Offer sentOffer = shoppingService.sendOffer(o, providerId, shoppingListId);
+        if(sentOffer != null) return new ResponseEntity<>(sentOffer, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @RequestMapping(value = "{listId}/acceptOffer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity acceptOffer(@RequestBody Offer o, @PathVariable Long listId)
+    {
+        Boolean success = shoppingService.acceptOffer(o, listId);
+        if(success) return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
+
 }

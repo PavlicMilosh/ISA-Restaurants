@@ -43,6 +43,8 @@ import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWo
 import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calendar";
 import { UpdateProviderComponent } from './components/updateProvider/updateProvider.component';
 import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
+import { ShoppingListProviderComponent } from './components/shopping/shoppingListProvider/shoppingListProvider.component';
+import { ShoppingListsRMComponent } from './components/shopping/shoppingListsRM/shoppingListsRM.component';
 
 
 @NgModule({
@@ -82,7 +84,9 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     GuestPeopleComponent,
     GuestReservationComponent,
     GuestRestaurantsComponent,
-    GuestInvitationsComponent
+    GuestInvitationsComponent,
+    ShoppingListProviderComponent,
+    ShoppingListsRMComponent
 
   ],
   imports: [

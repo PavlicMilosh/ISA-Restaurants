@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Entity
 @Table(name = "invitation")
 public class Invitation

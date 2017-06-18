@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Entity
 @Table(name = "restaurant_mark",
        uniqueConstraints = @UniqueConstraint(columnNames = {"restaurant_mark_guest_id", "restaurant_mark_restaurant_id"}))

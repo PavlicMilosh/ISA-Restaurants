@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { UserService } from "../../services/users.service";
 import { RestaurantService } from "../../services/restaurants.service";
-import {LoggedUtils} from "../../utils/logged.utils";
 
 @Component({
   selector: 'app-add-work-schedule',
@@ -60,12 +59,20 @@ export class AddWorkScheduleComponent implements OnInit
 
   addSchedule()
   {
-    this.schedule.day = 1;
     console.log(this.schedule);
+    if(this.schedule.day == null)
+      this.schedule.day = 0;
     this.userService.addSchedule(this.schedule, this.selectedWorker.id)
       .subscribe(
         data => console.log(data)
       );
+  }
+
+  onChange(event)
+  {
+    this.schedule.day = event.target.options.selectedIndex;
+    console.log(this.schedule.day);
+    console.log(event.target.options.selectedIndex);
   }
 
 }

@@ -1,8 +1,7 @@
 package com.isa.restaurant.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,26 +12,40 @@ import java.util.Set;
  * Created by Milos on 04-Jun-17.
  */
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor(suppressConstructorProperties = true)
 @Table(name = "shoppingList")
 public class ShoppingList
 {
     @Id
     @GeneratedValue
+    @Column(name = "shopping_list_id")
     private Long id;
 
+    @Column(name = "shopping_list_name")
+    private String name;
+
+    @OneToOne (cascade=CascadeType.ALL)
+    @JoinColumn(name="accepted_offer_id", unique= true)
+    private Offer acceptedOffer;
+
     @Column(name = "deadline")
+    @JsonFormat(locale = "srb", shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "CET")
     private Date deadline;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "shoppingList")
     private Set<ShoppingItem> items;
 
     @ManyToOne
     private Restaurant restaurant;
 
+    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Offer> offers;
+
     public ShoppingList()
     {
+        this.acceptedOffer = null;
         this.items = new HashSet<>();
     }
 

@@ -49,8 +49,8 @@
       <div class="cols-sm-10">
         <div class="input-group">
           <span class="input-group-addon"><i class="glyphicon glyphicon-calendar" aria-hidden="true"></i></span>
-          <select class="form-control" name="day" id="day" placeholder="Day">
-            <option *ngFor="let day of days; let i = index" [value] = "i">{{day}}</option>
+          <select (change)="onChange($event)" class="form-control" name="day" id="day" placeholder="Day">
+            <option *ngFor="let day of days;" [value] = "i">{{day}}</option>
           </select>
         </div>
       </div>
