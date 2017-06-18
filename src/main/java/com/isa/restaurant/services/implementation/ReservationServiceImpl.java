@@ -150,6 +150,7 @@ public class ReservationServiceImpl implements ReservationService
 
 
     @Override
+    @Transactional
     public List<RestaurantTableDTO> getTables(Long guestId, ReservationDTO reservationDTO)
             throws UserNotFoundException, RestaurantNotFoundException, InvalidDateException, ReservationException
     {
@@ -221,6 +222,7 @@ public class ReservationServiceImpl implements ReservationService
 
 
     @Override
+    @Transactional
     public List<ReservationWithOrdersDTO> getReservations(Long guestId)
             throws UserNotFoundException
     {
@@ -238,11 +240,12 @@ public class ReservationServiceImpl implements ReservationService
 
 
     @Override
+    @Transactional
     public List<InvitationDTO> getAcceptedInvitations(Long guestId)
             throws UserNotFoundException
     {
         if (userRepository.findById(guestId) == null)
-            throw new UserNotFoundException("");
+            throw new UserNotFoundException();
 
         List<Invitation> invitations = invitationRepository.getUsersAcceptedInvitationsByUserId(guestId);
         List<InvitationDTO> ret = new ArrayList<>();
@@ -266,16 +269,12 @@ public class ReservationServiceImpl implements ReservationService
             throw new UserNotFoundException();
         if (reservation == null)
             throw new ReservationException();
+        if (reservation.getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))
+            throw new ReservationException();
 
         for (Order o : reservation.getOrders())
-        {
             if (o.getId() == reservationUpdateData.getOrderId())
-            {
                 reservation.deleteOrder(o.getId());
-                reservationRepository.save(reservation);
-                clearOrder(o.getId());
-            }
-        }
 
         HashSet<OrderItem> newItems = new HashSet<>();
         for (DrinkOrderDTO d : reservationUpdateData.getDrinkOrders())
@@ -313,7 +312,7 @@ public class ReservationServiceImpl implements ReservationService
             throws UserNotFoundException
     {
         if (userRepository.findById(guestId) == null)
-            throw new UserNotFoundException("");
+            throw new UserNotFoundException();
 
         List<Reservation> reservations = reservationRepository.getReservationsByReserverId(guestId);
         List<Invitation> invitations = invitationRepository.getUsersAcceptedInvitationsByUserId(guestId);
@@ -333,6 +332,24 @@ public class ReservationServiceImpl implements ReservationService
                 ret.add(generateHistoryData(invitation.getReservation(), guestId, friendIds));
 
         return ret;
+    }
+
+
+    @Override
+    @Transactional
+    public void deleteReservation(Long guestId, Long reservationId)
+            throws ReservationException, UserNotFoundException
+    {
+        Reservation reservation = reservationRepository.findById(reservationId);
+
+        if (userRepository.findById(guestId) == null)
+            throw new UserNotFoundException();
+        if (reservation == null)
+            throw new ReservationException();
+        if (reservation.getReserver().getId() != guestId)
+            throw new ReservationException();
+
+        reservationRepository.delete(reservationId);
     }
 
 

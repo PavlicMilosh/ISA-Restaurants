@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.util.*;
@@ -81,6 +82,44 @@ public class Order
     }
 
 
+    @Override
+    public boolean equals(Object other)
+    {
+        if (this == other) return true;
+        if (!(other instanceof Order)) return false;
+
+        Order order = (Order) other;
+
+        if (id != null && !id.equals(order.id)) return false;
+        if (orderItems != null ? !orderItems.equals(order.orderItems) : order.orderItems != null) return false;
+        if (waiter != null ? !waiter.equals(order.waiter) : order.waiter != null) return false;
+        if (finished != null ? !finished.equals(order.finished) : order.finished != null) return false;
+        if (price != null ? !price.equals(order.price) : order.price != null) return false;
+        if (orderTime != null ? !orderTime.equals(order.orderTime) : order.orderTime != null) return false;
+        if (orderTable != null ? !orderTable.equals(order.orderTable) : order.orderTable != null) return false;
+        if (guest != null ? !guest.equals(order.guest) : order.guest != null) return false;
+        if (mark != null ? !mark.equals(order.mark) : order.mark != null) return false;
+        return true;
+
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        int result = 0;
+        result = 31 * result + (orderItems != null ? orderItems.hashCode() : 0);
+        result = 31 * result + (waiter != null ? waiter.hashCode() : 0);
+        result = 31 * result + (finished != null ? finished.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (orderTime != null ? orderTime.hashCode() : 0);
+        result = 31 * result + (orderTable != null ? orderTable.hashCode() : 0);
+        result = 31 * result + (guest != null ? guest.hashCode() : 0);
+        result = 31 * result + (mark != null ? mark.hashCode() : 0);
+        return result;
+    }
+
+
     public void calculateOrderPrice()
     {
         for(OrderItem orderItem : orderItems)
@@ -94,6 +133,7 @@ public class Order
             }
         }
     }
+
 
     public void isFinished()
     {

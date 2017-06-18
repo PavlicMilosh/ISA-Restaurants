@@ -51,8 +51,8 @@ import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWo
 import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calendar";
 import { UpdateProviderComponent } from './components/updateProvider/updateProvider.component';
 import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
-import {GuestRestaurantAttendancesComponent} from "./components/guest/guestRestaurantAttendances/guestRestaurantAttendances.component";
-import {GuestHistoryComponent} from "./components/guest/guestHistory/guestHistory.component";
+import { GuestRestaurantAttendancesComponent } from "./components/guest/guestRestaurantAttendances/guestRestaurantAttendances.component";
+import { GuestHistoryComponent } from "./components/guest/guestHistory/guestHistory.component";
 
 
 @NgModule({

@@ -35,4 +35,32 @@ public class RestaurantMark
     @ManyToOne
     @JoinColumn(referencedColumnName = "restaurant_id", name = "restaurant_mark_restaurant_id")
     private Restaurant restaurant;
+
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof RestaurantMark)) return false;
+
+        RestaurantMark restaurantMark = (RestaurantMark) o;
+
+        if (id != null ? !id.equals(restaurantMark.id) : false) return false;
+        if (value != null ? !value.equals(restaurantMark.value) : restaurantMark.value != null) return false;
+        if (guest != null ? !guest.equals(restaurantMark.guest) : restaurantMark.guest != null) return false;
+        if (restaurant != null ? !restaurant.equals(restaurantMark.restaurant) : restaurantMark.restaurant != null) return false;
+
+        return true;
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        int result = 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (guest != null ? guest.hashCode() : 0);
+        result = 31 * result + (restaurant != null ? restaurant.hashCode() : 0);
+        return result;
+    }
 }
