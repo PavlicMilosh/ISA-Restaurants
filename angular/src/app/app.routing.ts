@@ -29,6 +29,8 @@ import { TableDisplay } from './components/tableDisplay/tableDisplay.component';
 import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWorkShedule.component";
 import { UpdateProviderComponent } from "./components/updateProvider/updateProvider.component";
 import {AddShoppingListComponent} from "./components/shopping/addShoppingList/addShoppingList.component";
+import {ShoppingListProviderComponent} from "./components/shopping/shoppingListProvider/shoppingListProvider.component";
+import {ShoppingListsRMComponent} from "./components/shopping/shoppingListsRM/shoppingListsRM.component";
 import {GuestHistoryComponent} from "./components/guest/guestHistory/guestHistory.component";
 
 
@@ -147,7 +149,15 @@ const appRoutes : Routes =
     //shopping
     {
       path : 'addShoppingList',
-      component: AddShoppingListComponent
+      component : AddShoppingListComponent
+    },
+    {
+      path : 'shoppingListsProvider',
+      component : ShoppingListProviderComponent
+    },
+    {
+      path : 'shoppingListRM',
+      component : ShoppingListsRMComponent
     }
   ];
 

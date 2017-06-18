@@ -30,7 +30,7 @@ export class AddShoppingListComponent implements OnInit {
 
   addList()
   {
-    this.shoppingList.deadline = this.datePipe.transform(this.shoppingList.deadlineDate, "EEE, dd MMM yyyy HH:mm:ss zzz");
+    this.shoppingList.deadline = this.datePipe.transform(this.shoppingList.deadlineDate, "yyyy-MM-dd HH:mm");
     this.shoppingService.addList(this.shoppingList).subscribe(
       data => console.log(data)
     )

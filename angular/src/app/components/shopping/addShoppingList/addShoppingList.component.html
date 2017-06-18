@@ -6,11 +6,20 @@
         <hr/>
 
         <div class="form-group">
-          <label for="deadline" class="cols-sm-2 control-label">Birth Date</label>
+          <label for="deadline" class="cols-sm-2 control-label">Deadline</label>
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
               <input type="datetime-local" class="form-control" name="deadline" id="deadline" [(ngModel)]="shoppingList.deadlineDate" placeholder="Deadline"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="name" class="cols-sm-2 control-label">Name</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="name" id="name" [(ngModel)]="shoppingList.name" placeholder="Name"/>
             </div>
           </div>
         </div>

@@ -1,0 +1,17 @@
+.itemName
+{
+  float: left;
+  width: 50%;
+}
+
+.itemAmount
+{
+  float: right;
+  width: 50%;
+}
+
+.offer
+{
+  display: inline-block;
+  width: 24%;
+}

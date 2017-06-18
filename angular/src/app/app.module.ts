@@ -29,6 +29,8 @@ import { AddWorkerComponent } from './components/addWorker/addWorker.component';
 import { ChangePassword } from './components/changePassword/changePassword.component';
 import { AddWorkScheduleComponent } from './components/addWorkSchedule/addWorkSchedule.component';
 import { AddProviderComponent } from './components/addProvider/addProvider.component';
+import { ShoppingListProviderComponent } from './components/shopping/shoppingListProvider/shoppingListProvider.component';
+import { ShoppingListsRMComponent } from './components/shopping/shoppingListsRM/shoppingListsRM.component';
 
 import { GuestRegisterComponent } from "./components/guest/guestRegister/guestRegister.component";
 import { GuestUpdateComponent } from "./components/guest/guestUpdate/guestUpdate.component";
@@ -42,6 +44,8 @@ import { GuestPreorderComponent } from "./components/guest/guestPreorder/guestPr
 import { GuestTablesComponent } from "./components/guest/guestTables/guestTables.component";
 import { GuestReservationSummaryComponent } from "./components/guest/guestReservationSummary/guestReservationSummary.component";
 import { GuestReservationUpdateComponent } from "./components/guest/guestReservationUpdate/guestReservationUpdate.component";
+import { GuestRestaurantAttendancesComponent } from "./components/guest/guestRestaurantAttendances/guestRestaurantAttendances.component";
+import { GuestHistoryComponent } from "./components/guest/guestHistory/guestHistory.component";
 
 import { MakeOrder } from './components/makeOrder/makeOrder.component';
 import { OrderDishes } from './components/orderDishes/orderDishes.component';
@@ -51,8 +55,7 @@ import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWo
 import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calendar";
 import { UpdateProviderComponent } from './components/updateProvider/updateProvider.component';
 import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
-import { GuestRestaurantAttendancesComponent } from "./components/guest/guestRestaurantAttendances/guestRestaurantAttendances.component";
-import { GuestHistoryComponent } from "./components/guest/guestHistory/guestHistory.component";
+
 
 
 @NgModule({
@@ -93,6 +96,8 @@ import { GuestHistoryComponent } from "./components/guest/guestHistory/guestHist
     GuestReservationWizardComponent,
     GuestRestaurantsComponent,
     GuestInvitationsComponent,
+    ShoppingListProviderComponent,
+    ShoppingListsRMComponent,
     GuestPreorderComponent,
     GuestTablesComponent,
     GuestReservationSummaryComponent,

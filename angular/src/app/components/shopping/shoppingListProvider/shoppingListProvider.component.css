@@ -1,0 +1,11 @@
+.itemName
+{
+  float: left;
+  width: 50%;
+}
+
+.itemAmount
+{
+  float: right;
+  width: 50%;
+}

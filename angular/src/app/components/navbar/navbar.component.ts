@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, NgModule} from '@angular/core';
+import {Component, OnInit, NgModule } from '@angular/core';
 import {LoggedUtils} from "../../utils/logged.utils";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -41,6 +41,8 @@ export class NavbarComponent implements OnInit {
         this.presetCook();
       else if (LoggedUtils.hasRole("BARTENDER"))
         this.presetBartender();
+      else if(LoggedUtils.hasRole("PROVIDER"))
+        this.presetProvider();
     }
 
     if (this.links.length == 0)
@@ -111,6 +113,16 @@ export class NavbarComponent implements OnInit {
         ]
     };
 
+    var dropdownShopping =
+    {
+      text: "Shopping",
+      links:
+      [
+        {text: "ShoppingLists", routerLink : "/shoppingListRM"},
+        {text: "Add Shopping List", routerLink: "/addShoppingList"}
+      ]
+    };
+
     var dropdownUsers =
     {
       text: "Workers",
@@ -125,8 +137,10 @@ export class NavbarComponent implements OnInit {
 
     this.addDropdown(dropdownRestaurant);
     this.addDropdown(dropdownUsers);
+    this.addDropdown(dropdownShopping);
 
     this.addLink({text: "Logout", routerLink:"/auth" });
+
   }
 
 
@@ -217,6 +231,13 @@ export class NavbarComponent implements OnInit {
     this.addLink({text: "Logout", routerLink:"/auth" });
     this.addDropdown(dropdownOrder);
     this.addLink({text: "Schedule", routerLink:"/employeeWorkShedule" });
+  }
+
+  presetProvider()
+  {
+    this.addLink({text: "Change info", routerLink: "updateProvider"});
+    this.addLink({text: "Shopping Lists", routerLink: "shoppingListsProvider"});
+    this.addLink({text: "Logout", routerLink: "/auth"});
   }
 
 
