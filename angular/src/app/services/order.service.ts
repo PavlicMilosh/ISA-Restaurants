@@ -48,13 +48,18 @@ export class OrderService
 
   preparingOrderItem(itemId:number)
   {
-    return this.http.get("http://localhost:8080/order/"+itemId+"/preparing")
+    let userId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.put("http://localhost:8080/order/"+itemId+"/preparing/"+userId, { headers : headers })
       .map(res => res.json());
   }
 
-  finishedOrderItem(itemId:number)
+  finishedOrderItem(itemId:number,orderId:number)
   {
-    return this.http.get("http://localhost:8080/order/"+itemId+"/finished")
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.put("http://localhost:8080/order/"+itemId+"/finished/"+orderId, { headers : headers })
       .map(res => res.json());
   }
 
@@ -67,6 +72,49 @@ export class OrderService
       .map(res => res.json());
   }
 
+  getOrdersForDeliver()
+  {
+    let userId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/order/"+userId+"/getOrdersForDeliver", { headers : headers })
+      .map(res => res.json());
+  }
+
+  getTablesForCreatingBills()
+  {
+    let userId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/order/"+userId+"/getTablesForCreatingBills", { headers : headers })
+      .map(res => res.json());
+  }
+
+  orderDelivered(orderId:number)
+  {
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.put("http://localhost:8080/order/"+orderId+"/delivered", { headers : headers })
+      .map(res => res.json());
+  }
+
+  getPreparingOrderItems()
+  {
+    let userId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/order/"+userId+"/getPreparingItems", { headers : headers })
+      .map(res => res.json());
+  }
+
+  getPreparedOrderId()
+  {
+    let userId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/order/"+userId+"/getPreparedOrdersId", { headers : headers })
+      .map(res => res.json());
+  }
 }
 
 interface UserDTO

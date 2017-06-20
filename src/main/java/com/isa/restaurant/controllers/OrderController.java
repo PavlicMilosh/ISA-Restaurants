@@ -79,18 +79,52 @@ public class OrderController
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{itemId}/preparing", method = RequestMethod.GET)
-    public ResponseEntity<OrderItem> preparingOrderItem(@PathVariable Long itemId)
+    @RequestMapping(value = "/{itemId}/preparing/{userId}", method = RequestMethod.PUT) //+++
+    public ResponseEntity<Boolean> preparingOrderItem(@PathVariable Long itemId, @PathVariable Long userId)
     {
-        OrderItem saved = orderItemService.preparingItem(itemId);
+        Boolean saved = orderItemService.preparingItem(itemId, userId);
         return new ResponseEntity(saved, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{itemId}/finished", method = RequestMethod.GET)
-    public ResponseEntity<OrderItem> finishedOrderItem(@PathVariable Long itemId)
+    @RequestMapping(value = "/{itemId}/finished/{orderId}", method = RequestMethod.PUT)
+    public ResponseEntity<OrderItem> finishedOrderItem(@PathVariable Long itemId, @PathVariable Long orderId)
     {
-        OrderItem saved = orderItemService.finishedItem(itemId);
+        OrderItem saved = orderItemService.finishedItem(itemId,orderId);
         return new ResponseEntity(saved, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{waiterId}/getOrdersForDeliver", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderItemDTO> getOrdersForDeliver(@PathVariable Long waiterId)
+    {
+        Set<OrderItemDTO> saved = ordersService.getOrdersForDeliver(waiterId);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{waiterId)}/getTablesForCreatingBills", method = RequestMethod.GET)
+    public ResponseEntity<Set<Long>> getTablesForCreatingBills(@PathVariable Long waiterId)
+    {
+        Set<Long> saved = ordersService.getTablesForCreatingBill(waiterId);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{orderId}/delivered", method = RequestMethod.PUT)
+    public ResponseEntity<OrderItemDTO> deliveredOrder(@PathVariable Long orderId)
+    {
+        OrderItemDTO saved = ordersService.deliveredOrder(orderId);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{userId}/getPreparingItems", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE) //+++
+    public ResponseEntity<Set<OrderItem>> getPreparingOrderItems(@PathVariable Long userId)
+    {
+        Set<OrderItem> saved = orderItemService.getPreparingOrderItems(userId);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{userId}/getPreparedOrdersId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE) //+++
+    public ResponseEntity<Set<Long>> getPreparedOrdersId(@PathVariable Long userId)
+    {
+        Set<Long> saved = ordersService.getPreparingOrderId(userId);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
 }

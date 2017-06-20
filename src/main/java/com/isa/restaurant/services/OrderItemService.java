@@ -2,6 +2,8 @@ package com.isa.restaurant.services;
 
 import com.isa.restaurant.domain.OrderItem;
 
+import java.util.Set;
+
 /**
  * Created by djuro on 5/24/2017.
  */
@@ -9,7 +11,9 @@ public interface OrderItemService
 {
     public OrderItem addOrderItem(OrderItem orderItem);
 
-    public OrderItem preparingItem(Long orderItemId);
+    public Boolean preparingItem(Long orderItemId, Long userId); //+++
 
-    public OrderItem finishedItem(Long orderItemId);
+    public OrderItem finishedItem(Long orderItemId, Long orderId); //+++
+
+    public Set<OrderItem> getPreparingOrderItems(Long userId); //+++
 }

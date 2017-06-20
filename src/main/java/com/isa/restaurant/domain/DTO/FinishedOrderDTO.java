@@ -11,28 +11,33 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * Created by djuro on 6/18/2017.
+ * Created by djuro on 6/20/2017.
  */
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
 @Setter
-public class OrderItemDTO
+public class FinishedOrderDTO
 {
     private Long id;
     private Set<OrderItem> orderItems;
-    private Double price;
-    private Boolean finished;
     private Date orderTime;
-    private Long tableId;
+    private Long restaurantId;
+    private String restaurantName;
 
-    public OrderItemDTO(Order order)
+    public FinishedOrderDTO(Order order,Long restaurantId, String restaurantName)
     {
         this.id=order.getId();
         this.orderItems=order.getOrderItems();
         this.orderTime=order.getOrderTime();
-        this.price=order.getPrice();
-        this.finished=order.getFinished();
-        this.tableId=order.getOrderTable().getId();
+        this.restaurantId=restaurantId;
+        this.restaurantName=restaurantName;
+    }
+
+    public FinishedOrderDTO(Order order)
+    {
+        this.id=order.getId();
+        this.orderItems=order.getOrderItems();
+        this.orderTime=order.getOrderTime();
     }
 }

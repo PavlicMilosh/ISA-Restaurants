@@ -63,13 +63,19 @@ public class BillServiceImpl implements BillService
     public BillDTO getBill(Long tableId, Long waiterId)
     {
         Set<Order> orders=orderRepository.getTableOrders(tableId);
+        Set<Order> billOrders=new HashSet<Order>();
         Set<OrderItemDTO> ordersDTO = new HashSet<OrderItemDTO>();
         for (Order o:orders) {
-            ordersDTO.add(new OrderItemDTO(o));
+            if(o.getDelivered()==true && o.getBillCreated()==false) {
+                ordersDTO.add(new OrderItemDTO(o));
+                billOrders.add(o);
+                o.setBillCreated(true);
+                orderRepository.save(o);
+            }
         }
         User u = userRepository.findOne(waiterId);
         RestaurantTable table=tableRepository.getOne(tableId);
-        Bill bill = new Bill(u, table, orders);
+        Bill bill = new Bill(u, table, billOrders);
         bill.calculateBillPrice();
         billRepository.save(bill);
         BillDTO billDTO = new BillDTO(bill.getId(),ordersDTO,bill.getPrice());
