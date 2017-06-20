@@ -1,10 +1,7 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
-import com.isa.restaurant.domain.DTO.RegionDTO;
-import com.isa.restaurant.domain.DTO.RestaurantDTO;
-import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
-import com.isa.restaurant.domain.DTO.UserDTO;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.search.RestaurantSearch;
 import com.isa.restaurant.services.RestaurantOrdersService;
@@ -14,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -360,6 +358,40 @@ public class RestaurantServiceImpl implements RestaurantService
         for (RestaurantTable rt : tables)
         {
             ret.add(new RestaurantTableDTO(rt, false));
+        }
+        return ret;
+    }
+
+    @Override
+    public Report getReport(Long restaurantId)
+    {
+        Report report = new Report();
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+        double restaurantMark = 0;
+        for(RestaurantMark rm : r.getRestaurantMarks())
+        {
+            restaurantMark += rm.getValue();
+        }
+        restaurantMark /= r.getRestaurantMarks().size();
+        report.setRestaurantMark(restaurantMark);
+        report.setDishes((HashSet<Dish>) r.getDishes());
+        report.setDrinks((HashSet<Drink>) r.getDrinks());
+        report.setWaiters((HashSet<Waiter>) r.getWaiters());
+
+        return report;
+    }
+
+    @Override
+    public List<DishType> getDishTypes(Long managerId)
+    {
+        List<DishType> dishTypes = dishTypeRepository.findAll();
+        List<DishType> ret = new ArrayList<>();
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
+        Restaurant r = rm.getRestaurant();
+        for(DishType dt : dishTypes)
+        {
+            if(dt.getRestaurant().getId() == r.getId())
+                ret.add(dt);
         }
         return ret;
     }

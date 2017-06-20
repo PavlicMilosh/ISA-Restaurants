@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from "../../services/users.service";
+import {RestaurantService} from "../../services/restaurants.service";
+import {LoggedUtils} from "../../utils/logged.utils";
 
 @Component({
   selector: 'app-add-worker',
   templateUrl: './addWorker.component.html',
   styleUrls: ['./addWorker.component.css'],
-  providers: [ UserService ]
+  providers: [ UserService, RestaurantService ]
 })
 
 
@@ -18,11 +20,17 @@ export class AddWorkerComponent implements OnInit
   private clothesNumber: number;
   private footwearNumber: number;
   private role: string;
+  private dishType: any;
+  private dishTypes: any;
 
 
-  constructor(private userService : UserService)
+  constructor(private userService : UserService, private restaurantService : RestaurantService)
   {
     this.role = "Select Role";
+    this.restaurantService.getDishTypes(LoggedUtils.getId()).subscribe(
+      data => this.dishTypes = data
+    )
+    this.dishType = this.dishTypes[0].id;
   }
 
   ngOnInit(){  }
@@ -34,10 +42,15 @@ export class AddWorkerComponent implements OnInit
 
   addWorker()
   {
-    this.userService.addWorker(this.firstName, this.lastName, this.email, this.password, this.clothesNumber, this.footwearNumber, this.role)
+    this.userService.addWorker(this.firstName, this.lastName, this.email, this.password, this.clothesNumber, this.footwearNumber, this.role, this.dishType)
       .subscribe(
         data => console.log(data)
       )
+  }
+
+  setDishType(dt : number)
+  {
+    this.dishType = dt;
   }
 
 }

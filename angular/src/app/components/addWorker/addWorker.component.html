@@ -83,13 +83,32 @@
                      class="form-control dropdown-toggle"
                      data-toggle="dropdown"
                      name="drink"
-                     id="drink"
+                     id="role"
                      value="{{role}}"/>
 
               <ul class="dropdown-menu" role="menu">
                 <li><a (click)="setRole('Bartender');">Bartender</a></li>
-                <li><a (click)="setRole('Xook');">Cook</a></li>
+                <li><a (click)="setRole('Cook');">Cook</a></li>
                 <li><a (click)="setRole('Waiter');">Waiter</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="role == 'Cook'">
+          <label class="cols-sm-2 control-label">Select Dish Type</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"></span>
+              <input type="button"
+                     class="form-control dropdown-toggle"
+                     data-toggle="dropdown"
+                     name="dishType"
+                     id="dishType"
+                     value="{{role}}"/>
+
+              <ul class="dropdown-menu" role="menu">
+                <li *ngFor="let dt of dishTypes"><a (click)="setDishType(dt);">dt.name</a></li>
               </ul>
             </div>
           </div>

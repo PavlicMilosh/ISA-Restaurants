@@ -37,6 +37,9 @@ public class Drink
     @JsonIgnore
     private Restaurant restaurant;
 
+    @Column(name = "drink_mark")
+    private Double mark;
+
     public Drink(String name, String description, Double price, Restaurant restaurant)
     {
         this.name=name;

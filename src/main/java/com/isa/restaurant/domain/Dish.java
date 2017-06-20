@@ -30,12 +30,19 @@ public class Dish
     @Column(name = "dish_desc")
     private String description;
 
-    @Column(name = "dish_price")
-    private Double price;
-
     @ManyToOne
     @JsonIgnore
     private Restaurant restaurant;
+
+    @Column(name = "dish_price")
+    private Double price;
+
+    @Column(name = "dish_mark")
+    private Double mark;
+
+    @ManyToOne
+    @JoinColumn(name = "dish_type_id")
+    private DishType dishType;
 
     public Dish(String name, String description, Double price, Restaurant restaurant)
     {

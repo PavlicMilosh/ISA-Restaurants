@@ -1,9 +1,6 @@
 package com.isa.restaurant.services;
-import com.isa.restaurant.domain.DTO.RegionDTO;
-import com.isa.restaurant.domain.DTO.RestaurantDTO;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.domain.*;
-import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
-import com.isa.restaurant.domain.DTO.UserDTO;
 
 import java.util.List;
 
@@ -47,4 +44,8 @@ public interface RestaurantService
     Integer getMedianMark(Long guestId);
 
     List<RestaurantTableDTO> getTables(Long restaurantId);
+
+    Report getReport(Long restaurantId);
+
+    List<DishType> getDishTypes(Long managerId);
 }

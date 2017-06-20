@@ -143,6 +143,13 @@ public class RestaurantController
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/{managerId}/dishTypes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<DishType>> getDishTypes(@PathVariable Long managerId)
+    {
+        List<DishType> dishTypes = restaurantService.getDishTypes(managerId);
+        return new ResponseEntity<>(dishTypes, HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/{restaurantId}/getRegions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RegionDTO>> getRegions(@PathVariable Long restaurantId)

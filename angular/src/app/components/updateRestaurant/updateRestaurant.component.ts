@@ -23,6 +23,7 @@ export class UpdateRestaurantComponent implements OnInit
   private editingRegion: RestaurantRegion;
   private currentRegion: RestaurantRegion;
   private seats: number;
+  private dishTypes: any;
 
   constructor(private restaurantService: RestaurantService)
   {
@@ -176,6 +177,7 @@ export class UpdateRestaurantComponent implements OnInit
       name: "",
       description: "",
       price: 0,
+      dishType: null
     }
   }
 
@@ -247,8 +249,14 @@ export class UpdateRestaurantComponent implements OnInit
       id: null,
       name: "",
       description: "",
-      price: 0
+      price: 0,
+      dishType: null
     }
+  }
+
+  setDishType(dt : any)
+  {
+    this.editingDish.dishType = dt;
   }
 
   addRegion()
@@ -276,6 +284,13 @@ interface Dish
   name: string;
   description: string;
   price: number;
+  dishType: DishType;
+}
+
+interface DishType
+{
+  id: number;
+  name: string;
 }
 
 interface Drink

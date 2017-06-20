@@ -71,7 +71,7 @@ export class MakeOrder
 
   init1()
   {
-    this.userService.addWorker("stefan", "stefan", "stefan@gmail.com", "12345", 33, 50, "Waiter").subscribe
+    this.userService.addWorker("stefan", "stefan", "stefan@gmail.com", "12345", 33, 50, "Waiter", null).subscribe
     (
       (data:Barman) => this.barman = data,
       error => alert(error)
