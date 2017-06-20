@@ -11,9 +11,9 @@ public interface OrderItemService
 {
     public OrderItem addOrderItem(OrderItem orderItem);
 
-    public Boolean preparingItem(Long orderItemId, Long userId); //+++
+    public Boolean preparingItem(Long orderItemId, Long userId);
 
-    public OrderItem finishedItem(Long orderItemId, Long orderId); //+++
+    public OrderItem finishedItem(Long orderItemId, Long orderId);
 
-    public Set<OrderItem> getPreparingOrderItems(Long userId); //+++
+    public Set<OrderItem> getPreparingOrderItems(Long userId);
 }

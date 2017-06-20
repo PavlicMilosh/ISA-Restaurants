@@ -45,7 +45,7 @@ public class OrderItemServiceImpl implements OrderItemService
     }
 
     @Override
-    public Boolean preparingItem(Long orderItemId, Long userId) //+++
+    public Boolean preparingItem(Long orderItemId, Long userId)
     {
         OrderItem item=null;
         item=orderItemRepository.findById(orderItemId);
@@ -66,7 +66,7 @@ public class OrderItemServiceImpl implements OrderItemService
     }
 
     @Override
-    public OrderItem finishedItem(Long orderItemId, Long orderId) //+++
+    public OrderItem finishedItem(Long orderItemId, Long orderId)
     {
         OrderItem item=null;
         item=orderItemRepository.findById(orderItemId);

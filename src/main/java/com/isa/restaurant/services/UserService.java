@@ -20,11 +20,11 @@ public interface UserService
     UserDTO changeWaiter(Waiter waiter);
     UserDTO changeCook(Cook cook);
     UserDTO changeBartender(Bartender bartender);
-    Set<WorkScheduleDTO> getSchedule(Long id);//+++
+    Set<WorkScheduleDTO> getSchedule(Long id);
     RestaurantDTO getUserRestaurant(Long id);
-    Set<OrderItemDTO> getRestaurantOrders(Long id); //++
+    Set<OrderItemDTO> getRestaurantOrders(Long id);
     UserDTO updateProvider(Long providerId, Provider provider);
     UpdatingUser findForUpdate(Long userId);
     Long getWaiterRegionId(Long userId);
-    Set<WorkScheduleDTO> getAllSchedule(Long id);//+++
+    Set<WorkScheduleDTO> getAllSchedule(Long id);
 }

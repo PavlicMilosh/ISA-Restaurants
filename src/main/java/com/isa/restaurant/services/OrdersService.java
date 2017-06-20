@@ -22,17 +22,17 @@ public interface OrdersService
 
     public Order finishOrder(Long id);
 
-    public Set<OrderItemDTO> getOrdersForDeliver(Long waiterId); ///+++
+    public Set<OrderItemDTO> getOrdersForDeliver(Long waiterId);
 
-    public Set<Long> getTablesForCreatingBill(Long waiter); //++
+    public Set<Long> getTablesForCreatingBill(Long waiter);
 
-    public OrderItemDTO deliveredOrder(Long orderId); //++
+    public OrderItemDTO deliveredOrder(Long orderId);
 
-    public Set<Long> getPreparingOrderId(Long userId); //+++
+    public Set<Long> getPreparingOrderId(Long userId);
 
-    public Set<FinishedOrderDTO> getGuestOrders(Long guestId); //+++
+    public Set<FinishedOrderDTO> getGuestOrders(Long guestId);
 
-    public FinishedOrderDTO markOrder(Long guestId, Long orderId, Double mark); //+++
+    public FinishedOrderDTO markOrder(Long guestId, Long orderId, Double mark);
 
     public Set<DrinkDishDTO> getRestaurantDrinkDishMark(Long restaurantId);
 }

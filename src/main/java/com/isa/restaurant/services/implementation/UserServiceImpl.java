@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public Set<WorkScheduleDTO> getSchedule(Long id) //+++
+    public Set<WorkScheduleDTO> getSchedule(Long id)
     {
         User u = userRepository.findById(id);
         Set<WorkSchedule> ws = null;
@@ -180,7 +180,7 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public Set<OrderItemDTO> getRestaurantOrders(Long id)  //+++
+    public Set<OrderItemDTO> getRestaurantOrders(Long id)
     {
         User u = userRepository.findById(id);
         Restaurant r = null;
@@ -256,7 +256,7 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public Set<WorkScheduleDTO> getAllSchedule(Long id) //+++
+    public Set<WorkScheduleDTO> getAllSchedule(Long id)
     {
         User u = userRepository.findById(id);
         Integer role=0;

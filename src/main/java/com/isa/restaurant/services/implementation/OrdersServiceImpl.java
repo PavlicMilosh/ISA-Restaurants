@@ -136,7 +136,7 @@ public class OrdersServiceImpl implements OrdersService
     }
 
     @Override
-    public Set<OrderItemDTO> getOrdersForDeliver(Long waiterId) //++
+    public Set<OrderItemDTO> getOrdersForDeliver(Long waiterId)
     {
         User u = userRepository.findById(waiterId);
         Waiter waiter = (Waiter) u;
@@ -177,7 +177,7 @@ public class OrdersServiceImpl implements OrdersService
     }
 
     @Override
-    public OrderItemDTO deliveredOrder(Long orderId) //+++
+    public OrderItemDTO deliveredOrder(Long orderId)
     {
         Order order=orderRepository.findById(orderId);
         order.setDelivered(true);
