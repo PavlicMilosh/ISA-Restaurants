@@ -5,15 +5,12 @@ import com.isa.restaurant.repositories.OfferRepository;
 import com.isa.restaurant.repositories.ShoppingRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.ShoppingService;
-import org.hibernate.annotations.OptimisticLock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Lock;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.LockModeType;
-import javax.persistence.OptimisticLockException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,12 +73,11 @@ public class ShoppingServiceImpl implements ShoppingService
     }
 
     @Override
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    public Offer sendOffer(Offer o, Long providerId, Long shoppingListId)
+    @Transactional(rollbackFor = OptimisticLockingFailureException.class)
+    public Offer sendOffer(Offer o, Long providerId, Long shoppingListId) throws OptimisticLockingFailureException
     {
         Calendar c = Calendar.getInstance();
         ShoppingList sl = shoppingRepository.findOne(shoppingListId);
-
         if (new Date(c.getTime().getTime()).after(sl.getDeadline()))
             return null;
         if (sl.getAcceptedOffer() != null)
@@ -91,26 +87,23 @@ public class ShoppingServiceImpl implements ShoppingService
         o.setProvider(p);
         o.setShoppingList(sl);
 
-        try
-        {
-            Offer ret = offerRepository.save(o);
-            return ret;
-        }
-        catch(ObjectOptimisticLockingFailureException e)
-        {
-            return null;
-        }
+        Offer ret = offerRepository.save(o);
+        return ret;
     }
 
     @Override
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    public Boolean acceptOffer(Offer o, Long shoppingListId)
+    @Transactional(rollbackFor = OptimisticLockingFailureException.class)
+    public Boolean acceptOffer(Offer o, Long shoppingListId) throws OptimisticLockingFailureException
     {
         Offer found = offerRepository.findOne(o.getId());
-        if(found.getVersion() != o.getVersion())
-            return false;
         ShoppingList sl = shoppingRepository.findOne(shoppingListId);
         sl.setAcceptedOffer(found);
+        for(Offer oo : sl.getOffers())
+        {
+            oo.setAccepted(false);
+            offerRepository.save(oo);
+        }
+        found.setAccepted(true);
         shoppingRepository.save(sl);
         return true;
     }

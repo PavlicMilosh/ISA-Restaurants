@@ -2,6 +2,7 @@ package com.isa.restaurant.services;
 
 import com.isa.restaurant.domain.Offer;
 import com.isa.restaurant.domain.ShoppingList;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface ShoppingService
 
     List<ShoppingList> getShoppingLists(Long rmId);
 
-    Offer sendOffer(Offer o, Long providerId, Long ShoppingListId);
+    Offer sendOffer(Offer o, Long providerId, Long ShoppingListId) throws OptimisticLockingFailureException;
 
-    Boolean acceptOffer(Offer o, Long shoppingListId);
+    Boolean acceptOffer(Offer o, Long shoppingListId) throws OptimisticLockingFailureException;
 }

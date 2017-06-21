@@ -4,6 +4,7 @@ import com.isa.restaurant.domain.Offer;
 import com.isa.restaurant.domain.ShoppingList;
 import com.isa.restaurant.services.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,15 @@ public ResponseEntity addShoppingList(@PathVariable Long rmId, @RequestBody Shop
     @RequestMapping(value = "/{providerId}/{shoppingListId}/sendOffer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Offer> sendOffer(@RequestBody Offer o, @PathVariable Long providerId, @PathVariable Long shoppingListId)
     {
-        Offer sentOffer = shoppingService.sendOffer(o, providerId, shoppingListId);
+        Offer sentOffer;
+        try
+        {
+            sentOffer = shoppingService.sendOffer(o, providerId, shoppingListId);
+        }
+        catch (OptimisticLockingFailureException e)
+        {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         if(sentOffer != null) return new ResponseEntity<>(sentOffer, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
@@ -55,7 +64,15 @@ public ResponseEntity addShoppingList(@PathVariable Long rmId, @RequestBody Shop
     @RequestMapping(value = "{listId}/acceptOffer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity acceptOffer(@RequestBody Offer o, @PathVariable Long listId)
     {
-        Boolean success = shoppingService.acceptOffer(o, listId);
+        Boolean success;
+        try
+        {
+            success = shoppingService.acceptOffer(o, listId);
+        }
+        catch (OptimisticLockingFailureException e)
+        {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         if(success) return new ResponseEntity(HttpStatus.OK);
         return new ResponseEntity(HttpStatus.CONFLICT);
     }

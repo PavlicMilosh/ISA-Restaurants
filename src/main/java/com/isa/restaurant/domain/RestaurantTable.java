@@ -42,11 +42,9 @@ public class RestaurantTable
     @Column(name = "table_seats")
     private Integer seats;
 
-    @Column(name = "table_last_reservation_start")
-    @JsonIgnore
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "table_version")
     @Version
-    private Date lastReservationStart;
+    private Long version;
 
     @ManyToOne
     @JsonIgnore
@@ -63,10 +61,6 @@ public class RestaurantTable
     public RestaurantTable()
     {
         this.bills = new HashSet<>();
-        Calendar cal = Calendar.getInstance();
-        Date today = cal.getTime();
-        cal.add(Calendar.YEAR, -1); // to get previous year add -1
-        lastReservationStart = cal.getTime();
     }
 
     public RestaurantTable(Double top, Double left, Double angle, Region region, Set<Bill> bills)
@@ -76,7 +70,6 @@ public class RestaurantTable
         this.angle = angle;
         this.region = region;
         this.bills = bills;
-        this.lastReservationStart = null;
     }
 
 
@@ -86,6 +79,7 @@ public class RestaurantTable
         this.top = rtDTO.getTop();
         this.left = rtDTO.getTop();
         this.angle = rtDTO.getTop();
+        this.version = rtDTO.getVersion();
     }
 
 }

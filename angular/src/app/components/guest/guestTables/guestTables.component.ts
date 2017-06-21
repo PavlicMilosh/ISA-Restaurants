@@ -215,6 +215,7 @@ interface RestaurantTable
   regionId: number;
   regionColor: string;
   seats: number;
+  version: number;
 }
 
 

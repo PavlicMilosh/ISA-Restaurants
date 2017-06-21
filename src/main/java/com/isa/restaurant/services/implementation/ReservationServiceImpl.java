@@ -12,6 +12,7 @@ import com.isa.restaurant.services.MailService;
 import com.isa.restaurant.services.ReservationService;
 import com.isa.restaurant.ulitity.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -92,15 +93,40 @@ public class ReservationServiceImpl implements ReservationService
         Reservation reservation = new Reservation(guest, restaurant, dateTimeStart, dateTimeEnd, ReservationStatus.SENT);
 
         // TABLES
+
         for (RestaurantTableDTO rtDTO : reservationDTO.getTables())
         {
-            RestaurantTable table = tableRepository.findOne(rtDTO.getId());
-            if (table.getLastReservationStart().after(dateTimeEnd))
-                throw new ReservationException();
-            table.setLastReservationStart(dateTimeStart);
-            tableRepository.save(table);
-            reservation.addTable(table);
+            RestaurantTable newTable = new RestaurantTable(rtDTO);
+            try
+            {
+                reservation.addTable(newTable);
+                tableRepository.save(newTable);
+            }
+            catch(OptimisticLockingFailureException e)
+            {
+                List<Reservation> reservations = reservationRepository.getReservationsByRestaurantAndDate(restaurant.getId(), dateTimeStart, dateTimeEnd);
+
+                for(Reservation res : reservations)
+                {
+                    if(res.getTables().contains(newTable))
+                        throw new ReservationException();
+                    else
+                    {
+                        for(RestaurantTable rt : res.getTables())
+                        {
+                            if(rt.getId() == newTable.getId())
+                            {
+                                newTable.setVersion(rt.getVersion());
+                                tableRepository.save(newTable);
+                                break;
+                            }
+                        }
+
+                    }
+                }
+            }
         }
+
 
         // INVITATIONS
         for (GuestDTO i : reservationDTO.getInvites())

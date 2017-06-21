@@ -33,4 +33,7 @@ public class Offer
 
     @ManyToOne
     private Provider provider;
+
+    @Column(name = "accepted")
+    private Boolean accepted;
 }
