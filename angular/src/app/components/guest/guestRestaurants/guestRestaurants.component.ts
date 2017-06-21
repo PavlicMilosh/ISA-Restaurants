@@ -21,11 +21,25 @@ export class GuestRestaurantsComponent implements OnInit
   private mapAddress: string;
   private searchParams: string;
 
+  private nameSortAsc: boolean;
+  private kitchenSortAsc: boolean;
+  private visitsSortAsc: boolean;
+  private distanceSortAsc: boolean;
+  private meanMarkSortAsc: boolean;
+  private friendsMarkSortAsc: boolean;
+
 
   constructor(private guestService: GuestService, private restaurantService: RestaurantService)
   {
     this.restaurants = [];
-    this.selectedRestaurant = {id: 0, name: "", description: "", friendsMark: null, meanMark: null, tables: [], address: "", distance: null};
+    this.selectedRestaurant = {id: 0, name: "", description: "", friendsMark: null, meanMark: null, tables: [], address: "", distance: null, visits: 0};
+
+    this.nameSortAsc = false;
+    this.kitchenSortAsc = false;
+    this.visitsSortAsc = false;
+    this.distanceSortAsc = false;
+    this.meanMarkSortAsc = false;
+    this.friendsMarkSortAsc = false;
 
     this.guestService.getRestaurants().subscribe
     (
@@ -84,6 +98,63 @@ export class GuestRestaurantsComponent implements OnInit
     );
   }
 
+  sortData(attribute: string)
+  {
+    let asc = true;
+
+    if (attribute == 'name')
+    {
+      asc = this.nameSortAsc;
+      this.nameSortAsc = !this.nameSortAsc;
+    }
+    else if (attribute == 'kitchen')
+    {
+      asc = this.kitchenSortAsc;
+      this.kitchenSortAsc = !this.kitchenSortAsc;
+    }
+    else if (attribute == 'visits')
+    {
+      asc = this.visitsSortAsc;
+      this.visitsSortAsc = !this.visitsSortAsc;
+    }
+    else if (attribute == 'distance')
+    {
+      asc = this.distanceSortAsc;
+      this.distanceSortAsc = !this.distanceSortAsc;
+    }
+    else if (attribute == 'meanMark')
+    {
+      asc = this.meanMarkSortAsc;
+      this.meanMarkSortAsc = !this.meanMarkSortAsc;
+    }
+    else if (attribute == 'friendsMark')
+    {
+      asc = this.meanMarkSortAsc;
+      this.meanMarkSortAsc = !this.meanMarkSortAsc;
+    }
+
+
+    this.restaurants.sort(function(a, b)
+    {
+
+      let first = a[attribute];
+      let second = b[attribute];
+      // Compare the 2 dates
+
+      if (asc)
+      {
+        if (first < second) return -1;
+        if (first > second) return 1;
+      }
+      else
+      {
+        if (first > second) return -1;
+        if (first < second) return 1;
+      }
+      return 0;
+    });
+  }
+
 }
 
 
@@ -93,6 +164,7 @@ interface Restaurant
   name: string;
   description: string;
   friendsMark: number;
+  visits: number;
   meanMark: number;
   address: string;
   distance: number;
@@ -111,4 +183,3 @@ interface RestaurantTable
   regionColor: string;
   seats: number;
 }
-

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +27,7 @@ public class RestaurantServiceImpl implements RestaurantService
     private final DishRepository dishRepository;
     private final DrinkRepository drinkRepository;
     private final TableRepository tableRepository;
+    private final ReservationRepository reservationRepository;
     private final RestaurantMarkRepository restaurantMarkRepository;
     private final RestaurantSearch restaurantSearch;
     private final DishTypeRepository dishTypeRepository;
@@ -42,6 +42,7 @@ public class RestaurantServiceImpl implements RestaurantService
                                  DishRepository dishRepository,
                                  DrinkRepository drinkRepository,
                                  TableRepository tableRepository,
+                                 ReservationRepository reservationRepository,
                                  RestaurantMarkRepository restaurantMarkRepository,
                                  RestaurantSearch restaurantSearch,
                                  DishTypeRepository dishTypeRepository)
@@ -51,6 +52,7 @@ public class RestaurantServiceImpl implements RestaurantService
         this.dishRepository = dishRepository;
         this.drinkRepository = drinkRepository;
         this.tableRepository = tableRepository;
+        this.reservationRepository = reservationRepository;
         this.restaurantMarkRepository = restaurantMarkRepository;
         this.restaurantSearch = restaurantSearch;
         this.dishTypeRepository = dishTypeRepository;
@@ -83,6 +85,7 @@ public class RestaurantServiceImpl implements RestaurantService
 
 
     @Override
+    @Transactional
     public List<RestaurantDTO> getRestaurants(Long guestId)
     {
         List<Restaurant> restaurants = restaurantRepository.findAll();
@@ -91,11 +94,22 @@ public class RestaurantServiceImpl implements RestaurantService
         {
             Double meanMark = 0.0;
             Double friendsMark = 0.0;
+            Integer visits = 0;
             /*TODO: Djuro ovo implementiraj imas metodu za dobijanje meanMark-a restorana u RestaurantMarkRepository,
             *       a friendsMark ces morati da dobavis prvo sve prijatelje na osnovu guesta, izvuces njihove id-eve i tek onda
             *       pomocu metode u RestaurantMarkRepositoryju dobijes jedan mark za guestId i restaurantId... skupis sve te
             *       i onda nadjes srednju vrednost*/
-            restaurantDTOs.add(new RestaurantDTO(r, meanMark, friendsMark));
+            for (Reservation reservation: reservationRepository.getReservationsByRestaurantId(r.getId()))
+            {
+                if (reservation.getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))
+                {
+                    visits++;
+                    for (Invitation invitation : reservation.getInvitations())
+                        if (invitation.getStatus().equalsIgnoreCase(InvitationStatus.ACCEPTED))
+                            visits++;
+                }
+            }
+            restaurantDTOs.add(new RestaurantDTO(r, meanMark, friendsMark, visits));
         }
         return restaurantDTOs;
     }
@@ -170,6 +184,8 @@ public class RestaurantServiceImpl implements RestaurantService
                 }
             }
         }
+
+        rest.setAddress(restaurant.getAddress());
 
         Restaurant retval = restaurantRepository.save(rest);
         return retval;

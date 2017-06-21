@@ -23,8 +23,11 @@ public class Address
     @Column(name = "address_city")
     private String city;
 
-    @Column(name = "address_street_and_number")
-    private String address;
+    @Column(name = "address_number")
+    private String number;
+
+    @Column(name = "address_street")
+    private String street;
 
     @Column(name = "address_postal_code")
     private String postalCode;
@@ -43,7 +46,8 @@ public class Address
 
         if (id != null ? !id.equals(address.id) : false) return false;
         if (city != null ? !city.equals(address.city) : address.city != null) return false;
-        if (this.address != null ? !this.address.equals(address.address) : address.address != null) return false;
+        if (street != null ? !street.equals(address.street) : address.street != null) return false;
+        if (number != null ? !number.equals(address.number) : address.number != null) return false;
         if (postalCode != null ? !postalCode.equals(address.postalCode) : address.postalCode != null) return false;
         if (country != null ? !country.equals(address.country) : address.country != null) return false;
 
@@ -56,17 +60,11 @@ public class Address
     {
         int result = 0;
         result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (street != null ? street.hashCode() : 0);
+        result = 31 * result + (number != null ? number.hashCode() : 0);
         result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
         return result;
-    }
-
-
-    @Override
-    public String toString()
-    {
-        return address + ", " + city + " , " + country;
     }
 }
 

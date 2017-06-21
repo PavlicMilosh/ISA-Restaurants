@@ -20,6 +20,10 @@ export class UpdateRestaurantComponent implements OnInit
   private editingDish: Dish;
   private rnameEditing: string;
   private rdescEditing: string;
+  private rcountryEditing: string;
+  private rcityEditing: string;
+  private rstreetEditing: string;
+  private rnumberEditing: string;
   private editingRegion: RestaurantRegion;
   private currentRegion: RestaurantRegion;
   private seats: number;
@@ -36,7 +40,14 @@ export class UpdateRestaurantComponent implements OnInit
       drinks: [],
       tables: [],
       managers: [],
-      regions: []
+      regions: [],
+      address:
+        {
+          country: "",
+          city: "",
+          street: "",
+          number: ""
+        }
     };
     this.editingRegion =
     {
@@ -52,6 +63,9 @@ export class UpdateRestaurantComponent implements OnInit
       tables: [],
       color: "#000000"
     };
+
+
+
     this.newDish();
     this.newDrink();
   }
@@ -196,6 +210,16 @@ export class UpdateRestaurantComponent implements OnInit
   {
     this.restaurant.name = this.rnameEditing;
     this.restaurant.description = this.rdescEditing;
+    let address =
+      {
+        country: this.rcountryEditing,
+        city: this.rcityEditing,
+        street: this.rstreetEditing,
+        number: this.rnumberEditing
+      };
+    this.restaurant.address = address;
+
+    console.log(this.restaurant);
   }
 
   manageDrink()
@@ -271,11 +295,20 @@ interface Restaurant
   id: number;
   name: string;
   description: string;
+  address: Address;
   dishes: Dish[];
   drinks: Drink[];
   managers: Manager[];
   tables: RestaurantTable[];
   regions: RestaurantRegion[];
+}
+
+interface Address
+{
+  country: string;
+  city: string;
+  street: string;
+  number: string;
 }
 
 interface Dish

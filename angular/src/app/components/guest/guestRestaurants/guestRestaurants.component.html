@@ -1,6 +1,6 @@
 
 
-<div class="panel panel-default"><div class="panel-body"><div class="table-container">
+<div><div><div>
 
   <!-- SEARCH BAR -->
   <div class="row"><div class="col-sm-6 col-sm-offset-3"><div id="imaginary_container"><div class="input-group stylish-input-group">
@@ -17,45 +17,100 @@
     <!-- TABLE -->
     <table class="table table-filter"><tbody>
 
-      <tr *ngFor="let restaurant of restaurants" [attr.id]="'restaurant_' + restaurant.id">
+    <tr>
+      <th></th>
 
-        <td class="image">
-          <img src="https://s-media-cache-ak0.pinimg.com/originals/14/c3/8c/14c38ce05dc93cc7b5d82a9b8f04db08.jpg" class="media-photo">
-        </td>
+      <th>
+        <div class="table-number">
+          <a (click)="sortData('name')" target="_blank" type="button" class="header">Name</a>
+        </div>
+      </th>
 
-        <td>
-          <div class = "table-name">{{restaurant.name}}</div>
-          <div class = "table-row-name">{{restaurant.description}}</div>
-        </td>
+      <th>
+        <div class="table-number">
+          <a (click)="sortData('meanMark')" target="_blank" type="button" class="header">Mean mark</a>
+        </div>
+      </th>
 
-        <td>
-          <div class="table-number">{{restaurant.meanMark}}</div>
-          <div class="table-row-name">mean mark</div>
-        </td>
+      <th>
+        <div class="table-number">
+          <a (click)="sortData('friendsMark')" target="_blank" type="button" class="header">Friends mark</a>
+        </div>
+      </th>
 
-        <td>
-          <div class="table-number">{{restaurant.friendsMark}}</div>
-          <div class="table-row-name">friends mark</div>
-        </td>
+      <th>
+        <div class="table-number">
+          <a (click)="sortData('visits')" target="_blank" type="button" class="header">Visits</a>
+        </div>
+      </th>
 
-        <td>
-          <div class="table-number">{{restaurant.address}}</div>
-          <div class="table-row-name">address</div>
-        </td>
+      <th>
+        <div class="table-number">
+          <a (click)="sortData('distance')" target="_blank" type="button" class="header">Distance</a>
+        </div>
+      </th>
 
-        <td class="buttons">
-          <div class="left">
-            <button (click)="showOnMap(restaurant.id)" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#mapModal">Show on map</button>
-          </div>
-        </td>
+      <th>
+      </th>
 
-        <td class="buttons">
-          <div class="left">
-            <button (click)="selectRestaurant(restaurant.id)" type="button" class="btn btn-primary btn-lg">Select</button>
-          </div>
-        </td>
+      <td></td>
+      <td></td>
+    </tr>
 
-      </tr>
+    <tr *ngFor="let restaurant of restaurants" [attr.id]="'restaurant_' + restaurant.id">
+
+      <td class="image">
+        <img src="https://s-media-cache-ak0.pinimg.com/originals/14/c3/8c/14c38ce05dc93cc7b5d82a9b8f04db08.jpg" class="media-photo">
+      </td>
+
+      <td>
+        <div class = "table-name">{{restaurant.name}}</div>
+        <div class = "table-row-name">{{restaurant.description}}</div>
+      </td>
+
+      <td>
+        <div class="table-number">{{restaurant.meanMark}}</div>
+        <div class="table-row-name">mean mark</div>
+      </td>
+
+      <td>
+        <div class="table-number">{{restaurant.friendsMark}}</div>
+        <div class="table-row-name">friends mark</div>
+      </td>
+
+      <td>
+        <ng-container *ngIf="restaurant.visits != null">
+          <div class="table-number">{{restaurant.visits}}</div>
+        </ng-container>
+        <ng-container *ngIf="restaurant.visits == null">
+          <div class="table-number">N/A</div>
+        </ng-container>
+        <div class="table-row-name">visits</div>
+      </td>
+
+      <td>
+        <ng-container *ngIf="restaurant.address != null">
+        <div class="table-number">{{restaurant.address.street + ' ' + restaurant.address.number + ', ' + restaurant.address.city + ', ' + restaurant.address.country}}</div>
+        </ng-container>
+        <ng-container *ngIf="restaurant.address == null">
+          <div class="table-number">N/A</div>
+        </ng-container>
+        <div class="table-row-name">address</div>
+      </td>
+
+      <td class="buttons">
+        <div class="left">
+          <button (click)="showOnMap(restaurant.id)" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#mapModal">Show on map</button>
+        </div>
+      </td>
+
+      <td class="buttons">
+        <div class="left">
+          <button (click)="selectRestaurant(restaurant.id)" type="button" class="btn btn-primary btn-lg">Select</button>
+        </div>
+      </td>
+
+    </tr>
 
     </tbody></table>
 
@@ -76,10 +131,6 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
       <div class="modal-body">
         <p>Some text in the modal. {{mapAddress}}</p>
         <agm-map [latitude]="51.678418" [longitude]="7.809007">
@@ -93,7 +144,6 @@
 
   </div>
 </div>
-
 
 
 

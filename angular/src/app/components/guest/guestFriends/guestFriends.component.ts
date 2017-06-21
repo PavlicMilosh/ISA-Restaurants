@@ -16,6 +16,8 @@ export class GuestFriendsComponent implements OnInit
 
   private people: Guest[];
   private searchParams: string;
+  private firstNameSortAsc: boolean;
+  private lastNameSortAsc: boolean;
 
   constructor(private guestService: GuestService)
   {
@@ -26,6 +28,8 @@ export class GuestFriendsComponent implements OnInit
       data => this.people = data,
       error => alert(error)
     );
+    this.firstNameSortAsc = false;
+    this.lastNameSortAsc = false;
   }
 
 
@@ -63,6 +67,44 @@ export class GuestFriendsComponent implements OnInit
       data => this.people = data,
       error => alert(error)
     );
+  }
+
+
+  sortData(attribute: string)
+  {
+    let asc = true;
+
+    if (attribute == 'firstName')
+    {
+      asc = this.firstNameSortAsc;
+      this.firstNameSortAsc = !this.firstNameSortAsc;
+    }
+    if (attribute == 'lastName')
+    {
+      asc = this.lastNameSortAsc;
+      this.lastNameSortAsc = !this.lastNameSortAsc;
+    }
+
+    this.people.sort(function(a, b)
+    {
+
+      let first = a[attribute];
+      let second = b[attribute];
+      // Compare the 2 dates
+
+
+      if (asc)
+      {
+        if (first < second) return -1;
+        if (first > second) return 1;
+      }
+      else
+      {
+        if (first > second) return -1;
+        if (first < second) return 1;
+      }
+      return 0;
+    });
   }
 
 

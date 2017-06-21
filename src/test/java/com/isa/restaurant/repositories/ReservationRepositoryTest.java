@@ -1,5 +1,6 @@
 package com.isa.restaurant.repositories;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.isa.restaurant.domain.Guest;
 import com.isa.restaurant.domain.Reservation;
 import com.isa.restaurant.domain.Restaurant;
@@ -100,6 +101,15 @@ public class ReservationRepositoryTest
         Reservation got =reservations.get(0);
 
         Assert.assertEquals(expected, got);
+    }
+
+
+    @Test
+    public void testGetReservationsByReserverId()
+    {
+        Reservation expected = reservationRepository.findById(res_id);
+        List<Reservation> actual = reservationRepository.getReservationsByReserverId(g_id);
+        Assert.assertEquals(expected, actual.get(0));
     }
 
     @After

@@ -7,39 +7,68 @@
       <a (click)="updateRestaurant()" target="_self" type="button" id="updateButton" class="btn btn-primary btn-lg btn-block login-button updatebutton">UPDATE</a>
     </div>
 
+
     <!-- RESTAURANT -->
-    <form class="main-center sidebyside" method="post" action="#">
+    <form class="main-center sidebyside" method="post">
 
       <h2>Restaurant</h2>
       <hr/>
 
       <div class="form-group">
-        <label for="restaurantName" class="cols-sm-2 control-label">Restaurant Name</label>
+        <label class="cols-sm-2 control-label">Restaurant Name</label>
         <div class="cols-sm-10">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-            <input type="text" class="form-control" name="restaurantName" id="restaurantName" [(ngModel)]="rnameEditing"  placeholder="Restaurant Name"/>
+            <input type="text" class="form-control" name="restaurantName" id="restaurantName" [(ngModel)]="rnameEditing"  [ngModelOptions]="{standalone: true}" placeholder="Restaurant Name"/>
           </div>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="restaurantDescription" class="cols-sm-2 control-label">Restaurant Description</label>
+        <label class="cols-sm-2 control-label">Restaurant Description</label>
         <div class="cols-sm-10">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-            <input type="text" class="form-control" name="restaurantDescription" id="restaurantDescription" [(ngModel)]="rdescEditing"  placeholder="Restaurant Description"/>
+            <input type="text" class="form-control" name="restaurantDescription" id="restaurantDescription" [(ngModel)]="rdescEditing" [ngModelOptions]="{standalone: true}" placeholder="Restaurant Description"/>
           </div>
         </div>
       </div>
 
+      <hr/>
+
+      <div class="form-group">
+        <label class="cols-sm-2 control-label">Country</label>
+        <div class="cols-sm-10"><div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+          <input type="text" class="form-control" id="restaurantCountry" [(ngModel)]="rcountryEditing" [ngModelOptions]="{standalone: true}" placeholder="Country"/>
+        </div></div>
+      </div>
+
+      <div class="form-group">
+        <label class="cols-sm-2 control-label">City</label>
+        <div class="cols-sm-10"><div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" id="restaurantCity" [(ngModel)]="rcityEditing" [ngModelOptions]="{standalone: true}" placeholder="City"/>
+        </div></div>
+      </div>
+
+      <div class="form-group">
+        <label class="cols-sm-2 control-label">Street and number</label>
+        <div class="cols-sm-10"><div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+          <input type="text" class="form-control" id="restaurantStreet" [(ngModel)]="rstreetEditing" [ngModelOptions]="{standalone: true}" placeholder="Street"/>
+          <input type="text" class="form-control" id="restaurantNumber" [(ngModel)]="rnumberEditing" [ngModelOptions]="{standalone: true}" placeholder="##"/>
+        </div></div>
+      </div>
+
       <div class="form-group ">
-        <a (click)="manageRestaurant()" target="_self" type="button" id="restaurantButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+        <a (click)="manageRestaurant()" target="_self" type="button" class="btn btn-primary btn-lg btn-block login-button">Save</a>
       </div>
 
     </form>
 
     <br/>
+
 
     <!-- DRINKS -->
     <form class="main-center">
@@ -133,7 +162,7 @@
       </div>
 
       <div class="form-group">
-        <label for="restaurantName" class="cols-sm-2 control-label">Dish Name</label>
+        <label for="dishName" class="cols-sm-2 control-label">Dish Name</label>
         <div class="cols-sm-10">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
@@ -143,7 +172,7 @@
       </div>
 
       <div class="form-group">
-        <label for="restaurantDescription" class="cols-sm-2 control-label">Dish Description</label>
+        <label for="dishDescription" class="cols-sm-2 control-label">Dish Description</label>
         <div class="cols-sm-10">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
@@ -153,7 +182,7 @@
       </div>
 
       <div class="form-group">
-        <label for="restaurantDescription" class="cols-sm-2 control-label">Dish Price</label>
+        <label for="dishPrice" class="cols-sm-2 control-label">Dish Price</label>
         <div class="cols-sm-10">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>

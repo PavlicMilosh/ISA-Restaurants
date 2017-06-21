@@ -1,6 +1,7 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.Guest;
+import com.isa.restaurant.domain.Invitation;
 import com.isa.restaurant.domain.Reservation;
 import com.isa.restaurant.domain.VerificationToken;
 import com.isa.restaurant.services.MailService;
@@ -51,9 +52,9 @@ public class MailServiceImpl implements MailService {
 
 
     @Override
-    public void sendInvitationEmail(Guest fromWhom, Guest toWhom, Reservation reservation, String token)
+    public void sendInvitationEmail(Guest fromWhom, Guest toWhom, Invitation invitation, String token)
     {
-        MimeMessagePreparator preparator = getInvitationMessagePreparator(fromWhom, toWhom, reservation, token);
+        MimeMessagePreparator preparator = getInvitationMessagePreparator(fromWhom, toWhom, invitation, token);
 
         try
         {
@@ -77,16 +78,16 @@ public class MailServiceImpl implements MailService {
     }
 
 
-    private MimeMessagePreparator getInvitationMessagePreparator(Guest fromWhom, Guest toWhom, Reservation reservation, String token) {
+    private MimeMessagePreparator getInvitationMessagePreparator(Guest fromWhom, Guest toWhom, Invitation invitation, String token) {
 
         DateFormat df = new SimpleDateFormat("dd.MMM.yyyy HH:mm");
         String messageText = "Dear " + toWhom.getFirstName() + " " + toWhom.getLastName() + ",\n\n" +
                 "Your friend " + fromWhom.getFirstName() + " " + fromWhom.getLastName() + " has invited you to attend for meal at:\n" +
-                "Restaurant name: " + reservation.getRestaurant().getName() + "\n" +
+                "Restaurant name: " + invitation.getReservation().getRestaurant().getName() + "\n" +
                 "Restaurant address: " + "neka adresa" + "\n" +
-                "Attendance time: " + df.format(reservation.getDateTimeStart()) + "\n" +
+                "Attendance time: " + df.format(invitation.getReservation().getDateTimeStart()) + "\n" +
                 "If you wish to accept invitation please click on the folowing link: " +
-                "<http://localhost:8080/guest/" + toWhom.getId() + "/acceptInvitation/" + token + ">";
+                "<http://localhost:8080/guest/" + toWhom.getId() + "/acceptInvitation/" + invitation.getId()  + "/" + token + ">";
 
         return getPreparator(toWhom.getEmail(), messageText, "Invitation to meal");
     }
