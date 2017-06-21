@@ -32,4 +32,7 @@ public interface ReservationService
 
     List<HistoryDTO> getHistoryOfVisits(Long guestId)
             throws UserNotFoundException;
+
+    void deleteReservation(Long guestId, Long reservationId)
+            throws ReservationException, UserNotFoundException;
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -20,8 +21,9 @@ import java.util.HashSet;
 @Setter
 public class Report
 {
-    private HashSet<Dish> dishes;
-    private HashSet<Drink> drinks;
-    private HashSet<Waiter> waiters;
+    private HashMap<Dish, Double> dishMarks;
+    private HashMap<Drink, Double> drinkMarks;
+    private HashMap<Waiter, Double> waiterMarks;
+    private HashMap<Waiter, Double> waiterProfits;
     private Double restaurantMark;
 }

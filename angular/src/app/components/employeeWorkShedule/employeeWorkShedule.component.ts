@@ -1,7 +1,7 @@
 /**
  * Created by djuro on 5/15/2017.
  */
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from "../../services/users.service";
 import * as $ from 'jquery';
 
@@ -11,7 +11,8 @@ import * as $ from 'jquery';
   styleUrls: ['./employeeWorkShedule.component.css'],
   providers: [UserService]
 })
-export class EmployeeWorkShedule{
+export class EmployeeWorkShedule implements OnInit
+{
 
   events:SheduleElement[]=[];
 
@@ -26,19 +27,22 @@ export class EmployeeWorkShedule{
   start:string;
   end:string;
 
+  currentStart:string;
+  currentEnd:string;
+
   month:string;
   day:string;
   hour:string;
   minutes:string;
 
 
+  name:string;
 
-  workShedule1:WorkShedule={id:null, startTime:this.date1,endTime:this.date2,day:1,restaurant:null,worker:null};
-  workShedule2:WorkShedule={id:null, startTime:this.date3,endTime:this.date4,day:2,restaurant:null,worker:null};
-  workShedule3:WorkShedule={id:null, startTime:this.date5,endTime:this.date6,day:3,restaurant:null,worker:null};
+  currentDay:number;
 
-  items:WorkShedule[]=[this.workShedule1, this.workShedule2, this.workShedule3];
 
+  items:WorkShedule[];
+  otherItems:WorkShedule[];
   calendarOptions = {
     height: 'auto',
     contentHeight: 'auto',
@@ -60,46 +64,98 @@ export class EmployeeWorkShedule{
   };
 
   constructor(private userService: UserService) {
-    /*
-     this.userService.getSchedule().subscribe
-     (
-     (data:WorkShedule[]) => this.items = data,
-     error => alert(error)
-     );
-    */
 
   }
 
-  ngOnInit()
+  ngOnInit() {
+    this.userService.getAllSchedule().subscribe
+    (
+      (data: WorkShedule[]) => this.otherItems = data,
+      error => alert(error),
+      () => this.getOthersSchedules()
+    );
+  }
+
+  getOthersSchedules()
+  {
+    this.userService.getSchedule().subscribe
+    (
+      (data: WorkShedule[]) => this.items = data,
+      error => alert(error),
+      () => this.initMySchedule()
+    );
+  }
+
+  initMySchedule()
   {
     let newEvents=[];
-    for(var i=1; i<this.items.length; i++)
+    var o=this.items.length;
+    //this.addOther();
+    for(var i=0; i<this.items.length+this.otherItems.length; i++)
     {
+      if(i<o)
+      {
+        this.currentStart=this.items[i].startTime;
+        this.currentEnd=this.items[i].endTime;
+        this.day=this.items[i].day.toString();
+      }
+      else
+      {
+        this.currentStart=this.otherItems[i-o].startTime;
+        this.currentEnd=this.otherItems[i-o].endTime;
+        this.day=this.otherItems[i-o].day.toString();
+      }
 
-      if(this.items[i].startTime.getUTCHours()<10) this.hour='0'+this.items[i].startTime.getUTCHours().toString(); else this.hour=this.items[i].startTime.getUTCHours().toString();
-
-      if(this.items[i].startTime.getUTCMinutes()<10) this.minutes='0'+this.items[i].startTime.getUTCMinutes().toString(); else this.minutes=this.items[i].startTime.getUTCMinutes().toString();
-
-      this.start='2017-05-0'+(this.items[i].day-1)+'T'+this.hour+':'+this.minutes;
-
-      if(this.items[i].endTime.getUTCHours()<10) this.hour='0'+this.items[i].endTime.getUTCHours().toString(); else this.hour=this.items[i].endTime.getUTCHours().toString();
-
-      if(this.items[i].endTime.getUTCMinutes()<10) this.minutes='0'+this.items[i].endTime.getUTCMinutes().toString(); else this.minutes=this.items[i].endTime.getUTCMinutes().toString();
-
-      this.end='2017-05-0'+(this.items[i].day-1)+'T'+this.hour+':'+this.minutes;
+      const [first, second] = this.currentStart.split(' ');
+      const [hh,mm,ss] = second.split(':')
+      this.getNumberOfDay(this.day)
+      this.start='2017-05-0'+this.currentDay.toString()+'T'+hh+':'+mm;
 
 
-      console.log(this.start);
-      console.log(this.end);
+      const [first1, second1] = this.currentEnd.split(' ');
+      const [hh1,mm1,ss1] = second1.split(':')
+      this.end='2017-05-0'+this.currentDay.toString()+'T'+hh1+':'+mm1;
 
-      newEvents.push({id:i,title:'work',start:this.start,
-        end:this.end});
+      if(i<o)
+      {
+        newEvents.push({id:i,title:'work',start:this.start, end:this.end});
+      }
+      else
+      {
+        this.name=this.otherItems[i-o].worker.firstName+' '+this.otherItems[i-o].worker.lastName;
+        newEvents.push({id:i,title:this.name,start:this.start, end:this.end, color:'green'});
+      }
     }
 
     this.calendarOptions.events = newEvents;
     $('#myCalendar').fullCalendar('renderEvents', newEvents, true);
+    $('#myCalendar').fullCalendar('refresh');
+  }
+
+
+  addOther()
+  {
+    for(var i=0;i<this.otherItems.length;i++)
+    {
+      this.items.push(this.otherItems[i]);
+    }
+
+  }
+
+
+  getNumberOfDay(dayName:string)
+  {
+    this.currentDay=0;
+    if(dayName=="MONDAY") this.currentDay=1;
+    if(dayName=="TUESDAY") this.currentDay=2;
+    if(dayName=="WEDNESDAY") this.currentDay=3;
+    if(dayName=="THURSDAY") this.currentDay=4;
+    if(dayName=="FRIDAY") this.currentDay=5;
+    if(dayName=="SATURDAY") this.currentDay=6;
+    if(dayName=="SUNDAY") this.currentDay=7;
   }
 }
+
 
 interface UserDTO
 {
@@ -110,14 +166,25 @@ interface UserDTO
   email: string;
 }
 
+/*
+ interface WorkShedule
+ {
+ id:number;
+ startTime:Date;
+ endTime:Date;
+ day:number;
+ worker:any;
+ restaurant:any;
+ }
+ */
+
 interface WorkShedule
 {
   id:number;
-  startTime:Date;
-  endTime:Date;
+  startTime:string;
+  endTime:string;
   day:number;
-  worker:any;
-  restaurant:any;
+  worker:User;
 }
 
 interface Restaurant
@@ -142,6 +209,13 @@ interface Schedule
   endTime: string;
   day: number;
 }
+
+interface User
+{
+  firstName:string;
+  lastName:string;
+}
+
 
 
 

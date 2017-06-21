@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashSet;
@@ -34,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Transactional
 public class FriendshipIntegrationTest
 {
     @Autowired
@@ -66,13 +68,13 @@ public class FriendshipIntegrationTest
     {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
 
-        Guest g1 = new Guest("g1", "g1", "Guest1", "Guestovic1");
-        Guest g2 = new Guest("g2", "g2", "Guest2", "Guestovic2");
-        Guest g3 = new Guest("g3", "g3", "Guest3", "Guestovic3");
-        Guest g4 = new Guest("g4", "g4", "Guest4", "Guestovic4");
-        Guest g5 = new Guest("g5", "g5", "Guest5", "Guestovic5");
-        Guest g6 = new Guest("g6", "g6", "Guest6", "Guestovic6");
-        Guest g7 = new Guest("g7", "g7", "Guest7", "Guestovic7");
+        Guest g1 = new Guest("g1_test", "g1", "Guest1", "Guestovic1");
+        Guest g2 = new Guest("g2_test", "g2", "Guest2", "Guestovic2");
+        Guest g3 = new Guest("g3_test", "g3", "Guest3", "Guestovic3");
+        Guest g4 = new Guest("g4_test", "g4", "Guest4", "Guestovic4");
+        Guest g5 = new Guest("g5_test", "g5", "Guest5", "Guestovic5");
+        Guest g6 = new Guest("g6_test", "g6", "Guest6", "Guestovic6");
+        Guest g7 = new Guest("g7_test", "g7", "Guest7", "Guestovic7");
 
         Friendship f_g1_g2 = new Friendship(g1, g2);
         f_g1_g2.setActionUser(g1);

@@ -59,23 +59,18 @@ public class Guest extends User
     @Override
     public boolean equals(Object o)
     {
-        if (this == o)
-            return true;
-        if (!(o instanceof Guest))
-            return false;
+        if (this == o) return true;
+        if (!(o instanceof Guest)) return false;
 
         User user = (Guest) o;
 
-        if (id != null ? !id.equals(user.id) : false)
-            return false;
-        if (email != null ? !email.equals(user.email) : user.email != null)
-            return false;
-        if (password != null ? !password.equals(user.password) : user.password != null)
-            return false;
-        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null)
-            return false;
+        if (id != null ? !id.equals(user.id) : false) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
 
-        return lastName != null ? lastName.equals(user.lastName) : user.lastName == null;
+        return true;
     }
 
 

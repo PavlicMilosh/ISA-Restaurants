@@ -87,4 +87,5 @@ public class RestaurantTable
         this.left = rtDTO.getTop();
         this.angle = rtDTO.getTop();
     }
+
 }

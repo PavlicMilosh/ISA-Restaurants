@@ -1,0 +1,11 @@
+
+<div class="panel panel-default"><div class="panel-body"><div class="table-container">
+<div>
+  <form #myForm="ngForm" novalidate>
+    <my-date-picker name="start" [options]="myDatePickerOptions"
+                    [(ngModel)]="startDate" required></my-date-picker>
+  </form>
+</div>
+<charts [daysSubject]="" [weekSubject]=""></charts>
+
+</div></div></div>

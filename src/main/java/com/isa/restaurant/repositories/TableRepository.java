@@ -21,4 +21,6 @@ public interface TableRepository extends JpaRepository<RestaurantTable, Long>
     @Lock(LockModeType.OPTIMISTIC)
     @Query("SELECT rt FROM RestaurantTable rt WHERE rt.restaurant.id = :restaurant_id")
     List<RestaurantTable> findByRestaurantId(@Param("restaurant_id") Long restaurantId);
+
+    RestaurantTable findById(Long id);
 }

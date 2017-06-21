@@ -39,4 +39,11 @@ public class WorkScheduleDTO
         this.day = day;
         this.regionId = region.getId();
     }
+
+    public WorkScheduleDTO(String startTime, String endTime, Day day)
+    {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.day = day;
+    }
 }

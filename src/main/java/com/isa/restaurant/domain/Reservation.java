@@ -42,16 +42,20 @@ public class Reservation
     @JoinColumn(referencedColumnName = "user_id", name = "reservation_reserver_id")
     private Guest reserver;
 
+    @Version
+    @Column(name = "reservation_version")
+    private Long version;
+
     @Column(name = "reservation_status")
     private String status;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Invitation> invitations;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<RestaurantTable> tables;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Order> orders;
 
 
@@ -104,7 +108,9 @@ public class Reservation
         if (dateTimeEnd != null ? !dateTimeEnd.equals(reservation.dateTimeEnd) : reservation.dateTimeEnd != null) return false;
         if (reserver != null ? !reserver.equals(reservation.reserver) : reservation.reserver != null) return false;
         if (orders != null ? !orders.equals(reservation.orders) : reservation.orders != null) return false;
+        if (tables != null ? !tables.equals(reservation.tables) : reservation.tables != null) return false;
         if (status != null ? !status.equals(reservation.status) : reservation.status != null) return false;
+        if (version != null ? !version.equals(reservation.version) : reservation.version != null) return false;
         return true;
 
     }
@@ -119,7 +125,9 @@ public class Reservation
         result = 31 * result + (dateTimeEnd != null ? dateTimeEnd.hashCode() : 0);
         result = 31 * result + (reserver != null ? reserver.hashCode() : 0);
         result = 31 * result + (orders != null ? orders.hashCode() : 0);
+        result = 31 * result + (tables != null ? tables.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (version != null ? version.hashCode() : 0);
         return result;
     }
 

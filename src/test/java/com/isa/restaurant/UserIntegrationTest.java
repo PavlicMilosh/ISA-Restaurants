@@ -44,7 +44,7 @@ public class UserIntegrationTest
         this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
         Restaurant r = restaurantRepository.save(new Restaurant("MyFirstRestaurant", "My first restaurant"));
         DishType dishType = new DishType(r,"salate");
-        Waiter w = new Waiter("e", "e", "e", "e");
+        Waiter w = new Waiter("waiter", "waiter", "waiter", "waiter");
         w.setRestaurant(r);
         userRepository.save(w);
     }
@@ -67,7 +67,7 @@ public class UserIntegrationTest
     @Test
     public void testAddingSchedule() throws Exception
     {
-        Waiter w = (Waiter) userRepository.findByEmail("e");
+        Waiter w = (Waiter) userRepository.findByEmail("waiter");
         this.mvc.perform(post("/users/" + w.getId() + "/addSchedule")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("[{\"startTime\":\"15:00\", \"endTime\":\"22:00\", \"day\":1}]"))

@@ -43,13 +43,52 @@ public class Bill {
         this.orders=new HashSet<>();
     }
 
+    public Bill(User user, RestaurantTable restaurantTable, Set<Order> orders)
+    {
+        this.orders=orders;
+        this.price=0.0;
+        this.restaurantTable=restaurantTable;
+        this.user=user;
+    }
+
     public void calculateBillPrice()
     {
         for (Order order: orders) this.price += order.getPrice();
     }
 
+
     public void addOrder(Order order)
     {
         this.orders.add(order);
+    }
+
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof Bill)) return false;
+
+        Bill bill = (Bill) o;
+
+        if (id != null ? !id.equals(bill.id) : false) return false;
+        if (orders != null ? !orders.equals(bill.orders) : bill.orders != null) return false;
+        if (user != null ? !user.equals(bill.user) : bill.user != null) return false;
+        if (price != null ? !price.equals(bill.price) : bill.price != null) return false;
+        if (restaurantTable != null ? !restaurantTable.equals(bill.restaurantTable) : bill.restaurantTable != null) return false;
+
+        return true;
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        int result = 0;
+        result = 31 * result + (orders != null ? orders.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (restaurantTable != null ? restaurantTable.hashCode() : 0);
+        return result;
     }
 }

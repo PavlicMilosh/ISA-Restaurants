@@ -1,10 +1,7 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
-import com.isa.restaurant.domain.DTO.GuestDTO;
-import com.isa.restaurant.domain.DTO.UpdatingUser;
-import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.repositories.RestaurantOrdersRepository;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.repositories.VerificationTokenRepository;
 import com.isa.restaurant.repositories.WorkScheduleRepository;
@@ -14,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +25,6 @@ public class UserServiceImpl implements UserService
 {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
-    private final RestaurantOrdersRepository restaurantOrdersRepository;
     private final Integer verificationTokenExpiryTime = 1440;
 
     private final PasswordEncoder passwordEncoder;
@@ -36,12 +34,10 @@ public class UserServiceImpl implements UserService
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            VerificationTokenRepository verificationTokenRepository,
-                           RestaurantOrdersRepository restaurantOrdersRepository,
                            WorkScheduleRepository workScheduleRepository, PasswordEncoder passwordEncoder)
     {
         this.userRepository = userRepository;
         this.verificationTokenRepository = verificationTokenRepository;
-        this.restaurantOrdersRepository=restaurantOrdersRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -144,7 +140,7 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public Set<WorkSchedule> getSchedule(Long id)
+    public Set<WorkScheduleDTO> getSchedule(Long id)
     {
         User u = userRepository.findById(id);
         Set<WorkSchedule> ws = null;
@@ -160,20 +156,27 @@ public class UserServiceImpl implements UserService
         {
             ws = ((Waiter) u).getSchedule();
         }
-        return ws;
+        Set<WorkScheduleDTO> workerSchedule=new HashSet<WorkScheduleDTO>();
+        for(WorkSchedule schedule:ws)
+        {
+            workerSchedule.add(new WorkScheduleDTO(schedule.getStartTime().toString(),schedule.getEndTime().toString(),schedule.getDay()));
+        }
+        return workerSchedule;
     }
 
     @Override
-    public Restaurant getUserRestaurant(Long id)
+    public RestaurantDTO getUserRestaurant(Long id)
     {
         Waiter w=(Waiter) userRepository.findById(id);
         if(w == null)
             return null;
-        return w.getRestaurant();
+        Restaurant r=w.getRestaurant();
+        RestaurantDTO restaurantDTO=new RestaurantDTO(r);
+        return restaurantDTO;
     }
 
     @Override
-    public Set<Order> getRestaurantOrders(Long id)
+    public Set<OrderItemDTO> getRestaurantOrders(Long id)
     {
         User u = userRepository.findById(id);
         Restaurant r = null;
@@ -189,8 +192,24 @@ public class UserServiceImpl implements UserService
         {
             r = ((Waiter) u).getRestaurant();
         }
-        RestaurantOrders ro=restaurantOrdersRepository.findByRestaurantId(r.getId());
-        return ro.getOrders();
+        Set<OrderItemDTO> orders=new HashSet<OrderItemDTO>();
+        for(Order o : r.getOrders())
+        {
+            if(!o.getFinished())
+            {
+                Set<OrderItem> orderItems = new HashSet<OrderItem>();
+                for (OrderItem oi : o.getOrderItems()) {
+                    if(oi.getFinished()!=true && oi.getPreparing()!=true)
+                    {
+                        orderItems.add(oi);
+                    }
+                }
+                OrderItemDTO temp=new OrderItemDTO(o);
+                temp.setOrderItems(orderItems);
+                orders.add(temp);
+            }
+        }
+        return orders;
     }
 
     @Override
@@ -207,5 +226,75 @@ public class UserServiceImpl implements UserService
     {
         User u = userRepository.findOne(userId);
         return new UpdatingUser(u);
+    }
+
+    @Override
+    public Long getWaiterRegionId(Long userId)
+    {
+        User u = userRepository.findById(userId);
+        Waiter waiter = (Waiter) u;
+        Set<WorkSchedule> schedule=waiter.getSchedule();
+        Calendar calendar = Calendar.getInstance();
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        dayOfWeek=dayOfWeek-2;
+        if(dayOfWeek==-1) dayOfWeek=6;
+        Long regionId = -1l;
+        for(WorkSchedule ws : schedule)
+        {
+            if(ws.getDay().ordinal()==dayOfWeek)
+            {
+                regionId=ws.getRegion().getId();
+                break;
+            }
+        }
+        return regionId;
+    }
+
+    @Override
+    public Set<WorkScheduleDTO> getAllSchedule(Long id)
+    {
+        User u = userRepository.findById(id);
+        Integer role=0;
+        Restaurant r=null;
+        Set<WorkSchedule> schedule=new HashSet<WorkSchedule>();
+        if(u instanceof Bartender)
+        {
+            r = ((Bartender) u).getRestaurant();
+            for(Bartender b:r.getBartenders())
+            {
+                schedule.addAll(b.getSchedule());
+            }
+        }
+        else if(u instanceof Cook)
+        {
+            r = ((Cook) u).getRestaurant();
+            for(Cook c:r.getCooks())
+            {
+                schedule.addAll(c.getSchedule());
+            }
+        }
+        else if(u instanceof Waiter)
+        {
+            r = ((Waiter) u).getRestaurant();
+            for(Waiter w:r.getWaiters())
+            {
+                schedule.addAll(w.getSchedule());
+            }
+        }
+        Set<WorkScheduleDTO> workerSchedule=new HashSet<WorkScheduleDTO>();
+        for(WorkSchedule s:schedule)
+        {
+            if(s.getWorker().getId()!=id)
+            {
+                WorkScheduleDTO tempSchedule=new WorkScheduleDTO(s.getStartTime().toString(),s.getEndTime().toString(),s.getDay());
+                Bartender tempUser=new Bartender();
+                tempUser.setFirstName(s.getWorker().getFirstName());
+                tempUser.setLastName(s.getWorker().getLastName());
+                tempSchedule.setWorker(tempUser);
+                workerSchedule.add(tempSchedule);
+            }
+
+        }
+        return workerSchedule;
     }
 }

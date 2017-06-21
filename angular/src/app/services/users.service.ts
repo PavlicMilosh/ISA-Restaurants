@@ -200,6 +200,24 @@ export class UserService
     return this.http.get("http://localhost:8080/users/"+ userId+"/getRestaurant", { headers : headers })
       .map(res => res.json());
   }
+
+  getRegionId()
+  {
+    let userId = LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/users/"+ userId+"/getWaiterRegionId", { headers : headers })
+      .map(res => res.json());
+  }
+
+  getAllSchedule()
+  {
+    let userId = LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/users/"+userId+"/getAllSchedule")
+      .map(res => res.json());
+  }
 }
 
 interface Schedule

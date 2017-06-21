@@ -179,4 +179,20 @@ public class RestaurantController
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/waiter/{waiterId}/getRestaurantsTables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RestaurantTableDTO>> getRestaurantsTables(@PathVariable Long waiterId)
+    {
+        List<RestaurantTableDTO> tables = this.restaurantService.getRestaurantTables(waiterId);
+        if (tables == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(tables, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/report", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Report> getReport(@PathVariable Long restaurantId, @RequestBody PeriodDTO period)
+    {
+        Report report = restaurantService.getReport(restaurantId, period.getStartDate(), period.getEndDate());
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
+
 }

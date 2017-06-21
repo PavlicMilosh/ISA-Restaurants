@@ -2,6 +2,7 @@ package com.isa.restaurant.services;
 import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.domain.*;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -45,7 +46,9 @@ public interface RestaurantService
 
     List<RestaurantTableDTO> getTables(Long restaurantId);
 
-    Report getReport(Long restaurantId);
+    Report getReport(Long restaurantId, Date startDate, Date endDate);
 
     List<DishType> getDishTypes(Long managerId);
+
+    List<RestaurantTableDTO> getRestaurantTables(Long waiterId);
 }

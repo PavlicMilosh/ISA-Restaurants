@@ -36,10 +36,12 @@ public class Region
     @JsonIgnore
     private Restaurant restaurant;
 
+
     public Region()
     {
         this.tables = new HashSet<>();
     }
+
 
     public Region(String name, Restaurant r, Set<RestaurantTable> tables)
     {
@@ -47,6 +49,37 @@ public class Region
         this.restaurant = r;
         this.tables = tables;
     }
+
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof Region)) return false;
+
+        Region region = (Region) o;
+
+        if (id != null ? !id.equals(region.id) : false) return false;
+        if (name != null ? !name.equals(region.name) : region.name != null) return false;
+        if (color != null ? !color.equals(region.color) : region.color != null) return false;
+        if (tables != null ? !tables.equals(region.tables) : region.tables != null) return false;
+        if (restaurant != null ? !restaurant.equals(region.restaurant) : region.restaurant != null) return false;
+
+        return true;
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        int result = 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (color != null ? color.hashCode() : 0);
+        result = 31 * result + (tables != null ? tables.hashCode() : 0);
+        result = 31 * result + (restaurant != null ? restaurant.hashCode() : 0);
+        return result;
+    }
+
 
     public void addTable(RestaurantTable t)
     {

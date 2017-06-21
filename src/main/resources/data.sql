@@ -78,6 +78,10 @@ INSERT INTO public.offer(
 	id, amount, version, provider_user_id, shopping_list_shopping_list_id)
 	VALUES (0, 100, 0, -5, 0);
 
+INSERT INTO public.offer(
+	id, amount, version, provider_user_id, shopping_list_shopping_list_id)
+	VALUES (-1, 500, 1, -6, 0);
+
 INSERT INTO public.dish_type(
 	dish_type_id, dish_type_name, dish_type_restaurant_id)
 	VALUES (0, 'meat', 0);

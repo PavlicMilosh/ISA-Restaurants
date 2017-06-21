@@ -9,6 +9,7 @@ import com.isa.restaurant.repositories.ShoppingRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.RestaurantService;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +58,7 @@ public class ShoppingIntegrationTest
     public void setUp()
     {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
+
     }
 
     @Test
@@ -102,8 +104,21 @@ public class ShoppingIntegrationTest
                 .content(s))
                 .andExpect(status().isConflict());
 
-        sl.setDeadline(new Date(456));
         sl.setAcceptedOffer(null);
+        shoppingRepository.save(sl);
+
+
+        Offer newsend = new Offer();
+        newsend.setVersion(0L);
+        newsend.setId(-1L);
+
+
+        this.mvc.perform(put("/shopping/" + -6 + "/" + 0 + "/sendOffer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(newsend)))
+                .andExpect(status().isConflict());
+
+        sl.setDeadline(new Date(456));
         shoppingRepository.save(sl);
 
         this.mvc.perform(put("/shopping/" + -5 + "/" + 0 + "/sendOffer")
@@ -129,7 +144,7 @@ public class ShoppingIntegrationTest
 
         String s = om.writeValueAsString(o);
 
-        this.mvc.perform(put("/shopping/" + -0 + "/acceptOffer")
+        this.mvc.perform(put("/shopping/" + 0 + "/acceptOffer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(s))
                 .andExpect(status().isOk());
@@ -137,7 +152,7 @@ public class ShoppingIntegrationTest
         o.setVersion(0l);
         offerRepository.save(o);
 
-        this.mvc.perform(put("/shopping/" + -0 + "/acceptOffer")
+        this.mvc.perform(put("/shopping/" + 0 + "/acceptOffer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(s))
                 .andExpect(status().isConflict());
