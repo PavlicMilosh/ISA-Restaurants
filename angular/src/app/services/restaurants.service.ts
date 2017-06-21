@@ -118,6 +118,22 @@ export class RestaurantService
       .map(res => res.json());
 
   }
+
+  getDishTypes(managerId: number) {
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get(AddressUtils.backendAddress() + "/restaurants/" + managerId + "dishTypes", {headers: headers})
+      .map(res => res.json());
+  }
+
+  getRestaurantTables()
+  {
+    let userId = LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/restaurants/waiter/" + userId + "/getRestaurantsTables", {headers: headers})
+      .map(res => res.json());
+  }
 }
 
 interface Restaurant

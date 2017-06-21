@@ -1,9 +1,7 @@
 package com.isa.restaurant.controllers;
 
 import com.isa.restaurant.domain.*;
-import com.isa.restaurant.domain.DTO.UpdatingUser;
-import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.domain.DTO.WorkScheduleDTO;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.services.UserService;
 import com.isa.restaurant.services.WorkScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,9 +90,9 @@ public class UserController
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}/getSchedule", method = RequestMethod.GET)
-    public ResponseEntity<Set<WorkSchedule>> getWaiterSchedule(@PathVariable Long id){
-        Set<WorkSchedule> schedule=userService.getSchedule(id);
+    @RequestMapping(value = "/{id}/getSchedule", method = RequestMethod.GET) //+++
+    public ResponseEntity<Set<WorkScheduleDTO>> getWaiterSchedule(@PathVariable Long id){
+        Set<WorkScheduleDTO> schedule=userService.getSchedule(id);
         if(schedule == null)
         {
             schedule = new HashSet<>();
@@ -103,14 +101,14 @@ public class UserController
     }
 
     @RequestMapping(value = "/{id}/getRestaurant", method = RequestMethod.GET)
-    public ResponseEntity<Restaurant> getUserRestaurant(@PathVariable Long id){
-        Restaurant r=userService.getUserRestaurant(id);
+    public ResponseEntity<RestaurantDTO> getUserRestaurant(@PathVariable Long id){
+        RestaurantDTO r=userService.getUserRestaurant(id);
         return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/getRestaurantOrders", method = RequestMethod.GET)
-    public ResponseEntity<Set<Order>> getRestaurantOrders(@PathVariable Long id) {
-        Set<Order> orders = userService.getRestaurantOrders(id);
+    public ResponseEntity<Set<OrderItemDTO>> getRestaurantOrders(@PathVariable Long id) {
+        Set<OrderItemDTO> orders = userService.getRestaurantOrders(id);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -123,5 +121,22 @@ public class UserController
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{userId}/getWaiterRegionId", method = RequestMethod.GET)
+    public ResponseEntity<Long> getWaiterRegionId(@PathVariable Long userId)
+    {
+        Long regionId = userService.getWaiterRegionId(userId);
+        return new ResponseEntity<>(regionId, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/getAllSchedule", method = RequestMethod.GET) //+++
+    public ResponseEntity<Set<WorkScheduleDTO>> getAllSchedule(@PathVariable Long id){
+        Set<WorkScheduleDTO> schedule=userService.getAllSchedule(id);
+        if(schedule == null)
+        {
+            schedule = new HashSet<>();
+        }
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 }

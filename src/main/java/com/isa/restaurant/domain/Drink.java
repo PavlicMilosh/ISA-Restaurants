@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Milos on 12-Apr-17.
@@ -36,6 +37,9 @@ public class Drink
     @ManyToOne
     @JsonIgnore
     private Restaurant restaurant;
+
+    @OneToMany
+    private Set<DrinkMark> drinkMarks;
 
     public Drink(String name, String description, Double price, Restaurant restaurant)
     {

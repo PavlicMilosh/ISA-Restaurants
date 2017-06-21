@@ -109,7 +109,8 @@ export class NavbarComponent implements OnInit {
       links:
         [
           {text: "Update restaurant", routerLink: "/updateRestaurant"},
-          {text: "Add Shopping List", routerLink: "/addShoppingList"}
+          {text: "Add Shopping List", routerLink: "/addShoppingList"},
+          {text: "Report", routerLink: "/report"}
         ]
     };
 

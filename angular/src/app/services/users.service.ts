@@ -92,7 +92,7 @@ export class UserService
       .map(res => res.json());
   }
 
-  addWorker(firstName: string, lastName: string, email: string, password: string, clothesNumber: number, footwearNumber: number, role: string) {
+  addWorker(firstName: string, lastName: string, email: string, password: string, clothesNumber: number, footwearNumber: number, role: string, dishType: any) {
     let worker =
     {
       firstName: firstName,
@@ -100,8 +100,11 @@ export class UserService
       email: email,
       password: password,
       clothesNumber: clothesNumber,
-      footwearNumber: footwearNumber
+      footwearNumber: footwearNumber,
+      dishType: null
     };
+    if(dishType != null)
+      worker.dishType = dishType;
 
     let path = '';
     let id = LoggedUtils.getId();
@@ -168,6 +171,7 @@ export class UserService
     }
     else
     {
+      oneSchedule.day--;
       schedule.push(oneSchedule);
     }
     console.log(schedule);
@@ -194,6 +198,24 @@ export class UserService
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.get("http://localhost:8080/users/"+ userId+"/getRestaurant", { headers : headers })
+      .map(res => res.json());
+  }
+
+  getRegionId()
+  {
+    let userId = LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/users/"+ userId+"/getWaiterRegionId", { headers : headers })
+      .map(res => res.json());
+  }
+
+  getAllSchedule()
+  {
+    let userId = LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/users/"+userId+"/getAllSchedule")
       .map(res => res.json());
   }
 }

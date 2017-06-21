@@ -149,6 +149,8 @@ public class ReservationServiceImpl implements ReservationService
             this.orderRepository.save(order);
             reservation.addOrder(order);
             reservationRepository.save(reservation);
+            restaurant.addOrder(order);
+            restaurantRepository.save(restaurant);
         }
 
         reservationRepository.save(reservation);
@@ -306,6 +308,9 @@ public class ReservationServiceImpl implements ReservationService
             order.setGuest(attendant);
             reservation.addOrder(order);
             orderRepository.save(order);
+            Restaurant restaurant = reservation.getRestaurant();
+            restaurant.addOrder(order);
+            restaurantRepository.save(restaurant);
         }
 
         reservationRepository.save(reservation);

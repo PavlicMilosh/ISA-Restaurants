@@ -1,19 +1,18 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
-import com.isa.restaurant.domain.DTO.RegionDTO;
-import com.isa.restaurant.domain.DTO.RestaurantDTO;
-import com.isa.restaurant.domain.DTO.RestaurantTableDTO;
-import com.isa.restaurant.domain.DTO.UserDTO;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.search.RestaurantSearch;
-import com.isa.restaurant.services.RestaurantOrdersService;
 import com.isa.restaurant.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +31,6 @@ public class RestaurantServiceImpl implements RestaurantService
     private final RestaurantMarkRepository restaurantMarkRepository;
     private final RestaurantSearch restaurantSearch;
     private final DishTypeRepository dishTypeRepository;
-    private final RestaurantOrdersService restaurantOrdersService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -46,8 +44,7 @@ public class RestaurantServiceImpl implements RestaurantService
                                  TableRepository tableRepository,
                                  RestaurantMarkRepository restaurantMarkRepository,
                                  RestaurantSearch restaurantSearch,
-                                 DishTypeRepository dishTypeRepository,
-                                 RestaurantOrdersService restaurantOrdersService)
+                                 DishTypeRepository dishTypeRepository)
     {
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -57,7 +54,6 @@ public class RestaurantServiceImpl implements RestaurantService
         this.restaurantMarkRepository = restaurantMarkRepository;
         this.restaurantSearch = restaurantSearch;
         this.dishTypeRepository = dishTypeRepository;
-        this.restaurantOrdersService = restaurantOrdersService;
     }
 
 
@@ -73,12 +69,7 @@ public class RestaurantServiceImpl implements RestaurantService
             saved = restaurantRepository.save(restaurant);
         }
         catch(Exception e)
-        {
-        }
-        if(saved.getId()!=null)
-        {
-            restaurantOrdersService.addRestaurantOrders(saved.getId());
-        }
+        {}
         return saved;
     }
 
@@ -362,5 +353,79 @@ public class RestaurantServiceImpl implements RestaurantService
             ret.add(new RestaurantTableDTO(rt, false));
         }
         return ret;
+    }
+
+    @Override
+    public Report getReport(Long restaurantId, Date startDate, Date endDate)
+    {
+        Report report = new Report();
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+        double restaurantMark = 0;
+        for(RestaurantMark rm : r.getRestaurantMarks())
+        {
+            restaurantMark += rm.getValue();
+        }
+        restaurantMark /= r.getRestaurantMarks().size();
+        report.setRestaurantMark(restaurantMark);
+
+        for(Dish d : r.getDishes())
+        {
+            report.getDishMarks().put(d, 0.0);
+            for(DishMark dm : d.getDishMarks())
+                report.getDishMarks().put(d, report.getDishMarks().get(d) + dm.getValue());
+            report.getDishMarks().put(d, report.getDishMarks().get(d) / d.getDishMarks().size());
+        }
+
+        for(Drink d : r.getDrinks())
+        {
+            report.getDrinkMarks().put(d, 0.0);
+            for(DrinkMark dm : d.getDrinkMarks())
+                report.getDrinkMarks().put(d, report.getDrinkMarks().get(d) + dm.getValue());
+            report.getDrinkMarks().put(d, report.getDrinkMarks().get(d) / d.getDrinkMarks().size());
+        }
+
+        for(Waiter w : r.getWaiters())
+        {
+            report.getWaiterMarks().put(w, 0.0);
+            for(WaiterMark wm : w.getWaiterMarks())
+                report.getWaiterMarks().put(w, report.getWaiterMarks().get(w) + wm.getValue());
+            report.getWaiterMarks().put(w, report.getWaiterMarks().get(w) / w.getWaiterMarks().size());
+
+            report.getWaiterProfits().put(w, 0.0);
+        }
+
+        for(Order o : r.getOrders())
+            if(o.getOrderTime().after(startDate) && o.getOrderTime().before(endDate))
+                report.getWaiterProfits().put(o.getWaiter(), report.getWaiterProfits().get(o.getWaiter()) + o.getPrice());
+
+        return report;
+    }
+
+    @Override
+    public List<DishType> getDishTypes(Long managerId)
+    {
+        List<DishType> dishTypes = dishTypeRepository.findAll();
+        List<DishType> ret = new ArrayList<>();
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
+        Restaurant r = rm.getRestaurant();
+        for (DishType dt : dishTypes)
+        {
+            if (dt.getRestaurant().getId() == r.getId())
+                ret.add(dt);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<RestaurantTableDTO> getRestaurantTables(Long waiterId)
+    {
+        User u = userRepository.findById(waiterId);
+        Waiter waiter = (Waiter) u;
+        List<RestaurantTableDTO> tables = new ArrayList<RestaurantTableDTO>();
+        for(RestaurantTable rt : waiter.getRestaurant().getTables())
+        {
+            tables.add(new RestaurantTableDTO(rt,false));
+        }
+        return tables;
     }
 }

@@ -41,6 +41,9 @@ public class OrderItem {
     @Column (name = "order_item_finished")
     private Boolean finished;
 
+    @Column (name = "order_item_user_id") //++++++
+    private Long userId;
+
 
     @Override
     public boolean equals(Object other)
@@ -58,6 +61,7 @@ public class OrderItem {
         if (number != null ? !number.equals(orderItem.number) : orderItem.number != null) return false;
         if (preparing != null ? !preparing.equals(orderItem.preparing) : orderItem.preparing != null) return false;
         if (finished != null ? !finished.equals(orderItem.finished) : orderItem.finished != null) return false;
+        if (userId != null ? !userId.equals(orderItem.userId) : orderItem.userId != null) return false; //+++
         return true;
 
     }

@@ -31,6 +31,7 @@ public class GuestController
     private final VerificationTokenService verificationTokenService;
     private final MailService mailService;
     private final RestaurantService restaurantService;
+    private final OrdersService ordersService;
 
     @Autowired
     public GuestController(FriendshipService friendshipService,
@@ -38,7 +39,8 @@ public class GuestController
                            ReservationService reservationService,
                            VerificationTokenService verificationTokenService,
                            MailService mailService,
-                           RestaurantService restaurantService)
+                           RestaurantService restaurantService,
+                           OrdersService ordersService)
     {
         this.reservationService = reservationService;
         this.verificationTokenService = verificationTokenService;
@@ -46,6 +48,7 @@ public class GuestController
         this.userService = userService;
         this.mailService = mailService;
         this.restaurantService = restaurantService;
+        this.ordersService = ordersService;
     }
 
 
@@ -365,5 +368,14 @@ public class GuestController
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{guestId}/getGuestOrders",   //++
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<FinishedOrderDTO>> getGuestOrders(@PathVariable Long guestId)
+    {
+        Set<FinishedOrderDTO> orders = ordersService.getGuestOrders(guestId);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 }

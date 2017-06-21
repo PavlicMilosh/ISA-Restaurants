@@ -5,12 +5,15 @@ import com.isa.restaurant.repositories.OfferRepository;
 import com.isa.restaurant.repositories.ShoppingRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.ShoppingService;
+import org.hibernate.annotations.OptimisticLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockModeType;
+import javax.persistence.OptimisticLockException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,6 +76,7 @@ public class ShoppingServiceImpl implements ShoppingService
     }
 
     @Override
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public Offer sendOffer(Offer o, Long providerId, Long shoppingListId)
     {
         Calendar c = Calendar.getInstance();
@@ -84,31 +88,27 @@ public class ShoppingServiceImpl implements ShoppingService
             return null;
 
         Provider p = (Provider) userRepository.findOne(providerId);
-
-        Offer found = offerRepository.findByProviderIdAndShoppingListId(providerId, shoppingListId);
-        if (found != null)
-        {
-            if(o.getVersion() != found.getVersion())
-                return null;
-            found.setAmount(o.getAmount());
-            Offer saved = offerRepository.save(found);
-            return saved;
-        }
-
         o.setProvider(p);
         o.setShoppingList(sl);
-        Offer saved = offerRepository.save(o);
-        return saved;
+
+        try
+        {
+            Offer ret = offerRepository.save(o);
+            return ret;
+        }
+        catch(ObjectOptimisticLockingFailureException e)
+        {
+            return null;
+        }
     }
 
     @Override
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public Boolean acceptOffer(Offer o, Long shoppingListId)
     {
         Offer found = offerRepository.findOne(o.getId());
         if(found.getVersion() != o.getVersion())
             return false;
-        found.setVersion(found.getVersion() + 1);
-        offerRepository.save(found);
         ShoppingList sl = shoppingRepository.findOne(shoppingListId);
         sl.setAcceptedOffer(found);
         shoppingRepository.save(sl);

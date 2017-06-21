@@ -6,6 +6,7 @@ import { WizardModule } from 'ng2-archwizard';
 import { MyDatePickerModule } from 'mydatepicker';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
 import { AgmCoreModule } from '@agm/core';
+import { ChartsModule } from "ng2-charts";
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -55,6 +56,10 @@ import { EmployeeWorkShedule } from "./components/employeeWorkShedule/employeeWo
 import { CalendarComponent } from "ap-angular2-fullcalendar/src/calendar/calendar";
 import { UpdateProviderComponent } from './components/updateProvider/updateProvider.component';
 import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
+import { CreateBill } from "./components/createBill/createBill.component";
+import { RestaurantReportComponent } from './components/restaurantReport/restaurantReport.component';
+import { ChartsComponent } from './components/charts/charts.component';
+
 
 
 
@@ -75,6 +80,8 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     AddProviderComponent,
     AddShoppingListComponent,
     UpdateProviderComponent,
+    RestaurantReportComponent,
+    ChartsComponent,
 
     // Djura
     UpdateUser,
@@ -86,6 +93,7 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     EmployeeWorkShedule,
     CalendarComponent,
     AddWorkScheduleComponent,
+    CreateBill,
 
     // Ogi
     GuestRegisterComponent,
@@ -104,7 +112,6 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     GuestRestaurantAttendancesComponent,
     GuestReservationUpdateComponent,
     GuestHistoryComponent
-
   ],
   imports: [
     BrowserModule,
@@ -113,6 +120,7 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
     WizardModule,
     MyDatePickerModule,
     Ng2TableModule,
+    ChartsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDktm4_Qkq5wDW1sX9PY9UKHHGwXmCxnj0'
     }),

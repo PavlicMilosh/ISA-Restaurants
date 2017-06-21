@@ -1,5 +1,5 @@
-
-import { Component } from '@angular/core';
+import {Observable, Subscription} from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OrderService } from "../../services/order.service";
 
 @Component({
@@ -10,7 +10,8 @@ import { OrderService } from "../../services/order.service";
   providers: [OrderService]
 })
 
-export class OrderDrinks {
+export class OrderDrinks implements OnDestroy, OnInit
+{
   userDTO: UserDTO;
 
   dish1:Dish={id: 1, name: "dish1", description: "my dish1", price: 0};
@@ -39,16 +40,57 @@ export class OrderDrinks {
   selectOrders:Order[]=[];
 
   selectItems:OrderItem[]=[];
+  selectOrderId:number[]=[];
+
+  canPreparing:Boolean;
+
+  postsSubscription:Subscription;
+  timerSubscription:Subscription;
+
+  finishedOrderItem:OrderItem;
 
 
   constructor(private orderService: OrderService) {
 
+    /*
     this.orderService.getAllOrders().subscribe
     (
       (data: Order[]) => this.orders = data,
       error => alert(error)
     );
+    */
+    this.refreshData();
 
+  }
+
+  ngOnInit() {
+    this.orderService.getPreparingOrderItems().subscribe
+    (
+      (data: OrderItem[]) => this.selectItems= data,
+      error => alert(error),
+      () => this.getPreparedOrdersId()
+    );
+  }
+
+  getPreparedOrdersId()
+  {
+    this.orderService.getPreparedOrderId().subscribe
+    (
+      (data:number[]) => this.selectOrderId=data,
+      error => alert(error)
+    );
+  }
+
+  private refreshData(): void {
+    this.postsSubscription=this.orderService.getAllOrders().subscribe(
+      data => {
+        this.orders = data;
+        this.subscribeToData();
+      });
+  }
+
+  private subscribeToData(): void {
+    this.timerSubscription=Observable.timer(5000).first().subscribe(() => this.refreshData());
   }
 
   selectOrder(order:number, item:number)
@@ -64,15 +106,51 @@ export class OrderDrinks {
       }
     }
     this.orders[idx1].orderItems[item].preparing=true;
-    //this.orderService.preparingOrderItem(this.orders[idx1].orderItems[item].id);
-    this.selectItems.push(this.orders[idx1].orderItems[item]);
-    this.orders[idx1].orderItems.splice(item,1);
+    this.orderService.preparingOrderItem(this.orders[idx1].orderItems[item].id).subscribe
+    (
+      (data: Boolean) => this.canPreparing = data,
+      error => alert(error),
+      ()=>this.preparing(idx1,item)
+    );
+    //this.selectItems.push(this.orders[idx1].orderItems[item]);
+    //this.orders[idx1].orderItems.splice(item,1);
+
   }
+
+  preparing(idx1:number,item:number)
+  {
+    if(this.canPreparing)
+    {
+      this.selectItems.push(this.orders[idx1].orderItems[item]);
+      this.selectOrderId.push(this.orders[idx1].id)
+      this.orders[idx1].orderItems.splice(item,1);
+    }
+  }
+
+
 
   finishedItem( index:number )
   {
     //this.finishedItem(this.selectItems[index].id);
+    console.log(this.selectItems[index].id);
+    console.log(this.selectOrderId[index]);
+    this.orderService.finishedOrderItem(this.selectItems[index].id,this.selectOrderId[index]).subscribe
+    (
+      (data:OrderItem) => this.finishedOrderItem = data,
+      error => alert(error),
+    );
     this.selectItems.splice(index,1);
+    this.selectOrderId.splice(index,1);
+  }
+
+  ngOnDestroy()
+  {
+    if (this.postsSubscription) {
+      this.postsSubscription.unsubscribe();
+    }
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
   }
 }
 

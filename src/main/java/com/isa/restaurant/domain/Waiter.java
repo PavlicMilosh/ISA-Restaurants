@@ -31,6 +31,9 @@ public class Waiter extends User
         this.authorities = Role.WAITER;
     }
 
+    @OneToMany
+    private Set<WaiterMark> waiterMarks;
+
 
     public Waiter(String email, String password, String firstName, String lastName)
     {

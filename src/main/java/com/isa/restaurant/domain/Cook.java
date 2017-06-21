@@ -25,6 +25,10 @@ public class Cook extends User
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkSchedule> schedule;
 
+    @ManyToOne
+    @JoinColumn(name = "cook_dish_type_id")
+    private DishType dishType;
+
 
     public Cook()
     {

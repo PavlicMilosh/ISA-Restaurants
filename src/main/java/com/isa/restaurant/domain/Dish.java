@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Milos on 12-Apr-17.
@@ -30,13 +31,19 @@ public class Dish
     @Column(name = "dish_desc")
     private String description;
 
-    @Column(name = "dish_price")
-    private Double price;
-
-
     @ManyToOne
     @JsonIgnore
     private Restaurant restaurant;
+
+    @Column(name = "dish_price")
+    private Double price;
+
+    @OneToMany
+    private Set<DishMark> dishMarks;
+    
+    @ManyToOne
+    @JoinColumn(name = "dish_type_id")
+    private DishType dishType;
 
     public Dish(String name, String description, Double price, Restaurant restaurant)
     {

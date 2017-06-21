@@ -68,6 +68,10 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ShoppingList> shoppingLists;
 
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Order> orders;
+
     @OneToMany
     private Set<RestaurantMark> restaurantMarks;
 
@@ -214,5 +218,10 @@ public class Restaurant
             if(t.getId() == tableId)
                 return t;
         return null;
+    }
+
+    public void addOrder(Order order)
+    {
+        this.orders.add(order);
     }
 }

@@ -31,7 +31,8 @@ public class ShoppingList
     private Offer acceptedOffer;
 
     @Column(name = "deadline")
-    @JsonFormat(locale = "srb", shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "CET")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "CET")
     private Date deadline;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "shoppingList")
