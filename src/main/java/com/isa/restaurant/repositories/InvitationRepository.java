@@ -12,8 +12,8 @@ import java.util.List;
  */
 public interface InvitationRepository extends JpaRepository<Invitation, Long>
 {
-    @Query("SELECT i FROM Invitation i WHERE i.invited.id = :user_id")
-    Invitation findByUserId(@Param("user_id") Long userId);
+    @Query("SELECT i FROM Invitation i WHERE i.invited.id = :user_id AND i.id = :id")
+    Invitation findByUserIdAndInvitationId(@Param("user_id") Long userId, @Param("id") Long invitationId);
 
     @Query("SELECT i FROM Invitation i WHERE i.invited.id = :user_id AND LOWER(i.status) = 'accepted'")
     List<Invitation> getUsersAcceptedInvitationsByUserId(@Param("user_id") Long guestId);

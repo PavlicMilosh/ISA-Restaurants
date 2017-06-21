@@ -1,8 +1,5 @@
 package com.isa.restaurant.domain.DTO;
-import com.isa.restaurant.domain.Dish;
-import com.isa.restaurant.domain.Drink;
-import com.isa.restaurant.domain.Reservation;
-import com.isa.restaurant.domain.RestaurantTable;
+import com.isa.restaurant.domain.*;
 import com.isa.restaurant.ulitity.Utilities;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +16,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties = true)
 public class ReservationDTO
 {
@@ -35,8 +31,17 @@ public class ReservationDTO
     private Set<DishOrderDTO> dishOrders;
 
 
+    public ReservationDTO()
+    {
+        this.tables = new HashSet<>();
+        this.invites = new HashSet<>();
+        this.drinkOrders = new HashSet<>();
+        this.dishOrders = new HashSet<>();
+    }
+
     public ReservationDTO(Reservation reservation)
     {
+        this();
 
         DateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat dfTime = new SimpleDateFormat("HH:mm");
@@ -48,15 +53,24 @@ public class ReservationDTO
         this.startTime = dfTime.format(reservation.getDateTimeStart());
         this.duration = Utilities.diffDatesToMinutes(reservation.getDateTimeStart(), reservation.getDateTimeEnd());
         this.reserver = new GuestDTO(reservation.getReserver());
-        this.invites = new HashSet<>();
-        this.tables = new HashSet<>();
-        this.drinkOrders = new HashSet<>();
-        this.dishOrders = new HashSet<>();
 
         for (RestaurantTable rt : reservation.getTables())
             this.tables.add(new RestaurantTableDTO(rt, false));
 
-//        for (Guest g : reservation.getInvites())
+        for (Invitation invitation : reservation.getInvitations())
+            this.invites.add(new GuestDTO(invitation.getInvited()));
+
+        for (Order o : reservation.getOrders())
+        {
+            for (OrderItem oi : o.getOrderItems())
+            {
+                if (oi.getIsDish())
+                    this.dishOrders.add(new DishOrderDTO(oi.getDish(), oi.getNumber()));
+                else
+                    this.drinkOrders.add(new DrinkOrderDTO(oi.getDrink(), oi.getNumber()));
+            }
+        }
+        //        for (Guest g : reservation.getInvites())
 //            this.invites.add(new GuestDTO(g));
     }
 }

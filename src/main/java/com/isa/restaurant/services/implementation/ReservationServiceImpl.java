@@ -26,6 +26,7 @@ public class ReservationServiceImpl implements ReservationService
 {
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
+    private final FriendshipRepository friendshipRepository;
     private final RestaurantRepository restaurantRepository;
     private final TableRepository tableRepository;
     private final InvitationRepository invitationRepository;
@@ -40,6 +41,7 @@ public class ReservationServiceImpl implements ReservationService
     @Autowired
     public ReservationServiceImpl(ReservationRepository reservationRepository,
                                   UserRepository userRepository,
+                                  FriendshipRepository friendshipRepository,
                                   RestaurantRepository restaurantRepository,
                                   TableRepository tableRepository,
                                   InvitationRepository invitationRepository,
@@ -53,6 +55,7 @@ public class ReservationServiceImpl implements ReservationService
     {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
+        this.friendshipRepository = friendshipRepository;
         this.restaurantRepository = restaurantRepository;
         this.tableRepository = tableRepository;
         this.invitationRepository = invitationRepository;
@@ -87,6 +90,8 @@ public class ReservationServiceImpl implements ReservationService
             throw new InvalidDateException();
         if (hasOccupiedTables(reservationDTO.getTables(), restaurant, dateTimeStart, dateTimeEnd))
             throw new ReservationException();
+        if (reservationDTO.getTables().isEmpty())
+            throw new ReservationException();
 
         // STANDARD
         Reservation reservation = new Reservation(guest, restaurant, dateTimeStart, dateTimeEnd, ReservationStatus.SENT);
@@ -106,7 +111,9 @@ public class ReservationServiceImpl implements ReservationService
         for (GuestDTO i : reservationDTO.getInvites())
         {
             Guest invited = (Guest) userRepository.findById(i.getId());
-            if (invited != null)
+            Friendship friendship = friendshipRepository.findByBothUsers(i.getId(), guest.getId());
+
+            if (invited != null && friendship != null)
             {
                 Invitation invitation = new Invitation(invited, reservation);
                 invitationRepository.save(invitation);
@@ -114,7 +121,7 @@ public class ReservationServiceImpl implements ReservationService
                 reservationRepository.save(reservation);
                 VerificationToken verificationToken = new VerificationToken(invited, 0, VerificationTokenPurpose.INVITATION);
                 verificationTokenRepository.save(verificationToken);
-                mailService.sendInvitationEmail(reservation.getReserver(), invited, reservation, verificationToken.getToken());
+                mailService.sendInvitationEmail(reservation.getReserver(), invited, invitation, verificationToken.getToken());
             }
         }
 
@@ -145,7 +152,8 @@ public class ReservationServiceImpl implements ReservationService
         }
 
         reservationRepository.save(reservation);
-        return new ReservationDTO(reservation);
+        ReservationDTO ret = new ReservationDTO(reservation);
+        return ret;
     }
 
 

@@ -33,6 +33,7 @@ public class Dish
     @Column(name = "dish_price")
     private Double price;
 
+
     @ManyToOne
     @JsonIgnore
     private Restaurant restaurant;

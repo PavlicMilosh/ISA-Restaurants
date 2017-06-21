@@ -48,9 +48,9 @@ public class VerificationTokenServiceImpl implements VerificationTokenService
 
 
     @Override
-    public Boolean acceptInvitation(Long guestId, String verificationTokenValue)
+    public Boolean acceptInvitation(Long guestId, Long invitationId, String verificationTokenValue)
     {
-        Invitation invitation = invitationRepository.findByUserId(guestId);
+        Invitation invitation = invitationRepository.findByUserIdAndInvitationId(guestId, invitationId);
         VerificationToken token = verificationTokenRepository.findByToken(verificationTokenValue);
 
         if (invitation == null || token == null) return false;
