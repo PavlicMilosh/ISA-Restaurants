@@ -243,7 +243,8 @@ public class ReservationServiceImpl implements ReservationService
         List<ReservationWithOrdersDTO> ret = new ArrayList<>();
 
         for (Reservation reservation : reservations)
-            ret.add(new ReservationWithOrdersDTO(reservation));
+            if (!reservation.getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))
+                ret.add(new ReservationWithOrdersDTO(reservation));
 
         return ret;
     }
@@ -261,7 +262,8 @@ public class ReservationServiceImpl implements ReservationService
         List<InvitationDTO> ret = new ArrayList<>();
 
         for (Invitation invitation : invitations)
-            ret.add(new InvitationDTO(invitation));
+            if (invitation.getReservation().getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))
+                ret.add(new InvitationDTO(invitation));
 
         return ret;
     }

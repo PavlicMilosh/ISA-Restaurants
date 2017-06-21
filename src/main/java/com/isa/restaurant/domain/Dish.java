@@ -40,7 +40,7 @@ public class Dish
 
     @OneToMany
     private Set<DishMark> dishMarks;
-    
+
     @ManyToOne
     @JoinColumn(name = "dish_type_id")
     private DishType dishType;

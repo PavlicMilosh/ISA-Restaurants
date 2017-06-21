@@ -37,6 +37,9 @@ public class Restaurant
     @Field
     private String description;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
+
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Dish> dishes;
 

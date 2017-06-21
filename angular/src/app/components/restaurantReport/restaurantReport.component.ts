@@ -10,7 +10,7 @@ export class RestaurantReportComponent implements OnInit {
 
   private daysSubject: Subject<any>;
   private weeksSubject: Subject<any>;
-  private myDatePickerOprions: any;
+  private myDatePickerOptions: any;
 
   constructor() { }
 

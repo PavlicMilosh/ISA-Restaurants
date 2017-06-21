@@ -1,3 +1,15 @@
 agm-map {
-  height: 300px;
+  height: 100px;
+  width: 300px;
+}
+
+a.header
+{
+  color: rgba(18, 18, 18, 0.9);
+  text-decoration: none;
+}
+
+a.header:hover
+{
+  color: #4549f5;
 }
