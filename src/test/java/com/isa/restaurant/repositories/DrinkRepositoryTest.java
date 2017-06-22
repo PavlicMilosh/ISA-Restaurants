@@ -57,6 +57,19 @@ public class DrinkRepositoryTest
         Assert.assertEquals(drink, saved);
     }
 
+    @Test
+    public void testFindById()
+    {
+        Restaurant restaurant=new Restaurant("restoran4","moj restoran");
+        restaurantRepository.save(restaurant);
+
+        Drink drink= new Drink("Drink4","Moje pice3",300.0,restaurant);
+        Drink saved=drinkRepository.save(drink);
+        Drink getDrink=drinkRepository.findById(saved.getId());
+
+        Assert.assertEquals(getDrink, saved);
+    }
+
     @After
     public void tearDown()
     {

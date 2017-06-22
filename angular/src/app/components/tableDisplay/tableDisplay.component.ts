@@ -15,7 +15,7 @@ declare let fabric;
 @Component({
   selector: 'table-display',
   templateUrl: './tableDisplay.component.html',
-  styleUrls: ['./tableDisplay.component.css'],
+  styleUrls: ['./tableDisplay.component.css', '../style/formStyle.css'],
   providers: [UserService,RestaurantService,OrderService]
 })
 

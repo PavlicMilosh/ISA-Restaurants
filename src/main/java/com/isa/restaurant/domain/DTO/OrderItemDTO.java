@@ -26,6 +26,7 @@ public class OrderItemDTO
     private Boolean finished;
     private Date orderTime;
     private Long tableId;
+    private Long version;
 
     public OrderItemDTO(Order order)
     {
@@ -39,5 +40,6 @@ public class OrderItemDTO
         this.price=order.getPrice();
         this.finished=order.getFinished();
         this.tableId=order.getOrderTable().getId();
+        this.version=order.getVersion();
     }
 }

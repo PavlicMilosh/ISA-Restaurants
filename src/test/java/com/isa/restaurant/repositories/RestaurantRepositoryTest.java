@@ -28,7 +28,7 @@ public class RestaurantRepositoryTest
     @Before
     public void setUp()
     {
-        restaurantRepository.save(new Restaurant("r1", "desc"));
+
     }
 
     @Test
@@ -47,26 +47,12 @@ public class RestaurantRepositoryTest
     @Test
     public void testFindByName()
     {
-        Restaurant restaurant = new Restaurant("r1", "desc");
-        Restaurant found = restaurantRepository.findByName("r1");
-        Assert.assertEquals(restaurant, found);
+        Restaurant found = restaurantRepository.findByName("r");
+        Assert.assertEquals(0l, found.getId().longValue());
     }
 
     @After
     public void tearDown()
     {
-//        Restaurant r1 = restaurantRepository.findByName("r1");
-//        try
-//        {
-//            restaurantRepository.delete(r1.getId());
-//        }
-//        catch(NullPointerException e){}
-//
-//        Restaurant r2 = restaurantRepository.findByName("MyFirstRestaurant");
-//        try
-//        {
-//            restaurantRepository.delete(r2.getId());
-//        }
-//        catch(NullPointerException e) {}
     }
 }

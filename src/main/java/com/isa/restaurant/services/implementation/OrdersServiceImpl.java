@@ -7,7 +7,9 @@ import com.isa.restaurant.services.OrderItemService;
 import com.isa.restaurant.services.OrdersService;
 import com.isa.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.Set;
  * Created by djuro on 4/22/2017.
  */
 @Service
+@Transactional
 public class OrdersServiceImpl implements OrdersService
 {
     @Autowired
@@ -435,9 +438,11 @@ public class OrdersServiceImpl implements OrdersService
     }
 
     @Override
-    public Boolean changeOrder(Long waiterId, OrderItemDTO orderDTO)
+    @Transactional(rollbackFor = OptimisticLockingFailureException.class)
+    public Boolean changeOrder(Long waiterId, OrderItemDTO orderDTO) throws OptimisticLockingFailureException
     {
         Order order = orderRepository.findById(orderDTO.getId());
+        order.setVersion(orderDTO.getVersion());
         Set<OrderItem> savedOrderItems=new HashSet<OrderItem>();
         for (OrderItmDTO orderItem:orderDTO.getOrderItems())
         {

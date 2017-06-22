@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -141,6 +140,15 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
+    public UserDTO changePassword(UserDTO userDTO)
+    {
+        User user = userRepository.findById(userDTO.getId());
+        user.setPassword(userDTO.getPassword());
+        User saved = userRepository.save(user);
+        return  new UserDTO(saved);
+    }
+
+    @Override
     public Set<WorkScheduleDTO> getSchedule(Long id)
     {
         User u = userRepository.findById(id);
@@ -221,12 +229,19 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public UserDTO updateProvider(Long providerId, Provider provider)
+    public UserDTO updateProvider(Long providerId, ProviderDTO provider)
     {
         Provider p = (Provider)userRepository.findOne(providerId);
         if(p == null)
             return null;
-        return new UserDTO(userRepository.save(provider));
+        if(!p.getPassword().equals(provider.getPassword()))
+        {
+            p.setEmail(provider.getEmail());
+            p.setFirstName(provider.getFirstName());
+            p.setLastName(provider.getLastName());
+            p.setPassword(provider.getPassword());
+        }
+        return new UserDTO(userRepository.save(p));
     }
 
     @Override

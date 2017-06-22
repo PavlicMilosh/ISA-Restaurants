@@ -15,11 +15,8 @@ import java.sql.Date;
 @AllArgsConstructor(suppressConstructorProperties = true)
 @Getter
 @Setter
-public class PeriodDTO
+public class DateDTO
 {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "CET")
     private Date startDate;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "CET")
-    private Date endDate;
 }

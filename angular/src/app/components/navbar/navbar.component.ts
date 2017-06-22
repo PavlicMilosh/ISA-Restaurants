@@ -188,17 +188,9 @@ export class NavbarComponent implements OnInit {
 
   presetWaiter()
   {
-    var dropdownOrder =
-      {
-        text: "Orders",
-        links:
-          [
-            {text: "Make order", routerLink: "/makeOrder"}
-          ]
-      };
-
     this.addLink({text: "Logout", routerLink:"/auth" });
-    this.addDropdown(dropdownOrder);
+    this.addLink({text: "Change password", routerLink:"/changePassword" });
+    this.addLink({text: "Make order", routerLink:"/tableDisplay" });
     this.addLink({text: "Schedule", routerLink:"/employeeWorkShedule" });
   }
 
@@ -214,6 +206,7 @@ export class NavbarComponent implements OnInit {
       };
 
     this.addLink({text: "Logout", routerLink:"/auth" });
+    this.addLink({text: "Change password", routerLink:"/changePassword" });
     this.addDropdown(dropdownOrder);
     this.addLink({text: "Schedule", routerLink:"/employeeWorkShedule" });
   }
@@ -230,6 +223,7 @@ export class NavbarComponent implements OnInit {
       };
 
     this.addLink({text: "Logout", routerLink:"/auth" });
+    this.addLink({text: "Change password", routerLink:"/changePassword" });
     this.addDropdown(dropdownOrder);
     this.addLink({text: "Schedule", routerLink:"/employeeWorkShedule" });
   }

@@ -1,22 +1,27 @@
 package com.isa.restaurant;
 
 import com.isa.restaurant.domain.DishType;
+import com.isa.restaurant.domain.Provider;
 import com.isa.restaurant.domain.Restaurant;
 import com.isa.restaurant.domain.Waiter;
 import com.isa.restaurant.repositories.RestaurantRepository;
 import com.isa.restaurant.repositories.UserRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import sun.security.util.Password;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,7 +47,7 @@ public class UserIntegrationTest
     public void setUp()
     {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
-        Restaurant r = restaurantRepository.save(new Restaurant("MyFirstRestaurant", "My first restaurant"));
+        Restaurant r = restaurantRepository.save(new Restaurant("Restaurant for Testing user integration tests", "My first restaurant"));
         DishType dishType = new DishType(r,"salate");
         Waiter w = new Waiter("waiter", "waiter", "waiter", "waiter");
         w.setRestaurant(r);
@@ -65,6 +70,34 @@ public class UserIntegrationTest
     }
 
     @Test
+    public void testAddingProviders() throws Exception
+    {
+        this.mvc.perform(post("/users/register/provider")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"addptest\", \"password\":\"addptest\", \"firstName\":\"addptest\", \"lastName\":\"addptest\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(content().json("{\"email\":\"addptest\", \"firstName\":\"addptest\", \"lastName\":\"addptest\"}"));
+    }
+
+    @Test
+    public void testUpdatingProvider() throws Exception
+    {
+        this.mvc.perform(post("/users/register/provider")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"upptest\", \"password\":\"upptest\", \"firstName\":\"upptest\", \"lastName\":\"upptest\"}"));
+
+        Provider found = (Provider) userRepository.findByEmail("upptest");
+
+        this.mvc.perform(put("/users/" + found.getId() + "/updateProvider")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":" + found.getId() + ", \"email\":\"asdf\", \"password\":\"asdf\", \"firstName\":\"asdf\", \"lastName\":\"asdf\"}"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"id\":" + found.getId() + ", \"email\":\"asdf\", \"password\":\"asdf\", \"firstName\":\"asdf\", \"lastName\":\"asdf\"}"));
+
+        userRepository.delete(found.getId());
+    }
+
+    @Test
     public void testAddingSchedule() throws Exception
     {
         Waiter w = (Waiter) userRepository.findByEmail("waiter");
@@ -78,7 +111,7 @@ public class UserIntegrationTest
     public void testAddingOthers() throws Exception
     {
 
-        /*this.mvc.perform(post("/users/register/barman")
+        this.mvc.perform(post("/users/register/barman")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"pera\", \"password\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"))
                 .andExpect(status().isCreated())
@@ -98,7 +131,13 @@ public class UserIntegrationTest
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"id\":\"1\", \"email\":\"zika\", \"password\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"))
                 .andExpect(content().json("{\"username\":\"zika\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"));
-        */
+    }
+
+    @After
+    public void tearDown()
+    {
+        Restaurant r = restaurantRepository.findByName("Restaurant for Testing user integration tests");
+        restaurantRepository.delete(r.getId());
     }
 
 }

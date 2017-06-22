@@ -1,5 +1,7 @@
 package com.isa.restaurant.domain;
 
+import com.isa.restaurant.domain.DTO.OrderItmDTO;
+import com.isa.restaurant.repositories.DishRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -116,6 +118,16 @@ public class OrderItem {
     {
         this.dish=orderItem.getDish();
         this.drink=orderItem.getDrink();
+        this.isDish=orderItem.getIsDish();
+        this.number=orderItem.getNumber();
+        this.preparing=false;
+        this.preparing=false;
+    }
+
+    public OrderItem(OrderItmDTO orderItem)
+    {
+        //this.dish=orderItem.getDish();
+        //this.drink=orderItem.getDrink();
         this.isDish=orderItem.getIsDish();
         this.number=orderItem.getNumber();
         this.preparing=false;

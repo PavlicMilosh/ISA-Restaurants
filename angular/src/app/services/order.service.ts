@@ -135,7 +135,7 @@ export class OrderService
       .map(res => res.json());
   }
 
-  changeOrder(orderItems:OrderItem[], finished: boolean, price: number,id:number, tableId: number, orderId: number)
+  changeOrder(orderItems:OrderItem[], finished: boolean, price: number,id:number, tableId: number, orderId: number, version:number)
   {
     var date=Date.now();
     var order =
@@ -144,7 +144,8 @@ export class OrderService
         orderItems: orderItems,
         finished: finished,
         price: price,
-        orderTime: date
+        orderTime: date,
+        version: version
       }
 
     var param = JSON.stringify(order);
