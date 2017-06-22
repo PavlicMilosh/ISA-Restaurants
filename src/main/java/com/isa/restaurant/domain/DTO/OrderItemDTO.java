@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -20,7 +21,7 @@ import java.util.Set;
 public class OrderItemDTO
 {
     private Long id;
-    private Set<OrderItem> orderItems;
+    private Set<OrderItmDTO> orderItems;
     private Double price;
     private Boolean finished;
     private Date orderTime;
@@ -29,7 +30,11 @@ public class OrderItemDTO
     public OrderItemDTO(Order order)
     {
         this.id=order.getId();
-        this.orderItems=order.getOrderItems();
+        this.orderItems=new HashSet<>();
+        for(OrderItem oi:order.getOrderItems())
+        {
+            this.orderItems.add(new OrderItmDTO(oi));
+        }
         this.orderTime=order.getOrderTime();
         this.price=order.getPrice();
         this.finished=order.getFinished();

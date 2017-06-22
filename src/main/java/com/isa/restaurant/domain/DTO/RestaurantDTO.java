@@ -73,6 +73,21 @@ public class RestaurantDTO
             this.tables.add(new RestaurantTableDTO(rt, null));
     }
 
+    public RestaurantDTO(Restaurant restaurant, Double meanMark, Double friendsMark)
+    {
+        this();
+        this.id = restaurant.getId();
+        this.name = restaurant.getName();
+        this.description = restaurant.getDescription();
+        this.friendsMark = meanMark;
+        this.meanMark = friendsMark;
+        this.drinks = restaurant.getDrinks();
+        this.dishes = restaurant.getDishes();
+
+        for (RestaurantTable rt : restaurant.getTables())
+            this.tables.add(new RestaurantTableDTO(rt, null));
+    }
+
 
     @Override
     public boolean equals(Object o)

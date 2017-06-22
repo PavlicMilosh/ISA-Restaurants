@@ -111,4 +111,14 @@ public class OrderItem {
         this.preparing = false;
         this.finished = false;
     }
+
+    public OrderItem(OrderItem orderItem)
+    {
+        this.dish=orderItem.getDish();
+        this.drink=orderItem.getDrink();
+        this.isDish=orderItem.getIsDish();
+        this.number=orderItem.getNumber();
+        this.preparing=false;
+        this.preparing=false;
+    }
 }

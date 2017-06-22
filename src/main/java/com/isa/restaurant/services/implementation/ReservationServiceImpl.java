@@ -176,17 +176,18 @@ public class ReservationServiceImpl implements ReservationService
             orderItem = orderItemRepository.save(orderItem);
             orderItems.add(orderItem);
         }
+        Order savedOrder=null;
         if (!orderItems.isEmpty())
         {
             Order order = new Order(orderItems, dateTimeStart);
             order.setOrderTable(reservation.getTables().iterator().next());
             order.setGuest(reservation.getReserver());
+            order.setReservationId(reservation.getId());
             order = orderRepository.save(order);
             reservation.addOrder(order);
             restaurant.addOrder(order);
         }
 
-        reservation = reservationRepository.save(reservation);
         ReservationDTO ret = new ReservationDTO(reservation);
         return ret;
     }
@@ -406,13 +407,21 @@ public class ReservationServiceImpl implements ReservationService
         Double restaurantFriendsMark = 0.0;
         Double restaurantMeanMark = 0.0;
         Double restaurantMyMark = 0.0;
+        Long orderId=null;
+        Double mealMyMark=0.0;
+        Boolean isMark=false;
+        Double waiterMark=0.0;
+        String waiterFirstName=null;
+        String waiterLastName=null;
+        Long waiterId=null;
+        Waiter waiter=null;
 
-        for (RestaurantMark rm : reservation.getRestaurant().getRestaurantMarks())
-        {
+        for (RestaurantMark rm : reservation.getRestaurant().getRestaurantMarks()) {
             if (friendIds.contains(rm.getGuest().getId()))
                 restaurantFriendsMark += rm.getValue();
-            if (rm.getGuest().getId() == guestId)
+            if (rm.getGuest().getId() == guestId) {
                 restaurantMyMark = rm.getValue();
+            }
             restaurantMeanMark += rm.getValue();
         }
 
@@ -426,14 +435,60 @@ public class ReservationServiceImpl implements ReservationService
         else
             restaurantMeanMark = null;
 
-        if (restaurantMyMark == 0)
-            restaurantMyMark = null;
 
+        for (Order order : reservation.getOrders())
+        {
+            if (order.getGuest().getId() == guestId)
+            {
+                orderId = order.getId();
+                mealMyMark = order.getMark();
+                isMark = order.getIsMarked();
+                waiter = order.getWaiter();
+                if(isMark) {
+                    mealMyMark=0.0;
+                    for (OrderItem oi : order.getOrderItems()) {
+                        if (oi.getIsDish()) {
+                            for (DishMark dm : oi.getDish().getDishMarks()) {
+                                if(dm.getGuest().getId()==guestId){
+                                    mealMyMark += dm.getValue();
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (DrinkMark dm : oi.getDrink().getDrinkMarks()) {
+                                if(dm.getGuest().getId()==guestId){
+                                    mealMyMark += dm.getValue();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    mealMyMark = mealMyMark/order.getOrderItems().size();
+                }
+                break;
+            }
+        }
+        if(waiter!=null)
+        {
+            waiterId=waiter.getId();
+            waiterFirstName=waiter.getFirstName();
+            waiterLastName=waiter.getLastName();
+            for(WaiterMark wm : waiter.getWaiterMarks())
+            {
+                if(wm.getGuest().getId() == guestId)
+                {
+                    waiterMark=wm.getValue();
+                    break;
+                }
+            }
+        }
         HistoryDTO history = new HistoryDTO(reservation,
-                restaurantFriendsMark,
-                restaurantMyMark,
-                restaurantMeanMark,
-                guestId);
+                restaurantFriendsMark, restaurantMyMark,
+                restaurantMeanMark, orderId, mealMyMark,
+                isMark, waiterMark, waiterFirstName,
+                waiterLastName, waiterId);
 
         return history;
     }

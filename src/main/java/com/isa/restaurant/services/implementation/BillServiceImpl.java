@@ -1,16 +1,10 @@
 package com.isa.restaurant.services.implementation;
 
-import com.isa.restaurant.domain.Bill;
+import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.BillDTO;
 import com.isa.restaurant.domain.DTO.OrderDTO;
 import com.isa.restaurant.domain.DTO.OrderItemDTO;
-import com.isa.restaurant.domain.Order;
-import com.isa.restaurant.domain.RestaurantTable;
-import com.isa.restaurant.domain.User;
-import com.isa.restaurant.repositories.BillRepository;
-import com.isa.restaurant.repositories.OrderRepository;
-import com.isa.restaurant.repositories.TableRepository;
-import com.isa.restaurant.repositories.UserRepository;
+import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +29,9 @@ public class BillServiceImpl implements BillService
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     public Bill addBill(Bill bill){
         Bill saved = null;
@@ -71,6 +68,20 @@ public class BillServiceImpl implements BillService
                 billOrders.add(o);
                 o.setBillCreated(true);
                 orderRepository.save(o);
+                if(o.getReservationId()!=null) {
+                    Reservation reservation = reservationRepository.findById(o.getReservationId());
+                    Boolean flag = true;
+                    for(Order oo:reservation.getOrders())
+                    {
+                        if(!oo.getBillCreated())
+                        {
+                            flag=false;
+                            break;
+                        }
+                    }
+                    if(flag) reservation.setStatus(ReservationStatus.FINISHED);
+                    reservationRepository.save(reservation);
+                }
             }
         }
         User u = userRepository.findOne(waiterId);

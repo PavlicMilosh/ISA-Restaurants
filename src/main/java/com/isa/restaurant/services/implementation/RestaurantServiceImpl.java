@@ -4,6 +4,7 @@ import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.search.RestaurantSearch;
+import com.isa.restaurant.services.FriendshipService;
 import com.isa.restaurant.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +32,7 @@ public class RestaurantServiceImpl implements RestaurantService
     private final RestaurantMarkRepository restaurantMarkRepository;
     private final RestaurantSearch restaurantSearch;
     private final DishTypeRepository dishTypeRepository;
+    private final FriendshipService friendshipService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -45,7 +47,8 @@ public class RestaurantServiceImpl implements RestaurantService
                                  ReservationRepository reservationRepository,
                                  RestaurantMarkRepository restaurantMarkRepository,
                                  RestaurantSearch restaurantSearch,
-                                 DishTypeRepository dishTypeRepository)
+                                 DishTypeRepository dishTypeRepository,
+                                 FriendshipService friendshipService)
     {
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -56,6 +59,7 @@ public class RestaurantServiceImpl implements RestaurantService
         this.restaurantMarkRepository = restaurantMarkRepository;
         this.restaurantSearch = restaurantSearch;
         this.dishTypeRepository = dishTypeRepository;
+        this.friendshipService = friendshipService;
     }
 
 
@@ -92,14 +96,24 @@ public class RestaurantServiceImpl implements RestaurantService
         List<RestaurantDTO> restaurantDTOs = new ArrayList<>();
         for (Restaurant r : restaurants)
         {
-            Double meanMark = 0.0;
+            Double meanMark = 0.0 ;
             Double friendsMark = 0.0;
-            /*TODO: Djuro ovo implementiraj imas metodu za dobijanje meanMark-a restorana u RestaurantMarkRepository,
-            *       a friendsMark ces morati da dobavis prvo sve prijatelje na osnovu guesta, izvuces njihove id-eve i tek onda
-            *       pomocu metode u RestaurantMarkRepositoryju dobijes jedan mark za guestId i restaurantId... skupis sve te
-            *       i onda nadjes srednju vrednost*/
-
             Integer visits = 0;
+
+            if(!r.getRestaurantMarks().isEmpty())
+                meanMark = restaurantMarkRepository.getRestaurantMeanMark(r.getId());
+
+
+            Set<GuestDTO> friends = friendshipService.getFriends(guestId);
+            for (GuestDTO friend : friends)
+            {
+                RestaurantMark restaurantMark = restaurantMarkRepository.getMarkByGuestIdAndRestaurantId(guestId, r.getId());
+                if (restaurantMark != null)
+                    friendsMark += restaurantMark.getValue();
+            }
+            if (friendsMark != 0)
+                friendsMark /= friends.size();
+
 
             for (Reservation reservation: reservationRepository.getReservationsByRestaurantId(r.getId()))
             {
@@ -111,6 +125,7 @@ public class RestaurantServiceImpl implements RestaurantService
                             visits++;
                 }
             }
+
             restaurantDTOs.add(new RestaurantDTO(r, meanMark, friendsMark, visits));
         }
         return restaurantDTOs;

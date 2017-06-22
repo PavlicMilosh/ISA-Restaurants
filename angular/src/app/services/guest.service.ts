@@ -207,6 +207,43 @@ export class GuestService
       .map(res => res.json());
   }
 
+  makeMark(history:History)
+  {
+    let param = JSON.stringify(history);
+    let headers = new Headers();
+    let guestId = LoggedUtils.getId();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    headers.append('Content-Type', 'application/json');
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/makeMark", param ,{ headers : headers })
+      .map(res => res.json());
+  }
+
 
 
 }
+
+interface History
+{
+  restaurantId: number;
+  reservationId: number;
+  orderId: number;
+
+  restaurantName: string;
+  restaurantDescription: string;
+  restaurantMeanMark: number;
+
+  restaurantFriendsMark: number;
+  restaurantMyMark: number;
+
+  mealMyMark: number;
+  isMark: boolean;
+
+  waiterMark: number;
+  waiterFirstName: string;
+  waiterLastName: string;
+  waiterId: number;
+
+  dateOfVisit: string;
+  timeOfVisit: string;
+}
+

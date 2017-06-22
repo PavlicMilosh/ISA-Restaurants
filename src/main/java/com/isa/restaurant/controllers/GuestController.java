@@ -378,4 +378,15 @@ public class GuestController
         Set<FinishedOrderDTO> orders = ordersService.getGuestOrders(guestId);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{guestId}/makeMark",
+            method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HistoryDTO> makeMark(@PathVariable Long guestId,
+                                               @RequestBody HistoryDTO historyDTO)
+    {
+        HistoryDTO history= ordersService.makeMark(historyDTO, guestId);
+        return new ResponseEntity<>(history, HttpStatus.OK);
+    }
 }

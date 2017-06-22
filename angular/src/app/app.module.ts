@@ -61,7 +61,7 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
 import { CreateBill } from "./components/createBill/createBill.component";
 import { RestaurantReportComponent } from './components/restaurantReport/restaurantReport.component';
 import { ChartsComponent } from './components/charts/charts.component';
-
+import { OrderChange } from "./components/orderChange/orderChange.component";
 
 
 
@@ -96,6 +96,7 @@ import { ChartsComponent } from './components/charts/charts.component';
     CalendarComponent,
     AddWorkScheduleComponent,
     CreateBill,
+    OrderChange,
 
     // Ogi
     GuestRegisterComponent,

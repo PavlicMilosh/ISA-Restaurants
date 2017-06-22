@@ -29,4 +29,13 @@ public class DishOrderDTO
         this.price = dish.getPrice();
         this.quantity = quantity;
     }
+
+    public DishOrderDTO(Dish dish)
+    {
+        this.id = dish.getId();
+        this.name = dish.getName();
+        this.description = dish.getDescription();
+        this.price = dish.getPrice();
+        this.quantity = quantity;
+    }
 }

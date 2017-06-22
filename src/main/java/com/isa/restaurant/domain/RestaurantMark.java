@@ -36,6 +36,12 @@ public class RestaurantMark
     @JoinColumn(referencedColumnName = "restaurant_id", name = "restaurant_mark_restaurant_id")
     private Restaurant restaurant;
 
+    public RestaurantMark(Double value, Guest guest, Restaurant restaurant)
+    {
+        this.value=value;
+        this.guest=guest;
+        this.restaurant=restaurant;
+    }
 
     @Override
     public boolean equals(Object o)
