@@ -38,6 +38,13 @@ public class DishMark
     @JoinColumn(referencedColumnName = "dish_id", name = "dish_mark_dish_id")
     private Dish dish;
 
+    public DishMark(double value, Guest guest, Dish dish)
+    {
+        this.value=value;
+        this.guest=guest;
+        this.dish=dish;
+    }
+
     public DishMark(double value, Integer markCount, Guest guest, Dish dish)
     {
         this.value=value;

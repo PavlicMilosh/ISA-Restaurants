@@ -39,6 +39,7 @@ public class Dish
     private Double price;
 
     @OneToMany
+    @JsonIgnore
     private Set<DishMark> dishMarks;
 
     @ManyToOne
@@ -52,4 +53,6 @@ public class Dish
         this.price = price;
         this.restaurant = restaurant;
     }
+
+    public void addDishMark(DishMark dishMark) { this.dishMarks.add(dishMark); }
 }

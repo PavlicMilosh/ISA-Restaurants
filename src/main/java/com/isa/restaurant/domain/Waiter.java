@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,7 +25,6 @@ public class Waiter extends User
     @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<WorkSchedule> schedule;
 
-
     public Waiter()
     {
         this.enabled = true;
@@ -42,6 +42,7 @@ public class Waiter extends User
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.waiterMarks = new HashSet<>();
     }
 
     @Override
@@ -70,5 +71,7 @@ public class Waiter extends User
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
     }
+
+    public void addWaiterMark(WaiterMark waiterMark) { this.waiterMarks.add(waiterMark); }
 
 }

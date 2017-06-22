@@ -1,0 +1,64 @@
+div.tab-content
+{
+  margin: 0 auto;
+}
+
+div.panel
+{
+  width: 80%;
+  margin: 0 auto;
+}
+
+div.mainMark
+{
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  font-size: 3em;
+}
+
+div.dataMark
+{
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  font-size: 2em;
+}
+
+a.tab-text
+{
+  font-size: 1.5em;
+}
+
+.datepicker
+{
+  width: 30%;
+  margin: 50px auto;
+}
+
+.datelabel
+{
+  font-size: 1.2em;
+  text-align: center;
+}
+
+
+hr
+{
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #b0b0b0;
+  margin: 1em 0;
+  padding: 0;
+}
+
+.panel-body
+{
+  margin: 100px auto;
+}
+
+ng2-completer
+{
+  width: 300px;
+}

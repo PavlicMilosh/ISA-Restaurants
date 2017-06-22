@@ -15,7 +15,7 @@ declare let fabric;
 @Component({
   selector: 'table-display',
   templateUrl: './tableDisplay.component.html',
-  styleUrls: ['./tableDisplay.component.css'],
+  styleUrls: ['./tableDisplay.component.css', '../style/formStyle.css'],
   providers: [UserService,RestaurantService,OrderService]
 })
 
@@ -29,7 +29,9 @@ export class TableDisplay implements OnInit, OnDestroy
   userTables:RestaurantTable[];
   orderForDeliver:Order[]=[];
   orderDelivered:Order;
+  orderForChanging:Order[]=[];
   tablesId:number[]=[];
+  anyTable:RestaurantTable;
 
   postsSubscription:Subscription;
   timerSubscription:Subscription;
@@ -68,23 +70,22 @@ export class TableDisplay implements OnInit, OnDestroy
     this.timerSubscription=Observable.timer(5000).first().subscribe(() => this.refreshData());
   }
 
-  /*
-  private refreshTables(): void {
-    this.postsSubscription1=this.orderService.getTablesForCreatingBills().subscribe(
+
+  private getOrdersForChanging(): void {
+    this.postsSubscription1=this.orderService.getOrdersForChanging().subscribe(
       data => {
-        this.tablesId = data;
-        this.subscribeToData1();
+        this.orderForChanging = data;
       });
   }
-
-  private subscribeToData1(): void {
-    for(var i=0; i<this.tablesId.length;i++)
-    {
-      this.canvas.
-    }
-    this.timerSubscription=Observable.timer(5000).first().subscribe(() => this.refreshData());
-  }
-  */
+  /*
+   private subscribeToData1(): void {
+   for(var i=0; i<this.tablesId.length;i++)
+   {
+   this.canvas.
+   }
+   this.timerSubscription=Observable.timer(5000).first().subscribe(() => this.refreshData());
+   }
+   */
 
   getWaiterRegion()
   {
@@ -109,6 +110,7 @@ export class TableDisplay implements OnInit, OnDestroy
       {
         color='red';
       }
+
       var rect = new fabric.Rect(
         {
           left: this.userTables[i].left,
@@ -117,10 +119,32 @@ export class TableDisplay implements OnInit, OnDestroy
           width: 50,
           height: 50,
           id: this.userTables[i].id,
-          fillText: this.userTables[i].id
+          lockMovementX: true,
+          lockMovementY: true,
+          lockUniScaling: true,
+          lockRotation: true,
+          hasControls: false
         }
       );
+      var text = new fabric.Text(String(this.userTables[i].id),
+        {
+          fontFamily: 'Comic Sans',
+          fontSize: 18,
+          left: this.userTables[i].left,
+          top: this.userTables[i].top,
+          lockMovementX: true,
+          lockMovementY: true,
+          lockUniScaling: true,
+          lockRotation: true,
+          hasControls: false
+        }
+      );
+
       this.canvas.add(rect);
+      if(this.userTables[i].regionId==this.regionId)
+      {
+        this.canvas.add(text);
+      }
     }
   }
 
@@ -129,6 +153,15 @@ export class TableDisplay implements OnInit, OnDestroy
     let g = this.canvas.getActiveObject();
     this.selectedTableId=g.get('id');
     this._router.navigate(['makeOrder/'+ this.selectedTableId]);
+
+  }
+
+  makeChange()
+  {
+    let g = this.canvas.getActiveObject();
+    this.selectedTableId=g.get('id');
+    this._router.navigate(['orderChange/'+ this.selectedTableId]);
+
   }
 
   createBill()

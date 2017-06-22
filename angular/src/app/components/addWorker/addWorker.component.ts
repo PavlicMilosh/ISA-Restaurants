@@ -28,9 +28,9 @@ export class AddWorkerComponent implements OnInit
   {
     this.role = "Select Role";
     this.restaurantService.getDishTypes(LoggedUtils.getId()).subscribe(
-      data => this.dishTypes = data
+      data => {this.dishTypes = data; this.dishType = this.dishTypes[0].id;}
     )
-    this.dishType = this.dishTypes[0].id;
+
   }
 
   ngOnInit(){  }

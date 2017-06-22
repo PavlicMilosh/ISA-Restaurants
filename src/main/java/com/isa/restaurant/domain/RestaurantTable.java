@@ -80,6 +80,7 @@ public class RestaurantTable
         this.left = rtDTO.getTop();
         this.angle = rtDTO.getTop();
         this.version = rtDTO.getVersion();
+        this.seats = rtDTO.getSeats();
     }
 
 }

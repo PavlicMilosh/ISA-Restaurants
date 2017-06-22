@@ -34,6 +34,7 @@ import {ShoppingListsRMComponent} from "./components/shopping/shoppingListsRM/sh
 import {GuestHistoryComponent} from "./components/guest/guestHistory/guestHistory.component";
 import { CreateBill } from "./components/createBill/createBill.component";
 import {RestaurantReportComponent} from "./components/restaurantReport/restaurantReport.component";
+import { OrderChange } from "./components/orderChange/orderChange.component";
 
 const appRoutes : Routes =
   [
@@ -153,6 +154,10 @@ const appRoutes : Routes =
     {
       path : 'createBill/:p1',
       component : CreateBill
+    },
+    {
+      path : 'orderChange/:p1',
+      component : OrderChange
     },
 
     //shopping

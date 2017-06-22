@@ -39,6 +39,7 @@ public class Drink
     private Restaurant restaurant;
 
     @OneToMany
+    @JsonIgnore
     private Set<DrinkMark> drinkMarks;
 
     public Drink(String name, String description, Double price, Restaurant restaurant)
@@ -48,4 +49,6 @@ public class Drink
         this.price=price;
         this.restaurant=restaurant;
     }
+
+    public void addDrinkMark(DrinkMark drinkMark) { this.drinkMarks.add(drinkMark);}
 }

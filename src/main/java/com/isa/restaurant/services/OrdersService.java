@@ -2,6 +2,7 @@ package com.isa.restaurant.services;
 
 import com.isa.restaurant.domain.DTO.DrinkDishDTO;
 import com.isa.restaurant.domain.DTO.FinishedOrderDTO;
+import com.isa.restaurant.domain.DTO.HistoryDTO;
 import com.isa.restaurant.domain.DTO.OrderItemDTO;
 import com.isa.restaurant.domain.Order;
 import com.isa.restaurant.domain.OrderItem;
@@ -18,7 +19,7 @@ public interface OrdersService
 
     public Order getByUser(User user);
 
-    public Order addOrder(Order order, Long tableId);
+    OrderItemDTO addOrder(OrderItemDTO orderDTO, Long id, Long waiterId, Long tableId);
 
     public Order finishOrder(Long id);
 
@@ -26,13 +27,17 @@ public interface OrdersService
 
     public Set<Long> getTablesForCreatingBill(Long waiter);
 
-    public OrderItemDTO deliveredOrder(Long orderId);
+    public OrderItemDTO deliveredOrder(Long orderId, Long userId);
 
     public Set<Long> getPreparingOrderId(Long userId);
 
     public Set<FinishedOrderDTO> getGuestOrders(Long guestId);
 
-    public FinishedOrderDTO markOrder(Long guestId, Long orderId, Double mark);
+    public HistoryDTO makeMark(HistoryDTO historyDTO, Long guestId);
 
-    public Set<DrinkDishDTO> getRestaurantDrinkDishMark(Long restaurantId);
+    public Set<OrderItemDTO> getOrdersForChanging(Long waiterId);
+
+    public OrderItemDTO getOrderForChanging(Long waiterId, Long tableId);
+
+    public Boolean changeOrder(Long waiterId, OrderItemDTO orderDTO);
 }

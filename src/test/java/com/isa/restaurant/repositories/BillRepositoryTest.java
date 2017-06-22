@@ -75,20 +75,20 @@ public class BillRepositoryTest
     @Test
     public void testSaveBillWithOrder()
     {
-        Restaurant r1=restaurantRepository.save(new Restaurant("restoranBill1","desc"));
+        Restaurant r1=restaurantRepository.save(new Restaurant("restoranBill1hh","desc"));
 
-        DishType dishType = new DishType(r1,"salate");
-        Waiter user = new Waiter("billRepositoryUser4@gmail.com", "123321", "billUser4", "billUser4");
+        DishType dishType = new DishType(r1,"salatee");
+        Waiter user = new Waiter("billRepositoryUser4p@gmail.com", "123321", "billUser4", "billUser4");
         userRepository.save(user);
 
         Bill bill= new Bill(user);
 
         RestaurantTable table=tableRepository.save(new RestaurantTable());
-        Drink d1=drinkRepository.save(new Drink("Coca Cola 1","Gazirano pice",150.0, r1));
-        Drink d2=drinkRepository.save(new Drink("Pepsi 1","Gazirano pice",150.0, r1));
+        Drink d1=drinkRepository.save(new Drink("Coca Cola 1j","Gazirano pice",150.0, r1));
+        Drink d2=drinkRepository.save(new Drink("Pepsi 1j","Gazirano pice",150.0, r1));
 
-        Dish di1=dishRepository.save(new Dish("dish1 1","desc",450.0,r1));
-        Dish di2=dishRepository.save(new Dish("dish2 1","desc",600.0,r1));
+        Dish di1=dishRepository.save(new Dish("dish1 1j","desc",450.0,r1));
+        Dish di2=dishRepository.save(new Dish("dish2 1j","desc",600.0,r1));
 
         OrderItem orderItem1 = orderItemRepository.save(new OrderItem(d1,2));
         OrderItem orderItem2 = orderItemRepository.save(new OrderItem(d2,2));
@@ -108,6 +108,42 @@ public class BillRepositoryTest
         Assert.assertEquals(bill, saved);
     }
 
+    @Test
+    public void findById()
+    {
+        Restaurant r1=restaurantRepository.save(new Restaurant("restoranBill2","desc"));
+
+        DishType dishType = new DishType(r1,"salate1");
+        Waiter user = new Waiter("billRepositoryUser5@gmail.com", "123321", "billUser4", "billUser4");
+        userRepository.save(user);
+        Bill bill= new Bill(user);
+
+        Bill saved=billRepository.save(bill);
+
+        Bill getBill=billRepository.findById(saved.getId());
+
+        Assert.assertEquals(saved, getBill);
+
+    }
+
+
+    @Test
+    public void findByUser()
+    {
+        Restaurant r1=restaurantRepository.save(new Restaurant("restoranBill3","desc"));
+
+        DishType dishType = new DishType(r1,"salate2");
+        Waiter user = new Waiter("billRepositoryUser6@gmail.com", "123321", "billUser4", "billUser4");
+        userRepository.save(user);
+        Bill bill= new Bill(user);
+
+        Bill saved=billRepository.save(bill);
+
+        Bill getBill=billRepository.findByUser(user);
+
+        Assert.assertEquals(saved, getBill);
+
+    }
 
     @After
     public void tearDown()

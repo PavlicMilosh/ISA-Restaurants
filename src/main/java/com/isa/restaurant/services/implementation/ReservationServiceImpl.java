@@ -30,6 +30,7 @@ public class ReservationServiceImpl implements ReservationService
     private final FriendshipRepository friendshipRepository;
     private final RestaurantRepository restaurantRepository;
     private final TableRepository tableRepository;
+    private final RegionRepository regionRepository;
     private final InvitationRepository invitationRepository;
     private final DrinkRepository drinkRepository;
     private final DishRepository dishRepository;
@@ -45,6 +46,7 @@ public class ReservationServiceImpl implements ReservationService
                                   FriendshipRepository friendshipRepository,
                                   RestaurantRepository restaurantRepository,
                                   TableRepository tableRepository,
+                                  RegionRepository regionRepository,
                                   InvitationRepository invitationRepository,
                                   DrinkRepository drinkRepository,
                                   DishRepository dishRepository,
@@ -59,6 +61,7 @@ public class ReservationServiceImpl implements ReservationService
         this.friendshipRepository = friendshipRepository;
         this.restaurantRepository = restaurantRepository;
         this.tableRepository = tableRepository;
+        this.regionRepository = regionRepository;
         this.invitationRepository = invitationRepository;
         this.drinkRepository = drinkRepository;
         this.dishRepository = dishRepository;
@@ -101,11 +104,15 @@ public class ReservationServiceImpl implements ReservationService
 
         for (RestaurantTableDTO rtDTO : reservationDTO.getTables())
         {
-            RestaurantTable newTable = new RestaurantTable(rtDTO);
+            RestaurantTable attempt = tableRepository.findOne(rtDTO.getId());
+            RestaurantTable restaurantTable = new RestaurantTable(rtDTO);
+            restaurantTable.setRestaurant(attempt.getRestaurant());
+            restaurantTable.setRegion(attempt.getRegion());
+            restaurantTable.setBills(attempt.getBills());
             try
             {
-                reservation.addTable(newTable);
-                tableRepository.save(newTable);
+                restaurantTable = tableRepository.save(restaurantTable);
+                reservation.addTable(restaurantTable);
             }
             catch(OptimisticLockingFailureException e)
             {
@@ -113,16 +120,17 @@ public class ReservationServiceImpl implements ReservationService
 
                 for(Reservation res : reservations)
                 {
-                    if(res.getTables().contains(newTable))
+                    if(res.getTables().contains(restaurantTable))
                         throw new ReservationException();
                     else
                     {
                         for(RestaurantTable rt : res.getTables())
                         {
-                            if(rt.getId() == newTable.getId())
+                            if(rt.getId() == restaurantTable.getId())
                             {
-                                newTable.setVersion(rt.getVersion());
-                                tableRepository.save(newTable);
+                                restaurantTable.setVersion(rt.getVersion());
+                                restaurantTable = tableRepository.save(restaurantTable);
+                                reservation.addTable(restaurantTable);
                                 break;
                             }
                         }
@@ -133,6 +141,8 @@ public class ReservationServiceImpl implements ReservationService
         }
 
 
+        reservation = reservationRepository.save(reservation);
+
         // INVITATIONS
         for (GuestDTO i : reservationDTO.getInvites())
         {
@@ -142,11 +152,10 @@ public class ReservationServiceImpl implements ReservationService
             if (invited != null && friendship != null)
             {
                 Invitation invitation = new Invitation(invited, reservation);
-                invitationRepository.save(invitation);
+                invitation = invitationRepository.save(invitation);
                 reservation.addInvitation(invitation);
-                reservationRepository.save(reservation);
                 VerificationToken verificationToken = new VerificationToken(invited, 0, VerificationTokenPurpose.INVITATION);
-                verificationTokenRepository.save(verificationToken);
+                verificationToken = verificationTokenRepository.save(verificationToken);
                 mailService.sendInvitationEmail(reservation.getReserver(), invited, invitation, verificationToken.getToken());
             }
         }
@@ -157,29 +166,28 @@ public class ReservationServiceImpl implements ReservationService
         {
             Drink drink = drinkRepository.getOne(doDTO.getId());
             OrderItem orderItem = new OrderItem(drink, doDTO.getQuantity());
+            orderItem = orderItemRepository.save(orderItem);
             orderItems.add(orderItem);
-            orderItemRepository.save(orderItem);
         }
         for (DishOrderDTO doDTO : reservationDTO.getDishOrders())
         {
             Dish dish = dishRepository.getOne(doDTO.getId());
             OrderItem orderItem = new OrderItem(dish, doDTO.getQuantity());
-            orderItemRepository.save(orderItem);
+            orderItem = orderItemRepository.save(orderItem);
             orderItems.add(orderItem);
         }
+        Order savedOrder=null;
         if (!orderItems.isEmpty())
         {
             Order order = new Order(orderItems, dateTimeStart);
             order.setOrderTable(reservation.getTables().iterator().next());
             order.setGuest(reservation.getReserver());
-            this.orderRepository.save(order);
+            order.setReservationId(reservation.getId());
+            order = orderRepository.save(order);
             reservation.addOrder(order);
-            reservationRepository.save(reservation);
             restaurant.addOrder(order);
-            restaurantRepository.save(restaurant);
         }
 
-        reservationRepository.save(reservation);
         ReservationDTO ret = new ReservationDTO(reservation);
         return ret;
     }
@@ -319,14 +327,14 @@ public class ReservationServiceImpl implements ReservationService
         {
             Drink drink = drinkRepository.findById(d.getId());
             OrderItem orderItem = new OrderItem(drink, d.getQuantity());
-            orderItemRepository.save(orderItem);
+            orderItem = orderItemRepository.save(orderItem);
             newItems.add(orderItem);
         }
         for (DishOrderDTO d : reservationUpdateData.getDishOrders())
         {
             Dish dish = dishRepository.findById(d.getId());
             OrderItem orderItem = new OrderItem(dish, d.getQuantity());
-            orderItemRepository.save(orderItem);
+            orderItem = orderItemRepository.save(orderItem);
             newItems.add(orderItem);
         }
 
@@ -335,13 +343,13 @@ public class ReservationServiceImpl implements ReservationService
             Order order = new Order(newItems, reservation.getDateTimeStart());
             order.setGuest(attendant);
             reservation.addOrder(order);
-            orderRepository.save(order);
+            order = orderRepository.save(order);
             Restaurant restaurant = reservation.getRestaurant();
             restaurant.addOrder(order);
             restaurantRepository.save(restaurant);
         }
 
-        reservationRepository.save(reservation);
+        reservation = reservationRepository.save(reservation);
 
         return new ReservationDTO(reservation);
     }
@@ -399,13 +407,21 @@ public class ReservationServiceImpl implements ReservationService
         Double restaurantFriendsMark = 0.0;
         Double restaurantMeanMark = 0.0;
         Double restaurantMyMark = 0.0;
+        Long orderId=null;
+        Double mealMyMark=0.0;
+        Boolean isMark=false;
+        Double waiterMark=0.0;
+        String waiterFirstName=null;
+        String waiterLastName=null;
+        Long waiterId=null;
+        Waiter waiter=null;
 
-        for (RestaurantMark rm : reservation.getRestaurant().getRestaurantMarks())
-        {
+        for (RestaurantMark rm : reservation.getRestaurant().getRestaurantMarks()) {
             if (friendIds.contains(rm.getGuest().getId()))
                 restaurantFriendsMark += rm.getValue();
-            if (rm.getGuest().getId() == guestId)
+            if (rm.getGuest().getId() == guestId) {
                 restaurantMyMark = rm.getValue();
+            }
             restaurantMeanMark += rm.getValue();
         }
 
@@ -419,14 +435,60 @@ public class ReservationServiceImpl implements ReservationService
         else
             restaurantMeanMark = null;
 
-        if (restaurantMyMark == 0)
-            restaurantMyMark = null;
 
+        for (Order order : reservation.getOrders())
+        {
+            if (order.getGuest().getId() == guestId)
+            {
+                orderId = order.getId();
+                mealMyMark = order.getMark();
+                isMark = order.getIsMarked();
+                waiter = order.getWaiter();
+                if(isMark) {
+                    mealMyMark=0.0;
+                    for (OrderItem oi : order.getOrderItems()) {
+                        if (oi.getIsDish()) {
+                            for (DishMark dm : oi.getDish().getDishMarks()) {
+                                if(dm.getGuest().getId()==guestId){
+                                    mealMyMark += dm.getValue();
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (DrinkMark dm : oi.getDrink().getDrinkMarks()) {
+                                if(dm.getGuest().getId()==guestId){
+                                    mealMyMark += dm.getValue();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    mealMyMark = mealMyMark/order.getOrderItems().size();
+                }
+                break;
+            }
+        }
+        if(waiter!=null)
+        {
+            waiterId=waiter.getId();
+            waiterFirstName=waiter.getFirstName();
+            waiterLastName=waiter.getLastName();
+            for(WaiterMark wm : waiter.getWaiterMarks())
+            {
+                if(wm.getGuest().getId() == guestId)
+                {
+                    waiterMark=wm.getValue();
+                    break;
+                }
+            }
+        }
         HistoryDTO history = new HistoryDTO(reservation,
-                restaurantFriendsMark,
-                restaurantMyMark,
-                restaurantMeanMark,
-                guestId);
+                restaurantFriendsMark, restaurantMyMark,
+                restaurantMeanMark, orderId, mealMyMark,
+                isMark, waiterMark, waiterFirstName,
+                waiterLastName, waiterId);
 
         return history;
     }

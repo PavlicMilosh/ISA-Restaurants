@@ -9,6 +9,7 @@ import com.isa.restaurant.domain.Order;
 import com.isa.restaurant.domain.OrderItem;
 import com.isa.restaurant.services.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,17 +29,18 @@ public class OrderController
     @Autowired
     private OrdersService ordersService;
 
+
     @Autowired
     private OrderItemService orderItemService;
 
-//    @RequestMapping(value = "/{waiterId}/add/{restaurantId}/{tableId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<OrderItemDTO> addOrder(@PathVariable Long restaurantId, @PathVariable Long waiterId, @PathVariable Long tableId, @RequestBody OrderItemDTO order)
-//    {
-//        OrderItemDTO saved = restaurantOrdersService.addOrder(order,restaurantId,waiterId,tableId);
-//        if(saved == null)
-//            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
-//        return new ResponseEntity(saved, HttpStatus.OK);
-//    }
+    @RequestMapping(value = "/{waiterId}/add/{restaurantId}/{tableId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderItemDTO> addOrder(@PathVariable Long restaurantId, @PathVariable Long waiterId, @PathVariable Long tableId, @RequestBody OrderItemDTO order)
+    {
+        OrderItemDTO saved = ordersService.addOrder(order,restaurantId,waiterId,tableId);
+        if(saved == null)
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/{orderId}/finish", method = RequestMethod.PUT)
     public ResponseEntity<Order> finishOrder(@PathVariable Long orderId)
@@ -49,31 +51,6 @@ public class OrderController
         return new ResponseEntity(saved, HttpStatus.OK);
 
     }
-
-//    @RequestMapping(value = "/{ordersId}/getAllDishes")
-//    public ResponseEntity<Set<Dish>> getAllDishes(@PathVariable Long ordersId)
-//    {
-//        Set<Dish> dishes = restaurantOrdersService.getAllDishes(ordersId);
-//        return new ResponseEntity(dishes, HttpStatus.OK);
-//    }
-
-//    @RequestMapping(value = "/{ordersId}/getAllDrinks")
-//    public ResponseEntity<Set<Drink>> getAllDrinks(@PathVariable Long ordersId)
-//    {
-//        Set<Drink> drinks = restaurantOrdersService.getAllDrinks(ordersId);
-//        return new ResponseEntity(drinks, HttpStatus.OK);
-//    }
-
-//    @RequestMapping(value = "/{restaurantId}/getOrders", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Set<Order>> getAllOrders(@PathVariable Long restaurantId)
-//    {
-//        Set<Order> orders = restaurantOrdersService.getAllOrders(restaurantId);
-//        if(orders == null)
-//        {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<>(orders, HttpStatus.OK);
-//    }
 
     @RequestMapping(value = "/{itemId}/preparing/{userId}", method = RequestMethod.PUT) //+++
     public ResponseEntity<Boolean> preparingOrderItem(@PathVariable Long itemId, @PathVariable Long userId)
@@ -103,10 +80,10 @@ public class OrderController
         return new ResponseEntity(saved, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{orderId}/delivered", method = RequestMethod.PUT)
-    public ResponseEntity<OrderItemDTO> deliveredOrder(@PathVariable Long orderId)
+    @RequestMapping(value = "/{orderId}/delivered/{userId}", method = RequestMethod.PUT) //+++
+    public ResponseEntity<OrderItemDTO> deliveredOrder(@PathVariable Long orderId, @PathVariable Long userId)
     {
-        OrderItemDTO saved = ordersService.deliveredOrder(orderId);
+        OrderItemDTO saved = ordersService.deliveredOrder(orderId, userId);
         return new ResponseEntity(saved, HttpStatus.OK);
     }
 
@@ -121,6 +98,35 @@ public class OrderController
     public ResponseEntity<Set<Long>> getPreparedOrdersId(@PathVariable Long userId)
     {
         Set<Long> saved = ordersService.getPreparingOrderId(userId);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{userId}/getOrdersForChanging", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE) //+++
+    public ResponseEntity<Set<OrderItemDTO>> getOrdersForChanging(@PathVariable Long userId)
+    {
+        Set<OrderItemDTO>saved = ordersService.getOrdersForChanging(userId);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{userId}/getOrderForChanging/{tableId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE) //+++
+    public ResponseEntity<OrderItemDTO> getOrderForChanging(@PathVariable Long userId, @PathVariable Long tableId)
+    {
+        OrderItemDTO saved = ordersService.getOrderForChanging(userId,tableId);
+        return new ResponseEntity(saved, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{waiterId}/changeOrder", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) //+++
+    public ResponseEntity<Boolean> changeOrderOrder(@PathVariable Long waiterId, @RequestBody OrderItemDTO orderDTO)
+    {
+        Boolean saved;
+        try
+        {
+            saved = ordersService.changeOrder(waiterId, orderDTO);
+        }
+        catch (OptimisticLockingFailureException e)
+        {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         return new ResponseEntity(saved, HttpStatus.OK);
     }
 }

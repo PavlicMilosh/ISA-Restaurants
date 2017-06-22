@@ -1,15 +1,15 @@
 package com.isa.restaurant.services.implementation;
 
 import com.isa.restaurant.domain.*;
-import com.isa.restaurant.domain.DTO.DrinkDishDTO;
-import com.isa.restaurant.domain.DTO.FinishedOrderDTO;
-import com.isa.restaurant.domain.DTO.OrderItemDTO;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.services.OrderItemService;
 import com.isa.restaurant.services.OrdersService;
 import com.isa.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +19,7 @@ import java.util.Set;
  * Created by djuro on 4/22/2017.
  */
 @Service
+@Transactional
 public class OrdersServiceImpl implements OrdersService
 {
     @Autowired
@@ -54,6 +55,21 @@ public class OrdersServiceImpl implements OrdersService
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private DishRepository dishRepository;
+
+    @Autowired
+    private DrinkRepository drinkRepository;
+
+    @Autowired
+    private RestaurantMarkRepository restaurantMarkRepository;
+
+    @Autowired
+    private WaiterMarkRepository waiterMarkRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     @Override
     public Order getById(Long id)
     {
@@ -84,26 +100,41 @@ public class OrdersServiceImpl implements OrdersService
     }
 
     @Override
-    public Order addOrder(Order order, Long tableId)
+    public OrderItemDTO addOrder(OrderItemDTO orderDTO, Long id, Long waiterId, Long tableId)
     {
-        Order saved = null;
-        try
+        Waiter w=(Waiter) userRepository.findById(waiterId);
+        Restaurant restaurant=w.getRestaurant();
+        Set<OrderItem> savedOrderItems=new HashSet<OrderItem>();
+        for (OrderItmDTO orderItem:orderDTO.getOrderItems())
         {
-            Set<OrderItem> savedOrderItems=new HashSet<OrderItem>();
-            for (OrderItem orderItem:order.getOrderItems())
+            OrderItem savedOrderItem=null;
+            Drink drink=null;
+            Dish dish=null;
+            if(orderItem.getIsDish())
             {
-                OrderItem savedOrderItem=orderItemService.addOrderItem(orderItem);
-                savedOrderItems.add(savedOrderItem);
+                dish=dishRepository.findById(orderItem.getDish().getId());
+            }else
+            {
+                drink=drinkRepository.findById(orderItem.getDrink().getId());
             }
-            order.setOrderItems(savedOrderItems);
-            RestaurantTable table= tableRepository.findById(tableId);
-            order.setOrderTable(table);
-            saved = orderRepository.save(order);
+            if(orderItem.getIsDish()){
+                savedOrderItem=new OrderItem(dish,orderItem.getNumber());
+            }else
+            {
+                savedOrderItem=new OrderItem(drink,orderItem.getNumber());
+            }
+            OrderItem saved1=orderItemRepository.save(savedOrderItem);
+            savedOrderItems.add(saved1);
         }
-        catch(Exception e)
-        {
-        }
-        return saved;
+        Order order=new Order(savedOrderItems,orderDTO.getOrderTime());
+        RestaurantTable table= tableRepository.findById(tableId);
+        order.setOrderTable(table);
+        order.setWaiter(w);
+        Order saved = orderRepository.save(order);
+        restaurant.addOrder(saved);
+        System.out.println(restaurant.getId());
+        restaurantRepository.save(restaurant);
+        return new OrderItemDTO(saved);
     }
 
     @Override
@@ -135,91 +166,84 @@ public class OrdersServiceImpl implements OrdersService
     @Override
     public Set<OrderItemDTO> getOrdersForDeliver(Long waiterId)
     {
-//        User u = userRepository.findById(waiterId);
-//        Waiter waiter = (Waiter) u;
-//        RestaurantOrders restorantOrders=restaurantOrdersRepository.findByRestaurantId(waiter.getRestaurant().getId());
-//        Set<OrderItemDTO> ordersForDeliverd=new HashSet<OrderItemDTO>();
-//        Long waiterRegion=userService.getWaiterRegionId(waiterId);
-//        for(Order o:restorantOrders.getOrders())
-//        {
-//            if(o.getFinished()==true && o.getDelivered()==false)
-//            {
-//                if(o.getOrderTable().getRegion().getId()==waiterRegion){
-//                    ordersForDeliverd.add(new OrderItemDTO(o));
-//                }
-//            }
-//        }
-//        return ordersForDeliverd;
-
-        return new HashSet<>();
+        User u = userRepository.findById(waiterId);
+        Waiter waiter = (Waiter) u;
+        Set<OrderItemDTO> ordersForDeliverd=new HashSet<OrderItemDTO>();
+        Long waiterRegion=userService.getWaiterRegionId(waiterId);
+        for(Order o:waiter.getRestaurant().getOrders())
+        {
+            if(o.getFinished()==true && o.getDelivered()==false)
+            {
+                if(o.getOrderTable().getRegion().getId()==waiterRegion){
+                    ordersForDeliverd.add(new OrderItemDTO(o));
+                }
+            }
+        }
+        return ordersForDeliverd;
     }
 
     @Override
     public Set<Long> getTablesForCreatingBill(Long waiterId)
     {
-//        User u = userRepository.findById(waiterId);
-//        Waiter waiter = (Waiter) u;
-//        Restaurant restaurant=waiter.getRestaurant();
-//        RestaurantOrders restorantOrders=restaurantOrdersRepository.findByRestaurantId(restaurant.getId());
-//        Set<Long>  tablesForCreatingBills=new HashSet<Long>();
-//        Long waiterRegion=userService.getWaiterRegionId(waiterId);
-//        for(Order o:restorantOrders.getOrders())
-//        {
-//            if(o.getFinished()==true && o.getDelivered()==true && o.getDelivered()==false)
-//            {
-//                if(o.getOrderTable().getRegion().getId()==waiterRegion){
-//                    tablesForCreatingBills.add(o.getId());
-//                }
-//            }
-//        }
-//        return tablesForCreatingBills;
-
-        return new HashSet<>();
+        User u = userRepository.findById(waiterId);
+        Waiter waiter = (Waiter) u;
+        Restaurant restaurant=waiter.getRestaurant();
+        Set<Long>  tablesForCreatingBills=new HashSet<Long>();
+        Long waiterRegion=userService.getWaiterRegionId(waiterId);
+        for(Order o:restaurant.getOrders())
+        {
+            if(o.getFinished()==true && o.getDelivered()==true && o.getDelivered()==false)
+            {
+                if(o.getOrderTable().getRegion().getId()==waiterRegion){
+                    tablesForCreatingBills.add(o.getId());
+                }
+            }
+        }
+        return tablesForCreatingBills;
     }
 
     @Override
-    public OrderItemDTO deliveredOrder(Long orderId)
+    public OrderItemDTO deliveredOrder(Long orderId, Long userId)
     {
         Order order=orderRepository.findById(orderId);
+        Waiter waiter = (Waiter) userRepository.findById(userId);
         order.setDelivered(true);
+        order.setWaiter(waiter);
         orderRepository.save(order);
         return (new OrderItemDTO(order));
     }
 
     @Override
-    public Set<Long> getPreparingOrderId(Long userId)//++
+    public Set<Long> getPreparingOrderId(Long userId)
     {
-//        User u = userRepository.findById(userId);
-//        Restaurant r = null;
-//        if(u instanceof Bartender)
-//        {
-//            r = ((Bartender) u).getRestaurant();
-//        }
-//        else if(u instanceof Cook)
-//        {
-//            r = ((Cook) u).getRestaurant();
-//        }
-//        RestaurantOrders restaurantOrders=restaurantOrdersRepository.findByRestaurantId(r.getId());
-//        Set<Long> ordersId=new HashSet<Long>();
-//        for(Order o:restaurantOrders.getOrders())
-//        {
-//            if(!o.getFinished())
-//            {
-//                for(OrderItem oi:o.getOrderItems())
-//                {
-//                    if(oi.getFinished()==false && oi.getPreparing()==true)
-//                    {
-//                        if(oi.getUserId()==userId)
-//                        {
-//                            ordersId.add(o.getId());
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return ordersId;
-
-        return new HashSet<>();
+        User u = userRepository.findById(userId);
+        Restaurant r = null;
+        if(u instanceof Bartender)
+        {
+            r = ((Bartender) u).getRestaurant();
+        }
+        else if(u instanceof Cook)
+        {
+            r = ((Cook) u).getRestaurant();
+        }
+        Set<Long> ordersId=new HashSet<Long>();
+        for(Order o:r.getOrders())
+        {
+            if(!o.getFinished())
+            {
+                for(OrderItem oi:o.getOrderItems())
+                {
+                    if(oi.getFinished()==false && oi.getPreparing()==true)
+                    {
+                        if(oi.getUserId()==userId)
+                        {
+                            ordersId.add(o.getId());
+                        }
+                    }
+                }
+            }
+        }
+        return ordersId;
     }
 
     @Override
@@ -259,58 +283,191 @@ public class OrdersServiceImpl implements OrdersService
     }
 
     @Override
-    public FinishedOrderDTO markOrder(Long guestId, Long orderId, Double mark)
+    public HistoryDTO makeMark(HistoryDTO historyDTO, Long guestId)
     {
-        User u = userRepository.findById(guestId);
-        Guest guest = (Guest) u;
-        Order order = orderRepository.findById(orderId);
-        if(!order.getIsMarked())
+        Restaurant restaurant = restaurantRepository.findById(historyDTO.getRestaurantId());
+        Guest guest = (Guest) userRepository.findById(guestId);
+        RestaurantMark rm = null;
+        rm = restaurantMarkRepository.getMarkByGuestIdAndRestaurantId(guestId, historyDTO.getRestaurantId());
+        if(rm!=null)
         {
-            order.setIsMarked(true);
-            order.setMark(mark);
-            orderRepository.save(order);
-            for(OrderItem oi:order.getOrderItems())
+            rm.setValue((rm.getValue()+historyDTO.getRestaurantMyMark())/2);
+            restaurantMarkRepository.save(rm);
+        }
+        else
+        {
+            rm = new RestaurantMark(historyDTO.getRestaurantMyMark(),guest, restaurant);
+            RestaurantMark savedRestaurantMark=restaurantMarkRepository.save(rm);
+            restaurant.addRestaurantMark(savedRestaurantMark);
+            restaurantRepository.save(restaurant);
+        }
+        Waiter waiter = (Waiter) userRepository.findById(historyDTO.getWaiterId());
+        Boolean flag=false;
+        for(WaiterMark wm : waiter.getWaiterMarks())
+        {
+            if(wm.getGuest().getId()==guestId)
             {
-                if(oi.getIsDish())
-                {
-                    DishMark dishMark=null;
-                    dishMark=dishMarkRepository.findByDishId(oi.getDish().getId());
-                    if(dishMark!=null) dishMark.mark(mark);
-                    else dishMark=new DishMark(mark,1,guest, oi.getDish());
-                    dishMarkRepository.save(dishMark);
-                }
-                else
-                {
-                    DrinkMark drinkMark=null;
-                    drinkMark=drinkMarkRepository.findByDrinkId(oi.getDrink().getId());
-                    if(drinkMark!=null) drinkMark.mark(mark);
-                    else drinkMark=new DrinkMark(mark,1,guest,oi.getDrink());
-                    drinkMarkRepository.save(drinkMark);
-                }
+                wm.setValue((wm.getValue()+historyDTO.getWaiterMark())/2);
+                waiterMarkRepository.save(wm);
+                flag=true;
+                break;
             }
         }
-        return (new FinishedOrderDTO(order));
+        if(!flag)
+        {
+            WaiterMark wm = new WaiterMark(historyDTO.getWaiterMark(), guest , waiter);
+            WaiterMark savedWaiterMark=waiterMarkRepository.save(wm);
+            waiter.addWaiterMark(savedWaiterMark);
+            userRepository.save(waiter);
+        }
+        for(Order order : restaurant.getOrders())
+        {
+            if(order.getId()==historyDTO.getOrderId())
+            {
+                order.setMark(historyDTO.getMealMyMark());
+                order.setIsMarked(true);
+                orderRepository.save(order);
+                for(OrderItem oi: order.getOrderItems())
+                {
+                    if(oi.getIsDish())
+                    {
+                        flag=false;
+                        for(DishMark dm:oi.getDish().getDishMarks())
+                        {
+                            if(dm.getGuest().getId()==guestId) {
+                                dm.setValue((dm.getValue() + historyDTO.getMealMyMark()) / 2);
+                                dishMarkRepository.save(dm);
+                                flag=true;
+                                break;
+                            }
+                        }
+                        if(!flag)
+                        {
+                            DishMark dishMark = new DishMark(historyDTO.getMealMyMark(),guest,oi.getDish());
+                            DishMark savedDishMark = dishMarkRepository.save(dishMark);
+                            oi.getDish().addDishMark(savedDishMark);
+                            dishRepository.save(oi.getDish());
+                        }
+                    }
+                    else
+                    {
+                        flag=false;
+                        for(DrinkMark dm:oi.getDrink().getDrinkMarks())
+                        {
+                            if(dm.getGuest().getId()==guestId)
+                            {
+                                dm.setValue((dm.getValue()+historyDTO.getMealMyMark())/2);
+                                drinkMarkRepository.save(dm);
+                                flag=true;
+                                break;
+                            }
+
+                        }
+                        if(!flag)
+                        {
+                            DrinkMark drinkMark = new DrinkMark(historyDTO.getMealMyMark(),guest,oi.getDrink());
+                            DrinkMark savedDrinkMark=drinkMarkRepository.save(drinkMark);
+                            oi.getDrink().addDrinkMark(savedDrinkMark);
+                            drinkRepository.save(oi.getDrink());
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        return historyDTO;
     }
 
     @Override
-    public Set<DrinkDishDTO> getRestaurantDrinkDishMark(Long restaurantId)
+    public Set<OrderItemDTO> getOrdersForChanging(Long waiterId)
     {
-        Restaurant restaurant=restaurantRepository.findById(restaurantId);
-        Set<DrinkDishDTO> items=new HashSet<DrinkDishDTO>();
-        for(Drink drink:restaurant.getDrinks())
+        Waiter waiter=(Waiter) userRepository.findById(waiterId);
+        Set<OrderItemDTO> ordersDTO=new HashSet<>();
+        for(Order order:waiter.getRestaurant().getOrders())
         {
-            DrinkMark drinkMark=null;
-            drinkMark=drinkMarkRepository.findByDrinkId(drink.getId());
-            if(drinkMark!=null) items.add(new DrinkDishDTO(drink,drinkMark.getValue()));
-            else items.add(new DrinkDishDTO(drink,0.0));
+            if(order.getWaiter().getId()==waiter.getId())
+            {
+                if(!order.getFinished())
+                {
+                    Boolean flag=false;
+                    for(OrderItem oi:order.getOrderItems())
+                    {
+                        if(oi.getPreparing())
+                        {
+                            flag=true;
+                            break;
+                        }
+                    }
+                    if(!flag) ordersDTO.add(new OrderItemDTO(order));
+                }
+            }
         }
-        for(Dish dish:restaurant.getDishes())
+        return ordersDTO;
+    }
+
+
+    @Override
+    public OrderItemDTO getOrderForChanging(Long waiterId, Long tableId)
+    {
+        Waiter waiter=(Waiter) userRepository.findById(waiterId);
+        OrderItemDTO orderItemDTO=null;
+        for(Order order:waiter.getRestaurant().getOrders())
         {
-            DishMark dishMark=null;
-            dishMark=dishMarkRepository.findByDishId(dish.getId());
-            if(dishMark!=null) items.add(new DrinkDishDTO(dish,dishMark.getValue()));
-            else items.add(new DrinkDishDTO(dish,0.0));
+            if(order.getWaiter().getId()==waiterId)
+            {
+                if(!order.getFinished() && order.getOrderTable().getId()==tableId)
+                {
+                    Boolean flag=false;
+                    for(OrderItem oi:order.getOrderItems())
+                    {
+                        if(oi.getPreparing())
+                        {
+                            flag=true;
+                            break;
+                        }
+                    }
+                    if(!flag)
+                    {
+                        orderItemDTO = new OrderItemDTO(order);
+                        break;
+                    }
+                }
+            }
         }
-        return items;
+        return orderItemDTO;
+    }
+
+    @Override
+    @Transactional(rollbackFor = OptimisticLockingFailureException.class)
+    public Boolean changeOrder(Long waiterId, OrderItemDTO orderDTO) throws OptimisticLockingFailureException
+    {
+        Order order = orderRepository.findById(orderDTO.getId());
+        order.setVersion(orderDTO.getVersion());
+        Set<OrderItem> savedOrderItems=new HashSet<OrderItem>();
+        for (OrderItmDTO orderItem:orderDTO.getOrderItems())
+        {
+            OrderItem savedOrderItem=null;
+            Drink drink=null;
+            Dish dish=null;
+            if(orderItem.getIsDish())
+            {
+                dish=dishRepository.findById(orderItem.getDish().getId());
+            }else
+            {
+                drink=drinkRepository.findById(orderItem.getDrink().getId());
+            }
+            if(orderItem.getIsDish()){
+                savedOrderItem=new OrderItem(dish,orderItem.getNumber());
+            }else
+            {
+                savedOrderItem=new OrderItem(drink,orderItem.getNumber());
+            }
+            OrderItem saved1=orderItemRepository.save(savedOrderItem);
+            savedOrderItems.add(saved1);
+        }
+        order.setOrderItems(savedOrderItems);
+        Order saved = orderRepository.save(order);
+
+        return true;
     }
 }

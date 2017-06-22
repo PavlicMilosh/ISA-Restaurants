@@ -2,18 +2,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OrderService } from "../../services/order.service";
 import { RestaurantService } from "../../services/restaurants.service";
 import { UserService } from "../../services/users.service";
-import { ActivatedRoute }    from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {Observable, Subscription} from "rxjs";
 
 @Component({
   moduleId: module.id,
-  selector: 'makeOrder',
-  templateUrl: './makeOrder.component.html',
-  styleUrls: ['./makeOrder.component.css'],
+  selector: 'orderChange',
+  templateUrl: './orderChange.component.html',
+  styleUrls: ['./orderChange.component.css'],
   providers: [OrderService,RestaurantService,UserService]
 })
 
-export class MakeOrder implements OnInit, OnDestroy
+export class OrderChange implements OnInit, OnDestroy
 {
 
   order: Order;
@@ -46,8 +46,12 @@ export class MakeOrder implements OnInit, OnDestroy
   postsSubscription:Subscription;
   timerSubscription:Subscription;
 
+  orderId:number;
+
+  orderForChanging:Order;
+
   constructor(private orderService: OrderService, private userService: UserService,
-              private restaurantService: RestaurantService, private route: ActivatedRoute )
+              private restaurantService: RestaurantService, private route: ActivatedRoute, private _router: Router )
   {
     /*
      this.userService.getRestaurant().subscribe(
@@ -58,32 +62,29 @@ export class MakeOrder implements OnInit, OnDestroy
     console.log(this.route.snapshot.params['p1']);
     this.selectedTableId=this.route.snapshot.params['p1'];
 
-    this.refreshData();
+
+    this.userService.getRestaurant().subscribe(
+      (data:Restaurant) => this.restaurant = data,
+      error => alert(error),
+    );
+
 
   }
-
-  private refreshData(): void {
-    this.postsSubscription=this.userService.getRestaurant().subscribe(
-      data => {
-        this.restaurant = data;
-        this.subscribeToData();
-      });
-  }
-
-  private subscribeToData(): void {
-    this.timerSubscription=Observable.timer(5000).first().subscribe(() => this.refreshData());
-  }
-
-
 
   ngOnInit() {
-    /*
-     this.subscription = this.dataService.getData().subscribe(
-     id => { this.selectedTableId = id; },
-     ()=>this.aaa()
-     );
-     */
+    this.orderService.getOrderForChanging(this.route.snapshot.params['p1']).subscribe(
+      (data:Order) => this.orderForChanging = data,
+      error => alert(error),
+      ()=>this.initOrder(),
+    );
   }
+
+  initOrder()
+  {
+    this.orderItems=this.orderForChanging.orderItems;
+    this.orderId=this.orderForChanging.id;
+  }
+
   ngOnDestroy()
   {
     if (this.postsSubscription) {
@@ -95,9 +96,9 @@ export class MakeOrder implements OnInit, OnDestroy
   }
 
 
-  makeOrder()
+  changeOrder()
   {
-    this.orderService.makeOrder(this.orderItems,false,0,this.restaurant.id,this.selectedTableId).subscribe(
+    this.orderService.changeOrder(this.orderItems,false,0,this.restaurant.id,this.selectedTableId, this.orderForChanging.id, this.orderForChanging.version).subscribe(
       data => this.order = data,
       error => alert(error),
       ()=>this.removeItems()
@@ -106,6 +107,7 @@ export class MakeOrder implements OnInit, OnDestroy
 
   removeItems()
   {
+    this._router.navigate(['tableDisplay']);
     this.orderItems=[];
   }
 
@@ -178,10 +180,12 @@ interface OrderItem
 
 interface Order
 {
+  id:number;
   orderItems: OrderItem[];
   barmen:Barman;
   finished: Boolean;
   price: number;
+  version: number;
 }
 
 interface RestaurantTable
@@ -253,3 +257,6 @@ interface Region
 }
 
 
+/**
+ * Created by djuro on 6/22/2017.
+ */

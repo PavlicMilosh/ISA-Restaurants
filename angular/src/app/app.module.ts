@@ -1,12 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ApplicationRef  } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { WizardModule } from 'ng2-archwizard';
 import { MyDatePickerModule } from 'mydatepicker';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
 import { AgmCoreModule } from '@agm/core';
 import { ChartsModule } from "ng2-charts";
+import { Ng2CompleterModule } from "ng2-completer";
+
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -59,7 +61,7 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
 import { CreateBill } from "./components/createBill/createBill.component";
 import { RestaurantReportComponent } from './components/restaurantReport/restaurantReport.component';
 import { ChartsComponent } from './components/charts/charts.component';
-
+import { OrderChange } from "./components/orderChange/orderChange.component";
 
 
 
@@ -94,6 +96,7 @@ import { ChartsComponent } from './components/charts/charts.component';
     CalendarComponent,
     AddWorkScheduleComponent,
     CreateBill,
+    OrderChange,
 
     // Ogi
     GuestRegisterComponent,
@@ -116,11 +119,13 @@ import { ChartsComponent } from './components/charts/charts.component';
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     WizardModule,
     MyDatePickerModule,
     Ng2TableModule,
     ChartsModule,
+    Ng2CompleterModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDktm4_Qkq5wDW1sX9PY9UKHHGwXmCxnj0'
     }),

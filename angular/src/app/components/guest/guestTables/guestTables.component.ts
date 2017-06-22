@@ -82,6 +82,7 @@ export class GuestTablesComponent implements OnChanges, OnInit {
   initTables()
   {
     this.getTables();
+    console.log(this.tables);
     this.canvas.clear();
     for (let i = 0; i < this.tables.length; i++)
     {

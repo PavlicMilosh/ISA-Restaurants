@@ -90,11 +90,12 @@ export class OrderService
       .map(res => res.json());
   }
 
-  orderDelivered(orderId:number)
+  orderDelivered(orderId:number)  //+++
   {
+    let userId=LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.put("http://localhost:8080/order/"+orderId+"/delivered", { headers : headers })
+    return this.http.put("http://localhost:8080/order/"+orderId+"/delivered/"+userId, { headers : headers })
       .map(res => res.json());
   }
 
@@ -113,6 +114,47 @@ export class OrderService
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.get("http://localhost:8080/order/"+userId+"/getPreparedOrdersId", { headers : headers })
+      .map(res => res.json());
+  }
+
+  getOrdersForChanging()
+  {
+    let userId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/order/"+userId+"/getOrdersForChanging", { headers : headers })
+      .map(res => res.json());
+  }
+
+  getOrderForChanging(tableId:number)
+  {
+    let userId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/order/"+userId+"/getOrderForChanging/"+tableId, { headers : headers })
+      .map(res => res.json());
+  }
+
+  changeOrder(orderItems:OrderItem[], finished: boolean, price: number,id:number, tableId: number, orderId: number, version:number)
+  {
+    var date=Date.now();
+    var order =
+      {
+        id:orderId,
+        orderItems: orderItems,
+        finished: finished,
+        price: price,
+        orderTime: date,
+        version: version
+      }
+
+    var param = JSON.stringify(order);
+    let waiterId=LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    headers.append('Content-Type', 'application/json');
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.put("http://localhost:8080/order/"+waiterId+"/changeOrder",param, { headers : headers })
       .map(res => res.json());
   }
 }
