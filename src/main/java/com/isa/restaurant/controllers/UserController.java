@@ -82,8 +82,8 @@ public class UserController
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/update/bartender", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> changeCook(@RequestBody Bartender bartender){
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> changePassword(@RequestBody Bartender bartender){
         UserDTO saved = userService.changeBartender(bartender);
         if(saved == null)
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);

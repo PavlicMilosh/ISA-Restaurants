@@ -56,6 +56,18 @@ public class DishRepositoryTest
         Assert.assertEquals(dish, saved);
     }
 
+    @Test
+    public void testFindById()
+{
+    Restaurant restaurant=new Restaurant("restoran2","moj restoran");
+    restaurantRepository.save(restaurant);
+
+    Dish dish= new Dish("Jelo3","Moje jelo3",300.0,restaurant);
+    Dish saved=dishRepository.save(dish);
+    Dish getDish=dishRepository.findById(saved.getId());
+    Assert.assertEquals(getDish, saved);
+}
+
 
     @After
     public void tearDown()

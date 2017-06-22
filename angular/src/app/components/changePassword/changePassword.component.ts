@@ -1,6 +1,7 @@
 
 import { Component } from '@angular/core';
 import { UserService } from "../../services/users.service";
+import {LoggedUtils } from "../../utils/logged.utils";
 
 @Component({
   moduleId: module.id,
@@ -26,7 +27,7 @@ export class ChangePassword
 
   constructor(private userService: UserService)
   {
-    this.userService.getUser("test123@live.com", "12345", "TestName", "TestLastName").subscribe
+    this.userService.getCurrentUser().subscribe
     (
       (data:UserDTO) => this.userDTO = data,
       error => alert(error)
@@ -43,7 +44,7 @@ export class ChangePassword
           this.newPassword1, this.userDTO.firstName, this.userDTO.lastName).subscribe(
           data => this.userDTO = data,
           error => alert(error),
-          ()=>alert("Successfully!")
+          ()=>alert("Password changed successfully!")
         );
       }else
       {

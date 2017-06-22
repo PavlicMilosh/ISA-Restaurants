@@ -88,7 +88,7 @@ export class UserService
     var headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/users/update/barman", param, { headers : headers })
+    return this.http.post("http://localhost:8080/users/changePassword", param, { headers : headers })
       .map(res => res.json());
   }
 
@@ -144,6 +144,15 @@ export class UserService
 
   getById(userId: number)
   {
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.get("http://localhost:8080/users/" + userId, { headers : headers })
+      .map(res => res.json());
+  }
+
+  getCurrentUser()
+  {
+    let userId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
     return this.http.get("http://localhost:8080/users/" + userId, { headers : headers })

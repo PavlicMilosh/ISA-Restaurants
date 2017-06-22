@@ -9,6 +9,7 @@ import com.isa.restaurant.domain.Order;
 import com.isa.restaurant.domain.OrderItem;
 import com.isa.restaurant.services.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +36,7 @@ public class OrderController
     @RequestMapping(value = "/{waiterId}/add/{restaurantId}/{tableId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderItemDTO> addOrder(@PathVariable Long restaurantId, @PathVariable Long waiterId, @PathVariable Long tableId, @RequestBody OrderItemDTO order)
     {
-        System.out.println("usaooooo!!11111");
         OrderItemDTO saved = ordersService.addOrder(order,restaurantId,waiterId,tableId);
-        System.out.println("usaooooo222222");
         if(saved == null)
             return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
         return new ResponseEntity(saved, HttpStatus.OK);
@@ -119,7 +118,15 @@ public class OrderController
     @RequestMapping(value = "/{waiterId}/changeOrder", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE) //+++
     public ResponseEntity<Boolean> changeOrderOrder(@PathVariable Long waiterId, @RequestBody OrderItemDTO orderDTO)
     {
-        Boolean saved = ordersService.changeOrder(waiterId, orderDTO);
+        Boolean saved;
+        try
+        {
+            saved = ordersService.changeOrder(waiterId, orderDTO);
+        }
+        catch (OptimisticLockingFailureException e)
+        {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         return new ResponseEntity(saved, HttpStatus.OK);
     }
 }

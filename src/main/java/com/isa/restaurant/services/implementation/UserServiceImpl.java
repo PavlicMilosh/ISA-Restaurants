@@ -141,6 +141,15 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
+    public UserDTO changePassword(UserDTO userDTO)
+    {
+        User user = userRepository.findById(userDTO.getId());
+        user.setPassword(userDTO.getPassword());
+        User saved = userRepository.save(user);
+        return  new UserDTO(saved);
+    }
+
+    @Override
     public Set<WorkScheduleDTO> getSchedule(Long id)
     {
         User u = userRepository.findById(id);

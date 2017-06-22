@@ -1,5 +1,7 @@
 package com.isa.restaurant.domain;
 
+import com.isa.restaurant.domain.DTO.OrderItemDTO;
+import com.isa.restaurant.domain.DTO.OrderItmDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,6 +68,9 @@ public class Order
     @Column(name="order_reservation_id")
     private Long reservationId;
 
+    @Version
+    private Long version;
+
     public Order(Waiter waiter)
     {
         this.price=0.0;
@@ -117,6 +122,25 @@ public class Order
         this.billCreated=false;
         this.isMarked=false;
         this.mark=0.0;
+    }
+
+    public Order(OrderItemDTO orderDTO)
+    {
+        this.orderItems = new HashSet<>();
+        for(OrderItmDTO orderItmDTO: orderDTO.getOrderItems())
+        {
+            this.orderItems.add(new OrderItem(orderItmDTO));
+        }
+        this.price = 0.0;
+        this.calculateOrderPrice();
+        this.finished = false;
+        this.orderTime = orderTime;
+        this.delivered=false;
+        this.billCreated=false;
+        this.isMarked=false;
+        this.mark=0.0;
+        this.orderTime=orderDTO.getOrderTime();
+        this.version=orderDTO.getVersion();
     }
 
 

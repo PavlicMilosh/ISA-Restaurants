@@ -98,7 +98,7 @@ export class OrderChange implements OnInit, OnDestroy
 
   changeOrder()
   {
-    this.orderService.changeOrder(this.orderItems,false,0,this.restaurant.id,this.selectedTableId, this.orderForChanging.id).subscribe(
+    this.orderService.changeOrder(this.orderItems,false,0,this.restaurant.id,this.selectedTableId, this.orderForChanging.id, this.orderForChanging.version).subscribe(
       data => this.order = data,
       error => alert(error),
       ()=>this.removeItems()
@@ -185,6 +185,7 @@ interface Order
   barmen:Barman;
   finished: Boolean;
   price: number;
+  version: number;
 }
 
 interface RestaurantTable
