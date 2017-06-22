@@ -90,6 +90,7 @@ export class GuestRestaurantAttendancesComponent implements OnInit
     }
   }
 
+
   convertReservationForSummary(reservation: Reservation)
   {
     let drinkOrders = [];
@@ -116,6 +117,23 @@ export class GuestRestaurantAttendancesComponent implements OnInit
       };
 
     return passing;
+  }
+
+
+  deleteReservation(reservationId: number)
+  {
+    for (let i = 0; i < this.reservations.length; i++)
+    {
+      if (this.reservations[i].id == reservationId)
+      {
+        this.guestService.deleteReservation(reservationId).subscribe
+        (
+          error => alert(error)
+        );
+        this.reservations.splice(i,1);
+        break;
+      }
+    }
   }
 }
 

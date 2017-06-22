@@ -5,7 +5,6 @@ import { HttpModule } from '@angular/http';
 import { WizardModule } from 'ng2-archwizard';
 import { MyDatePickerModule } from 'mydatepicker';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
-import { AgmCoreModule } from '@agm/core';
 import { ChartsModule } from "ng2-charts";
 import { Ng2CompleterModule } from "ng2-completer";
 
@@ -126,9 +125,6 @@ import { OrderChange } from "./components/orderChange/orderChange.component";
     Ng2TableModule,
     ChartsModule,
     Ng2CompleterModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDktm4_Qkq5wDW1sX9PY9UKHHGwXmCxnj0'
-    }),
     routing,
     NgbModule.forRoot()
   ],

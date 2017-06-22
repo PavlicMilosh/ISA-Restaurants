@@ -9,40 +9,76 @@
 
         <div class="form-group">
           <label for="firstName" class="cols-sm-2 control-label">First Name</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="firstName" id="firstName" [(ngModel)]="firstName"  placeholder="First Name"/>
+          <input type="text" class="form-control"
+                 name="firstName" id="firstName"
+                 [(ngModel)]="firstName"
+                 required
+                 placeholder="First Name"
+                 #fn="ngModel"/>
+          <div *ngIf="fn.errors && (fn.dirty || fn.touched)" class="alert alert-danger">
+            <div [hidden]="!fn.errors.required">
+              Field is required
             </div>
           </div>
         </div>
 
         <div class="form-group">
           <label for="lastName" class="cols-sm-2 control-label">Last Name</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="lastName" id="lastName" [(ngModel)]="lastName"  placeholder="Last Name"/>
+          <input type="text" class="form-control"
+                 name="lastName" id="lastName"
+                 [(ngModel)]="lastName"
+                 placeholder="Last Name"
+                 required
+                 #ln="ngModel"/>
+          <div *ngIf="ln.errors && (ln.dirty || ln.touched)" class="alert alert-danger">
+            <div [hidden]="!ln.errors.required">
+              Field is required
             </div>
           </div>
         </div>
 
         <div class="form-group">
           <label for="email" class="cols-sm-2 control-label">Email</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="email" id="email" [(ngModel)]="email" placeholder="Email"/>
+          <input type="text" class="form-control"
+                 name="email" id="email"
+                 [(ngModel)]="email"
+                 placeholder="your@email"
+                 required
+                 pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+                 #em="ngModel"/>
+          <div *ngIf="em.errors && (em.dirty || em.touched)" class="alert alert-danger">
+            <div [hidden]="!em.errors.required">
+              Field is required
+            </div>
+            <div [hidden]="!em.errors.pattern">
+              Invalid email
             </div>
           </div>
         </div>
 
         <div class="form-group">
           <label for="password" class="cols-sm-2 control-label">Password</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-              <input type="password" class="form-control" name="password" id="password" [(ngModel)]="password" placeholder="Enter your Password"/>
+          <input type="password" class="form-control"
+                 name="password" id="password"
+                 [(ngModel)]="password"
+                 placeholder="Enter your Password"
+                 required
+                 pattern="^(?=[\w!@#$%^&*()+]{6,})(?:.*[!@#$%^&*()+]+.*)$"
+                 minlength="5"
+                 maxlength="15"
+                 #p = "ngModel"/>
+          <div *ngIf="p.errors && (p.dirty || p.touched)" class="alert alert-danger">
+            <div [hidden]="!p.errors.required">
+              Field is required
+            </div>
+            <div [hidden]="!p.errors.pattern">
+              At least one special character
+            </div>
+            <div [hidden]="!p.errors.minlength">
+              Minimum of 5 characters
+            </div>
+            <div [hidden]="!p.errors.maxlength">
+              Maximum of 15 characters
             </div>
           </div>
         </div>
@@ -55,8 +91,3 @@
     </div>
   </div>
 </div>
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>

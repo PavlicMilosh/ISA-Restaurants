@@ -25,7 +25,7 @@ public class Order
     @Column(name = "order_id", unique = true, nullable = false)
     private Long id;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "order_item_id", name = "order_order_item_id")
     private Set<OrderItem> orderItems;
 

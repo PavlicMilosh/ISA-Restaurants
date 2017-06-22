@@ -305,4 +305,11 @@ public class UserServiceImpl implements UserService
         }
         return workerSchedule;
     }
+
+    @Override
+    public GuestDTO getGuestInfo(Long guestId)
+    {
+        Guest guest = (Guest) userRepository.findById(guestId);
+        return new GuestDTO(guest);
+    }
 }

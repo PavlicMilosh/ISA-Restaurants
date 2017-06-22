@@ -1,6 +1,3 @@
-
-<a class="btn-default" (click)="sendReservation()">SEND RESERVATION</a>
-
 <div class="container">
   <div class="row main">
     <div class="main-login main-center">
@@ -13,24 +10,24 @@
         <wizard-step title="Restaurant">
           <guestRestaurants (notify)='selectedRestaurantNotify($event)'></guestRestaurants>
           <ng-container *ngIf="restaurantChoosen">
-            <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Next</button>
+            <a type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Next</a>
           </ng-container>
         </wizard-step>
 
         <wizard-step title="Tables">
           <guestTables [restaurant]="reservation.restaurant"
                        (notifyTables)="tablesNotify($event)"></guestTables>
-          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Previous</button>
+          <a type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Previous</a>
           <ng-container *ngIf="tablesChoosen">
-            <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Next</button>
+            <a type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Next</a>
           </ng-container>
         </wizard-step>
 
 
         <wizard-step title="Invitations">
           <guestInvitations [restaurant]="reservation.restaurant" (notify)='invitesNotify($event)'></guestInvitations>
-          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Previous</button>
-          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Next</button>
+          <a type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Previous</a>
+          <a type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Next</a>
         </wizard-step>
 
 
@@ -38,21 +35,21 @@
           <guestPreorder [restaurant]="reservation.restaurant"
                          (notifyDishes)="dishOrdersNotify($event)"
                          (notifyDrinks)="drinkOrdersNotify($event)"></guestPreorder>
-          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Previous</button>
-          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Summary</button>
+          <a type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Previous</a>
+          <a type="button" class="btn btn-primary btn-lg btn-block login-button pull-right" nextStep>Summary</a>
         </wizard-step>
 
 
         <wizard-step title="Summary">
           <guestReservationSummary [parentSubject]="parentSubject"></guestReservationSummary>
-          <button type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Back</button>
-          <button type="button" class="btn btn-success btn-lg btn-block login-button pull-right" (click)="sendReservation()" nextStep>Send!</button>
+          <a type="button" class="btn btn-primary btn-lg btn-block login-button pull-left" previousStep>Back</a>
+          <a type="button" class="btn btn-success btn-lg btn-block login-button pull-right" (click)="sendReservation()" nextStep>Send!</a>
         </wizard-step>
 
         <wizard-completion-step title="Send!">
           Thank you for using our service. You can check your reservation and modify it.
           To do that, click on the 'See reservation' button.
-          <button routerLink="../attendances" type="button" class="btn btn-success btn-lg btn-block login-button">See reservations</button>
+          <a routerLink="../attendances" type="button" class="btn btn-success btn-lg btn-block login-button">See reservations</a>
         </wizard-completion-step>
       </wizard>
     </div>

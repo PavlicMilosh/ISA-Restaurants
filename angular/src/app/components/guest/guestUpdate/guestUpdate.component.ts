@@ -19,7 +19,10 @@ export class GuestUpdateComponent
   firstName: string;
   lastName: string;
 
-  constructor(private guestService: GuestService){}
+  constructor(private guestService: GuestService)
+  {
+    this.getGuestData();
+  }
 
 
   updateGuest()
@@ -28,6 +31,23 @@ export class GuestUpdateComponent
     (
       data => this.userDTO = data,
       error => alert(error)
+    );
+  }
+
+
+  getGuestData()
+  {
+    this.guestService.getGuestData().subscribe
+    (
+      data =>
+      {
+        this.userDTO = data;
+        this.email = this.userDTO.email;
+        this.firstName = this.userDTO.firstName;
+        this.lastName = this.userDTO.lastName;
+      },
+      error => alert(error)
+
     );
   }
 }

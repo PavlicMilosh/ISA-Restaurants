@@ -1,6 +1,9 @@
-import {Component, OnInit, EventEmitter, Output} from '@angular/core';
-import {GuestService} from "../../../services/guest.service";
-import {RestaurantService} from "../../../services/restaurants.service";
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { GuestService } from "../../../services/guest.service";
+import {RestaurantService } from "../../../services/restaurants.service";
+import { GoogleService } from "../../../services/google.services";
+
+declare var google: any;
 declare let jQuery:any;
 
 @Component
@@ -9,7 +12,7 @@ declare let jQuery:any;
   selector: 'guestRestaurants',
   templateUrl: 'guestRestaurants.component.html',
   styleUrls: ['guestRestaurants.component.css', '../../style/tableStyle.css'],
-  providers: [RestaurantService, GuestService]
+  providers: [RestaurantService, GuestService, GoogleService]
 })
 
 
@@ -18,7 +21,6 @@ export class GuestRestaurantsComponent implements OnInit
   @Output() notify: EventEmitter<Restaurant> = new EventEmitter<Restaurant>();
   private restaurants: Restaurant[];
   private selectedRestaurant: Restaurant;
-  private mapAddress: string;
   private searchParams: string;
 
   private nameSortAsc: boolean;
@@ -28,11 +30,16 @@ export class GuestRestaurantsComponent implements OnInit
   private meanMarkSortAsc: boolean;
   private friendsMarkSortAsc: boolean;
 
+  private currentCoords: Coords;
 
-  constructor(private guestService: GuestService, private restaurantService: RestaurantService)
+
+  constructor(private guestService: GuestService,
+              private restaurantService: RestaurantService,
+              private googleService: GoogleService)
   {
     this.restaurants = [];
-    this.selectedRestaurant = {id: 0, name: "", description: "", friendsMark: null, meanMark: null, tables: [], address: "", distance: null, visits: 0};
+
+    this.currentCoords = {lat: null, lng: null};
 
     this.nameSortAsc = false;
     this.kitchenSortAsc = false;
@@ -41,15 +48,77 @@ export class GuestRestaurantsComponent implements OnInit
     this.meanMarkSortAsc = false;
     this.friendsMarkSortAsc = false;
 
+
+    this.getCurrentLocation();
+
     this.guestService.getRestaurants().subscribe
     (
-      data => {this.restaurants = data; console.log(data)},
-      error => console.log(error)
+      data =>
+      {
+        this.restaurants = data;
+        for (let r of this.restaurants)
+        {
+          if (r.address != null)
+          {
+            this.googleService.geocode(r.address.street + ',+' + r.address.city + ',+' + r.address.country).subscribe
+            (
+              data =>
+              {
+                if (data.results.length > 0)
+                {
+                  r.canCalculateDistance = true;
+                  r.lat = data.results[0].geometry.location.lat;
+                  r.lng = data.results[0].geometry.location.lng;
+                  console.log(r);
+                  let origin = new google.maps.LatLng(this.currentCoords.lat, this.currentCoords.lng);
+                  let destination = new google.maps.LatLng(r.lat, r.lng);
+                  let service = new google.maps.DistanceMatrixService();
+                  service.getDistanceMatrix
+                  (
+                    {
+                      origins: [origin],
+                      destinations: [destination],
+                      travelMode: 'DRIVING'
+                    },
+                    function (response, status)
+                    {
+                      if (response.rows[0].elements[0].distance != null)
+                      {
+                        console.log(response);
+                        r.distanceText = response.rows[0].elements[0].distance.text;
+                        r.distance = response.rows[0].elements[0].distance.value;
+                      }
+                      else
+                      {
+                        r.distanceText = null;
+                        r.distance = null;
+                      }
+                    }
+                  );
+                }
+                else
+                {
+                  r.canCalculateDistance = false;
+                  r.lat = null;
+                  r.lng = null;
+                }
+              },
+              error => alert(error)
+            );
+          }
+        }
+      },
+      error => alert(error)
+
     );
+
+
   }
+
 
   ngOnInit()
   {
+
   }
 
 
@@ -70,15 +139,24 @@ export class GuestRestaurantsComponent implements OnInit
 
   showOnMap(id: number)
   {
-    for (let i = 0; i < this.restaurants.length; i++)
+    for (let r of this.restaurants)
     {
-      if (this.restaurants[i].id == id)
+      if (r.id == id)
       {
-        this.mapAddress = this.restaurants[i].address;
-        break;
+        let uluru = {lat: r.lat, lng: r.lng};
+        console.log(uluru);
+        let map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        let marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
       }
     }
   }
+
 
   searchRestaurants()
   {
@@ -97,6 +175,7 @@ export class GuestRestaurantsComponent implements OnInit
       error => alert(error)
     );
   }
+
 
   sortData(attribute: string)
   {
@@ -136,7 +215,6 @@ export class GuestRestaurantsComponent implements OnInit
 
     this.restaurants.sort(function(a, b)
     {
-
       let first = a[attribute];
       let second = b[attribute];
       // Compare the 2 dates
@@ -155,6 +233,31 @@ export class GuestRestaurantsComponent implements OnInit
     });
   }
 
+
+  getCurrentLocation()
+  {
+    if (navigator.geolocation)
+    {
+      let self = this;
+      navigator.geolocation.getCurrentPosition
+      (
+        function(position)
+        {
+              self.currentCoords.lat = position.coords.latitude;
+              self.currentCoords.lng = position.coords.longitude;
+        },
+        function()
+        {
+          alert("Something went wrong, couldn't get location :(")
+        }
+      );
+    }
+    else
+    {
+    // Browser doesn't support Geolocation
+    alert("Your browser doesn't supprt Geolocation");
+    }
+  }
 }
 
 
@@ -166,9 +269,25 @@ interface Restaurant
   friendsMark: number;
   visits: number;
   meanMark: number;
-  address: string;
-  distance: number;
   tables: RestaurantTable[];
+
+  lat: number;
+  lng: number;
+
+  address: Address;
+  distance: number;
+  distanceText: string;
+  canCalculateDistance: boolean;
+}
+
+
+interface Address
+{
+  city: string;
+  number: number;
+  street: string;
+  postalCode: string;
+  country: string;
 }
 
 
@@ -182,4 +301,11 @@ interface RestaurantTable
   regionId: number;
   regionColor: string;
   seats: number;
+}
+
+
+interface Coords
+{
+  lat: number;
+  lng: number;
 }
