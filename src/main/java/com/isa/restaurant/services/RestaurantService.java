@@ -46,7 +46,19 @@ public interface RestaurantService
 
     List<RestaurantTableDTO> getTables(Long restaurantId);
 
-    Report getReport(Long restaurantId, Date startDate, Date endDate);
+    Report getReport(Long restaurantId, Date startDate);
+
+    List<WaiterMarkReport> getWaiterMarkReport(Long restaurantId);
+
+    List<DishMarkReport> getDishMarkReport(Long restaurantId);
+
+    List<CookMarkReport> getCookMarkReport(Long restaurantId);
+
+    List<ReportData> getVisitsReport(Long restaurantId, Date date);
+
+    List<ReportData> getWaiterIncomeReport(Long restaurantId, Long waiterId, Date date);
+
+    List<ReportData> getIncomeReport(Long restaurantId, Date date);
 
     List<DishType> getDishTypes(Long managerId);
 

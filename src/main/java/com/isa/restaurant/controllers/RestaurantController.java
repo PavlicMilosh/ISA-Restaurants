@@ -188,10 +188,47 @@ public class RestaurantController
         return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{restaurantId}/report", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Report> getReport(@PathVariable Long restaurantId, @RequestBody PeriodDTO period)
+    //Reports
+
+    @RequestMapping(value = "/{restaurantId}/markReport/waiters", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<WaiterMarkReport>> getWaitersMarkReport(@PathVariable Long restaurantId)
     {
-        Report report = restaurantService.getReport(restaurantId, period.getStartDate(), period.getEndDate());
+        List<WaiterMarkReport> report = restaurantService.getWaiterMarkReport(restaurantId);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/markReport/dishes", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<DishMarkReport>> getDishesMarkReport(@PathVariable Long restaurantId)
+    {
+        List<DishMarkReport> report = restaurantService.getDishMarkReport(restaurantId);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/markReport/cooks", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CookMarkReport>> getCooksMarkReport(@PathVariable Long restaurantId)
+    {
+        List<CookMarkReport> report = restaurantService.getCookMarkReport(restaurantId);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/incomeReport", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ReportData>> getIncomeReport(@PathVariable Long restaurantId, @RequestBody DateDTO startDate)
+    {
+        List<ReportData> report = restaurantService.getIncomeReport(restaurantId, startDate.getStartDate());
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/incomeReport/waiters", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ReportData>> getWaitersIncomeReport(@PathVariable Long restaurantId, @PathVariable Long waiterId, @RequestBody DateDTO startDate)
+    {
+        List<ReportData> report = restaurantService.getWaiterIncomeReport(restaurantId, waiterId, startDate.getStartDate());
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{restaurantId}/visitsReport", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ReportData>> getVisitsReport(@PathVariable Long restaurantId, @PathVariable Long waiterId, @RequestBody DateDTO startDate)
+    {
+        List<ReportData> report = restaurantService.getWaiterIncomeReport(restaurantId, waiterId, startDate.getStartDate());
         return new ResponseEntity<>(report, HttpStatus.OK);
     }
 

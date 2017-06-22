@@ -86,7 +86,7 @@ public class ShoppingIntegrationTest
         o.setShoppingList(sl);
         Provider p = (Provider) userRepository.findOne(-5l);
         o.setProvider(p);
-        o.setId(1l);
+        o.setId(75L);
         o.setVersion(0l);
         String expected = om.writeValueAsString(o);
 
@@ -149,12 +149,13 @@ public class ShoppingIntegrationTest
                 .content(s))
                 .andExpect(status().isOk());
 
-        o.setVersion(0l);
-        offerRepository.save(o);
+        Offer newsend = new Offer();
+        newsend.setVersion(0L);
+        newsend.setId(-1L);
 
         this.mvc.perform(put("/shopping/" + 0 + "/acceptOffer")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(s))
+                .content(om.writeValueAsString(newsend)))
                 .andExpect(status().isConflict());
 
     }

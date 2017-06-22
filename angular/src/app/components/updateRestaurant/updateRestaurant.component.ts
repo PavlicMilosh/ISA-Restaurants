@@ -103,8 +103,12 @@ export class UpdateRestaurantComponent implements OnInit
                 lockRotation: true
               });
             this.canvas.add(group);
+
           }
         }
+        this.rnameEditing = this.restaurant.name;
+        this.rdescEditing = this.restaurant.description;
+
       }
     );
   }

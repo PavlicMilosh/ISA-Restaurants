@@ -2,6 +2,7 @@ package com.isa.restaurant.services;
 
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.*;
+import com.isa.restaurant.services.implementation.ProviderDTO;
 
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public interface UserService
     Set<WorkScheduleDTO> getSchedule(Long id);
     RestaurantDTO getUserRestaurant(Long id);
     Set<OrderItemDTO> getRestaurantOrders(Long id);
-    UserDTO updateProvider(Long providerId, Provider provider);
+    UserDTO updateProvider(Long providerId, ProviderDTO provider);
     UpdatingUser findForUpdate(Long userId);
     Long getWaiterRegionId(Long userId);
     Set<WorkScheduleDTO> getAllSchedule(Long id);

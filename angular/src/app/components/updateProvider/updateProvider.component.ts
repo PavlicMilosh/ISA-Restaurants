@@ -41,7 +41,7 @@ export class UpdateProviderComponent implements OnInit {
     let canUpdate = true;
     if(this.newPassword != "" && this.repeatPassword != "" && this.email != "" && this.firstName != "" && this.lastName != "")
     {
-      if(this.newPassword == this.repeatPassword && this.oldPassword == this.provider.password)
+      if(this.newPassword == this.repeatPassword)
       {
         this.provider.password = this.newPassword;
       }
@@ -60,6 +60,10 @@ export class UpdateProviderComponent implements OnInit {
       this.userService.updateProvider(this.provider).subscribe(
         data => console.log(data)
       );
+    }
+    else
+    {
+      alert("Invalid data entered");
     }
   }
 

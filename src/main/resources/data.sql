@@ -93,3 +93,4 @@ INSERT INTO public.dish_type(
 INSERT INTO public.dish_type(
 	dish_type_id, dish_type_name, dish_type_restaurant_id)
 	VALUES (-2, 'fish', 0);
+

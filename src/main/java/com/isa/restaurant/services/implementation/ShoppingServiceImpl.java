@@ -80,8 +80,6 @@ public class ShoppingServiceImpl implements ShoppingService
         ShoppingList sl = shoppingRepository.findOne(shoppingListId);
         if (new Date(c.getTime().getTime()).after(sl.getDeadline()))
             return null;
-        if (sl.getAcceptedOffer() != null)
-            return null;
 
         Provider p = (Provider) userRepository.findOne(providerId);
         o.setProvider(p);
@@ -95,15 +93,15 @@ public class ShoppingServiceImpl implements ShoppingService
     @Transactional(rollbackFor = OptimisticLockingFailureException.class)
     public Boolean acceptOffer(Offer o, Long shoppingListId) throws OptimisticLockingFailureException
     {
-        Offer found = offerRepository.findOne(o.getId());
+        Offer saved = offerRepository.save(o);
         ShoppingList sl = shoppingRepository.findOne(shoppingListId);
-        sl.setAcceptedOffer(found);
+        sl.setAcceptedOffer(saved);
         for(Offer oo : sl.getOffers())
         {
             oo.setAccepted(false);
             offerRepository.save(oo);
         }
-        found.setAccepted(true);
+        saved.setAccepted(true);
         shoppingRepository.save(sl);
         return true;
     }

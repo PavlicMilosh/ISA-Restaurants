@@ -26,39 +26,25 @@ public class UserRepositoryTest
     @Before
     public void setUp()
     {
-        userRepository.save(new SystemManager("pera", "pera", "Pera", "Peric"));
-        userRepository.save(new SystemManager("zika", "zika", "Zika", "Zikic"));
     }
 
     @Test
     public void testFindByUsername()
     {
-        User pera = userRepository.findByEmail("pera");
-        User zika = userRepository.findByEmail("zika");
-        Assert.assertEquals(new SystemManager("pera", "pera", "Pera", "Peric"), pera);
-        Assert.assertEquals(new SystemManager("zika", "zika", "Zika", "Zikic"), zika);
-    }
-
-    @Test
-    public void testSave()
-    {
-        User steva = new SystemManager("steva", "steva", "Steva", "Stevic");    //insert
-        User savedSteva = userRepository.save(steva);
-        Assert.assertEquals(steva, savedSteva);
-        User jova = new Provider("jova", "jova", "jova", "jova");
-        User savedJova = userRepository.save(jova);
-        Assert.assertEquals(jova, savedJova);
+        User a = userRepository.findByEmail("a");
+        User f = userRepository.findByEmail("f");
+        Assert.assertEquals(-1, a.getId().longValue());
+        Assert.assertEquals("a", a.getFirstName());
+        Assert.assertEquals("a", a.getLastName());
+        Assert.assertEquals("a", a.getEmail());
+        Assert.assertEquals(-2, f.getId().longValue());
+        Assert.assertEquals("f", f.getFirstName());
+        Assert.assertEquals("f", f.getLastName());
+        Assert.assertEquals("f", f.getEmail());
     }
 
     @After
     public void tearDown()
     {
-        User pera = userRepository.findByEmail("pera");
-        User zika = userRepository.findByEmail("zika");
-        User steva = userRepository.findByEmail("steva");
-        userRepository.delete(pera.getId());
-        userRepository.delete(zika.getId());
-        if(steva != null)
-            userRepository.delete(steva.getId());
     }
 }

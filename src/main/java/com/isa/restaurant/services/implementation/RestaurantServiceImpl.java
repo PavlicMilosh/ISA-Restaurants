@@ -5,6 +5,7 @@ import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.search.RestaurantSearch;
 import com.isa.restaurant.services.RestaurantService;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +36,9 @@ public class RestaurantServiceImpl implements RestaurantService
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
 
     @Autowired
@@ -225,7 +230,28 @@ public class RestaurantServiceImpl implements RestaurantService
         RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
         try
         {
-            return rm.getRestaurant();
+            Restaurant r = rm.getRestaurant();
+            Restaurant rr = new Restaurant(r);
+            List<Reservation> reservations = reservationRepository.findAll();
+            for(Reservation res : reservations)
+            {
+                Calendar c = Calendar.getInstance();
+                if(res.getDateTimeEnd().after(c.getTime()))
+                {
+                    for (RestaurantTable resT : res.getTables())
+                    {
+                        try
+                        {
+                            rr.getTables().remove(resT);
+                        }
+                        catch(Exception e)
+                        {
+                            continue;
+                        }
+                    }
+                }
+            }
+            return rr;
         }catch(NullPointerException e)
         {
             return null;
@@ -372,7 +398,7 @@ public class RestaurantServiceImpl implements RestaurantService
     }
 
     @Override
-    public Report getReport(Long restaurantId, Date startDate, Date endDate)
+    public Report getReport(Long restaurantId, Date startDate)
     {
         Report report = new Report();
         Restaurant r = restaurantRepository.findOne(restaurantId);
@@ -411,10 +437,156 @@ public class RestaurantServiceImpl implements RestaurantService
         }
 
         for(Order o : r.getOrders())
-            if(o.getOrderTime().after(startDate) && o.getOrderTime().before(endDate))
+            if(o.getOrderTime().after(startDate) && o.getOrderTime().before(DateUtils.addDays(startDate, 7)))
                 report.getWaiterProfits().put(o.getWaiter(), report.getWaiterProfits().get(o.getWaiter()) + o.getPrice());
 
         return report;
+    }
+
+    @Override
+    public List<WaiterMarkReport> getWaiterMarkReport(Long restaurantId)
+    {
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+        ArrayList<WaiterMarkReport> marks = new ArrayList<>();
+        for(Waiter w : r.getWaiters())
+        {
+            WaiterMarkReport wmr = new WaiterMarkReport(w.getId(), w.getFirstName(), w.getLastName(), 0.0);
+            for(WaiterMark wm : w.getWaiterMarks())
+            {
+                wmr.setMeanMark(wmr.getMeanMark() + wm.getValue());
+            }
+            wmr.setMeanMark(wmr.getMeanMark() / w.getWaiterMarks().size());
+        }
+
+        return marks;
+    }
+
+    @Override
+    public List<DishMarkReport> getDishMarkReport(Long restaurantId)
+    {
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+        ArrayList<DishMarkReport> marks = new ArrayList<>();
+        for(Dish d : r.getDishes())
+        {
+            DishMarkReport dmr = new DishMarkReport(d.getId(), d.getName(), d.getDescription(), 0.0, 0.0, 0, 0);
+            for(DishMark dm : d.getDishMarks())
+            {
+                dmr.setMeanMark(dmr.getMeanMark() + dm.getValue());
+                dmr.setNoMarks(dmr.getNoMarks() + 1);
+            }
+            dmr.setMeanMark(dmr.getMeanMark() / dmr.getNoMarks());
+        }
+
+        return marks;
+    }
+
+    @Override
+    public List<CookMarkReport> getCookMarkReport(Long restaurantId)
+    {
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+        ArrayList<CookMarkReport> marks = new ArrayList<>();
+        for(Cook c : r.getCooks())
+        {
+            CookMarkReport cmr = new CookMarkReport();
+            cmr.setId(c.getId());
+            cmr.setFirstName(c.getFirstName());
+            cmr.setLastName(c.getLastName());
+            cmr.setMeanMark(0.0);
+            List<Order> items = orderRepository.findAll();
+            for(Order order : items)
+            {
+                for(OrderItem item : order.getOrderItems())
+                {
+                    if (item.getIsDish() && item.getFinished() && item.getUserId() == c.getId())
+                    {
+                        cmr.setMeanMark(cmr.getMeanMark() + order.getMark());
+                        cmr.setNoMarks(cmr.getNoMarks() + 1);
+                        boolean found = false;
+                        for(DishMarkReport dmr : cmr.getDishes())
+                        {
+                            dmr.setMeanMark(dmr.getMeanMark() + order.getMark());
+                            dmr.setNoMarks(dmr.getNoMarks() + 1);
+                            if(dmr.getId() == item.getDish().getId())
+                            {
+                                dmr.setCookMark(dmr.getCookMark() + order.getMark());
+                                dmr.setNoCookMarks(dmr.getNoCookMarks() + 1);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if(!found)
+                        {
+                            DishMarkReport dmr = new DishMarkReport(item.getDish().getId(), item.getDish().getName(), item.getDish().getDescription(), 0.0, 0.0, 0, 0);
+                            cmr.getDishes().add(dmr);
+                        }
+                    }
+                }
+            }
+            cmr.setMeanMark(cmr.getMeanMark() / cmr.getNoMarks());
+        }
+
+        return marks;
+    }
+
+    @Override
+    public List<ReportData> getVisitsReport(Long restaurantId, Date date)
+    {
+        ArrayList<ReportData> visits = new ArrayList<>();
+        Restaurant r = restaurantRepository.findOne(restaurantId);
+
+        Date d = new Date(date.getTime());
+        Date end = (Date) DateUtils.addDays(date, 7);
+        while (d.before(end))
+        {
+            List<Reservation> reservations = reservationRepository.getReservationsByRestaurantAndDate(restaurantId, d, DateUtils.addHours(date, 1));
+            Date dd = new Date(d.getTime());
+            ReportData rd = new ReportData(dd, (double) reservations.size());
+            visits.add(rd);
+            d = (Date) DateUtils.addHours(d, 1);
+        }
+
+        return visits;
+    }
+
+    @Override
+    public List<ReportData> getWaiterIncomeReport(Long restaurantId, Long waiterId, Date date)
+    {
+        ArrayList<ReportData> income = new ArrayList<>();
+        Date d = new Date(date.getTime());
+        Date end = (Date) DateUtils.addDays(date, 7);
+        while (d.before(end))
+        {
+            List<Order> orders = orderRepository.getByRestaurantAndDate(restaurantId, d, DateUtils.addHours(d, 1));
+            Date dd = new Date(d.getTime());
+            ReportData rd = new ReportData(dd, 0.0);
+            for(Order o : orders)
+            {
+                if(o.getWaiter().getId() == waiterId)
+                {
+                    rd.setValue(rd.getValue() + o.getPrice());
+                }
+            }
+        }
+        return income;
+    }
+
+    @Override
+    public List<ReportData> getIncomeReport(Long restaurantId, Date date)
+    {
+        ArrayList<ReportData> income = new ArrayList<>();
+        Date d = new Date(date.getTime());
+        Date end = (Date) DateUtils.addDays(date, 7);
+        while (d.before(end))
+        {
+            List<Order> orders = orderRepository.getByRestaurantAndDate(restaurantId, d, DateUtils.addHours(d, 1));
+            Date dd = new Date(d.getTime());
+            ReportData rd = new ReportData(dd, 0.0);
+            for(Order o : orders)
+            {
+                rd.setValue(rd.getValue() + o.getPrice());
+            }
+        }
+        return income;
     }
 
     @Override
