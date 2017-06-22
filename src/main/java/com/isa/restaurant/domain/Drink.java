@@ -39,6 +39,7 @@ public class Drink
     private Restaurant restaurant;
 
     @OneToMany
+    @JsonIgnore
     private Set<DrinkMark> drinkMarks;
 
     public Drink(String name, String description, Double price, Restaurant restaurant)

@@ -94,11 +94,13 @@ public class RestaurantServiceImpl implements RestaurantService
         {
             Double meanMark = 0.0;
             Double friendsMark = 0.0;
-            Integer visits = 0;
             /*TODO: Djuro ovo implementiraj imas metodu za dobijanje meanMark-a restorana u RestaurantMarkRepository,
             *       a friendsMark ces morati da dobavis prvo sve prijatelje na osnovu guesta, izvuces njihove id-eve i tek onda
             *       pomocu metode u RestaurantMarkRepositoryju dobijes jedan mark za guestId i restaurantId... skupis sve te
             *       i onda nadjes srednju vrednost*/
+
+            Integer visits = 0;
+
             for (Reservation reservation: reservationRepository.getReservationsByRestaurantId(r.getId()))
             {
                 if (reservation.getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))

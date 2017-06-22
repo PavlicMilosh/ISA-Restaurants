@@ -1,11 +1,150 @@
 
-<div class="panel panel-default"><div class="panel-body"><div class="table-container">
-<div>
-  <form #myForm="ngForm" novalidate>
-    <my-date-picker name="start" [options]="myDatePickerOptions"
-                    [(ngModel)]="startDate" required></my-date-picker>
-  </form>
-</div>
-<charts [daysSubject]="" [weekSubject]=""></charts>
+<div class="panel panel-default"><div class="panel-body">
 
-</div></div></div>
+  <br/>
+  <div class="mainMark">Restaurant mark: 8.4</div>
+  <br/>
+  <hr/>
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" class="tab-text" href="#income">Income</a></li>
+    <li><a data-toggle="tab" href="#visits" class="tab-text">Visits</a></li>
+    <li><a data-toggle="tab" href="#waiters" class="tab-text">Waiters</a></li>
+    <li><a data-toggle="tab" href="#cooks" class="tab-text">Cook</a></li>
+    <li><a data-toggle="tab" href="#dishes" class="tab-text">Dishes</a></li>
+  </ul>
+
+  <div class="tab-content">
+
+
+    <!-- INCOME -->
+    <div id="income" class="tab-pane fade in active">
+      <div>
+        <form class="datepicker" #myForm="ngForm" novalidate>
+          <label class="center-block datelabel">Date</label>
+          <my-date-picker class="floating" name="incomeDate" [options]="myDatePickerOptions"
+                          [(ngModel)]="incomeDate" required></my-date-picker>
+          <a (click)="getIncomeData()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
+        </form>
+
+        <hr/>
+
+        <charts></charts>
+
+      </div>
+    </div>
+
+
+    <!-- VISITS -->
+    <div id="visits" class="tab-pane fade">
+      <div>
+        <form class="datepicker" #myForm="ngForm" novalidate>
+          <label class="center-block datelabel">Date</label>
+          <my-date-picker class="floating" name="visitsDate" [options]="myDatePickerOptions"
+                          [(ngModel)]="visitsDate" required></my-date-picker>
+          <a (click)="getVisitsData()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
+        </form>
+
+        <hr/>
+
+        <charts></charts>
+
+      </div>
+    </div>
+
+
+    <!-- WAITER -->
+    <div id="waiters" class="tab-pane fade">
+
+      <div class="datepicker">
+        <ng2-completer class="completer-dropdown" [(ngModel)]="selectedWaiterStr" [datasource]="dataService" [minSearchLength]="0"></ng2-completer>
+        <a (click)="selectWaiter()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
+      <div>
+
+      <hr/>
+
+      <ng-container *ngIf="selectedWaiter != null">
+        <div class="dataMark">Waiters median mark: {{selectedWaiter.medianMark}}</div>
+      </ng-container>
+      <ng-container *ngIf="selectedWaiter == null">
+        <div class="dataMark">Waiters median mark: N/A</div>
+      </ng-container>
+
+      <charts></charts>
+    </div>
+
+
+    <!-- COOK -->
+    <div id="cooks" class="tab-pane fade">
+      <div>
+        <form class="datepicker" #myForm="ngForm" novalidate>
+          <hr/>
+          <a (click)="selectCook()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
+        </form>
+
+        <hr/>
+
+        <ng-container *ngIf="selectedCook != null">
+          <div class="dataMark">Cook median mark: {{selectedWaiter.medianMark}}</div>
+
+          <table class="table table-filter"><tbody>
+
+          <tr *ngFor="let dish of selectedCook.dishes">
+
+            <td>
+              <div class = "table-name">{{dish.name}}</div>
+              <div class = "table-row-name">name</div>
+            </td>
+
+            <td>
+              <div class = "table-name">{{dish.description}}</div>
+              <div class = "table-row-name">description</div>
+            </td>
+
+            <td>
+              <div class = "table-name">{{dish.medianMark}}</div>
+              <div class = "table-row-name">median mark</div>
+            </td>
+
+            <td>
+              <div class = "table-name">{{dish.cooksMark}}</div>
+              <div class = "table-row-name">cook's mark</div>
+            </td>
+
+          </tr>
+
+          </tbody></table>
+
+        </ng-container>
+        <ng-container *ngIf="selectedCook == null">
+          <div class="dataMark">Cook median mark: N/A</div>
+        </ng-container>
+
+      </div>
+    </div>
+
+
+    <!-- DISH -->
+    <div id="dishes" class="tab-pane fade">
+      <form class="datepicker" #myForm="ngForm" novalidate>
+        <input type="text" class="form-control" [(ngModel)]="dishName" [ngModelOptions]="{standalone: true}" placeholder="Dish name..." >
+        <hr/>
+        <a (click)="selectDish()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
+      </form>
+
+      <hr/>
+
+      <ng-container *ngIf="selectedDish != null">
+        <div class="dataMark">Dish median mark: {{selectedDish.medianMark}}</div>
+      </ng-container>
+      <ng-container *ngIf="selectedDish == null">
+        <div class="dataMark">Dish median mark: N/A</div>
+      </ng-container>
+
+    </div>
+
+
+
+  </div>
+
+</div></div>

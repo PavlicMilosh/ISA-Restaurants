@@ -39,6 +39,7 @@ public class Dish
     private Double price;
 
     @OneToMany
+    @JsonIgnore
     private Set<DishMark> dishMarks;
 
     @ManyToOne
