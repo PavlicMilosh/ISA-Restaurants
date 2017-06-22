@@ -6,6 +6,10 @@
   <a (click)="createBill()" target="_self" type="button" id="updateButton1" class="btn btn-primary btn-lg btn-block login-button updatebutton">Create Bill</a>
 </div>
 
+<div class="form-group">
+  <a (click)="makeChange()" target="_self" type="button" id="updateButton2" class="btn btn-primary btn-lg btn-block login-button updatebutton">Make change</a>
+</div>
+
 <div id = "canvasDiv">
   <canvas id="canvas" class="canvas"></canvas>
 </div>
@@ -26,23 +30,23 @@
         <tbody>
         <tr *ngFor="let order of orderForDeliver; let i = index">
           <td>
-            <tr *ngFor="let item of order.orderItems; let j = index">
-              <td *ngIf="item.isDish == false">{{item.drink.name}}</td>
-              <td *ngIf="item.isDish == false">-</td>
-              <td *ngIf="item.isDish == false">{{item.drink.description}}</td>
-              <td *ngIf="item.isDish == false">-</td>
-              <td *ngIf="item.isDish == false">{{item.number}}</td>
-              <td *ngIf="item.isDish == true">{{item.dish.name}}</td>
-              <td *ngIf="item.isDish == true">-</td>
-              <td *ngIf="item.isDish == true">{{item.dish.description}}</td>
-              <td *ngIf="item.isDish == true">-</td>
-              <td *ngIf="item.isDish == true">{{item.number}}</td>
-            </tr>
-          </td>
-          <td>{{order.tableId}}</td>
-          <td class="td-actions">
-            <button  (click)="deliver( i )" type="button" class="btn btn-danger">Deliver</button>
-          </td>
+        <tr *ngFor="let item of order.orderItems; let j = index">
+          <td *ngIf="item.isDish == false">{{item.drink.name}}</td>
+          <td *ngIf="item.isDish == false">-</td>
+          <td *ngIf="item.isDish == false">{{item.drink.description}}</td>
+          <td *ngIf="item.isDish == false">-</td>
+          <td *ngIf="item.isDish == false">{{item.number}}</td>
+          <td *ngIf="item.isDish == true">{{item.dish.name}}</td>
+          <td *ngIf="item.isDish == true">-</td>
+          <td *ngIf="item.isDish == true">{{item.dish.description}}</td>
+          <td *ngIf="item.isDish == true">-</td>
+          <td *ngIf="item.isDish == true">{{item.number}}</td>
+        </tr>
+        </td>
+        <td>{{order.tableId}}</td>
+        <td class="td-actions">
+          <button  (click)="deliver( i )" type="button" class="btn btn-danger">Deliver</button>
+        </td>
         </tr>
         </tbody>
       </table>
@@ -51,3 +55,4 @@
 
   </div> <!-- /widget -->
 </div>
+

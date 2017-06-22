@@ -52,4 +52,6 @@ public class Dish
         this.price = price;
         this.restaurant = restaurant;
     }
+
+    public void addDishMark(DishMark dishMark) { this.dishMarks.add(dishMark); }
 }

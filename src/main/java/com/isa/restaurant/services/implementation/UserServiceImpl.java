@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -192,21 +193,28 @@ public class UserServiceImpl implements UserService
         {
             r = ((Waiter) u).getRestaurant();
         }
+        //RestaurantOrders ro=restaurantOrdersRepository.findByRestaurantId(r.getId());
+        Date dateBefore = new Date(System.currentTimeMillis() - 1200 * 1000);
+        Date dateAfter = new Date(System.currentTimeMillis() + 2400 * 1000);
         Set<OrderItemDTO> orders=new HashSet<OrderItemDTO>();
-        for(Order o : r.getOrders())
+        System.out.println(r.getOrders().size());
+        for(Order o :r.getOrders())
         {
             if(!o.getFinished())
             {
-                Set<OrderItem> orderItems = new HashSet<OrderItem>();
-                for (OrderItem oi : o.getOrderItems()) {
-                    if(oi.getFinished()!=true && oi.getPreparing()!=true)
-                    {
-                        orderItems.add(oi);
+
+                if(o.getOrderTime().after(dateBefore)&&o.getOrderTime().before(dateAfter))
+                {
+                    Set<OrderItmDTO> orderItems = new HashSet<>();
+                    for (OrderItem oi : o.getOrderItems()) {
+                        if (oi.getFinished() != true && oi.getPreparing() != true) {
+                            orderItems.add(new OrderItmDTO(oi));
+                        }
                     }
+                    OrderItemDTO temp = new OrderItemDTO(o);
+                    temp.setOrderItems(orderItems);
+                    orders.add(temp);
                 }
-                OrderItemDTO temp=new OrderItemDTO(o);
-                temp.setOrderItems(orderItems);
-                orders.add(temp);
             }
         }
         return orders;

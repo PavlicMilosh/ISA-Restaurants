@@ -30,4 +30,12 @@ public class DrinkOrderDTO
         this.price = drink.getPrice();
         this.quantity = quantity;
     }
+
+    public DrinkOrderDTO(Drink drink)
+    {
+        this.id = drink.getId();
+        this.name = drink.getName();
+        this.description = drink.getDescription();
+        this.price = drink.getPrice();
+    }
 }

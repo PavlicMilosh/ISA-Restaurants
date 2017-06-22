@@ -33,6 +33,12 @@ public class HistoryDTO
     private Double restaurantMyMark;
 
     private Double mealMyMark;
+    private Boolean isMark;
+
+    private Double waiterMark;
+    private String waiterFirstName;
+    private String waiterLastName;
+    private Long waiterId;
 
     private String dateOfVisit;
     private String timeOfVisit;
@@ -58,6 +64,39 @@ public class HistoryDTO
                 break;
             }
         }
+
+        this.restaurantMeanMark = restaurantMeanMark;
+        this.restaurantFriendsMark = restaurantFriendsMark;
+        this.restaurantMyMark = restaurantMyMark;
+
+        DateFormat dfDate = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dfTime = new SimpleDateFormat("HH:mm");
+
+        this.dateOfVisit = dfDate.format(reservation.getDateTimeStart());
+        this.timeOfVisit = dfTime.format(reservation.getDateTimeStart());
+    }
+
+    public HistoryDTO(Reservation reservation,
+                      Double restaurantFriendsMark,
+                      Double restaurantMyMark,
+                      Double restaurantMeanMark,
+                      Long orderId, Double mealMyMark,
+                      Boolean isMark, Double waiterMark, String waiterFirstName,
+                      String waiterLastName, Long waiterId)
+    {
+        this.reservationId = reservation.getId();
+        this.restaurantId = reservation.getRestaurant().getId();
+
+        this.restaurantDescription = reservation.getRestaurant().getDescription();
+        this.restaurantName = reservation.getRestaurant().getName();
+
+        this.orderId=orderId;
+        this.mealMyMark=mealMyMark;
+        this.isMark=isMark;
+        this.waiterMark=waiterMark;
+        this.waiterFirstName=waiterFirstName;
+        this.waiterLastName=waiterLastName;
+        this.waiterId=waiterId;
 
         this.restaurantMeanMark = restaurantMeanMark;
         this.restaurantFriendsMark = restaurantFriendsMark;

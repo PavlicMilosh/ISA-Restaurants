@@ -71,8 +71,8 @@ public class Restaurant
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ShoppingList> shoppingLists;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="restaurant_ord")
     private Set<Order> orders;
 
     @OneToMany
@@ -91,6 +91,7 @@ public class Restaurant
         this.schedule = new HashSet<>();
         this.regions = new HashSet<>();
         this.shoppingLists = new HashSet<>();
+        this.orders = new HashSet<>();
     }
 
 
@@ -117,6 +118,7 @@ public class Restaurant
         this.schedule = other.getSchedule();
         this.regions = other.getRegions();
         this.shoppingLists = other.getShoppingLists();
+        this.orders = other.getOrders();
     }
 
 
@@ -227,4 +229,6 @@ public class Restaurant
     {
         this.orders.add(order);
     }
+
+    public void addRestaurantMark(RestaurantMark restaurantMark) { this.restaurantMarks.add(restaurantMark); }
 }

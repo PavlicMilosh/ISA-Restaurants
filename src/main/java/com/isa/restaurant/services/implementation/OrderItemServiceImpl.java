@@ -97,36 +97,34 @@ public class OrderItemServiceImpl implements OrderItemService
 
     public Set<OrderItem> getPreparingOrderItems(Long userId)
     {
-//        User u = userRepository.findById(userId);
-//        Restaurant r = null;
-//        if(u instanceof Bartender)
-//        {
-//            r = ((Bartender) u).getRestaurant();
-//        }
-//        else if(u instanceof Cook)
-//        {
-//            r = ((Cook) u).getRestaurant();
-//        }
-//        RestaurantOrders restaurantOrders=restaurantOrdersRepository.findByRestaurantId(r.getId());
-//        Set<OrderItem> orderItems=new HashSet<OrderItem>();
-//        for(Order o:restaurantOrders.getOrders())
-//        {
-//            if(!o.getFinished())
-//            {
-//                for(OrderItem oi:o.getOrderItems())
-//                {
-//                    if(oi.getFinished()==false && oi.getPreparing()==true)
-//                    {
-//                        if(oi.getUserId()==userId)
-//                        {
-//                            orderItems.add(oi);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        return orderItems;
-
-        return new HashSet<>();
+        User u = userRepository.findById(userId);
+        Restaurant r = null;
+        if(u instanceof Bartender)
+        {
+            r = ((Bartender) u).getRestaurant();
+        }
+        else if(u instanceof Cook)
+        {
+            r = ((Cook) u).getRestaurant();
+        }
+        Set<OrderItem> orderItems=new HashSet<OrderItem>();
+        for(Order o:r.getOrders())
+        {
+            if(!o.getFinished())
+            {
+                for(OrderItem oi:o.getOrderItems())
+                {
+                    System.out.println(oi);
+                    if(oi.getFinished()==false && oi.getPreparing()==true)
+                    {
+                        if(oi.getUserId()==userId)
+                        {
+                            orderItems.add(oi);
+                        }
+                    }
+                }
+            }
+        }
+        return orderItems;
     }
 }

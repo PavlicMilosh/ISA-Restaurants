@@ -48,4 +48,6 @@ public class Drink
         this.price=price;
         this.restaurant=restaurant;
     }
+
+    public void addDrinkMark(DrinkMark drinkMark) { this.drinkMarks.add(drinkMark);}
 }

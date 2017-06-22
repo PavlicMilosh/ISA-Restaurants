@@ -63,6 +63,9 @@ public class Order
     @Column(name="order_is_marked")
     private Boolean isMarked;
 
+    @Column(name="order_reservation_id")
+    private Long reservationId;
+
     public Order(Waiter waiter)
     {
         this.price=0.0;
@@ -74,6 +77,7 @@ public class Order
         this.delivered=false;
         this.billCreated=false;
         this.isMarked=false;
+        this.mark=0.0;
     }
 
     public Order(Waiter waiter, HashSet<OrderItem> orderItems, RestaurantTable restaurantTable)
@@ -86,6 +90,7 @@ public class Order
         this.delivered=false;
         this.billCreated=false;
         this.isMarked=false;
+        this.mark=0.0;
     }
 
     public Order(HashSet<OrderItem> orderItems, Date orderTime)
@@ -98,6 +103,7 @@ public class Order
         this.delivered=false;
         this.billCreated=false;
         this.isMarked=false;
+        this.mark=0.0;
     }
 
     public Order(Set<OrderItem> orderItems, Date orderTime)
@@ -110,6 +116,7 @@ public class Order
         this.delivered=false;
         this.billCreated=false;
         this.isMarked=false;
+        this.mark=0.0;
     }
 
 
