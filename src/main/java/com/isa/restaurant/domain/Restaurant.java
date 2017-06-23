@@ -47,6 +47,9 @@ public class Restaurant
     private Set<Drink> drinks;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<DishType> dishTypes;
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<RestaurantManager> managers;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -92,6 +95,7 @@ public class Restaurant
         this.regions = new HashSet<>();
         this.shoppingLists = new HashSet<>();
         this.orders = new HashSet<>();
+        this.dishTypes = new HashSet<>();
     }
 
 
@@ -119,6 +123,7 @@ public class Restaurant
         this.regions = other.getRegions();
         this.shoppingLists = other.getShoppingLists();
         this.orders = other.getOrders();
+        this.dishTypes = other.getDishTypes();
     }
 
 
@@ -143,6 +148,7 @@ public class Restaurant
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (dishes != null ? !dishes.equals(that.dishes) : that.dishes != null) return false;
         if (drinks != null ? !drinks.equals(that.drinks) : that.drinks != null) return false;
+        if (dishTypes != null ? !dishTypes.equals(that.dishTypes) : that.dishTypes != null) return false;
         if (managers != null ? !managers.equals(that.managers) : that.managers != null) return false;
         return tables != null ? tables.equals(that.tables) : that.tables == null;
 
@@ -155,6 +161,7 @@ public class Restaurant
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (dishes != null ? dishes.hashCode() : 0);
         result = 31 * result + (drinks != null ? drinks.hashCode() : 0);
+        result = 31 * result + (dishTypes != null ? dishTypes.hashCode() : 0);
         result = 31 * result + (managers != null ? managers.hashCode() : 0);
         result = 31 * result + (tables != null ? tables.hashCode() : 0);
         return result;
@@ -180,6 +187,11 @@ public class Restaurant
         this.drinks.add(drink);
     }
 
+    public void addDishType(DishType dt)
+    {
+        this.dishTypes.add(dt);
+    }
+
     public void addRegion(Region region)
     {
         this.regions.add(region);
@@ -202,6 +214,16 @@ public class Restaurant
         for(Drink d : this.drinks)
             if(d.getId() == drinkId)
                 return d;
+        return null;
+    }
+
+    public DishType getDishType(Long dishTypeId)
+    {
+        if(dishTypeId == null)
+            return null;
+        for (DishType dt : this.dishTypes)
+            if (dt.getId() == dishTypeId)
+                return dt;
         return null;
     }
 
@@ -231,4 +253,7 @@ public class Restaurant
     }
 
     public void addRestaurantMark(RestaurantMark restaurantMark) { this.restaurantMarks.add(restaurantMark); }
+
+
+
 }

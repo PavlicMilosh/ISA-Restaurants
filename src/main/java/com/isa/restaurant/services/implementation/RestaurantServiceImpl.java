@@ -141,6 +141,22 @@ public class RestaurantServiceImpl implements RestaurantService
     public Restaurant updateRestaurant(Restaurant restaurant)
     {
         Restaurant rest = getRestaurant(restaurant.getId());
+
+        for(DishType dt : restaurant.getDishTypes())
+        {
+            DishType dishType = rest.getDishType(dt.getId());
+            if (dishType == null)
+            {
+                dt.setRestaurant(rest);
+                rest.addDishType(dt);
+            }
+            else
+            {
+                dishType.setName(dt.getName());
+                dishType.setRestaurant(rest);
+            }
+        }
+
         for(Dish d : restaurant.getDishes())
         {
             Dish dish = rest.getDish(d.getId());
@@ -155,9 +171,9 @@ public class RestaurantServiceImpl implements RestaurantService
                 dish.setDescription(d.getDescription());
                 dish.setPrice(d.getPrice());
                 dish.setRestaurant(rest);
-
             }
         }
+
         for(Drink d : restaurant.getDrinks())
         {
             Drink drink = rest.getDrink(d.getId());
@@ -222,6 +238,7 @@ public class RestaurantServiceImpl implements RestaurantService
         r.getDrinks();
         r.getDishes();
         r.getTables();
+        r.getDishTypes();
         return r;
     }
 
@@ -237,6 +254,7 @@ public class RestaurantServiceImpl implements RestaurantService
         r.getTables();
         r.getRegions();
         r.getTables();
+        r.getDishTypes();
         return r;
     }
 

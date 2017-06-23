@@ -32,6 +32,7 @@ public class Waiter extends User
     }
 
     @OneToMany
+    @JsonIgnore
     private Set<WaiterMark> waiterMarks;
 
 

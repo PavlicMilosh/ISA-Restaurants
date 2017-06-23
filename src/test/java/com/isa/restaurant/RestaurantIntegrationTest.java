@@ -3,12 +3,12 @@ package com.isa.restaurant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isa.restaurant.domain.*;
-import com.isa.restaurant.domain.DTO.RegionDTO;
-import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.domain.DTO.WaiterMarkReport;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.RestaurantRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.RestaurantService;
+import com.isa.restaurant.ulitity.Utilities;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -178,7 +180,7 @@ public class RestaurantIntegrationTest
     }
 
     @Test
-    public void testgetRegionsByRMId() throws Exception
+    public void testGetRegionsByRMId() throws Exception
     {
         ObjectMapper om = new ObjectMapper();
         Restaurant r = restaurantRepository.findOne(0L);
@@ -205,6 +207,24 @@ public class RestaurantIntegrationTest
         this.mvc.perform(get("/restaurants/0/markReport/waiters"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(om.writeValueAsString(reports)));
+    }
+
+    @Test
+    public void testGetIncomeReport()
+    {
+
+    }
+
+    @Test
+    public void testGetWaitersIncomeReport()
+    {
+
+    }
+
+    @Test
+    public void testGetVisitsReport()
+    {
+
     }
 
     @After
