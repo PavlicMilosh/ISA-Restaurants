@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.restaurant.domain.DTO.WorkScheduleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,7 @@ public class WorkSchedule
     private User worker;
 
     @ManyToOne
+    @JsonIgnore
     private Restaurant restaurant;
 
     @ManyToOne

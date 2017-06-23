@@ -37,14 +37,14 @@ public class WorkScheduleRepositoryTest
     @Before
     public void setUp()
     {
-        Bartender b = new Bartender("asdf", "asdf", "asdf", "asdf");
-        userRepository.save(b);
+        Bartender b = new Bartender("bartenderWS", "bartenderWS", "bartenderWS", "bartenderWS");
+        Bartender bt = userRepository.save(b);
     }
 
     @Test
     public void testSave() throws ParseException
     {
-        Bartender b = (Bartender) userRepository.findByEmail("asdf");
+        Bartender b = (Bartender) userRepository.findByEmail("bartenderWS");
         WorkSchedule ws = new WorkSchedule("12:00", "22:00", Day.MONDAY);
         ws.setWorker(b);
         ws.setRestaurant(b.getRestaurant());
@@ -56,6 +56,7 @@ public class WorkScheduleRepositoryTest
     public void tearDown()
     {
         Bartender b = (Bartender) userRepository.findByEmail("asdf");
-        userRepository.delete(b.getId());
+        if(b != null)
+            userRepository.delete(b.getId());
     }
 }

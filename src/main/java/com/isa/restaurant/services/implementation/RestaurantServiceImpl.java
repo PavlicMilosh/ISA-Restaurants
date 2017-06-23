@@ -558,6 +558,11 @@ public class RestaurantServiceImpl implements RestaurantService
             List<Reservation> reservations = reservationRepository.getReservationsByRestaurantAndDate(restaurantId, d, DateUtils.addHours(date, 1));
             Date dd = new Date(d.getTime());
             ReportData rd = new ReportData(dd, (double) reservations.size());
+            for(Reservation reservation : reservations)
+            {
+                rd.setValue(rd.getValue() + reservation.getInvitations().size());
+            }
+
             visits.add(rd);
             d = (Date) DateUtils.addHours(d, 1);
         }

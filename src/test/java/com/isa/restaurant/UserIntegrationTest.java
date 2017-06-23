@@ -1,5 +1,7 @@
 package com.isa.restaurant;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isa.restaurant.domain.DTO.UpdatingUser;
 import com.isa.restaurant.domain.DishType;
 import com.isa.restaurant.domain.Provider;
 import com.isa.restaurant.domain.Restaurant;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import sun.security.util.Password;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -131,6 +134,16 @@ public class UserIntegrationTest
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"id\":\"1\", \"email\":\"zika\", \"password\":\"pera\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"))
                 .andExpect(content().json("{\"username\":\"zika\", \"firstName\":\"Pera\", \"lastName\":\"peric\"}"));
+    }
+
+    @Test
+    public void testGetUserForUpdate() throws Exception
+    {
+        ObjectMapper om = new ObjectMapper();
+        UpdatingUser uu = new UpdatingUser(userRepository.findOne(-5L));
+        this.mvc.perform(get("/users/-5"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(uu)));
     }
 
     @After

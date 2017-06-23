@@ -1,6 +1,7 @@
 package com.isa.restaurant.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,6 +40,7 @@ public class ShoppingList
     private Set<ShoppingItem> items;
 
     @ManyToOne
+    @JsonIgnore
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

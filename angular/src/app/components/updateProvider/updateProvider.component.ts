@@ -25,7 +25,8 @@ export class UpdateProviderComponent implements OnInit {
       firstName: "",
       lastName: "",
       email: "",
-      password: ""
+      password: "",
+      oldPassword: ""
     };
     this.userService.getById(LoggedUtils.getId()).subscribe(
         data => this.provider = data
@@ -56,6 +57,7 @@ export class UpdateProviderComponent implements OnInit {
     }
     if(canUpdate)
     {
+      this.provider.oldPassword = this.oldPassword;
       console.log(this.provider);
       this.userService.updateProvider(this.provider).subscribe(
         data => console.log(data)
@@ -76,4 +78,5 @@ interface Provider
   lastName: string;
   email: string;
   password: string;
+  oldPassword: string;
 }

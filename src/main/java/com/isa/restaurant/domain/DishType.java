@@ -1,5 +1,6 @@
 package com.isa.restaurant.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class DishType
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(referencedColumnName = "restaurant_id", name = "dish_type_restaurant_id")
     private Restaurant restaurant;
 

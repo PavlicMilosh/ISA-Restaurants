@@ -143,6 +143,7 @@ export class UpdateRestaurantComponent implements OnInit
   removeTable()
   {
     let g = this.canvas.getActiveObject();
+    this.canvas.remove(g);
   }
 
   updateRestaurant()
