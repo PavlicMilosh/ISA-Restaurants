@@ -201,9 +201,10 @@ public class RestaurantIntegrationTest
             WaiterMarkReport wmr = new WaiterMarkReport(w.getId(), w.getFirstName(), w.getLastName(), 9.0);
             reports.add(wmr);
         }
+        String asdf = om.writeValueAsString(reports);
         this.mvc.perform(get("/restaurants/0/markReport/waiters"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(om.writeValueAsString(om.writeValueAsString(reports))));
+                .andExpect(content().json(om.writeValueAsString(reports)));
     }
 
     @After

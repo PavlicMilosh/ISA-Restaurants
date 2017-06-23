@@ -472,7 +472,11 @@ public class RestaurantServiceImpl implements RestaurantService
             {
                 wmr.setMeanMark(wmr.getMeanMark() + wm.getValue());
             }
-            wmr.setMeanMark(wmr.getMeanMark() / w.getWaiterMarks().size());
+            if(w.getWaiterMarks().size() == 0)
+                wmr.setMeanMark(0.0);
+            else
+                wmr.setMeanMark(wmr.getMeanMark() / w.getWaiterMarks().size());
+            marks.add(wmr);
         }
 
         return marks;
