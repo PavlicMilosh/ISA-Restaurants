@@ -296,7 +296,7 @@ public class ReservationServiceImpl implements ReservationService
         List<InvitationDTO> ret = new ArrayList<>();
 
         for (Invitation invitation : invitations)
-            if (invitation.getReservation().getStatus().equalsIgnoreCase(ReservationStatus.FINISHED))
+            if (invitation.getReservation().getStatus().equalsIgnoreCase(ReservationStatus.SENT))
                 ret.add(new InvitationDTO(invitation));
 
         return ret;

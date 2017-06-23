@@ -4,6 +4,7 @@ import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.services.UserService;
 import com.isa.restaurant.services.WorkScheduleService;
+import com.isa.restaurant.services.implementation.ProviderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ public class UserController
     }
 
     @RequestMapping(value = "/{providerId}/updateProvider", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> updateProvider(@PathVariable Long providerId, @RequestBody Provider provider)
+    public ResponseEntity<UserDTO> updateProvider(@PathVariable Long providerId, @RequestBody ProviderDTO provider)
     {
         UserDTO saved = userService.updateProvider(providerId, provider);
         if(saved == null)

@@ -93,3 +93,74 @@ INSERT INTO public.dish_type(
 INSERT INTO public.dish_type(
 	dish_type_id, dish_type_name, dish_type_restaurant_id)
 	VALUES (-2, 'fish', 0);
+
+
+
+
+-- Guests
+
+INSERT INTO public.guest(
+	user_id, user_authorities, user_email, user_enabled, user_first_name, user_last_name, user_password)
+	VALUES (-10, 'GUEST', 'gg1_ne', false, 'g1_ne', 'g1_ne', '$2a$04$KO4zt5Smt4cHXokLgUt2T.wmcwsHPLICQ3koBK0aOIMdAAzf3oN6S');
+
+INSERT INTO public.guest(
+	user_id, user_authorities, user_email, user_enabled, user_first_name, user_last_name, user_password)
+	VALUES (-11, 'GUEST', 'gg2', true, 'g2', 'g2', '$2a$04$Zz//MPSP4/jqHLDyF2bc6ex8nOwuVb834b0onXiXeaqoURi3r7nnq');
+
+INSERT INTO public.guest(
+	user_id, user_authorities, user_email, user_enabled, user_first_name, user_last_name, user_password)
+	VALUES (-12, 'GUEST', 'gg3', true, 'g3', 'g3', '$2a$04$ghLb9TSD0OysRCRLhMgZVuLqfq.9z8HVDRMh1ND6h6A0xr9bCnYZe');
+
+INSERT INTO public.guest(
+	user_id, user_authorities, user_email, user_enabled, user_first_name, user_last_name, user_password)
+	VALUES (-13, 'GUEST', 'gg4', true, 'g4', 'g4', '$2a$04$u8zezfPQnEDmXQTXlhb5auaJGZtJyTevUwP7iqbt/q.nwCKSmfUAK');
+
+
+-- Friendships
+
+INSERT INTO public.friendship(
+	friendship_id, friendship_status, friendship_last_action_user, friendship_first_user, friendship_second_user)
+	VALUES (-10, 'ACCEPTED', -11, -11, -12);
+
+INSERT INTO public.friendship(
+	friendship_id, friendship_status, friendship_last_action_user, friendship_first_user, friendship_second_user)
+	VALUES (-11, 'PENDING', -11, -11, -13);
+
+INSERT INTO public.friendship(
+	friendship_id, friendship_status, friendship_last_action_user, friendship_first_user, friendship_second_user)
+	VALUES (-12, 'PENDING', -12, -12, -13);
+
+
+-- Reservations and Invitations
+
+INSERT INTO public.reservation(
+	reservation_id, reservation_end_time, reservation_start_time, reservation_status, reservation_version, reservation_reserver_id, reservation_restaurant_id)
+	VALUES (-10, '2018-06-20 09:15:00', '2018-06-20 10:15:00', 'FINISHED', 0, -11, 0);
+
+INSERT INTO public.reservation(
+	reservation_id, reservation_end_time, reservation_start_time, reservation_status, reservation_version, reservation_reserver_id, reservation_restaurant_id)
+	VALUES (-11, '2018-06-20 10:15:00', '2018-06-20 11:15:00', 'SENT', 0, -11, 0);
+
+INSERT INTO public.invitation(
+	invitation_id, invitation_status, invitation_invited_user_id, invitation_reservation_id)
+	VALUES (-10, 'PENDING', -12, -10);
+
+INSERT INTO public.invitation(
+	invitation_id, invitation_status, invitation_invited_user_id, invitation_reservation_id)
+	VALUES (-11, 'ACCEPTED', -12, -10);
+
+INSERT INTO public.invitation(
+	invitation_id, invitation_status, invitation_invited_user_id, invitation_reservation_id)
+	VALUES (-12, 'ACCEPTED', -12, -11);
+
+
+-- Verification token
+
+INSERT INTO public.verification_token(
+	verification_token_id, verification_token_expiry_date, verification_token_purpose, verification_token_string, verification_token_user_id)
+	VALUES (-10, '2018-06-20 09:15:00', 'REGISTRATION', 'registrationTokenSample', -10);
+
+INSERT INTO public.verification_token(
+	verification_token_id, verification_token_expiry_date, verification_token_purpose, verification_token_string, verification_token_user_id)
+	VALUES (-11, '2018-06-20 09:15:00', 'INVITATION', 'invitationTokenSample', -12);
+

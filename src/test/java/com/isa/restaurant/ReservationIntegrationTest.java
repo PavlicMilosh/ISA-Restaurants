@@ -8,6 +8,7 @@ import com.isa.restaurant.repositories.*;
 import com.isa.restaurant.services.ReservationService;
 
 import com.isa.restaurant.ulitity.Utilities;
+import org.aspectj.weaver.ast.Or;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -66,6 +68,12 @@ public class ReservationIntegrationTest
 
     @Autowired
     private ReservationRepository reservationRepository;
+
+    @Autowired
+    private InvitationRepository invitationRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
 
     private MockMvc mvc;
@@ -244,97 +252,104 @@ public class ReservationIntegrationTest
     {
         ObjectMapper om = new ObjectMapper();
 
-        Guest reserver = (Guest) userRepository.findById(g1_id);
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setReserver(new GuestDTO(reserver));
-        reservationDTO.setRestaurant(new RestaurantDTO(restaurantRepository.findOne(restaurant_id)));
+        Reservation reservation = reservationRepository.findById(-10L);
+        Drink drink = drinkRepository.findById(drink_id);
+        Dish dish = dishRepository.findById(dish_id);
+        HashSet<OrderItem> items = new HashSet<>();
+        items.add(new OrderItem(dish, 5));
+        items.add(new OrderItem(drink, 5));
+        Order order = new Order(items, new Date());
+        Guest guest = (Guest) userRepository.getOne(-11L);
+        order.setGuest(guest);
+        order = orderRepository.save(order);
+        reservation.addOrder(order);
+        reservation = reservationRepository.save(reservation);
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, 1);
-        Date date = c.getTime();
-        String start = df.format(date);
-
-        reservationDTO.setStartDate(start);
-        reservationDTO.setStartTime("12:00");
-        reservationDTO.setDuration(90L);
-
-        Set<DrinkOrderDTO> drinkOrders = new HashSet<>();
-        Set<DishOrderDTO> dishOrders = new HashSet<>();
-        Set<GuestDTO> invites = new HashSet<>();
-        Set<RestaurantTableDTO> tables = new HashSet<>();
-
-        drinkOrders.add(new DrinkOrderDTO(drinkRepository.findById(drink_id), 5));
-        dishOrders.add(new DishOrderDTO(dishRepository.findById(dish_id), 5));
-        invites.add(new GuestDTO((Guest) userRepository.findById(g2_id)));
-        invites.add(new GuestDTO((Guest) userRepository.findById(g3_id)));
-        tables.add(new RestaurantTableDTO(tableRepository.findOne(t1_id), false));
-        reservationDTO.setDrinkOrders(drinkOrders);
-        reservationDTO.setDishOrders(dishOrders);
-        reservationDTO.setInvites(invites);
-        reservationDTO.setTables(tables);
-
-        String urlTemplate1 = "/guest/" + g1_id + "/sendReservation";
-        String urlTemplate2 = "/guest/" + g1_id + "/updateReservation/" + 1;
-
-        ReservationDTO actual = reservationDTO;
-        actual.setId(1L);
-
-        // send reservation
-        this.mvc.perform(
-                post(urlTemplate1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(reservationDTO)))
-                .andExpect(status().isOk())
-                .andExpect(content().json(om.writeValueAsString(actual)));
-
-        ReservationUpdateDTO updateDTO = new ReservationUpdateDTO();
-        updateDTO.setGuestId(g1_id);
-        updateDTO.setDishOrders(new HashSet<>());
-        updateDTO.setDrinkOrders(new HashSet<>());
-        updateDTO.setReservationId(1L);
-        Reservation r = reservationRepository.findById(1L);
-        updateDTO.setOrderId(r.getOrderByUserId(g1_id).getId());
-
+        ReservationDTO reservationDTO = new ReservationDTO(reservation);
         reservationDTO.setDishOrders(new HashSet<>());
         reservationDTO.setDrinkOrders(new HashSet<>());
-        // update it
-        this.mvc.perform(
-                put(urlTemplate2)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(updateDTO)))
-                .andExpect(status().isOk())
-                .andExpect(content().json(om.writeValueAsString(reservationDTO)));
 
-        ;
+        ReservationUpdateDTO updateDTO = new ReservationUpdateDTO();
+        updateDTO.setGuestId(-11L);
+        updateDTO.setReservationId(-10L);
+        updateDTO.setOrderId(order.getId());
+        updateDTO.setDishOrders(new HashSet<>());
+        updateDTO.setDrinkOrders(new HashSet<>());
+
+        String json = om.writeValueAsString(updateDTO);
+
+        this.mvc.perform(
+                put("/guest/-11/updateReservation/-10")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(om.writeValueAsString(json)))
+                .andExpect(status().isOk());
     }
 
 
     @Test
     public void testGetReservation()
+            throws Exception
     {
+        ObjectMapper om = new ObjectMapper();
 
-    }
+        Reservation reservation = reservationRepository.findById(-11L);
+        ReservationWithOrdersDTO reservationWithOrdersDTO = new ReservationWithOrdersDTO(reservation);
+        List<ReservationWithOrdersDTO> expected = new ArrayList<>();
+        expected.add(reservationWithOrdersDTO);
 
-
-    @Test
-    public void testAcceptInvitation()
-    {
-
+        this.mvc.perform(get("/guest/-11/getReservations"))
+                        .andExpect(status().isOk())
+                        .andExpect(content().json(om.writeValueAsString(expected)));
     }
 
 
     @Test
     public void testGetAcceptedInvitations()
+            throws Exception
     {
+        ObjectMapper om = new ObjectMapper();
 
+        Invitation invitation = invitationRepository.findOne(-12L);
+        InvitationDTO invitationDTO = new InvitationDTO(invitation);
+        List<InvitationDTO> expected = new ArrayList<>();
+        expected.add(invitationDTO);
+
+        this.mvc.perform(get("/guest/-12/getAcceptedInvitations"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(expected)));
     }
 
 
     @Test
     public void testGetHistoryOfVisits()
+            throws Exception
     {
+        ObjectMapper om = new ObjectMapper();
 
+        Invitation invitation1 = invitationRepository.findOne(-11L);
+        HistoryDTO historyDTO1 = new HistoryDTO(invitation1.getReservation(), 0.0, 0.0, 0.0, -12L);
+
+        historyDTO1.setMealMyMark(0.0);
+        historyDTO1.setRestaurantFriendsMark(null);
+        historyDTO1.setRestaurantMeanMark(null);
+        historyDTO1.setIsMark(false);
+        historyDTO1.setWaiterMark(0.0);
+
+        List<HistoryDTO> expected = new ArrayList<>();
+        expected.add(historyDTO1);
+
+        this.mvc.perform(get("/guest/-12/getHistoryOfVisits"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(expected)));
+    }
+
+
+    @Test
+    public void testDeleteReservation()
+            throws Exception
+    {
+        this.mvc.perform(put("/guest/-11/deleteReservation/-11"))
+                .andExpect(status().isOk());
     }
 
 
@@ -342,5 +357,14 @@ public class ReservationIntegrationTest
     @After
     public void tearDown()
     {
+        friendshipRepository.delete(f_g1_g2_id);
+        friendshipRepository.delete(f_g1_g3_id);
+        friendshipRepository.delete(f_g1_g4_id);
+        userRepository.delete(g1_id);
+        userRepository.delete(g2_id);
+        userRepository.delete(g3_id);
+        userRepository.delete(g4_id);
+
+        restaurantRepository.delete(restaurant_id);
     }
 }
