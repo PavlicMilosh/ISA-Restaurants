@@ -216,7 +216,10 @@ public class UserServiceImpl implements UserService
                     Set<OrderItmDTO> orderItems = new HashSet<>();
                     for (OrderItem oi : o.getOrderItems()) {
                         if (oi.getFinished() != true && oi.getPreparing() != true) {
-                            orderItems.add(new OrderItmDTO(oi));
+                            OrderItmDTO itm=new OrderItmDTO(oi);
+                            itm.setOrderId(o.getId());
+                            itm.setOrderVersion(o.getVersion());
+                            orderItems.add(itm);
                         }
                     }
                     OrderItemDTO temp = new OrderItemDTO(o);

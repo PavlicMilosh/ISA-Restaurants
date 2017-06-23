@@ -23,6 +23,8 @@ public class OrderItmDTO
     private Boolean preparing;
     private Boolean finished;
     private Long userId;
+    private Long orderId;
+    private Long orderVersion;
 
     public OrderItmDTO(OrderItem orderItem)
     {
@@ -40,5 +42,7 @@ public class OrderItmDTO
         this.preparing=orderItem.getPreparing();
         this.finished=orderItem.getFinished();
         this.userId=orderItem.getUserId();
+        this.userId=orderItem.getUserId();
+        this.orderVersion=orderItem.getOrderVersion();
     }
 }

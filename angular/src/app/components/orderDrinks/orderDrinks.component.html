@@ -15,7 +15,7 @@
               <tr *ngFor="let item of order.orderItems; let i = index">
                 <td *ngIf="item.isDish == false">{{item.drink.name}}</td>
                 <td *ngIf="item.isDish == false">{{item.drink.description}}</td>
-                <td>{{item.number}}</td>
+                <td *ngIf="item.isDish == false">{{item.number}}</td>
                 <td class="td-actions" *ngIf="item.isDish == false">
                   <button (click)="selectOrder( order.id, i )" type="button" class="btn btn-default" aria-label="Left Align">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>

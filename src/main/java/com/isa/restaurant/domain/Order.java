@@ -71,6 +71,9 @@ public class Order
     @Version
     private Long version;
 
+    @Column(name="order_is_changed")
+    private Boolean isChanged;
+
     public Order(Waiter waiter)
     {
         this.price=0.0;
@@ -83,6 +86,7 @@ public class Order
         this.billCreated=false;
         this.isMarked=false;
         this.mark=0.0;
+        this.isChanged=false;
     }
 
     public Order(Waiter waiter, HashSet<OrderItem> orderItems, RestaurantTable restaurantTable)
@@ -96,6 +100,7 @@ public class Order
         this.billCreated=false;
         this.isMarked=false;
         this.mark=0.0;
+        this.isChanged=false;
     }
 
     public Order(HashSet<OrderItem> orderItems, Date orderTime)
@@ -109,6 +114,7 @@ public class Order
         this.billCreated=false;
         this.isMarked=false;
         this.mark=0.0;
+        this.isChanged=false;
     }
 
     public Order(Set<OrderItem> orderItems, Date orderTime)
@@ -122,6 +128,7 @@ public class Order
         this.billCreated=false;
         this.isMarked=false;
         this.mark=0.0;
+        this.isChanged=false;
     }
 
     public Order(OrderItemDTO orderDTO)
@@ -141,6 +148,7 @@ public class Order
         this.mark=0.0;
         this.orderTime=orderDTO.getOrderTime();
         this.version=orderDTO.getVersion();
+        this.isChanged=false;
     }
 
 
