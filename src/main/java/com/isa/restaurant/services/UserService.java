@@ -29,4 +29,6 @@ public interface UserService
     UpdatingUser findForUpdate(Long userId);
     Long getWaiterRegionId(Long userId);
     Set<WorkScheduleDTO> getAllSchedule(Long id);
+
+    GuestDTO getGuestInfo(Long guestId);
 }

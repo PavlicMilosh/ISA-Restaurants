@@ -97,6 +97,7 @@ export class UpdateRestaurantComponent implements OnInit
               });
             let group = new fabric.Group([rect, text],
               {
+                id: table.id,
                 left: table.left,
                 top: table.top,
                 region: region,
@@ -165,7 +166,7 @@ export class UpdateRestaurantComponent implements OnInit
       };
       let region = group.region;
       region.tables.push(t);
-      this.restaurant.tables.push(t);
+      console.log(region);
     }
     console.log(this.restaurant);
     this.restaurantService.updateRestaurant(this.restaurant).subscribe(

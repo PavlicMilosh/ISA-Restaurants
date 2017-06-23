@@ -52,6 +52,16 @@ public class GuestController
     }
 
 
+    @RequestMapping(value = "/{guestId}/info",
+            method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GuestDTO> getInfo(@RequestBody Guest guest, @PathVariable Long guestId)
+    {
+        GuestDTO saved = userService.getGuestInfo(guestId);
+        return new ResponseEntity<>(saved, HttpStatus.OK);
+    }
+
+
     @RequestMapping(value = "/{guestId}/update",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -316,6 +326,26 @@ public class GuestController
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/{guestId}/deleteReservation/{reservationId}",
+                    method = RequestMethod.PUT)
+    public ResponseEntity deleteReservation(@PathVariable Long guestId, @PathVariable Long reservationId)
+    {
+        try
+        {
+            reservationService.deleteReservation(guestId, reservationId);
+        }
+        catch (UserNotFoundException e)
+        {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        catch (ReservationException e)
+        {
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 

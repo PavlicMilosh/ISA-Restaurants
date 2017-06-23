@@ -52,7 +52,7 @@ public class Reservation
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Invitation> invitations;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<RestaurantTable> tables;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

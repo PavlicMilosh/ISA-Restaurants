@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {GuestService} from "../../../services/guest.service";
+import { GuestService } from "../../../services/guest.service";
 
 
 @Component({
@@ -13,23 +13,32 @@ import {GuestService} from "../../../services/guest.service";
 
 export class GuestRegisterComponent
 {
-  userDTO: UserDTO;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
+  private userDTO: UserDTO;
+  private email: string;
+  private password: string;
+  private repeatPassword: string;
+  private firstName: string;
+  private lastName: string;
 
-
-  constructor(private guestService: GuestService){}
+  constructor(private guestService: GuestService)
+  {
+  }
 
 
   registerGuest()
   {
-    this.guestService.registerGuest(this.email, this.password, this.firstName, this.lastName).subscribe
-    (
-      data => this.userDTO = data,
-      error => alert(error)
-    );
+    if (this.repeatPassword == this.password)
+    {
+      this.guestService.registerGuest(this.email, this.password, this.firstName, this.lastName).subscribe
+      (
+        data => this.userDTO = data,
+        error => alert(error)
+      );
+    }
+    else
+    {
+      alert("Passwords don't match");
+    }
   }
 }
 

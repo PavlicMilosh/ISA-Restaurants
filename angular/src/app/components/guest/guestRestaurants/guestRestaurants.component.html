@@ -12,7 +12,7 @@
         </span>
   </div></div></div></div>
 
-  <ng-container *ngIf="restaurants.length > 0">
+  <ng-container *ngIf="restaurants != null">
 
     <!-- TABLE -->
     <table class="table table-filter"><tbody>
@@ -22,39 +22,42 @@
 
       <th>
         <div class="table-number">
-          <a (click)="sortData('name')" target="_blank" type="button" class="header">Name</a>
+          <a (click)="sortData('name')" target="_blank" class="header">Name</a>
         </div>
       </th>
 
       <th>
         <div class="table-number">
-          <a (click)="sortData('meanMark')" target="_blank" type="button" class="header">Mean mark</a>
+          <a (click)="sortData('meanMark')" target="_blank" class="header">Mean mark</a>
         </div>
       </th>
 
       <th>
         <div class="table-number">
-          <a (click)="sortData('friendsMark')" target="_blank" type="button" class="header">Friends mark</a>
+          <a (click)="sortData('friendsMark')" target="_blank" class="header">Friends mark</a>
         </div>
       </th>
 
       <th>
         <div class="table-number">
-          <a (click)="sortData('visits')" target="_blank" type="button" class="header">Visits</a>
+          <a (click)="sortData('visits')" target="_blank" class="header">Visits</a>
         </div>
       </th>
 
       <th>
         <div class="table-number">
-          <a (click)="sortData('distance')" target="_blank" type="button" class="header">Distance</a>
+          <a target="_blank" class="header">Address</a>
         </div>
       </th>
 
       <th>
+        <div class="table-number">
+          <a (click)="sortData('distance')" target="_blank" class="header">Distance</a>
+        </div>
       </th>
 
-      <td></td>
-      <td></td>
+      <th></th>
+      <th></th>
     </tr>
 
     <tr *ngFor="let restaurant of restaurants" [attr.id]="'restaurant_' + restaurant.id">
@@ -90,12 +93,21 @@
 
       <td>
         <ng-container *ngIf="restaurant.address != null">
-        <div class="table-number">{{restaurant.address.street + ' ' + restaurant.address.number + ', ' + restaurant.address.city + ', ' + restaurant.address.country}}</div>
+        <div class="table-email">{{restaurant.address.street + ' ' + restaurant.address.number + ', ' + restaurant.address.city + ', ' + restaurant.address.country}}</div>
         </ng-container>
         <ng-container *ngIf="restaurant.address == null">
           <div class="table-number">N/A</div>
         </ng-container>
-        <div class="table-row-name">address</div>
+      </td>
+
+      <td>
+        <ng-container *ngIf="restaurant.distance != null">
+          <div class="table-number">{{restaurant.distanceText}}</div>
+        </ng-container>
+        <ng-container *ngIf="restaurant.distance == null">
+          <div class="table-number">N/A</div>
+        </ng-container>
+        <div class="table-row-name">distance</div>
       </td>
 
       <td class="buttons">
@@ -132,10 +144,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-body">
-        <p>Some text in the modal. {{mapAddress}}</p>
-        <agm-map [latitude]="51.678418" [longitude]="7.809007">
-          <agm-marker [latitude]="51.678418" [longitude]="7.809007"></agm-marker>
-        </agm-map>
+        <div id="map"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

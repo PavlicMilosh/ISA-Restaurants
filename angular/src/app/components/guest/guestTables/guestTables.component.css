@@ -3,19 +3,11 @@ button
   width: 300px;
 }
 
-.floating
-{
-  display: block;
-  float: left;
-  align-content: center;
-  width: 25%;
-  margin: 20px;
-}
 
 .form-block
 {
   display: table;
   margin: 0 auto;
-
+  width: 40%;
 }
 

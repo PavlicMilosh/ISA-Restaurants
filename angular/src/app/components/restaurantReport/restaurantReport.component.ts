@@ -54,10 +54,10 @@ export class RestaurantReportComponent implements OnInit {
     this.cooks = [];
     this.waiters =
       [
-        {id: 1, firstName: "Petar", lastName: "Peric", medianMark: 8},
-        {id: 1, firstName: "Joca", lastName: "Jovic", medianMark: 8},
-        {id: 1, firstName: "Iva", lastName: "Ivanovic", medianMark: 8},
-        {id: 1, firstName: "Nikola", lastName: "Nikolic", medianMark: 8}
+        {id: 1, firstName: "Petar", lastName: "Peric", meanMark: 8},
+        {id: 1, firstName: "Joca", lastName: "Jovic", meanMark: 8},
+        {id: 1, firstName: "Iva", lastName: "Ivanovic", meanMark: 8},
+        {id: 1, firstName: "Nikola", lastName: "Nikolic", meanMark: 8}
       ];
     this.dishes = [];
 
@@ -149,7 +149,7 @@ interface Waiter
   id: number;
   firstName: string;
   lastName: string;
-  medianMark: number;
+  meanMark: number;
 }
 
 
@@ -158,7 +158,7 @@ interface Dish
   id: number;
   name: string;
   description: string;
-  medianMark: number;
+  meanMark: number;
   cooksMark: number;
 }
 
@@ -168,6 +168,6 @@ interface Cook
   id: number;
   firstName: string;
   lastName: string;
-  medianMark: number;
+  meanMark: number;
   dishes: Dish[];
 }

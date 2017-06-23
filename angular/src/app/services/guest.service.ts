@@ -27,6 +27,17 @@ export class GuestService
   }
 
 
+  getGuestData()
+  {
+    let guestId = LoggedUtils.getId();
+    let headers = new Headers();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    headers.append('Content-Type', 'application/json');
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/info", { headers : headers })
+      .map(res => res.json());
+  }
+
+
   updateGuest(email: string, pass: string, firstName: string, lastName: string)
   {
     let guest =
@@ -207,6 +218,7 @@ export class GuestService
       .map(res => res.json());
   }
 
+
   makeMark(history:History)
   {
     let param = JSON.stringify(history);
@@ -216,6 +228,15 @@ export class GuestService
     headers.append('Content-Type', 'application/json');
     return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/makeMark", param ,{ headers : headers })
       .map(res => res.json());
+  }
+
+
+  deleteReservation(reservationId: number)
+  {
+    let headers = new Headers();
+    let guestId = LoggedUtils.getId();
+    headers.append("X-Auth-Token", LoggedUtils.getToken());
+    return this.http.put(AddressUtils.backendAddress() + "/guest/" + guestId + "/deleteReservation/" + reservationId, { headers : headers });
   }
 
 
