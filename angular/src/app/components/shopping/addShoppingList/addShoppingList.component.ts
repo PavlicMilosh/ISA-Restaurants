@@ -3,12 +3,13 @@ import { ShoppingList } from "../ShoppingList";
 import { ShoppingItem } from "../ShoppingItem";
 import { ShoppingService } from "../../../services/shopping.service";
 import { DatePipe } from "@angular/common";
+import {Guard} from "../../../utils/Guard";
 
 @Component({
   selector: 'app-add-shopping-list',
   templateUrl: './addShoppingList.component.html',
   styleUrls: ['./addShoppingList.component.css'],
-  providers: [ShoppingService, DatePipe]
+  providers: [ShoppingService, DatePipe, Guard]
 })
 export class AddShoppingListComponent implements OnInit {
 
@@ -19,8 +20,6 @@ export class AddShoppingListComponent implements OnInit {
   ngOnInit()
   {
     this.shoppingList = new ShoppingList();
-    this.shoppingList.addItem(new ShoppingItem("fadfsdfds", "fdssdfdsf"));
-    this.shoppingList.addItem(new ShoppingItem("lkj", "jkl"));
   }
 
   addItem()

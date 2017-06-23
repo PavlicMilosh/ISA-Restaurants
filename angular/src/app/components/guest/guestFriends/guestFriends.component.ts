@@ -1,5 +1,7 @@
+///<reference path="../../../utils/Guard.ts"/>
 import { Component, OnInit } from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
+import { Guard } from "../../../utils/Guard";
 
 @Component
 ({
@@ -7,7 +9,7 @@ import {GuestService} from "../../../services/guest.service";
   selector: 'guestFriends',
   templateUrl: 'guestFriends.component.html',
   styleUrls: ['guestFriends.component.css', '../../style/tableStyle.css'],
-  providers: [GuestService]
+  providers: [GuestService, Guard]
 })
 
 

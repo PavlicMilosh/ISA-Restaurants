@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from "../../services/users.service";
 import { RestaurantService } from "../../services/restaurants.service";
+import {Guard} from "../../utils/Guard";
 
 
 @Component({
@@ -8,7 +9,7 @@ import { RestaurantService } from "../../services/restaurants.service";
   selector: 'registerRM',
   templateUrl: './registerRM.component.html',
   styleUrls: ['./registerRM.component.css'],
-  providers: [UserService, RestaurantService]
+  providers: [UserService, RestaurantService, Guard]
 })
 export class RegisterRMComponent
 {

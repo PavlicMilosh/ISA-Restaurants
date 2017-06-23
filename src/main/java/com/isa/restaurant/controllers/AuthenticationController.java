@@ -6,6 +6,7 @@ import com.isa.restaurant.domain.DTO.SecurityUser;
 import com.isa.restaurant.domain.DTO.authentication.AuthenticationRequestDTO;
 import com.isa.restaurant.domain.DTO.authentication.AuthenticationResponseDTO;
 import com.isa.restaurant.security.TokenUtils;
+import com.mysql.jdbc.Security;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,7 @@ public class AuthenticationController
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
 
         // Reload password post-authentication so we can generate token
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getEmail());

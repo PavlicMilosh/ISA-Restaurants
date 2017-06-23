@@ -4,6 +4,7 @@ import { RestaurantService } from "../../../services/restaurants.service"
 
 import 'fabric';
 import {IMyDateModel} from "mydatepicker";
+import {Guard} from "../../../utils/Guard";
 
 declare let fabric;
 
@@ -12,7 +13,7 @@ declare let fabric;
   selector: 'guestTables',
   templateUrl: 'guestTables.component.html',
   styleUrls: ['guestTables.component.css', '../../style/formStyle.css'],
-  providers: [RestaurantService]
+  providers: [RestaurantService, Guard]
 })
 
 

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { UserService } from "../../services/users.service";
 import { RestaurantService } from "../../services/restaurants.service";
 import 'fabric';
+import {Guard} from "../../utils/Guard";
 
 declare let fabric;
 
@@ -10,7 +11,7 @@ declare let fabric;
   selector: 'updateRestaurant',
   templateUrl: './updateRestaurant.component.html',
   styleUrls: ['./updateRestaurant.component.css', '../style/formStyle.css'],
-  providers: [UserService, RestaurantService]
+  providers: [UserService, RestaurantService, Guard]
 })
 export class UpdateRestaurantComponent implements OnInit
 {

@@ -237,7 +237,7 @@ public class UserServiceImpl implements UserService
         Provider p = (Provider)userRepository.findOne(providerId);
         if(p == null)
             return null;
-        if(!p.getPassword().equals(provider.getPassword()))
+        if(!p.getPassword().equals(passwordEncoder.encode(provider.getPassword())))
         {
             p.setEmail(provider.getEmail());
             p.setFirstName(provider.getFirstName());

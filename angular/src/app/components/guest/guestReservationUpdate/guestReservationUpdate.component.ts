@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit
 import {GuestService} from "../../../services/guest.service";
 import {Subject} from "rxjs";
 import {LoggedUtils} from "../../../utils/logged.utils";
+import {Guard} from "../../../utils/Guard";
 
 
 @Component({
@@ -9,7 +10,7 @@ import {LoggedUtils} from "../../../utils/logged.utils";
   selector: 'guestReservationUpdate',
   templateUrl: 'guestReservationUpdate.component.html',
   styleUrls: ['guestReservationUpdate.component.css', '../../style/tableStyle.css'],
-  providers: [GuestService]
+  providers: [GuestService, Guard]
 })
 
 

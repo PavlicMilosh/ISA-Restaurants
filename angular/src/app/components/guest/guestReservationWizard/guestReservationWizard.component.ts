@@ -6,6 +6,7 @@ import 'fabric';
 import {GuestReservationSummaryComponent} from "../guestReservationSummary/guestReservationSummary.component";
 import {Subject} from "rxjs";
 import {LoggedUtils} from "../../../utils/logged.utils";
+import {Guard} from "../../../utils/Guard";
 
 declare let fabric;
 declare let jQuery: any;
@@ -15,7 +16,7 @@ declare let jQuery: any;
   selector: 'guestReservationWizard',
   templateUrl: 'guestReservationWizard.component.html',
   styleUrls: ['guestReservationWizard.component.css', '../../style/formStyle.css', '../../style/tableStyle.css'],
-  providers: [GuestService, RestaurantService]
+  providers: [GuestService, RestaurantService, Guard]
 })
 
 

@@ -433,6 +433,8 @@ public class RestaurantServiceImpl implements RestaurantService
             num++;
         }
         avg /= num;
+        if(num == 0)
+            return 0.0;
         return avg;
     }
 
@@ -597,7 +599,7 @@ public class RestaurantServiceImpl implements RestaurantService
         Restaurant r = rm.getRestaurant();
 
         Date d = new Date(date.getTime());
-        Date end = (Date) DateUtils.addDays(date, 7);
+        Date end = new Date(DateUtils.addDays(date, 7).getTime());
         while (d.before(end))
         {
             List<Reservation> reservations = reservationRepository.getReservationsByRestaurantAndDate(r.getId(), d, DateUtils.addHours(date, 1));
@@ -609,7 +611,7 @@ public class RestaurantServiceImpl implements RestaurantService
             }
 
             visits.add(rd);
-            d = (Date) DateUtils.addHours(d, 1);
+            d = new Date(DateUtils.addHours(d, 1).getTime());
         }
 
         return visits;
@@ -622,7 +624,7 @@ public class RestaurantServiceImpl implements RestaurantService
         Restaurant r = rm.getRestaurant();
         ArrayList<ReportData> income = new ArrayList<>();
         Date d = new Date(date.getTime());
-        Date end = (Date) DateUtils.addDays(date, 7);
+        Date end = new Date(DateUtils.addDays(date, 7).getTime());
         while (d.before(end))
         {
             List<Order> orders = orderRepository.getByRestaurantAndDate(r.getId(), d, DateUtils.addHours(d, 1));
@@ -636,7 +638,7 @@ public class RestaurantServiceImpl implements RestaurantService
                 }
             }
             income.add(rd);
-            d = (Date) DateUtils.addHours(d, 1);
+            d = new Date(DateUtils.addHours(d, 1).getTime());
         }
         return income;
     }
@@ -648,7 +650,7 @@ public class RestaurantServiceImpl implements RestaurantService
         Restaurant r = rm.getRestaurant();
         ArrayList<ReportData> income = new ArrayList<>();
         Date d = new Date(date.getTime());
-        Date end = (Date) DateUtils.addDays(date, 7);
+        Date end = new Date(DateUtils.addDays(date, 7).getTime());
         while (d.before(end))
         {
             List<Order> orders = orderRepository.getByRestaurantAndDate(r.getId(), d, DateUtils.addHours(d, 1));
@@ -659,7 +661,7 @@ public class RestaurantServiceImpl implements RestaurantService
                 rd.setValue(rd.getValue() + o.getPrice());
             }
             income.add(rd);
-            d = (Date) DateUtils.addHours(d, 1);
+            d = new Date(DateUtils.addHours(d, 1).getTime());
         }
         return income;
     }

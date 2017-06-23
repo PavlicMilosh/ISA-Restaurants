@@ -1,5 +1,6 @@
 import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
+import {Guard} from "../../../utils/Guard";
 
 
 @Component({
@@ -7,7 +8,7 @@ import {GuestService} from "../../../services/guest.service";
   selector: 'guestPreorder',
   templateUrl: 'guestPreorder.component.html',
   styleUrls: ['guestPreorder.component.css', '../../style/tableStyle.css'],
-  providers: [GuestService]
+  providers: [GuestService, Guard]
 })
 
 

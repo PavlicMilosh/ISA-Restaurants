@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { GuestService } from "../../../services/guest.service";
+import {Guard} from "../../../utils/Guard";
 
 
 @Component({

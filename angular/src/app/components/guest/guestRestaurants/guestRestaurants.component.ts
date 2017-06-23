@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { GuestService } from "../../../services/guest.service";
 import {RestaurantService } from "../../../services/restaurants.service";
 import { GoogleService } from "../../../services/google.services";
+import {Guard} from "../../../utils/Guard";
 
 declare var google: any;
 declare let jQuery:any;
@@ -12,7 +13,7 @@ declare let jQuery:any;
   selector: 'guestRestaurants',
   templateUrl: 'guestRestaurants.component.html',
   styleUrls: ['guestRestaurants.component.css', '../../style/tableStyle.css'],
-  providers: [RestaurantService, GuestService, GoogleService]
+  providers: [RestaurantService, GuestService, GoogleService, Guard]
 })
 
 

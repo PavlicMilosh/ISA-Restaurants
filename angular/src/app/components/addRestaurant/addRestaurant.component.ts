@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RestaurantService } from "../../services/restaurants.service";
+import {Guard} from "../../utils/Guard";
 
 
 @Component({
@@ -7,7 +8,7 @@ import { RestaurantService } from "../../services/restaurants.service";
   selector: 'addRestaurant',
   templateUrl: './addRestaurant.component.html',
   styleUrls: ['./addRestaurant.component.css'],
-  providers: [RestaurantService]
+  providers: [RestaurantService, Guard]
 })
 export class AddRestaurantComponent implements OnInit
 {

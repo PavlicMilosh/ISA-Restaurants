@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {ShoppingService} from "../../../services/shopping.service";
 import {ShoppingList} from "../ShoppingList";
 import {Offer} from "../Offer";
+import {Guard} from "../../../utils/Guard";
 
 @Component({
   selector: 'app-shopping-lists-rm',
   templateUrl: './shoppingListsRM.component.html',
   styleUrls: ['./shoppingListsRM.component.css'],
-  providers: [ShoppingService]
+  providers: [ShoppingService, Guard]
 })
 export class ShoppingListsRMComponent implements OnInit
 {

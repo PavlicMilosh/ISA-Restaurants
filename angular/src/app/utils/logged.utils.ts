@@ -35,8 +35,15 @@ export class LoggedUtils
     return localStorage.getItem("loggedUser") === null;
   }
 
+  static isEnabled()
+  {
+    if(JSON.parse(localStorage.getItem("loggedUser")) != null)
+      return JSON.parse(localStorage.getItem("loggedUser")).enabled == true;
+    return false;
+  }
+
   static isLogged()
   {
-    
+
   }
 }
