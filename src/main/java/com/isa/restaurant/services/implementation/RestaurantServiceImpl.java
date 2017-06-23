@@ -433,6 +433,8 @@ public class RestaurantServiceImpl implements RestaurantService
             num++;
         }
         avg /= num;
+        if(num == 0)
+            return 0.0;
         return avg;
     }
 

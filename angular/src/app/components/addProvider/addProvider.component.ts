@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from "../../services/users.service";
+import {Guard} from "../../utils/Guard";
 
 @Component({
   selector: 'app-add-provider',
   templateUrl: './addProvider.component.html',
   styleUrls: ['./addProvider.component.css'],
-  providers: [UserService]
+  providers: [UserService, Guard]
 })
 export class AddProviderComponent
 {

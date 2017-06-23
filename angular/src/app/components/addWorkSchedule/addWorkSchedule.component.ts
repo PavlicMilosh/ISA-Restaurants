@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import { UserService } from "../../services/users.service";
 import { RestaurantService } from "../../services/restaurants.service";
+import {Guard} from "../../utils/Guard";
 
 @Component({
   selector: 'app-add-work-schedule',
   templateUrl: './addWorkSchedule.component.html',
   styleUrls: ['./addWorkSchedule.component.css'],
-  providers: [ UserService, RestaurantService ]
+  providers: [ UserService, RestaurantService, Guard ]
 })
 export class AddWorkScheduleComponent implements OnInit
 {

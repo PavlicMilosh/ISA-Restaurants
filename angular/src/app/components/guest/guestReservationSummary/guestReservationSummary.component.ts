@@ -3,6 +3,7 @@ import {GuestService} from "../../../services/guest.service";
 import 'fabric';
 import {RestaurantService} from "../../../services/restaurants.service";
 import {Subject} from "rxjs";
+import {Guard} from "../../../utils/Guard";
 
 declare let fabric;
 
@@ -11,7 +12,7 @@ declare let fabric;
   selector: 'guestReservationSummary',
   templateUrl: 'guestReservationSummary.component.html',
   styleUrls: ['guestReservationSummary.component.css', '../../style/tableStyle.css'],
-  providers: [GuestService]
+  providers: [GuestService, Guard]
 })
 
 

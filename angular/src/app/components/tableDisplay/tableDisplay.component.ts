@@ -9,6 +9,7 @@ import { ActivatedRoute, Router }       from '@angular/router';
 import {Observable, Subscription} from "rxjs";
 import 'fabric';
 import {Subject} from "rxjs";
+import {Guard} from "../../utils/Guard";
 
 declare let fabric;
 
@@ -16,7 +17,7 @@ declare let fabric;
   selector: 'table-display',
   templateUrl: './tableDisplay.component.html',
   styleUrls: ['./tableDisplay.component.css', '../style/formStyle.css'],
-  providers: [UserService,RestaurantService,OrderService]
+  providers: [UserService,RestaurantService,OrderService, Guard]
 })
 
 

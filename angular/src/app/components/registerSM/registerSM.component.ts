@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from "../../services/users.service";
+import {Guard} from "../../utils/Guard";
 
 
 @Component({
@@ -7,7 +8,7 @@ import { UserService } from "../../services/users.service";
   selector: 'registerSM',
   templateUrl: './registerSM.component.html',
   styleUrls: ['./registerSM.component.css'],
-  providers: [UserService]
+  providers: [UserService, Guard]
 })
 export class RegisterSMComponent
 {

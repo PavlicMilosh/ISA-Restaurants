@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GuestService } from "../../../services/guest.service";
 import {Subject} from "rxjs";
 import {GuestReservationSummaryComponent} from "../guestReservationSummary/guestReservationSummary.component";
+import {Guard} from "../../../utils/Guard";
 
 @Component
 ({
@@ -9,7 +10,7 @@ import {GuestReservationSummaryComponent} from "../guestReservationSummary/guest
   selector: 'guestRestaurantAttendances',
   templateUrl: 'guestRestaurantAttendances.component.html',
   styleUrls: ['guestRestaurantAttendances.component.css', '../../style/tableStyle.css'],
-  providers: [GuestService]
+  providers: [GuestService, Guard]
 })
 
 

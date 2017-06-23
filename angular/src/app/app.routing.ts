@@ -35,6 +35,7 @@ import {GuestHistoryComponent} from "./components/guest/guestHistory/guestHistor
 import { CreateBill } from "./components/createBill/createBill.component";
 import {RestaurantReportComponent} from "./components/restaurantReport/restaurantReport.component";
 import { OrderChange } from "./components/orderChange/orderChange.component";
+import {Guard} from "./utils/Guard";
 
 const appRoutes : Routes =
   [
@@ -51,15 +52,24 @@ const appRoutes : Routes =
     // RESTAURANTS PART
     {
       path : 'registerSM',
-      component : RegisterSMComponent
+      component : RegisterSMComponent,
+      canActivate: [
+        Guard
+      ]
     },
     {
       path : 'registerRM',
-      component : RegisterRMComponent
+      component : RegisterRMComponent,
+      canActivate: [
+        Guard
+      ]
     },
     {
       path : 'addRestaurant',
-      component : AddRestaurantComponent
+      component : AddRestaurantComponent,
+      canActivate: [
+        Guard
+      ]
     },
     {
       path : 'updateRestaurant',
@@ -90,35 +100,60 @@ const appRoutes : Routes =
     // GUEST PART
     {
       path : 'guest/register',
-      component : GuestRegisterComponent
+      component : GuestRegisterComponent,
+      canActivate: [
+        Guard
+      ]
     },
     {
       path : 'guest/update',
-      component : GuestUpdateComponent
+      component : GuestUpdateComponent,
+      canActivate: [
+        Guard
+      ]
     },
     {
       path : 'guest/friends',
-      component : GuestFriendsComponent
+      component : GuestFriendsComponent,
+      canActivate: [
+        Guard
+      ]
     },
     {
       path : 'guest/requests',
-      component : GuestRequestsComponent
+      component : GuestRequestsComponent,
+      canActivate: [
+        'Guard',
+        Guard
+      ]
     },
     {
       path : 'guest/people',
-      component : GuestPeopleComponent
+      component : GuestPeopleComponent,
+      canActivate: [
+        Guard
+      ]
     },
     {
       path : 'guest/reservations',
-      component : GuestReservationWizardComponent
+      component : GuestReservationWizardComponent,
+      canActivate: [
+        Guard
+      ]
     },
     {
       path: 'guest/attendances',
-      component: GuestRestaurantAttendancesComponent
+      component: GuestRestaurantAttendancesComponent,
+      canActivate: [
+        Guard
+      ]
     },
     {
       path: 'guest/visits',
-      component: GuestHistoryComponent
+      component: GuestHistoryComponent,
+      canActivate: [
+        Guard
+      ]
     },
 
 

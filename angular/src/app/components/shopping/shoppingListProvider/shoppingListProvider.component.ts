@@ -3,12 +3,13 @@ import { ShoppingService } from '../../../services/shopping.service'
 import { ShoppingList } from "../ShoppingList";
 import { Offer } from "../Offer";
 import {LoggedUtils} from "../../../utils/logged.utils";
+import {Guard} from "../../../utils/Guard";
 
 @Component({
   selector: 'app-shopping-list-provider',
   templateUrl: './shoppingListProvider.component.html',
   styleUrls: ['./shoppingListProvider.component.css'],
-  providers: [ ShoppingService ]
+  providers: [ ShoppingService, Guard ]
 })
 export class ShoppingListProviderComponent implements OnInit
 {

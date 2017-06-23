@@ -1,6 +1,7 @@
 import {Component, OnInit, EventEmitter, Output} from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
 import {RestaurantService} from "../../../services/restaurants.service";
+import {Guard} from "../../../utils/Guard";
 declare let jQuery:any;
 
 @Component
@@ -9,7 +10,7 @@ declare let jQuery:any;
   selector: 'guestHistory',
   templateUrl: 'guestHistory.component.html',
   styleUrls: ['guestHistory.component.css', '../../style/tableStyle.css'],
-  providers: [RestaurantService, GuestService]
+  providers: [RestaurantService, GuestService, Guard]
 })
 
 

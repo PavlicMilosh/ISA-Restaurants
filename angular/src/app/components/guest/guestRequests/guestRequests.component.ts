@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
+import {Guard} from "../../../utils/Guard";
 
 @Component
 ({
@@ -7,7 +8,7 @@ import {GuestService} from "../../../services/guest.service";
   selector: 'guestRequests',
   templateUrl: 'guestRequests.component.html',
   styleUrls: ['guestRequests.component.css', '../../style/tableStyle.css'],
-  providers: [GuestService]
+  providers: [GuestService, Guard]
 })
 
 

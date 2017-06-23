@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from "../../services/users.service";
 import {RestaurantService} from "../../services/restaurants.service";
 import {LoggedUtils} from "../../utils/logged.utils";
+import {Guard} from "../../utils/Guard";
 
 @Component({
   selector: 'app-add-worker',
   templateUrl: './addWorker.component.html',
   styleUrls: ['./addWorker.component.css'],
-  providers: [ UserService, RestaurantService ]
+  providers: [ UserService, RestaurantService, Guard ]
 })
 
 

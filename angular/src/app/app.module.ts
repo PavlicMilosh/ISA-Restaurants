@@ -59,6 +59,7 @@ import { AddShoppingListComponent } from './components/shopping/addShoppingList/
 import { CreateBill } from "./components/createBill/createBill.component";
 import { RestaurantReportComponent } from './components/restaurantReport/restaurantReport.component';
 import { OrderChange } from "./components/orderChange/orderChange.component";
+import {Guard} from "./utils/Guard";
 
 
 
@@ -125,7 +126,7 @@ import { OrderChange } from "./components/orderChange/orderChange.component";
     routing,
     NgbModule.forRoot()
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ Guard ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

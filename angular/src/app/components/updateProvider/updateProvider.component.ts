@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from  '../../services/users.service';
 import {LoggedUtils} from "../../utils/logged.utils";
+import {Guard} from "../../utils/Guard";
 
 @Component({
   selector: 'app-update-provider',
   templateUrl: './updateProvider.component.html',
   styleUrls: ['./updateProvider.component.css'],
-  providers: [UserService]
+  providers: [UserService, Guard]
 })
 export class UpdateProviderComponent implements OnInit {
 

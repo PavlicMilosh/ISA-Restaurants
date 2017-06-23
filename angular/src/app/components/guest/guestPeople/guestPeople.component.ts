@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
 import {LoggedUtils} from "../../../utils/logged.utils";
+import {Guard} from "../../../utils/Guard";
 
 @Component
 ({
@@ -8,7 +9,7 @@ import {LoggedUtils} from "../../../utils/logged.utils";
   selector: 'guestPeople',
   templateUrl: 'guestPeople.component.html',
   styleUrls: ['guestPeople.component.css', '../../style/tableStyle.css'],
-  providers: [GuestService]
+  providers: [GuestService, Guard]
 })
 
 

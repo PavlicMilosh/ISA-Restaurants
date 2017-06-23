@@ -1,5 +1,6 @@
 import {Component, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, Input} from '@angular/core';
 import {GuestService} from "../../../services/guest.service";
+import {Guard} from "../../../utils/Guard";
 
 @Component
 ({
@@ -7,7 +8,7 @@ import {GuestService} from "../../../services/guest.service";
   selector: 'guestInvitations',
   templateUrl: 'guestInvitations.component.html',
   styleUrls: ['guestInvitations.component.css', '../../style/tableStyle.css'],
-  providers: [GuestService]
+  providers: [GuestService, Guard]
 })
 
 
