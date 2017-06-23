@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject } from "rxjs";
-import { CompleterData, CompleterService } from "ng2-completer";
+import {IMyDateModel} from "mydatepicker";
+import {DatePipe} from "@angular/common";
+import {ReportService} from "../../services/report.service";
 
 @Component({
   selector: 'app-restaurant-report',
   templateUrl: './restaurantReport.component.html',
-  styleUrls: ['./restaurantReport.component.css']
+  styleUrls: ['./restaurantReport.component.css'],
+  providers: [DatePipe, ReportService]
 })
 export class RestaurantReportComponent implements OnInit {
 
@@ -23,11 +26,11 @@ export class RestaurantReportComponent implements OnInit {
   private dishes: Dish[];
 
   // inputs
-  private incomeDate;
-  private visitsDate;
-  private waitersDate;
-  private waitersName;
-  private cooksName;
+  private incomeDate: string;
+  private visitsDate: string;
+  private waitersDate: string;
+  private waitersName: string;
+  private cooksName: string;
   private dishName: string;
 
   // outputs
@@ -48,20 +51,36 @@ export class RestaurantReportComponent implements OnInit {
 
   private myDatePickerOptions: any;
 
-  protected dataService: CompleterData;
 
-  constructor(private completerService: CompleterService) {
+  constructor(private datePipe: DatePipe, private reportService: ReportService)
+  {
     this.cooks = [];
-    this.waiters =
-      [
-        {id: 1, firstName: "Petar", lastName: "Peric", meanMark: 8},
-        {id: 1, firstName: "Joca", lastName: "Jovic", meanMark: 8},
-        {id: 1, firstName: "Iva", lastName: "Ivanovic", meanMark: 8},
-        {id: 1, firstName: "Nikola", lastName: "Nikolic", meanMark: 8}
-      ];
+    this.waiters =[];
     this.dishes = [];
 
-    this.dataService = completerService.local(this.waiters, 'firstName,lastName', 'firstName,lastName');
+    this.reportService.getRestaurantMeanMark().subscribe
+    (
+      data => this.restaurantMark = data,
+      error => alert(error)
+    );
+
+    this.reportService.getDishesWithMeanMark().subscribe
+    (
+      data => this.dishes = data,
+      error => alert(error)
+    );
+
+    this.reportService.getWaitersWithMeanMark().subscribe
+    (
+      data => this.waiters = data,
+      error => alert(error)
+    );
+
+    this.reportService.getCooksWithMeanMark().subscribe
+    (
+      data => this.cooks = data,
+      error => alert(error)
+    );
   }
 
 
@@ -79,30 +98,67 @@ export class RestaurantReportComponent implements OnInit {
   }
 
 
-  getIncomeData() {
+  onIncomeDateChanged(event: IMyDateModel)
+  {
+    let jsdate = event.jsdate;
+    this.incomeDate = this.datePipe.transform(jsdate, "yyyy-MM-dd HH:mm");
+  }
 
+  onVisitsDateChanged(event: IMyDateModel)
+  {
+    let jsdate = event.jsdate;
+    this.visitsDate = this.datePipe.transform(jsdate, "yyyy-MM-dd HH:mm");
+  }
+
+  onWaiterDateChanged(event: IMyDateModel)
+  {
+    let jsdate = event.jsdate;
+    this.waitersDate = this.datePipe.transform(jsdate, "yyyy-MM-dd HH:mm");
   }
 
 
-  getVisitsData() {
+  getIncomeData()
+  {
+    this.reportService.getIncomeData(this.incomeDate).subscribe
+    (
+      data =>
+      {
+        console.log(data);
+      },
+      error => alert(error)
 
+    );
   }
 
 
-  getWaitersData() {
+  getVisitsData()
+  {
+    this.reportService.getVisitsData(this.visitsDate).subscribe
+    (
+      data =>
+      {
+        console.log(data);
+      },
+      error => alert(error)
+    );
+  }
 
+
+  getWaitersData()
+  {
+    this.reportService.getWaitersData(this.waitersDate, this.selectedWaiter.id).subscribe
+    (
+      data =>
+      {
+        console.log(data);
+      },
+      error => alert(error)
+    );
   }
 
 
   selectWaiter()
   {
-    let partsOfStr = this.selectedWaiterStr.split(' ');
-    let firstName = partsOfStr[0];
-    let lastName = partsOfStr[1];
-    for (let w of this.waiters)
-      if (w.firstName == firstName && w.lastName == lastName)
-        this.selectedWaiter = w;
-    console.log(this.selectedWaiter);
   }
 
 

@@ -6,8 +6,7 @@ import { WizardModule } from 'ng2-archwizard';
 import { MyDatePickerModule } from 'mydatepicker';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
 import { ChartsModule } from "ng2-charts";
-import { Ng2CompleterModule } from "ng2-completer";
-
+import { SelectModule } from 'ng2-select';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -124,7 +123,7 @@ import { OrderChange } from "./components/orderChange/orderChange.component";
     MyDatePickerModule,
     Ng2TableModule,
     ChartsModule,
-    Ng2CompleterModule,
+    SelectModule,
     routing,
     NgbModule.forRoot()
   ],

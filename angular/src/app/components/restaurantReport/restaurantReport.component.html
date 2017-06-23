@@ -22,8 +22,10 @@
       <div>
         <form class="datepicker" #myForm="ngForm" novalidate>
           <label class="center-block datelabel">Date</label>
-          <my-date-picker class="floating" name="incomeDate" [options]="myDatePickerOptions"
-                          [(ngModel)]="incomeDate" required></my-date-picker>
+          <my-date-picker class="floating" name="incomeDate"
+                          [options]="myDatePickerOptions"
+                          (dateChanged)="onIncomeDateChanged($event)"
+                          required></my-date-picker>
           <a (click)="getIncomeData()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
         </form>
 
@@ -40,8 +42,10 @@
       <div>
         <form class="datepicker" #myForm="ngForm" novalidate>
           <label class="center-block datelabel">Date</label>
-          <my-date-picker class="floating" name="visitsDate" [options]="myDatePickerOptions"
-                          [(ngModel)]="visitsDate" required></my-date-picker>
+          <my-date-picker class="floating" name="visitsDate"
+                          [options]="myDatePickerOptions"
+                          (dateChanged)="onVisitsDateChanged($event)"
+                          required></my-date-picker>
           <a (click)="getVisitsData()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
         </form>
 
@@ -57,8 +61,14 @@
     <div id="waiters" class="tab-pane fade">
 
       <div class="datepicker">
-        <ng2-completer class="completer-dropdown" [(ngModel)]="selectedWaiterStr" [datasource]="dataService" [minSearchLength]="0"></ng2-completer>
-        <a (click)="selectWaiter()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
+        <form class="datepicker" #myForm="ngForm" novalidate>
+          <label class="center-block datelabel">Date</label>
+          <my-date-picker class="floating" name="waiterDate"
+                          [options]="myDatePickerOptions"
+                          (dateChanged)="onWaiterDateChanged($event)"
+                          required></my-date-picker>
+          <a (click)="selectWaiter()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
+        </form>
       <div>
 
       <hr/>
@@ -77,10 +87,8 @@
     <!-- COOK -->
     <div id="cooks" class="tab-pane fade">
       <div>
-        <form class="datepicker" #myForm="ngForm" novalidate>
-          <hr/>
+
           <a (click)="selectCook()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
-        </form>
 
         <hr/>
 
