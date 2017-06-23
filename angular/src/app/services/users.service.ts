@@ -74,7 +74,7 @@ export class UserService
       .map(res => res.json());
   }
 
-  changePassword(id: number, email: string, pass: string, firstName: string, lastName: string)
+  changePassword(id: number, email: string, pass: string, firstName: string, lastName: string, oldPassword)
   {
     var user =
       {
@@ -83,6 +83,7 @@ export class UserService
         password: pass,
         firstName: firstName,
         lastName: lastName,
+        oldPassword: oldPassword,
       };
     var param = JSON.stringify(user);
     var headers = new Headers();

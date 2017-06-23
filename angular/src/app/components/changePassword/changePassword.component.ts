@@ -24,39 +24,53 @@ export class ChangePassword
   newPassword1 : string;
   newPassword2 : string;
 
+  correct:boolean;
+
 
   constructor(private userService: UserService)
   {
+    /*
     this.userService.getCurrentUser().subscribe
     (
       (data:UserDTO) => this.userDTO = data,
       error => alert(error)
     );
+    */
   }
 
   change()
   {
-    if(this.oldPassword==this.userDTO.password)
-    {
-      console.log(this.oldPassword);
+
       if(this.newPassword1==this.newPassword2){
         this.userService.changePassword(this.userDTO.id,this.userDTO.email,
-          this.newPassword1, this.userDTO.firstName, this.userDTO.lastName).subscribe(
-          data => this.userDTO = data,
+          this.newPassword1, this.userDTO.firstName, this.userDTO.lastName, this.oldPassword).subscribe(
+          data => this.correct = data,
           error => alert(error),
-          ()=>alert("Password changed successfully!")
+          ()=>this.isCorrect()
         );
       }else
       {
         alert("Different passwords!");
       }
-    }else
+
+  }
+
+
+  isCorrect()
+  {
+    if(this.correct==true)
     {
-      alert("Incorrect password!");
+      alert("Password changed successfully!");
+    }
+    else
+    {
+      alert("Incorect password!")
     }
   }
 
 }
+
+
 
 
 interface UserDTO

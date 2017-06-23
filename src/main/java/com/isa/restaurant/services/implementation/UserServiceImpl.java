@@ -140,12 +140,16 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public UserDTO changePassword(UserDTO userDTO)
+    public Boolean changePassword(UserDTO userDTO)
     {
         User user = userRepository.findById(userDTO.getId());
-        user.setPassword(userDTO.getPassword());
-        User saved = userRepository.save(user);
-        return  new UserDTO(saved);
+        if(user.getPassword().equals(userDTO.getOldPassword()))
+        {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            User saved = userRepository.save(user);
+            return true;
+        }
+        else { return false;}
     }
 
     @Override
