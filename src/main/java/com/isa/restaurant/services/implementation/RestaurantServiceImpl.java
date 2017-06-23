@@ -496,10 +496,13 @@ public class RestaurantServiceImpl implements RestaurantService
                 dmr.setNoMarks(dmr.getNoMarks() + 1);
             }
             dmr.setMeanMark(dmr.getMeanMark() / dmr.getNoMarks());
+            marks.add(dmr);
         }
 
         return marks;
     }
+
+
 
     @Override
     public List<CookMarkReport> getCookMarkReport(Long restaurantId)
@@ -592,6 +595,8 @@ public class RestaurantServiceImpl implements RestaurantService
                     rd.setValue(rd.getValue() + o.getPrice());
                 }
             }
+            income.add(rd);
+            d = (Date) DateUtils.addHours(d, 1);
         }
         return income;
     }
@@ -611,6 +616,8 @@ public class RestaurantServiceImpl implements RestaurantService
             {
                 rd.setValue(rd.getValue() + o.getPrice());
             }
+            income.add(rd);
+            d = (Date) DateUtils.addHours(d, 1);
         }
         return income;
     }

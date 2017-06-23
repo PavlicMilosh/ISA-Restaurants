@@ -164,6 +164,18 @@ INSERT INTO public.dish_mark(
 	dish_mark_id, dish_mark_count_mark, dish_mark_value, dish_mark_dish_id, dish_mark_guest_id)
 	VALUES (-3, 0, 8, -2, -50);
 
+INSERT INTO public.dish_dish_marks(
+	dish_dish_id, dish_marks_dish_mark_id)
+	VALUES (-1, -1);
+
+INSERT INTO public.dish_dish_marks(
+	dish_dish_id, dish_marks_dish_mark_id)
+	VALUES (-1, -2);
+
+INSERT INTO public.dish_dish_marks(
+	dish_dish_id, dish_marks_dish_mark_id)
+	VALUES (-2, -3);
+
 
 INSERT INTO public.drink(
   drink_id,drink_name,drink_desc,drink_price,restaurant_restaurant_id)

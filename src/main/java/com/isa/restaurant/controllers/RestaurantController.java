@@ -218,7 +218,7 @@ public class RestaurantController
         return new ResponseEntity<>(report, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{restaurantId}/incomeReport/waiters", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{restaurantId}/incomeReport/waiters/{waiterId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ReportData>> getWaitersIncomeReport(@PathVariable Long restaurantId, @PathVariable Long waiterId, @RequestBody DateDTO startDate)
     {
         List<ReportData> report = restaurantService.getWaiterIncomeReport(restaurantId, waiterId, startDate.getStartDate());
@@ -226,9 +226,9 @@ public class RestaurantController
     }
 
     @RequestMapping(value = "/{restaurantId}/visitsReport", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ReportData>> getVisitsReport(@PathVariable Long restaurantId, @PathVariable Long waiterId, @RequestBody DateDTO startDate)
+    public ResponseEntity<List<ReportData>> getVisitsReport(@PathVariable Long restaurantId, @RequestBody DateDTO startDate)
     {
-        List<ReportData> report = restaurantService.getWaiterIncomeReport(restaurantId, waiterId, startDate.getStartDate());
+        List<ReportData> report = restaurantService.getVisitsReport(restaurantId, startDate.getStartDate());
         return new ResponseEntity<>(report, HttpStatus.OK);
     }
 

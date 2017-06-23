@@ -3,12 +3,12 @@ package com.isa.restaurant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isa.restaurant.domain.*;
-import com.isa.restaurant.domain.DTO.RegionDTO;
-import com.isa.restaurant.domain.DTO.UserDTO;
-import com.isa.restaurant.domain.DTO.WaiterMarkReport;
+import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.RestaurantRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.RestaurantService;
+import org.apache.commons.lang3.time.DateUtils;
+import org.assertj.core.util.DateUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -205,6 +209,61 @@ public class RestaurantIntegrationTest
         this.mvc.perform(get("/restaurants/0/markReport/waiters"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(om.writeValueAsString(reports)));
+    }
+
+    @Test
+    public void testGetDishesMarkReport() throws Exception
+    {
+        ObjectMapper om = new ObjectMapper();
+        Restaurant r = restaurantRepository.findOne(0L);
+        ArrayList<DishMarkReport> reports = new ArrayList<>();
+        for(Dish d : r.getDishes())
+        {
+            DishMarkReport dmr = new DishMarkReport(d.getId(), d.getName(), d.getDescription(), 0.0, 0.0, 0, 0);
+            if(dmr.getId() == -1L)
+            {
+                dmr.setMeanMark(8.5);
+                dmr.setNoMarks(2);
+            }
+            if(dmr.getId() == -2L)
+            {
+                dmr.setMeanMark(8.0);
+                dmr.setNoMarks(1);
+            }
+            reports.add(dmr);
+        }
+        this.mvc.perform(get("/restaurants/0/markReport/dishes"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(reports)));
+    }
+
+    @Test
+    public void testGetVisitsReport() throws Exception
+    {
+        ObjectMapper om = new ObjectMapper();
+
+        Restaurant r = restaurantRepository.findOne(0L);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ArrayList<ReportData> data = new ArrayList<>();
+        Date start = new Date(sdf.parse("2017-06-19 00:00:00").getTime());
+        Date d = new Date(sdf.parse("2017-06-19 00:00:00").getTime());
+        DateDTO param = new DateDTO();
+        param.setStartDate(new Date(start.getTime()));
+        while(d.before(DateUtils.addDays(start, 7)))
+        {
+            ReportData rd = new ReportData(d, 0.0);
+            if(d.after(sdf.parse("2017-06-20 09:00:00")) && d.before(sdf.parse("2017-06-20 10:00:00")))
+                rd.setValue(2.0);
+            if(d.after(sdf.parse("2017-06-20 10:00:00")) && d.before(sdf.parse("2017-06-20 11:00:00")))
+                rd.setValue(3.0);
+            data.add(rd);
+            d = new Date(DateUtils.addHours(d, 1).getTime());
+        }
+        this.mvc.perform(put("/restaurants/0/visitsReport")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(om.writeValueAsString(param)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(om.writeValueAsString(data)));
     }
 
     @After
