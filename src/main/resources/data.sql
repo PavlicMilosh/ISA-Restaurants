@@ -50,9 +50,17 @@ INSERT INTO public.waiter_mark(
 	waiter_mark_id, waiter_mark_value, waiter_mark_guest_id, waiter_mark_waiter_id)
 	VALUES (0, 8, -50, -4);
 
+INSERT INTO public.waiter_waiter_marks(
+	waiter_user_id, waiter_marks_waiter_mark_id)
+	VALUES (-4, 0);
+
 INSERT INTO public.waiter_mark(
 	waiter_mark_id, waiter_mark_value, waiter_mark_guest_id, waiter_mark_waiter_id)
 	VALUES (-1, 10, -51, -4);
+
+INSERT INTO public.waiter_waiter_marks(
+	waiter_user_id, waiter_marks_waiter_mark_id)
+	VALUES (-4, -1);
 
 INSERT INTO public.provider(
 	user_id, user_authorities, user_email, user_enabled, user_first_name, user_last_name, user_password)
