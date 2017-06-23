@@ -1,19 +1,12 @@
 package com.isa.restaurant;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isa.restaurant.domain.*;
 import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.RestaurantRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.RestaurantService;
-<<<<<<< HEAD
 import org.apache.commons.lang3.time.DateUtils;
-import org.assertj.core.util.DateUtil;
-=======
-import com.isa.restaurant.ulitity.Utilities;
-import org.apache.commons.lang3.time.DateUtils;
->>>>>>> 951cc82f6f00195f0bf315be77a1075fd005516f
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,15 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.sql.Date;
-<<<<<<< HEAD
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-=======
->>>>>>> 951cc82f6f00195f0bf315be77a1075fd005516f
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
-import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -220,7 +207,6 @@ public class RestaurantIntegrationTest
     }
 
     @Test
-<<<<<<< HEAD
     public void testGetDishesMarkReport() throws Exception
     {
         ObjectMapper om = new ObjectMapper();

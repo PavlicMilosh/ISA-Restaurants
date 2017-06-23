@@ -44,21 +44,23 @@ public interface RestaurantService
 
     Integer getMedianMark(Long guestId);
 
+    public Double getMeanMark(Long managerId);
+
     List<RestaurantTableDTO> getTables(Long restaurantId);
 
     Report getReport(Long restaurantId, Date startDate);
 
-    List<WaiterMarkReport> getWaiterMarkReport(Long restaurantId);
+    List<WaiterMarkReport> getWaiterMarkReport(Long managerId);
 
-    List<DishMarkReport> getDishMarkReport(Long restaurantId);
+    List<DishMarkReport> getDishMarkReport(Long managerId);
 
-    List<CookMarkReport> getCookMarkReport(Long restaurantId);
+    List<CookMarkReport> getCookMarkReport(Long managerId);
 
-    List<ReportData> getVisitsReport(Long restaurantId, Date date);
+    List<ReportData> getVisitsReport(Long managerId, Date date);
 
-    List<ReportData> getWaiterIncomeReport(Long restaurantId, Long waiterId, Date date);
+    List<ReportData> getWaiterIncomeReport(Long managerid, Long waiterId, Date date);
 
-    List<ReportData> getIncomeReport(Long restaurantId, Date date);
+    List<ReportData> getIncomeReport(Long managerId, Date date);
 
     List<DishType> getDishTypes(Long managerId);
 

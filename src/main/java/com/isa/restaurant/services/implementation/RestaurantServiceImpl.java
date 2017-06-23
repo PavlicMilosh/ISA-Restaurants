@@ -421,6 +421,22 @@ public class RestaurantServiceImpl implements RestaurantService
     }
 
     @Override
+    public Double getMeanMark(Long managerId)
+    {
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
+        Restaurant r = rm.getRestaurant();
+        double avg = 0;
+        double num = 0;
+        for(RestaurantMark mark : r.getRestaurantMarks())
+        {
+            avg += mark.getValue();
+            num++;
+        }
+        avg /= num;
+        return avg;
+    }
+
+    @Override
     public List<RestaurantTableDTO> getTables(Long restaurantId)
     {
         List<RestaurantTable> tables = tableRepository.findByRestaurantId(restaurantId);
@@ -479,9 +495,10 @@ public class RestaurantServiceImpl implements RestaurantService
     }
 
     @Override
-    public List<WaiterMarkReport> getWaiterMarkReport(Long restaurantId)
+    public List<WaiterMarkReport> getWaiterMarkReport(Long managerId)
     {
-        Restaurant r = restaurantRepository.findOne(restaurantId);
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
+        Restaurant r = rm.getRestaurant();
         ArrayList<WaiterMarkReport> marks = new ArrayList<>();
         for(Waiter w : r.getWaiters())
         {
@@ -501,9 +518,10 @@ public class RestaurantServiceImpl implements RestaurantService
     }
 
     @Override
-    public List<DishMarkReport> getDishMarkReport(Long restaurantId)
+    public List<DishMarkReport> getDishMarkReport(Long managerId)
     {
-        Restaurant r = restaurantRepository.findOne(restaurantId);
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
+        Restaurant r = rm.getRestaurant();
         ArrayList<DishMarkReport> marks = new ArrayList<>();
         for(Dish d : r.getDishes())
         {
@@ -523,9 +541,10 @@ public class RestaurantServiceImpl implements RestaurantService
 
 
     @Override
-    public List<CookMarkReport> getCookMarkReport(Long restaurantId)
+    public List<CookMarkReport> getCookMarkReport(Long managerId)
     {
-        Restaurant r = restaurantRepository.findOne(restaurantId);
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
+        Restaurant r = rm.getRestaurant();
         ArrayList<CookMarkReport> marks = new ArrayList<>();
         for(Cook c : r.getCooks())
         {
@@ -571,16 +590,17 @@ public class RestaurantServiceImpl implements RestaurantService
     }
 
     @Override
-    public List<ReportData> getVisitsReport(Long restaurantId, Date date)
+    public List<ReportData> getVisitsReport(Long managerId, Date date)
     {
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
         ArrayList<ReportData> visits = new ArrayList<>();
-        Restaurant r = restaurantRepository.findOne(restaurantId);
+        Restaurant r = rm.getRestaurant();
 
         Date d = new Date(date.getTime());
         Date end = (Date) DateUtils.addDays(date, 7);
         while (d.before(end))
         {
-            List<Reservation> reservations = reservationRepository.getReservationsByRestaurantAndDate(restaurantId, d, DateUtils.addHours(date, 1));
+            List<Reservation> reservations = reservationRepository.getReservationsByRestaurantAndDate(r.getId(), d, DateUtils.addHours(date, 1));
             Date dd = new Date(d.getTime());
             ReportData rd = new ReportData(dd, (double) reservations.size());
             for(Reservation reservation : reservations)
@@ -596,14 +616,16 @@ public class RestaurantServiceImpl implements RestaurantService
     }
 
     @Override
-    public List<ReportData> getWaiterIncomeReport(Long restaurantId, Long waiterId, Date date)
+    public List<ReportData> getWaiterIncomeReport(Long managerId, Long waiterId, Date date)
     {
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerId);
+        Restaurant r = rm.getRestaurant();
         ArrayList<ReportData> income = new ArrayList<>();
         Date d = new Date(date.getTime());
         Date end = (Date) DateUtils.addDays(date, 7);
         while (d.before(end))
         {
-            List<Order> orders = orderRepository.getByRestaurantAndDate(restaurantId, d, DateUtils.addHours(d, 1));
+            List<Order> orders = orderRepository.getByRestaurantAndDate(r.getId(), d, DateUtils.addHours(d, 1));
             Date dd = new Date(d.getTime());
             ReportData rd = new ReportData(dd, 0.0);
             for(Order o : orders)
@@ -620,14 +642,16 @@ public class RestaurantServiceImpl implements RestaurantService
     }
 
     @Override
-    public List<ReportData> getIncomeReport(Long restaurantId, Date date)
+    public List<ReportData> getIncomeReport(Long managerid, Date date)
     {
+        RestaurantManager rm = (RestaurantManager) userRepository.findOne(managerid);
+        Restaurant r = rm.getRestaurant();
         ArrayList<ReportData> income = new ArrayList<>();
         Date d = new Date(date.getTime());
         Date end = (Date) DateUtils.addDays(date, 7);
         while (d.before(end))
         {
-            List<Order> orders = orderRepository.getByRestaurantAndDate(restaurantId, d, DateUtils.addHours(d, 1));
+            List<Order> orders = orderRepository.getByRestaurantAndDate(r.getId(), d, DateUtils.addHours(d, 1));
             Date dd = new Date(d.getTime());
             ReportData rd = new ReportData(dd, 0.0);
             for(Order o : orders)
