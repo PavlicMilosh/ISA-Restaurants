@@ -6,7 +6,10 @@ import com.isa.restaurant.repositories.OrderRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -59,6 +62,42 @@ public class OrderItemServiceImpl implements OrderItemService
         }
         return true;
 
+    }
+
+    @Override
+    @Transactional(rollbackFor = OptimisticLockingFailureException.class, isolation = Isolation.SERIALIZABLE)
+    public Boolean preparingItem1(Long orderId, Long itemId, Long userId, Long version)
+    {
+        Order order=orderRepository.findById(orderId);
+        OrderItem orderItm = null;
+        orderItm = orderItemRepository.findById(itemId);
+        if(orderItm!=null)
+        {
+            orderItm.setPreparing(true);
+            orderItm.setUserId(userId);
+            orderItemRepository.save(orderItm);
+        }
+        if (order.getIsChanged()) {
+            order.setIsChanged(false);
+            orderItemRepository.delete(orderItm);
+            order.setIsChanged(false);
+            orderRepository.save(order);
+            throw new OptimisticLockingFailureException("Attempt to update with wrong version!");
+        }
+        Boolean flag=false;
+        for(OrderItem it:order.getOrderItems())
+        {
+            if(it.getId()==itemId)
+            {
+                flag=true;
+                break;
+            }
+        }
+        if(flag==false)
+        {
+            throw new OptimisticLockingFailureException("Attempt to update with wrong version!");
+        }
+        return true;
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.isa.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
@@ -104,6 +105,7 @@ public class OrdersServiceImpl implements OrdersService
     {
         Waiter w=(Waiter) userRepository.findById(waiterId);
         Restaurant restaurant=w.getRestaurant();
+        Order order=new Order(w);
         Set<OrderItem> savedOrderItems=new HashSet<OrderItem>();
         for (OrderItmDTO orderItem:orderDTO.getOrderItems())
         {
@@ -123,16 +125,21 @@ public class OrdersServiceImpl implements OrdersService
             {
                 savedOrderItem=new OrderItem(drink,orderItem.getNumber());
             }
+            savedOrderItem.setOrderId(order.getId());
+            savedOrderItem.setIsDish(orderItem.getIsDish());
             OrderItem saved1=orderItemRepository.save(savedOrderItem);
             savedOrderItems.add(saved1);
         }
-        Order order=new Order(savedOrderItems,orderDTO.getOrderTime());
+        order.setOrderItems(savedOrderItems);
+        order.calculateOrderPrice();
+        //Order order=new Order(savedOrderItems,orderDTO.getOrderTime());
+        order.setOrderTime(orderDTO.getOrderTime());
         RestaurantTable table= tableRepository.findById(tableId);
         order.setOrderTable(table);
-        order.setWaiter(w);
+        //order.setWaiter(w);
         Order saved = orderRepository.save(order);
         restaurant.addOrder(saved);
-        System.out.println(restaurant.getId());
+        //System.out.println(restaurant.getId());
         restaurantRepository.save(restaurant);
         return new OrderItemDTO(saved);
     }
@@ -438,12 +445,22 @@ public class OrdersServiceImpl implements OrdersService
     }
 
     @Override
-    @Transactional(rollbackFor = OptimisticLockingFailureException.class)
-    public Boolean changeOrder(Long waiterId, OrderItemDTO orderDTO) throws OptimisticLockingFailureException
+    @Transactional(rollbackFor = OptimisticLockingFailureException.class, isolation = Isolation.SERIALIZABLE)
+    public Boolean changeOrder(Long waiterId, OrderItemDTO orderDTO)
     {
         Order order = orderRepository.findById(orderDTO.getId());
         order.setVersion(orderDTO.getVersion());
         Set<OrderItem> savedOrderItems=new HashSet<OrderItem>();
+        Boolean flag = false;
+        for(OrderItem oi:order.getOrderItems())
+        {
+            if(oi.getPreparing())
+            {
+                flag=true;
+                break;
+            }
+        }
+        if(flag) { throw new OptimisticLockingFailureException("Attempt to update with wrong version!");}
         for (OrderItmDTO orderItem:orderDTO.getOrderItems())
         {
             OrderItem savedOrderItem=null;
@@ -462,10 +479,12 @@ public class OrdersServiceImpl implements OrdersService
             {
                 savedOrderItem=new OrderItem(drink,orderItem.getNumber());
             }
+            savedOrderItem.setOrderId(order.getId());
             OrderItem saved1=orderItemRepository.save(savedOrderItem);
             savedOrderItems.add(saved1);
         }
         order.setOrderItems(savedOrderItems);
+        order.setIsChanged(true);
         Order saved = orderRepository.save(order);
 
         return true;

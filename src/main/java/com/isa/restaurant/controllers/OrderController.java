@@ -52,11 +52,20 @@ public class OrderController
 
     }
 
-    @RequestMapping(value = "/{itemId}/preparing/{userId}", method = RequestMethod.PUT) //+++
-    public ResponseEntity<Boolean> preparingOrderItem(@PathVariable Long itemId, @PathVariable Long userId)
+    @RequestMapping(value = "/{itemId}/preparing/{userId}/{orderId}/{version}", method = RequestMethod.PUT) //+++
+    public ResponseEntity<Boolean> preparingOrderItem(@PathVariable Long itemId, @PathVariable Long userId, @PathVariable Long orderId, @PathVariable Long version)
     {
-        Boolean saved = orderItemService.preparingItem(itemId, userId);
+        Boolean saved;
+        try
+        {
+            saved = orderItemService.preparingItem1(orderId,itemId,userId,version);
+        }
+        catch (OptimisticLockingFailureException e)
+        {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         return new ResponseEntity(saved, HttpStatus.OK);
+
     }
 
     @RequestMapping(value = "/{itemId}/finished/{orderId}", method = RequestMethod.PUT)
