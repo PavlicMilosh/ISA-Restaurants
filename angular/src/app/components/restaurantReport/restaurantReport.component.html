@@ -2,7 +2,7 @@
 <div class="panel panel-default"><div class="panel-body">
 
   <br/>
-  <div class="mainMark">Restaurant mark: 8.4</div>
+  <div class="mainMark">Restaurant mark: {{restaurantMark}}</div>
   <br/>
   <hr/>
 
@@ -31,7 +31,7 @@
 
         <hr/>
 
-        <charts></charts>
+        <div id="line_chart" [chartData]="incomePerDayData" [chartOptions]= "line_ChartOptions" chartType="LineChart" GoogleChart></div>
 
       </div>
     </div>
@@ -51,7 +51,7 @@
 
         <hr/>
 
-        <charts></charts>
+        <div id="line_chart_2" [chartData]="visitsPerDayData" [chartOptions]= "line_ChartOptions" chartType="LineChart" GoogleChart></div>
 
       </div>
     </div>
@@ -59,36 +59,50 @@
 
     <!-- WAITER -->
     <div id="waiters" class="tab-pane fade">
-
-      <div class="datepicker">
+      <div>
         <form class="datepicker" #myForm="ngForm" novalidate>
           <label class="center-block datelabel">Date</label>
-          <my-date-picker class="floating" name="waiterDate"
+          <my-date-picker class="floating" name="visitsDate"
                           [options]="myDatePickerOptions"
                           (dateChanged)="onWaiterDateChanged($event)"
                           required></my-date-picker>
-          <a (click)="selectWaiter()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
+
+          <ul>
+            <ng-container *ngIf="waiters != null">
+              <li *ngFor="let w of waiters"><a (click)="selectWaiter(w);">{{w.firstName + ' ' + w.lastName}}</a></li>
+            </ng-container>
+          </ul>
+
+          <a (click)="getWaitersData()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
         </form>
-      <div>
 
-      <hr/>
+        <hr/>
 
-      <ng-container *ngIf="selectedWaiter != null">
-        <div class="dataMark">Waiters median mark: {{selectedWaiter.medianMark}}</div>
-      </ng-container>
-      <ng-container *ngIf="selectedWaiter == null">
-        <div class="dataMark">Waiters median mark: N/A</div>
-      </ng-container>
+        <ng-container *ngIf="selectedWaiter != null">
+          <div class="dataMark">Waiters median mark: {{selectedWaiter.meanMark}}</div>
+        </ng-container>
+        <ng-container *ngIf="selectedWaiter == null">
+          <div class="dataMark">Waiters median mark: N/A</div>
+        </ng-container>
 
-      <charts></charts>
+        <div id="line_chart_3" [chartData]="waiterIncomePerDayData" [chartOptions]= "line_ChartOptions" chartType="LineChart" GoogleChart></div>
+
+
+
+      </div>
     </div>
+
 
 
     <!-- COOK -->
     <div id="cooks" class="tab-pane fade">
       <div>
 
-          <a (click)="selectCook()" target="_blank" type="button" class="btn btn-success btn-lg center-block">Get data</a>
+        <ul>
+          <ng-container *ngIf="cooks != null">
+            <li *ngFor="let c of cooks"><a (click)="selectCook(c);">{{c.firstName + ' ' + c.lastName}}</a></li>
+          </ng-container>
+        </ul>
 
         <hr/>
 
@@ -110,8 +124,8 @@
             </td>
 
             <td>
-              <div class = "table-name">{{dish.medianMark}}</div>
-              <div class = "table-row-name">median mark</div>
+              <div class = "table-name">{{dish.meanMark}}</div>
+              <div class = "table-row-name">mean mark</div>
             </td>
 
             <td>
@@ -151,8 +165,6 @@
 
     </div>
 
-
-
-  </div>
-
-</div></div>
+    </div>
+ </div>
+</div>

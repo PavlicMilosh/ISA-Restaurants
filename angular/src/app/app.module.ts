@@ -5,8 +5,8 @@ import { HttpModule } from '@angular/http';
 import { WizardModule } from 'ng2-archwizard';
 import { MyDatePickerModule } from 'mydatepicker';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
-import { ChartsModule } from "ng2-charts";
 import { SelectModule } from 'ng2-select';
+import {GoogleChart} from 'angular2-google-chart/directives/angular2-google-chart.directive';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
@@ -58,13 +58,13 @@ import { UpdateProviderComponent } from './components/updateProvider/updateProvi
 import { AddShoppingListComponent } from './components/shopping/addShoppingList/addShoppingList.component';
 import { CreateBill } from "./components/createBill/createBill.component";
 import { RestaurantReportComponent } from './components/restaurantReport/restaurantReport.component';
-import { ChartsComponent } from './components/charts/charts.component';
 import { OrderChange } from "./components/orderChange/orderChange.component";
 
 
 
 @NgModule({
   declarations: [
+    GoogleChart,
     AppComponent,
     NavbarComponent,
     AuthenticationComponent,
@@ -81,7 +81,6 @@ import { OrderChange } from "./components/orderChange/orderChange.component";
     AddShoppingListComponent,
     UpdateProviderComponent,
     RestaurantReportComponent,
-    ChartsComponent,
 
     // Djura
     UpdateUser,
@@ -122,7 +121,6 @@ import { OrderChange } from "./components/orderChange/orderChange.component";
     WizardModule,
     MyDatePickerModule,
     Ng2TableModule,
-    ChartsModule,
     SelectModule,
     routing,
     NgbModule.forRoot()

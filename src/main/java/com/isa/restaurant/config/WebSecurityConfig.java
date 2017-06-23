@@ -98,6 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/guest/**").permitAll()
                 .antMatchers("/bill/**").permitAll()
                 .antMatchers("/order/**").permitAll()
+                .antMatchers("/restaurants/**").permitAll()
                 .anyRequest().authenticated();
 
         // Custom JWT based authentication

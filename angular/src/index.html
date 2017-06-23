@@ -39,6 +39,14 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true&key=AIzaSyDktm4_Qkq5wDW1sX9PY9UKHHGwXmCxnj0"></script>
 
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    // !important: You want to give this variable(var googleLoaded = false;). This is used to run multiple chart in your jade.
+    var googleLoaded = false;
+    // !important: Define which chart packages to preload.Because this package uses ChartWrappers you can use any chart type that Google supports, but if it // isn't loaded it will load it on demand.
+    var googleChartsPackagesToLoad = ['geochart'];
+  </script>
+
 </head>
 <body class="full">
   <app-root>Loading...</app-root>

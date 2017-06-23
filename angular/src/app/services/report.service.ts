@@ -12,7 +12,8 @@ export class ReportService
 
   }
 
-  getIncomeData(date: string)
+
+  getIncomeData(date: any)
   {
     let managerId = LoggedUtils.getId();
     let headers = new Headers();
@@ -22,7 +23,7 @@ export class ReportService
       .map(res => res.json());
   }
 
-  getVisitsData(date: string)
+  getVisitsData(date: any)
   {
     let managerId = LoggedUtils.getId();
     let headers = new Headers();
@@ -32,7 +33,7 @@ export class ReportService
       .map(res => res.json());
   }
 
-  getWaitersData(date: string, waiterId: number)
+  getWaitersData(date: any, waiterId: number)
   {
     let managerId = LoggedUtils.getId();
     let headers = new Headers();
@@ -47,8 +48,7 @@ export class ReportService
     let managerId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    headers.append('Content-Type', 'application/json');
-    return this.http.put(AddressUtils.backendAddress() + "/restaurants/" + managerId + "/markReport/restaurant",{ headers : headers })
+    return this.http.get(AddressUtils.backendAddress() + "/restaurants/" + managerId + "/markReport/restaurant", { headers : headers })
       .map(res => res.json());
   }
 
@@ -57,8 +57,7 @@ export class ReportService
     let managerId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    headers.append('Content-Type', 'application/json');
-    return this.http.put(AddressUtils.backendAddress() + "/restaurants/" + managerId + "/markReport/dishes",{ headers : headers })
+    return this.http.get(AddressUtils.backendAddress() + "/restaurants/" + managerId + "/markReport/dishes", { headers : headers })
       .map(res => res.json());
   }
 
@@ -67,8 +66,7 @@ export class ReportService
     let managerId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    headers.append('Content-Type', 'application/json');
-    return this.http.put(AddressUtils.backendAddress() + "/restaurants/" + managerId + "/markReport/waiters",{ headers : headers })
+    return this.http.get(AddressUtils.backendAddress() + "/restaurants/" + managerId + "/markReport/waiters",{ headers : headers })
       .map(res => res.json());
   }
 
@@ -77,8 +75,7 @@ export class ReportService
     let managerId = LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    headers.append('Content-Type', 'application/json');
-    return this.http.put(AddressUtils.backendAddress() + "/restaurants/" + managerId + "/markReport/cooks",{ headers : headers })
+    return this.http.get(AddressUtils.backendAddress() + "/restaurants/" + managerId + "/markReport/cooks",{ headers : headers })
       .map(res => res.json());
   }
 }
