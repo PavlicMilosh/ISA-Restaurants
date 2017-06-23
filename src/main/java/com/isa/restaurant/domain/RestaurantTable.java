@@ -77,8 +77,8 @@ public class RestaurantTable
     {
         this.id = rtDTO.getId();
         this.top = rtDTO.getTop();
-        this.left = rtDTO.getTop();
-        this.angle = rtDTO.getTop();
+        this.left = rtDTO.getLeft();
+        this.angle = rtDTO.getAngle();
         this.version = rtDTO.getVersion();
         this.seats = rtDTO.getSeats();
     }
