@@ -84,10 +84,8 @@ public class UserController
     }
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> changePassword(@RequestBody Bartender bartender){
-        UserDTO saved = userService.changeBartender(bartender);
-        if(saved == null)
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+    public ResponseEntity<Boolean> changePassword(@RequestBody UserDTO user){
+        Boolean saved = userService.changePassword(user);
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }
 

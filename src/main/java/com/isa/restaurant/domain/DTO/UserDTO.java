@@ -21,6 +21,7 @@ public class UserDTO
     String email;
     String authorities;
     String password;
+    String oldPassword;
     Long id;
 
     public UserDTO(User user)

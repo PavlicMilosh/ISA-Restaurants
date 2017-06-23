@@ -21,7 +21,7 @@ public interface UserService
     UserDTO changeWaiter(Waiter waiter);
     UserDTO changeCook(Cook cook);
     UserDTO changeBartender(Bartender bartender);
-    UserDTO changePassword(UserDTO userDTO);
+    Boolean changePassword(UserDTO userDTO);
     Set<WorkScheduleDTO> getSchedule(Long id);
     RestaurantDTO getUserRestaurant(Long id);
     Set<OrderItemDTO> getRestaurantOrders(Long id);
