@@ -7,8 +7,13 @@ import com.isa.restaurant.domain.DTO.*;
 import com.isa.restaurant.repositories.RestaurantRepository;
 import com.isa.restaurant.repositories.UserRepository;
 import com.isa.restaurant.services.RestaurantService;
+<<<<<<< HEAD
 import org.apache.commons.lang3.time.DateUtils;
 import org.assertj.core.util.DateUtil;
+=======
+import com.isa.restaurant.ulitity.Utilities;
+import org.apache.commons.lang3.time.DateUtils;
+>>>>>>> 951cc82f6f00195f0bf315be77a1075fd005516f
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.sql.Date;
+<<<<<<< HEAD
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+=======
+>>>>>>> 951cc82f6f00195f0bf315be77a1075fd005516f
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -182,7 +190,7 @@ public class RestaurantIntegrationTest
     }
 
     @Test
-    public void testgetRegionsByRMId() throws Exception
+    public void testGetRegionsByRMId() throws Exception
     {
         ObjectMapper om = new ObjectMapper();
         Restaurant r = restaurantRepository.findOne(0L);
@@ -212,6 +220,7 @@ public class RestaurantIntegrationTest
     }
 
     @Test
+<<<<<<< HEAD
     public void testGetDishesMarkReport() throws Exception
     {
         ObjectMapper om = new ObjectMapper();
@@ -249,12 +258,12 @@ public class RestaurantIntegrationTest
         Date d = new Date(sdf.parse("2017-06-19 00:00:00").getTime());
         DateDTO param = new DateDTO();
         param.setStartDate(new Date(start.getTime()));
-        while(d.before(DateUtils.addDays(start, 7)))
+        while (d.before(DateUtils.addDays(start, 7)))
         {
             ReportData rd = new ReportData(d, 0.0);
-            if(d.after(sdf.parse("2017-06-20 09:00:00")) && d.before(sdf.parse("2017-06-20 10:00:00")))
+            if (d.after(sdf.parse("2017-06-20 09:00:00")) && d.before(sdf.parse("2017-06-20 10:00:00")))
                 rd.setValue(2.0);
-            if(d.after(sdf.parse("2017-06-20 10:00:00")) && d.before(sdf.parse("2017-06-20 11:00:00")))
+            if (d.after(sdf.parse("2017-06-20 10:00:00")) && d.before(sdf.parse("2017-06-20 11:00:00")))
                 rd.setValue(3.0);
             data.add(rd);
             d = new Date(DateUtils.addHours(d, 1).getTime());
@@ -264,6 +273,19 @@ public class RestaurantIntegrationTest
                 .content(om.writeValueAsString(param)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(om.writeValueAsString(data)));
+
+    }
+
+    @Test
+    public void testGetIncomeReport()
+    {
+
+    }
+
+    @Test
+    public void testGetWaitersIncomeReport()
+    {
+
     }
 
     @After

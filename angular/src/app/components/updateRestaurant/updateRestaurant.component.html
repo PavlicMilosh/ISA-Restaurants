@@ -89,7 +89,7 @@
 
             <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
               <li><a (click)="newDrink()">Add new</a></li>
-              <ng-container *ngIf="restaurant.drinks.length > 0">
+              <ng-container *ngIf="restaurant.drinks != null">
                 <li *ngFor="let drink of restaurant.drinks"><a (click)="selectDrink(drink)">{{drink.name}}</a></li>
               </ng-container>
             </ul>
@@ -135,6 +135,7 @@
 
     <br/>
 
+
     <!-- DISHES -->
     <form class="main-center">
       <h2>Dishes</h2>
@@ -153,7 +154,7 @@
                    value="Select dish.."/>
             <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
               <li><a (click)="newDish()">Add new</a></li>
-              <ng-container *ngIf="restaurant.dishes.length > 0">
+              <ng-container *ngIf="restaurant.dishes != null">
                 <li *ngFor="let dish of restaurant.dishes"><a (click)="selectDish(dish)">{{dish.name}}</a></li>
               </ng-container>
             </ul>
@@ -204,7 +205,9 @@
                    value="{{editingDish.dishType.name}}"/>
 
             <ul class="dropdown-menu" role="menu">
-              <li *ngFor="let dt of dishTypes"><a (click)="setDishType(dt);">dt.name</a></li>
+              <ng-container *ngIf="restaurant.dishTypes != null">
+                <li *ngFor="let dt of restaurant.dishTypes"><a (click)="setDishType(dt);">{{dt.name}}</a></li>
+              </ng-container>
             </ul>
           </div>
         </div>
@@ -217,6 +220,55 @@
     </form>
 
     <br/>
+
+
+    <!-- DISH TYPE -->
+    <form class="main-center">
+      <h2>Dish types</h2>
+      <hr/>
+
+      <div class="form-group">
+        <label class="cols-sm-2 control-label">Select dish type...</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"></span>
+            <input type="button"
+                   class="form-control dropdown-toggle"
+                   data-toggle="dropdown"
+                   name="dishTypeSelect"
+                   id="dishTypeSelect"
+                   value="Select dish type..."/>
+            <ul *ngIf="restaurant != null" class="dropdown-menu" role="menu">
+              <li><a (click)="newDishType()">Add new</a></li>
+              <ng-container *ngIf="restaurant.dishTypes != null">
+                <li *ngFor="let dishType of restaurant.dishTypes">
+                  <a (click)="selectDishType(dishType)">{{dishType.name}}</a>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dishTypeName" class="cols-sm-2 control-label">Dish Type Name</label>
+        <div class="cols-sm-10">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="dishTypeName" id="dishTypeName" [(ngModel)]="editingDishType.name"  placeholder="Dish Type Name"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <a (click)="manageDishType()" target="_self" type="button" id="dishTypeButton" class="btn btn-primary btn-lg btn-block login-button">Save</a>
+      </div>
+
+    </form>
+
+    <br/>
+
+
 
     <!-- REGIONS -->
     <form class="main-center">

@@ -46,12 +46,12 @@ export class OrderService
       .map(res => res.json());
   }
 
-  preparingOrderItem(itemId:number)
+  preparingOrderItem(itemId:number,orderId:number, version:number)
   {
     let userId=LoggedUtils.getId();
     let headers = new Headers();
     headers.append("X-Auth-Token", LoggedUtils.getToken());
-    return this.http.put("http://localhost:8080/order/"+itemId+"/preparing/"+userId, { headers : headers })
+    return this.http.put("http://localhost:8080/order/"+itemId+"/preparing/"+userId+"/"+orderId+"/"+version, { headers : headers })
       .map(res => res.json());
   }
 

@@ -46,6 +46,12 @@ public class OrderItem {
     @Column (name = "order_item_user_id") //++++++
     private Long userId;
 
+    @Column (name = "order_item_order_id") //++++++
+    private Long orderId;
+
+    @Column (name = "order_item_order_version") //++++++
+    private Long orderVersion;
+
 
     @Override
     public boolean equals(Object other)

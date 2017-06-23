@@ -21,15 +21,10 @@ export class OrderDishes implements OnDestroy, OnInit
   drink2:Drink={id: 2, name: "drink2", description: "my drink2", price: 0};
   drink3:Drink={id: 3, name: "drink3", description: "my drink3", price: 0};
 
-  orderItem1:OrderItem={id:null, dish:this.dish1, drink:null, isDish:true, number:2, preparing: false, finished: false};
-  orderItem2:OrderItem={id:null, dish:null, drink:this.drink1, isDish:false, number:2, preparing:false, finished: false};
-  orderItem3:OrderItem={id:null, dish:this.dish2, drink:null, isDish:true, number:2, preparing: false, finished: false};
-  orderItem4:OrderItem={id:null, dish:this.dish3, drink:null, isDish:true, number:2, preparing: false, finished: false};
-  orderItem5:OrderItem={id:null, dish:null, drink:this.drink2, isDish:false, number:2, preparing: false, finished: false};
-  orderItem6:OrderItem={id:null, dish:null, drink:this.dish3, isDish:false, number:2, preparing: false, finished: false};
 
-  orderItems1:OrderItem[]=[this.orderItem1,this.orderItem2,this.orderItem3];
-  orderItems2:OrderItem[]=[this.orderItem4,this.orderItem5,this.orderItem6];
+
+  orderItems1:OrderItem[]=[];
+  orderItems2:OrderItem[]=[];
 
   dishes:Dish[]=[this.dish1,this.dish2,this.dish3];
   drinks:Drink[]=[this.drink1, this.drink2, this.drink3];
@@ -99,7 +94,7 @@ export class OrderDishes implements OnDestroy, OnInit
       }
     }
     this.orders[idx1].orderItems[item].preparing=true;
-    this.orderService.preparingOrderItem(this.orders[idx1].orderItems[item].id).subscribe
+    this.orderService.preparingOrderItem(this.orders[idx1].orderItems[item].id, this.orders[idx1].orderItems[item].orderId, this.orders[idx1].orderItems[item].orderVersion).subscribe
     (
       (data: Boolean) => this.canPreparing = data,
       error => alert(error),
@@ -177,6 +172,8 @@ interface OrderItem
   number:number;
   preparing:Boolean;
   finished:Boolean;
+  orderId:number;
+  orderVersion:number;
 }
 
 interface Order

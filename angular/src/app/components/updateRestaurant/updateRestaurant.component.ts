@@ -18,6 +18,8 @@ export class UpdateRestaurantComponent implements OnInit
   private canvas;
   private editingDrink: Drink;
   private editingDish: Dish;
+  private editingDishType: DishType;
+
   private rnameEditing: string;
   private rdescEditing: string;
   private rcountryEditing: string;
@@ -41,6 +43,7 @@ export class UpdateRestaurantComponent implements OnInit
       tables: [],
       managers: [],
       regions: [],
+      dishTypes: [],
       address:
         {
           country: "",
@@ -61,13 +64,31 @@ export class UpdateRestaurantComponent implements OnInit
       id: null,
       name: "",
       tables: [],
-      color: "#000000"
+      color: "#5b61ff"
     };
 
+    this.editingDish =
+      {
+        id: null,
+        name: "",
+        description: "",
+        price: 0,
+        dishType: {id: null, name: ""}
+      };
 
+    this.editingDrink =
+      {
+        id: null,
+        name: "",
+        description: "",
+        price: 0,
+      };
 
-    this.newDish();
-    this.newDrink();
+    this.editingDishType =
+      {
+        id: null,
+        name: ""
+      };
   }
 
   ngOnInit()
@@ -189,6 +210,11 @@ export class UpdateRestaurantComponent implements OnInit
     this.editingDish = dish;
   }
 
+  selectDishType(dishType: DishType)
+  {
+    this.editingDishType = dishType;
+  }
+
   newDish()
   {
     this.editingDish =
@@ -210,6 +236,15 @@ export class UpdateRestaurantComponent implements OnInit
       description: "",
       price: 0,
     }
+  }
+
+  newDishType()
+  {
+    this.editingDishType =
+      {
+        id: null,
+        name: ""
+      }
   }
 
   manageRestaurant()
@@ -284,6 +319,30 @@ export class UpdateRestaurantComponent implements OnInit
     }
   }
 
+  manageDishType()
+  {
+    if(this.editingDishType.id != null)
+    {
+      for(let type of this.restaurant.dishTypes)
+      {
+        if(type.id == this.editingDishType.id)
+        {
+          type.name = this.editingDishType.name;
+        }
+      }
+    }
+    else
+    {
+      this.restaurant.dishTypes.push(this.editingDishType);
+    }
+    this.editingDishType =
+      {
+        id: null,
+        name: ""
+      }
+  }
+
+
   setDishType(dt : any)
   {
     this.editingDish.dishType = dt;
@@ -304,6 +363,7 @@ interface Restaurant
   address: Address;
   dishes: Dish[];
   drinks: Drink[];
+  dishTypes: DishType[];
   managers: Manager[];
   tables: RestaurantTable[];
   regions: RestaurantRegion[];
